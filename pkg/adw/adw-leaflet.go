@@ -235,6 +235,7 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.adw_leaflet_get_child_by_name(_arg0, _arg1)
 
@@ -674,6 +675,7 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_leaflet_set_visible_child_name(_arg0, _arg1)
 }
@@ -756,6 +758,7 @@ func (self *LeafletPage) SetName(name string) {
 
 	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_leaflet_page_set_name(_arg0, _arg1)
 }

@@ -4,4 +4,4 @@
 
 Go generated bindings for [libadwaita][adw].
 
-[webkitgtk]: https://gnome.pages.gitlab.gnome.org/libadwaita/doc/
+[adw]: https://gnome.pages.gitlab.gnome.org/libadwaita/doc/

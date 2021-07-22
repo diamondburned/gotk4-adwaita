@@ -148,6 +148,7 @@ func (self *StatusPage) SetDescription(description string) {
 
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_status_page_set_description(_arg0, _arg1)
 }
@@ -159,6 +160,7 @@ func (self *StatusPage) SetIconName(iconName string) {
 
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_status_page_set_icon_name(_arg0, _arg1)
 }
@@ -170,6 +172,7 @@ func (self *StatusPage) SetTitle(title string) {
 
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_status_page_set_title(_arg0, _arg1)
 }

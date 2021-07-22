@@ -91,6 +91,7 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 
 	_arg1 = C.int(size)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 	if showInitials {
 		_arg3 = C.TRUE
 	}
@@ -213,6 +214,7 @@ func (self *Avatar) SetIconName(iconName string) {
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_avatar_set_icon_name(_arg0, _arg1)
 }
@@ -265,6 +267,7 @@ func (self *Avatar) SetText(text string) {
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_avatar_set_text(_arg0, _arg1)
 }

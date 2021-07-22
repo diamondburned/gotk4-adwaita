@@ -260,6 +260,7 @@ func (self *ActionRow) SetIconName(iconName string) {
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_action_row_set_icon_name(_arg0, _arg1)
 }
@@ -271,6 +272,7 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_action_row_set_subtitle(_arg0, _arg1)
 }

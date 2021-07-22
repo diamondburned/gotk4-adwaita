@@ -60,7 +60,9 @@ func NewWindowTitle(title string, subtitle string) *WindowTitle {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.adw_window_title_new(_arg1, _arg2)
 
@@ -112,6 +114,7 @@ func (self *WindowTitle) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_subtitle(_arg0, _arg1)
 }
@@ -126,6 +129,7 @@ func (self *WindowTitle) SetTitle(title string) {
 
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_title(_arg0, _arg1)
 }

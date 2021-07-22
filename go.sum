@@ -2,6 +2,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/diamondburned/gotk4 v0.0.0-20210719035152-01d29f30ef05 h1:BmdhqnSzTTtN5MCuhB0zvk2Dvycv1dZQwzGhxedueaU=
 github.com/diamondburned/gotk4 v0.0.0-20210719035152-01d29f30ef05/go.mod h1:WbOkeM91aOubLbxqcbYwd7q/HCKxAmqObvT5Dhpzm1Y=
+github.com/diamondburned/gotk4 v0.0.0-20210721091606-f47b5a0ad262 h1:G9vPrGF0Zag0rVJpzMJEPq37NlOx+UdgETRAooNOG64=
+github.com/diamondburned/gotk4 v0.0.0-20210721091606-f47b5a0ad262/go.mod h1:WbOkeM91aOubLbxqcbYwd7q/HCKxAmqObvT5Dhpzm1Y=
 github.com/fatih/color v1.10.0 h1:s36xzo75JdqLaaWoiEHk767eHiwo0598uUxyfiPkDsg=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
 github.com/mattn/go-colorable v0.1.8 h1:c1ghPdyEDarC70ftn0y+A/Ee++9zz8ljHG1b13eJ0s8=

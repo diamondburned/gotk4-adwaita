@@ -126,6 +126,7 @@ func (self *PreferencesRow) SetTitle(title string) {
 
 	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_row_set_title(_arg0, _arg1)
 }

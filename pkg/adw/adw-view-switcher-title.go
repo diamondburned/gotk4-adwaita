@@ -217,6 +217,7 @@ func (self *ViewSwitcherTitle) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_subtitle(_arg0, _arg1)
 }
@@ -229,6 +230,7 @@ func (self *ViewSwitcherTitle) SetTitle(title string) {
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_title(_arg0, _arg1)
 }

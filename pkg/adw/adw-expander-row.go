@@ -266,6 +266,7 @@ func (self *ExpanderRow) SetIconName(iconName string) {
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_expander_row_set_icon_name(_arg0, _arg1)
 }
@@ -291,6 +292,7 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_expander_row_set_subtitle(_arg0, _arg1)
 }
