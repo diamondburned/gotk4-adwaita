@@ -26,8 +26,6 @@ type Window struct {
 	gtk.Window
 }
 
-var _ gextras.Nativer = (*Window)(nil)
-
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Window: gtk.Window{
@@ -44,6 +42,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Root: gtk.Root{
 				NativeSurface: gtk.NativeSurface{
@@ -60,12 +59,14 @@ func wrapWindow(obj *externglib.Object) *Window {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: gtk.ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -111,7 +112,7 @@ func (self *Window) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_window_set_child(_arg0, _arg1)
 }

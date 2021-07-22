@@ -34,8 +34,6 @@ type ActionRow struct {
 	PreferencesRow
 }
 
-var _ gextras.Nativer = (*ActionRow)(nil)
-
 func wrapActionRow(obj *externglib.Object) *ActionRow {
 	return &ActionRow{
 		PreferencesRow: PreferencesRow{
@@ -53,6 +51,7 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
@@ -68,8 +67,10 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -108,7 +109,7 @@ func (self *ActionRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_add_prefix(_arg0, _arg1)
 }
@@ -119,7 +120,7 @@ func (self *ActionRow) AddSuffix(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_add_suffix(_arg0, _arg1)
 }
@@ -231,7 +232,7 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_remove(_arg0, _arg1)
 }
@@ -248,7 +249,7 @@ func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_set_activatable_widget(_arg0, _arg1)
 }

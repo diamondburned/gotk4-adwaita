@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,8 +26,6 @@ type EnumListModel struct {
 
 	gio.ListModel
 }
-
-var _ gextras.Nativer = (*EnumListModel)(nil)
 
 func wrapEnumListModel(obj *externglib.Object) *EnumListModel {
 	return &EnumListModel{

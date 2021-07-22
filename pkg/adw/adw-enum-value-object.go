@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,8 +23,6 @@ func init() {
 type EnumValueObject struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*EnumValueObject)(nil)
 
 func wrapEnumValueObject(obj *externglib.Object) *EnumValueObject {
 	return &EnumValueObject{

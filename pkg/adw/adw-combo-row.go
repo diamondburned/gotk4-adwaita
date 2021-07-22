@@ -27,8 +27,6 @@ type ComboRow struct {
 	ActionRow
 }
 
-var _ gextras.Nativer = (*ComboRow)(nil)
-
 func wrapComboRow(obj *externglib.Object) *ComboRow {
 	return &ComboRow{
 		ActionRow: ActionRow{
@@ -47,6 +45,7 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 					Actionable: gtk.Actionable{
 						Widget: gtk.Widget{
@@ -62,8 +61,10 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -229,7 +230,7 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.adw_combo_row_set_expression(_arg0, _arg1)
 }
@@ -263,7 +264,7 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel  // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.adw_combo_row_set_model(_arg0, _arg1)
 }

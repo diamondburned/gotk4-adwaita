@@ -56,9 +56,8 @@ type Squeezer struct {
 	gtk.Widget
 
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Squeezer)(nil)
 
 func wrapSqueezer(obj *externglib.Object) *Squeezer {
 	return &Squeezer{
@@ -75,10 +74,12 @@ func wrapSqueezer(obj *externglib.Object) *Squeezer {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -101,10 +102,9 @@ func NewSqueezer() *Squeezer {
 	return _squeezer
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Squeezer) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *Squeezer) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Add adds a child to self.
@@ -114,7 +114,7 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	var _cret *C.AdwSqueezerPage // in
 
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_squeezer_add(_arg0, _arg1)
 
@@ -173,7 +173,7 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	var _cret *C.AdwSqueezerPage // in
 
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_squeezer_get_page(_arg0, _arg1)
 
@@ -310,7 +310,7 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_squeezer_remove(_arg0, _arg1)
 }
@@ -404,8 +404,6 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 type SqueezerPage struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*SqueezerPage)(nil)
 
 func wrapSqueezerPage(obj *externglib.Object) *SqueezerPage {
 	return &SqueezerPage{

@@ -27,9 +27,8 @@ type ClampScrollable struct {
 
 	gtk.Orientable
 	gtk.Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ClampScrollable)(nil)
 
 func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 	return &ClampScrollable{
@@ -46,6 +45,7 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
@@ -53,6 +53,7 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 		Scrollable: gtk.Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -75,10 +76,9 @@ func NewClampScrollable() *ClampScrollable {
 	return _clampScrollable
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ClampScrollable) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *ClampScrollable) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Child gets the child widget of self.
@@ -137,7 +137,7 @@ func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget          // out
 
 	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_clamp_scrollable_set_child(_arg0, _arg1)
 }

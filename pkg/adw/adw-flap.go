@@ -98,9 +98,8 @@ type Flap struct {
 
 	Swipeable
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Flap)(nil)
 
 func wrapFlap(obj *externglib.Object) *Flap {
 	return &Flap{
@@ -117,6 +116,7 @@ func wrapFlap(obj *externglib.Object) *Flap {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
@@ -132,11 +132,13 @@ func wrapFlap(obj *externglib.Object) *Flap {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -159,10 +161,9 @@ func NewFlap() *Flap {
 	return _flap
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Flap) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *Flap) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Content gets the content widget for self
@@ -431,7 +432,7 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((content).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
 
 	C.adw_flap_set_content(_arg0, _arg1)
 }
@@ -443,7 +444,7 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((flap).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(flap.Native()))
 
 	C.adw_flap_set_flap(_arg0, _arg1)
 }
@@ -551,7 +552,7 @@ func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((separator).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(separator.Native()))
 
 	C.adw_flap_set_separator(_arg0, _arg1)
 }

@@ -26,9 +26,8 @@ type Clamp struct {
 	gtk.Widget
 
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Clamp)(nil)
 
 func wrapClamp(obj *externglib.Object) *Clamp {
 	return &Clamp{
@@ -45,10 +44,12 @@ func wrapClamp(obj *externglib.Object) *Clamp {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -71,10 +72,9 @@ func NewClamp() *Clamp {
 	return _clamp
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Clamp) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *Clamp) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Child gets the child widget of self.
@@ -133,7 +133,7 @@ func (self *Clamp) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_clamp_set_child(_arg0, _arg1)
 }

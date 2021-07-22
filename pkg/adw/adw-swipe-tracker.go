@@ -28,8 +28,6 @@ type SwipeTracker struct {
 	gtk.Orientable
 }
 
-var _ gextras.Nativer = (*SwipeTracker)(nil)
-
 func wrapSwipeTracker(obj *externglib.Object) *SwipeTracker {
 	return &SwipeTracker{
 		Object: obj,
@@ -50,7 +48,7 @@ func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 	var _arg1 *C.AdwSwipeable    // out
 	var _cret *C.AdwSwipeTracker // in
 
-	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer((swipeable).(gextras.Nativer).Native()))
+	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer(swipeable.Native()))
 
 	_cret = C.adw_swipe_tracker_new(_arg1)
 

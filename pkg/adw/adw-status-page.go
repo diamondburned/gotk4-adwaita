@@ -26,8 +26,6 @@ type StatusPage struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*StatusPage)(nil)
-
 func wrapStatusPage(obj *externglib.Object) *StatusPage {
 	return &StatusPage{
 		Widget: gtk.Widget{
@@ -43,6 +41,7 @@ func wrapStatusPage(obj *externglib.Object) *StatusPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -136,7 +135,7 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_status_page_set_child(_arg0, _arg1)
 }

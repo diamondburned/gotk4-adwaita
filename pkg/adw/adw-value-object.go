@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,8 +23,6 @@ func init() {
 type ValueObject struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ValueObject)(nil)
 
 func wrapValueObject(obj *externglib.Object) *ValueObject {
 	return &ValueObject{

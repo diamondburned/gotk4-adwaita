@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -27,8 +26,6 @@ type ViewSwitcher struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*ViewSwitcher)(nil)
-
 func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 	return &ViewSwitcher{
 		Widget: gtk.Widget{
@@ -44,6 +41,7 @@ func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -129,6 +127,7 @@ func (self *ViewSwitcher) Stack() *gtk.Stack {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		}
 	}

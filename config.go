@@ -22,6 +22,7 @@ var pkgExceptions = []string{
 	"go.mod",
 	"go.sum",
 	"LICENSE",
+	"_examples",
 }
 
 var filters = []types.FilterMatcher{}

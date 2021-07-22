@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,9 +25,8 @@ type CarouselIndicatorDots struct {
 	gtk.Widget
 
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CarouselIndicatorDots)(nil)
 
 func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 	return &CarouselIndicatorDots{
@@ -45,10 +43,12 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -71,10 +71,9 @@ func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 	return _carouselIndicatorDots
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CarouselIndicatorDots) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *CarouselIndicatorDots) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Carousel: get the Carousel the indicator uses.

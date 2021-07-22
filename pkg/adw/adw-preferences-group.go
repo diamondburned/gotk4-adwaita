@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,6 @@ type PreferencesGroup struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*PreferencesGroup)(nil)
-
 func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 	return &PreferencesGroup{
 		Widget: gtk.Widget{
@@ -43,6 +40,7 @@ func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -71,7 +69,7 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget           // out
 
 	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_preferences_group_add(_arg0, _arg1)
 }
@@ -112,7 +110,7 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget           // out
 
 	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_preferences_group_remove(_arg0, _arg1)
 }

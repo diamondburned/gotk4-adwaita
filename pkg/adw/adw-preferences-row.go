@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,6 @@ type PreferencesRow struct {
 	gtk.ListBoxRow
 }
 
-var _ gextras.Nativer = (*PreferencesRow)(nil)
-
 func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 	return &PreferencesRow{
 		ListBoxRow: gtk.ListBoxRow{
@@ -44,6 +41,7 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Actionable: gtk.Actionable{
 				Widget: gtk.Widget{
@@ -59,8 +57,10 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }

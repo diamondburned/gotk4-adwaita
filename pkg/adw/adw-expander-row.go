@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,6 @@ type ExpanderRow struct {
 	PreferencesRow
 }
 
-var _ gextras.Nativer = (*ExpanderRow)(nil)
-
 func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 	return &ExpanderRow{
 		PreferencesRow: PreferencesRow{
@@ -45,6 +42,7 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
@@ -60,8 +58,10 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -91,7 +91,7 @@ func (self *ExpanderRow) Add(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_expander_row_add(_arg0, _arg1)
 }
@@ -102,7 +102,7 @@ func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_expander_row_add_action(_arg0, _arg1)
 }
@@ -113,7 +113,7 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_expander_row_add_prefix(_arg0, _arg1)
 }
@@ -229,7 +229,7 @@ func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_expander_row_remove(_arg0, _arg1)
 }

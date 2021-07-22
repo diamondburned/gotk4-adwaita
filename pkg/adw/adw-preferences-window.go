@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,6 @@ type PreferencesWindow struct {
 	Window
 }
 
-var _ gextras.Nativer = (*PreferencesWindow)(nil)
-
 func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 	return &PreferencesWindow{
 		Window: Window{
@@ -45,6 +42,7 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Root: gtk.Root{
 					NativeSurface: gtk.NativeSurface{
@@ -61,12 +59,14 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -156,7 +156,7 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	var _arg1 *C.GtkWidget            // out
 
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((subpage).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(subpage.Native()))
 
 	C.adw_preferences_window_present_subpage(_arg0, _arg1)
 }

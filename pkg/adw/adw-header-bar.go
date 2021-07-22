@@ -26,8 +26,6 @@ type HeaderBar struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*HeaderBar)(nil)
-
 func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{
 		Widget: gtk.Widget{
@@ -43,6 +41,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -161,7 +160,7 @@ func (self *HeaderBar) PackEnd(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_pack_end(_arg0, _arg1)
 }
@@ -172,7 +171,7 @@ func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_pack_start(_arg0, _arg1)
 }
@@ -185,7 +184,7 @@ func (self *HeaderBar) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_remove(_arg0, _arg1)
 }
@@ -271,7 +270,7 @@ func (self *HeaderBar) SetTitleWidget(titleWidget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titleWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
 
 	C.adw_header_bar_set_title_widget(_arg0, _arg1)
 }

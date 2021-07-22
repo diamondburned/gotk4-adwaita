@@ -57,10 +57,10 @@ type Swipeable struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*Swipeable)(nil)
-
 // Swipeabler describes Swipeable's abstract methods.
 type Swipeabler interface {
+	gextras.Objector
+
 	// EmitChildSwitched emits AdwSwipeable::child-switched signal.
 	EmitChildSwitched(index uint, duration int64)
 	// CancelProgress gets the progress self will snap back to after the gesture
@@ -96,6 +96,7 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

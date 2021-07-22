@@ -27,9 +27,8 @@ type Carousel struct {
 
 	Swipeable
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Carousel)(nil)
 
 func wrapCarousel(obj *externglib.Object) *Carousel {
 	return &Carousel{
@@ -46,6 +45,7 @@ func wrapCarousel(obj *externglib.Object) *Carousel {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
@@ -61,11 +61,13 @@ func wrapCarousel(obj *externglib.Object) *Carousel {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -88,10 +90,9 @@ func NewCarousel() *Carousel {
 	return _carousel
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Carousel) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *Carousel) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Append appends child to self
@@ -100,7 +101,7 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_append(_arg0, _arg1)
 }
@@ -288,7 +289,7 @@ func (self *Carousel) Insert(child gtk.Widgetter, position int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(position)
 
 	C.adw_carousel_insert(_arg0, _arg1, _arg2)
@@ -300,7 +301,7 @@ func (self *Carousel) Prepend(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_prepend(_arg0, _arg1)
 }
@@ -311,7 +312,7 @@ func (self *Carousel) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_remove(_arg0, _arg1)
 }
@@ -326,7 +327,7 @@ func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(position)
 
 	C.adw_carousel_reorder(_arg0, _arg1, _arg2)
@@ -340,7 +341,7 @@ func (self *Carousel) ScrollTo(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_carousel_scroll_to(_arg0, _arg1)
 }
@@ -352,7 +353,7 @@ func (self *Carousel) ScrollToFull(widget gtk.Widgetter, duration int64) {
 	var _arg2 C.gint64       // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint64(duration)
 
 	C.adw_carousel_scroll_to_full(_arg0, _arg1, _arg2)

@@ -26,8 +26,6 @@ type Bin struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*Bin)(nil)
-
 func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{
 		Widget: gtk.Widget{
@@ -43,6 +41,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -88,7 +87,7 @@ func (self *Bin) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwBin)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_bin_set_child(_arg0, _arg1)
 }

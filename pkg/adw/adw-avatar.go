@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -55,8 +54,6 @@ type Avatar struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*Avatar)(nil)
-
 func wrapAvatar(obj *externglib.Object) *Avatar {
 	return &Avatar{
 		Widget: gtk.Widget{
@@ -72,6 +69,7 @@ func wrapAvatar(obj *externglib.Object) *Avatar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

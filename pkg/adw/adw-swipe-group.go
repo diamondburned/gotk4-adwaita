@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,8 +26,6 @@ type SwipeGroup struct {
 
 	gtk.Buildable
 }
-
-var _ gextras.Nativer = (*SwipeGroup)(nil)
 
 func wrapSwipeGroup(obj *externglib.Object) *SwipeGroup {
 	return &SwipeGroup{
@@ -65,7 +62,7 @@ func (self *SwipeGroup) AddSwipeable(swipeable Swipeabler) {
 	var _arg1 *C.AdwSwipeable  // out
 
 	_arg0 = (*C.AdwSwipeGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer((swipeable).(gextras.Nativer).Native()))
+	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer(swipeable.Native()))
 
 	C.adw_swipe_group_add_swipeable(_arg0, _arg1)
 }
@@ -76,7 +73,7 @@ func (self *SwipeGroup) RemoveSwipeable(swipeable Swipeabler) {
 	var _arg1 *C.AdwSwipeable  // out
 
 	_arg0 = (*C.AdwSwipeGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer((swipeable).(gextras.Nativer).Native()))
+	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer(swipeable.Native()))
 
 	C.adw_swipe_group_remove_swipeable(_arg0, _arg1)
 }

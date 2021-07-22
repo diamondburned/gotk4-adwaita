@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,6 @@ type PreferencesPage struct {
 	gtk.Widget
 }
 
-var _ gextras.Nativer = (*PreferencesPage)(nil)
-
 func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 	return &PreferencesPage{
 		Widget: gtk.Widget{
@@ -43,6 +40,7 @@ func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

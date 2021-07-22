@@ -68,9 +68,8 @@ type Leaflet struct {
 
 	Swipeable
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Leaflet)(nil)
 
 func wrapLeaflet(obj *externglib.Object) *Leaflet {
 	return &Leaflet{
@@ -87,6 +86,7 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
@@ -102,11 +102,13 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -128,10 +130,9 @@ func NewLeaflet() *Leaflet {
 	return _leaflet
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Leaflet) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
+// Native solves the ambiguous selector of this class or interface.
+func (self *Leaflet) Native() uintptr {
+	return self.Object.Native()
 }
 
 // Append adds a child to self.
@@ -141,7 +142,7 @@ func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 	var _cret *C.AdwLeafletPage // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_append(_arg0, _arg1)
 
@@ -368,7 +369,7 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	var _cret *C.AdwLeafletPage // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_get_page(_arg0, _arg1)
 
@@ -455,8 +456,8 @@ func (self *Leaflet) InsertChildAfter(child gtk.Widgetter, sibling gtk.Widgetter
 	var _cret *C.AdwLeafletPage // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 
 	_cret = C.adw_leaflet_insert_child_after(_arg0, _arg1, _arg2)
 
@@ -496,7 +497,7 @@ func (self *Leaflet) Prepend(child gtk.Widgetter) *LeafletPage {
 	var _cret *C.AdwLeafletPage // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_prepend(_arg0, _arg1)
 
@@ -513,7 +514,7 @@ func (self *Leaflet) Remove(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_leaflet_remove(_arg0, _arg1)
 }
@@ -526,8 +527,8 @@ func (self *Leaflet) ReorderChildAfter(child gtk.Widgetter, sibling gtk.Widgette
 	var _arg2 *C.GtkWidget  // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 
 	C.adw_leaflet_reorder_child_after(_arg0, _arg1, _arg2)
 }
@@ -661,7 +662,7 @@ func (self *Leaflet) SetVisibleChild(visibleChild gtk.Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((visibleChild).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(visibleChild.Native()))
 
 	C.adw_leaflet_set_visible_child(_arg0, _arg1)
 }
@@ -683,8 +684,6 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 type LeafletPage struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*LeafletPage)(nil)
 
 func wrapLeafletPage(obj *externglib.Object) *LeafletPage {
 	return &LeafletPage{

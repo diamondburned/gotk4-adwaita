@@ -27,8 +27,6 @@ type ApplicationWindow struct {
 	gtk.ApplicationWindow
 }
 
-var _ gextras.Nativer = (*ApplicationWindow)(nil)
-
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
 		ApplicationWindow: gtk.ApplicationWindow{
@@ -46,6 +44,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Root: gtk.Root{
 					NativeSurface: gtk.NativeSurface{
@@ -62,12 +61,14 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			ActionGroup: gio.ActionGroup{
 				Object: obj,
@@ -75,6 +76,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 			ActionMap: gio.ActionMap{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -123,7 +125,7 @@ func (self *ApplicationWindow) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget            // out
 
 	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_application_window_set_child(_arg0, _arg1)
 }

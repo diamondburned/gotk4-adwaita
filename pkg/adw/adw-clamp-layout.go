@@ -5,7 +5,6 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,9 +25,8 @@ type ClampLayout struct {
 	gtk.LayoutManager
 
 	gtk.Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ClampLayout)(nil)
 
 func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 	return &ClampLayout{
@@ -38,6 +36,7 @@ func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -58,12 +57,6 @@ func NewClampLayout() *ClampLayout {
 	_clampLayout = wrapClampLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _clampLayout
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ClampLayout) Native() uintptr {
-	return v.LayoutManager.Object.Native()
 }
 
 // MaximumSize gets the maximum size to allocate to the contained child. It is
