@@ -88,8 +88,10 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = C.int(size)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if text != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	if showInitials {
 		_arg3 = C.TRUE
 	}
@@ -211,8 +213,10 @@ func (self *Avatar) SetIconName(iconName string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_avatar_set_icon_name(_arg0, _arg1)
 }
@@ -264,8 +268,10 @@ func (self *Avatar) SetText(text string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_avatar_set_text(_arg0, _arg1)
 }

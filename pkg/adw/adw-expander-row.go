@@ -291,8 +291,10 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if subtitle != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_expander_row_set_subtitle(_arg0, _arg1)
 }

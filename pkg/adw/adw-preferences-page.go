@@ -141,8 +141,10 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 	var _arg1 *C.char               // out
 
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_preferences_page_set_icon_name(_arg0, _arg1)
 }
@@ -153,8 +155,10 @@ func (self *PreferencesPage) SetTitle(title string) {
 	var _arg1 *C.char               // out
 
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_preferences_page_set_title(_arg0, _arg1)
 }

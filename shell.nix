@@ -1,7 +1,5 @@
 { systemPkgs ? import <nixpkgs> {} }:
 
-# The declarations, where a pinned Nixpkgs Unstable is fetched. When updating,
-# only rev and sha256 should be changed.
 let unstable = import (systemPkgs.fetchFromGitHub {
 	owner  = "NixOS";
 	repo   = "nixpkgs";

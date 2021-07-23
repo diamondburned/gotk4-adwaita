@@ -756,8 +756,10 @@ func (self *LeafletPage) SetName(name string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_leaflet_page_set_name(_arg0, _arg1)
 }
