@@ -177,7 +177,9 @@ func (self *Flap) Content() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -193,7 +195,9 @@ func (self *Flap) Flap() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -367,7 +371,9 @@ func (self *Flap) Separator() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -432,7 +438,9 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
+	if content != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
+	}
 
 	C.adw_flap_set_content(_arg0, _arg1)
 }
@@ -444,7 +452,9 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(flap.Native()))
+	if flap != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(flap.Native()))
+	}
 
 	C.adw_flap_set_flap(_arg0, _arg1)
 }
@@ -552,7 +562,9 @@ func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(separator.Native()))
+	if separator != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(separator.Native()))
+	}
 
 	C.adw_flap_set_separator(_arg0, _arg1)
 }

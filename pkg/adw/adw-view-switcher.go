@@ -111,24 +111,26 @@ func (self *ViewSwitcher) Stack() *gtk.Stack {
 
 	var _stack *gtk.Stack // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_stack = &gtk.Stack{
-			Widget: gtk.Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_stack = &gtk.Stack{
+				Widget: gtk.Widget{
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					Accessible: gtk.Accessible{
+						Object: obj,
+					},
+					Buildable: gtk.Buildable{
+						Object: obj,
+					},
+					ConstraintTarget: gtk.ConstraintTarget{
+						Object: obj,
+					},
 					Object: obj,
 				},
-				Accessible: gtk.Accessible{
-					Object: obj,
-				},
-				Buildable: gtk.Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: gtk.ConstraintTarget{
-					Object: obj,
-				},
-				Object: obj,
-			},
+			}
 		}
 	}
 
@@ -164,7 +166,9 @@ func (self *ViewSwitcher) SetStack(stack *gtk.Stack) {
 	var _arg1 *C.GtkStack        // out
 
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	if stack != nil {
+		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	}
 
 	C.adw_view_switcher_set_stack(_arg0, _arg1)
 }

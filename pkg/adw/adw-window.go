@@ -101,7 +101,9 @@ func (self *Window) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -112,7 +114,9 @@ func (self *Window) SetChild(child gtk.Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.adw_window_set_child(_arg0, _arg1)
 }

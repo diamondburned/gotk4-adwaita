@@ -267,7 +267,9 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }

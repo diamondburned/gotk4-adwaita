@@ -89,7 +89,9 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 
 	var _carousel *Carousel // out
 
-	_carousel = wrapCarousel(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_carousel = wrapCarousel(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _carousel
 }
@@ -100,7 +102,9 @@ func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg1 *C.AdwCarousel              // out
 
 	_arg0 = (*C.AdwCarouselIndicatorDots)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwCarousel)(unsafe.Pointer(carousel.Native()))
+	if carousel != nil {
+		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(carousel.Native()))
+	}
 
 	C.adw_carousel_indicator_dots_set_carousel(_arg0, _arg1)
 }

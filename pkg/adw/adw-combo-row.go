@@ -101,7 +101,9 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 
 	var _expression gtk.Expressioner // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Expressioner)
+	if _cret != nil {
+		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Expressioner)
+	}
 
 	return _expression
 }
@@ -121,10 +123,12 @@ func (self *ComboRow) Factory() *gtk.ListItemFactory {
 
 	var _listItemFactory *gtk.ListItemFactory // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listItemFactory = &gtk.ListItemFactory{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_listItemFactory = &gtk.ListItemFactory{
+				Object: obj,
+			}
 		}
 	}
 
@@ -143,10 +147,12 @@ func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 
 	var _listItemFactory *gtk.ListItemFactory // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listItemFactory = &gtk.ListItemFactory{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_listItemFactory = &gtk.ListItemFactory{
+				Object: obj,
+			}
 		}
 	}
 
@@ -164,7 +170,9 @@ func (self *ComboRow) Model() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	if _cret != nil {
+		_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	}
 
 	return _listModel
 }
@@ -230,7 +238,9 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	C.adw_combo_row_set_expression(_arg0, _arg1)
 }
@@ -241,7 +251,9 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if factory != nil {
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	C.adw_combo_row_set_factory(_arg0, _arg1)
 }
@@ -253,7 +265,9 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if factory != nil {
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	C.adw_combo_row_set_list_factory(_arg0, _arg1)
 }
@@ -264,7 +278,9 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel  // out
 
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.adw_combo_row_set_model(_arg0, _arg1)
 }

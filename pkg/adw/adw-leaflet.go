@@ -168,7 +168,9 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -242,7 +244,9 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -457,7 +461,9 @@ func (self *Leaflet) InsertChildAfter(child gtk.Widgetter, sibling gtk.Widgetter
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	if sibling != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	}
 
 	_cret = C.adw_leaflet_insert_child_after(_arg0, _arg1, _arg2)
 
@@ -528,7 +534,9 @@ func (self *Leaflet) ReorderChildAfter(child gtk.Widgetter, sibling gtk.Widgette
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	if sibling != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	}
 
 	C.adw_leaflet_reorder_child_after(_arg0, _arg1, _arg2)
 }
@@ -724,7 +732,9 @@ func (self *LeafletPage) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

@@ -45,7 +45,9 @@ func _gotk4_adw1_AvatarImageLoadFunc(arg0 C.int, arg1 C.gpointer) (cret *C.GdkPi
 	fn := v.(AvatarImageLoadFunc)
 	pixbuf := fn(size)
 
-	cret = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		cret = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	return cret
 }
@@ -148,7 +150,9 @@ func (self *Avatar) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -198,7 +202,9 @@ func (self *Avatar) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -230,9 +236,11 @@ func (self *Avatar) SetImageLoadFunc(loadImage AvatarImageLoadFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_adw1_AvatarImageLoadFunc)
-	_arg2 = C.gpointer(gbox.Assign(loadImage))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if loadImage != nil {
+		_arg1 = (*[0]byte)(C._gotk4_adw1_AvatarImageLoadFunc)
+		_arg2 = C.gpointer(gbox.Assign(loadImage))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.adw_avatar_set_image_load_func(_arg0, _arg1, _arg2, _arg3)
 }

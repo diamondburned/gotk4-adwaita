@@ -136,7 +136,9 @@ func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	}
 
 	return _widget
 }
@@ -168,7 +170,9 @@ func (self *ActionRow) Subtitle() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -249,7 +253,9 @@ func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.adw_action_row_set_activatable_widget(_arg0, _arg1)
 }
