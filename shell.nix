@@ -38,4 +38,5 @@ in gotk4.overrideAttrs (old: {
 }) // {
 	# Expose libadwaita for external use.
 	inherit libadwaita;
+	inherit (gotk4) pkgs;
 }
