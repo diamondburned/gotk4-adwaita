@@ -21,6 +21,20 @@ func init() {
 	})
 }
 
+// CarouselIndicatorDots dots indicator for adw.Carousel.
+//
+// The AdwCarouselIndicatorDots widget shows a set of dots for each page of a
+// given adw.Carousel. The dot representing the carousel's active page is larger
+// and more opaque than the others, the transition to the active and inactive
+// state is gradual to match the carousel's position.
+//
+// See also adw.CarouselIndicatorLines.
+//
+//
+// CSS nodes
+//
+// AdwCarouselIndicatorDots has a single CSS node with name
+// carouselindicatordots.
 type CarouselIndicatorDots struct {
 	gtk.Widget
 
@@ -58,7 +72,7 @@ func marshalCarouselIndicatorDotser(p uintptr) (interface{}, error) {
 	return wrapCarouselIndicatorDots(obj), nil
 }
 
-// NewCarouselIndicatorDots: create a new CarouselIndicatorDots widget.
+// NewCarouselIndicatorDots creates a new AdwCarouselIndicatorDots.
 func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 	var _cret *C.GtkWidget // in
 
@@ -66,7 +80,7 @@ func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 
 	var _carouselIndicatorDots *CarouselIndicatorDots // out
 
-	_carouselIndicatorDots = wrapCarouselIndicatorDots(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_carouselIndicatorDots = wrapCarouselIndicatorDots(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _carouselIndicatorDots
 }
@@ -76,9 +90,7 @@ func (self *CarouselIndicatorDots) Native() uintptr {
 	return self.Object.Native()
 }
 
-// Carousel: get the Carousel the indicator uses.
-//
-// See: adw_carousel_indicator_dots_set_carousel()
+// Carousel gets the displayed carousel.
 func (self *CarouselIndicatorDots) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _cret *C.AdwCarousel              // in
@@ -96,7 +108,7 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 	return _carousel
 }
 
-// SetCarousel sets the Carousel to use.
+// SetCarousel sets the displayed carousel.
 func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _arg1 *C.AdwCarousel              // out

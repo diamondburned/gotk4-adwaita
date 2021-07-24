@@ -25,8 +25,8 @@ func init() {
 	})
 }
 
-// SqueezerTransitionType: these enumeration values describe the possible
-// transitions between children in a Squeezer widget.
+// SqueezerTransitionType describes the possible transitions in a adw.Squeezer
+// widget.
 type SqueezerTransitionType int
 
 const (
@@ -52,6 +52,20 @@ func (s SqueezerTransitionType) String() string {
 	}
 }
 
+// Squeezer: best fit container.
+//
+// The AdwSqueezer widget is a container which only shows the first of its
+// children that fits in the available size. It is convenient to offer different
+// widgets to represent the same data with different levels of detail, making
+// the widget seem to squeeze itself to fit in the available space.
+//
+// Transitions between children can be animated as fades. This can be controlled
+// with adw.Squeezer:transition-type.
+//
+//
+// CSS nodes
+//
+// AdwSqueezer has a single CSS node with name squeezer.
 type Squeezer struct {
 	gtk.Widget
 
@@ -89,7 +103,7 @@ func marshalSqueezerer(p uintptr) (interface{}, error) {
 	return wrapSqueezer(obj), nil
 }
 
-// NewSqueezer creates a new Squeezer container.
+// NewSqueezer creates a new AdwSqueezer.
 func NewSqueezer() *Squeezer {
 	var _cret *C.GtkWidget // in
 
@@ -125,9 +139,8 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	return _squeezerPage
 }
 
-// Homogeneous gets whether self is homogeneous.
-//
-// See adw_squeezer_set_homogeneous().
+// Homogeneous gets whether all children have the same size for the opposite
+// orientation.
 func (self *Squeezer) Homogeneous() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -145,10 +158,8 @@ func (self *Squeezer) Homogeneous() bool {
 	return _ok
 }
 
-// InterpolateSize gets whether self should interpolate its size on visible
-// child change.
-//
-// See adw_squeezer_set_interpolate_size().
+// InterpolateSize gets whether self interpolates its size when changing the
+// visible child.
 func (self *Squeezer) InterpolateSize() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -166,7 +177,7 @@ func (self *Squeezer) InterpolateSize() bool {
 	return _ok
 }
 
-// Page returns the SqueezerPage object for child.
+// Page returns the adw.SqueezerPage object for child.
 func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
 	var _arg1 *C.GtkWidget       // out
@@ -184,9 +195,10 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	return _squeezerPage
 }
 
-// Pages returns a Model that contains the pages of the squeezer, and can be
-// used to keep an up-to-date view. The model also implements SelectionModel and
-// can be used to track the visible page.
+// Pages returns a GListModel that contains the pages of the squeezer,
+//
+// This can be used to keep an up-to-date view. The model also implements
+// gtk.SelectionModel and can be used to track the visible page.
 func (self *Squeezer) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwSqueezer       // out
 	var _cret *C.GtkSelectionModel // in
@@ -202,8 +214,7 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 	return _selectionModel
 }
 
-// TransitionDuration gets the amount of time (in milliseconds) that transitions
-// between children in self will take.
+// TransitionDuration gets the transition animation duration for self.
 func (self *Squeezer) TransitionDuration() uint {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.guint        // in
@@ -219,8 +230,7 @@ func (self *Squeezer) TransitionDuration() uint {
 	return _guint
 }
 
-// TransitionRunning gets whether self is currently in a transition from one
-// child to another.
+// TransitionRunning gets whether a transition is currently running for self.
 func (self *Squeezer) TransitionRunning() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -238,8 +248,8 @@ func (self *Squeezer) TransitionRunning() bool {
 	return _ok
 }
 
-// TransitionType gets the type of animation that will be used for transitions
-// between children in self.
+// TransitionType gets the type of animation used for transitions between
+// children in self.
 func (self *Squeezer) TransitionType() SqueezerTransitionType {
 	var _arg0 *C.AdwSqueezer              // out
 	var _cret C.AdwSqueezerTransitionType // in
@@ -255,8 +265,7 @@ func (self *Squeezer) TransitionType() SqueezerTransitionType {
 	return _squeezerTransitionType
 }
 
-// VisibleChild gets the currently visible child of self, or NULL if there are
-// no visible children.
+// VisibleChild gets the currently visible child of self.
 func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret *C.GtkWidget   // in
@@ -274,7 +283,7 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	return _widget
 }
 
-// XAlign gets the Squeezer:xalign property for self.
+// XAlign gets the horizontal alignment, from 0 (start) to 1 (end).
 func (self *Squeezer) XAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.float        // in
@@ -290,7 +299,7 @@ func (self *Squeezer) XAlign() float32 {
 	return _gfloat
 }
 
-// YAlign gets the Squeezer:yalign property for self.
+// YAlign gets the vertical alignment, from 0 (top) to 1 (bottom).
 func (self *Squeezer) YAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.float        // in
@@ -317,11 +326,8 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 	C.adw_squeezer_remove(_arg0, _arg1)
 }
 
-// SetHomogeneous sets self to be homogeneous or not. If it is homogeneous, self
-// will request the same size for all its children for its opposite orientation,
-// e.g. if self is oriented horizontally and is homogeneous, it will request the
-// same height for all its children. If it isn't, self may change size when a
-// different child becomes visible.
+// SetHomogeneous sets hether all children have the same size for the opposite
+// orientation.
 func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.gboolean     // out
@@ -334,12 +340,8 @@ func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 	C.adw_squeezer_set_homogeneous(_arg0, _arg1)
 }
 
-// SetInterpolateSize sets whether or not self will interpolate the size of its
-// opposing orientation when changing the visible child. If TRUE, self will
-// interpolate its size between the one of the previous visible child and the
-// one of the new visible child, according to the set transition duration and
-// the orientation, e.g. if self is horizontal, it will interpolate the its
-// height.
+// SetInterpolateSize sets whether self interpolates its size when changing the
+// visible child.
 func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.gboolean     // out
@@ -352,8 +354,7 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	C.adw_squeezer_set_interpolate_size(_arg0, _arg1)
 }
 
-// SetTransitionDuration sets the duration that transitions between children in
-// self will take.
+// SetTransitionDuration sets the transition animation duration for self.
 func (self *Squeezer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.guint        // out
@@ -364,13 +365,8 @@ func (self *Squeezer) SetTransitionDuration(duration uint) {
 	C.adw_squeezer_set_transition_duration(_arg0, _arg1)
 }
 
-// SetTransitionType sets the type of animation that will be used for
-// transitions between children in self. Available types include various kinds
-// of fades and slides.
-//
-// The transition type can be changed without problems at runtime, so it is
-// possible to change the animation based on the child that is about to become
-// current.
+// SetTransitionType sets the type of animation used for transitions between
+// children in self.
 func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 	var _arg0 *C.AdwSqueezer              // out
 	var _arg1 C.AdwSqueezerTransitionType // out
@@ -381,7 +377,7 @@ func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 	C.adw_squeezer_set_transition_type(_arg0, _arg1)
 }
 
-// SetXAlign sets the Squeezer:xalign property for self.
+// SetXAlign sets the horizontal alignment, from 0 (start) to 1 (end).
 func (self *Squeezer) SetXAlign(xalign float32) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.float        // out
@@ -392,7 +388,7 @@ func (self *Squeezer) SetXAlign(xalign float32) {
 	C.adw_squeezer_set_xalign(_arg0, _arg1)
 }
 
-// SetYAlign sets the Squeezer:yalign property for self.
+// SetYAlign sets the vertical alignment, from 0 (top) to 1 (bottom).
 func (self *Squeezer) SetYAlign(yalign float32) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.float        // out
@@ -403,6 +399,7 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 	C.adw_squeezer_set_yalign(_arg0, _arg1)
 }
 
+// SqueezerPage: auxiliary class used by adw.Squeezer.
 type SqueezerPage struct {
 	*externglib.Object
 }
@@ -435,10 +432,7 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 	return _widget
 }
 
-// Enabled returns whether self is enabled in its Squeezer. This is independent
-// from the Widget:visible value of its Widget.
-//
-// See adw_squeezer_page_set_enabled().
+// Enabled gets whether self is enabled.
 func (self *SqueezerPage) Enabled() bool {
 	var _arg0 *C.AdwSqueezerPage // out
 	var _cret C.gboolean         // in
@@ -456,15 +450,7 @@ func (self *SqueezerPage) Enabled() bool {
 	return _ok
 }
 
-// SetEnabled: make the squeezer enable or disable child. If a child is
-// disabled, it will be ignored when looking for the child fitting the available
-// size best. This allows to programmatically and prematurely hide a child even
-// if it fits in the available space.
-//
-// This can be used e.g. to ensure a certain child is hidden below a certain
-// window width, or any other constraint you find suitable.
-//
-// Sets the new value of the SqueezerPage:enabled property to enabled.
+// SetEnabled sets whether self is enabled.
 func (self *SqueezerPage) SetEnabled(enabled bool) {
 	var _arg0 *C.AdwSqueezerPage // out
 	var _arg1 C.gboolean         // out

@@ -22,6 +22,24 @@ func init() {
 	})
 }
 
+// Clamp: widget constraining its child to a given size.
+//
+// The AdwClamp widget constrains the size of the widget it contains to a given
+// maximum size. It will constrain the width if it is horizontal, or the height
+// if it is vertical. The expansion of the child from its minimum to its maximum
+// size is eased out for a smooth transition.
+//
+// If the child requires more than the requested maximum size, it will be
+// allocated the minimum size it can fit in instead.
+//
+//
+// CSS nodes
+//
+// AdwClamp has a single CSS node with name clamp.
+//
+// Its children will receive the style classes .large when the child reached its
+// maximum size, .small when the clamp allocates its full size to the child,
+// .medium in-between, or none if it hasn't computed its size yet.
 type Clamp struct {
 	gtk.Widget
 
@@ -59,7 +77,7 @@ func marshalClamper(p uintptr) (interface{}, error) {
 	return wrapClamp(obj), nil
 }
 
-// NewClamp creates a new Clamp.
+// NewClamp creates a new AdwClamp.
 func NewClamp() *Clamp {
 	var _cret *C.GtkWidget // in
 
@@ -95,8 +113,7 @@ func (self *Clamp) Child() gtk.Widgetter {
 	return _widget
 }
 
-// MaximumSize gets the maximum size to allocate to the contained child. It is
-// the width if self is horizontal, or the height if it is vertical.
+// MaximumSize gets the maximum size allocated to the child.
 func (self *Clamp) MaximumSize() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
@@ -112,8 +129,7 @@ func (self *Clamp) MaximumSize() int {
 	return _gint
 }
 
-// TighteningThreshold gets the size starting from which the clamp will tighten
-// its grip on the child.
+// TighteningThreshold gets the size above which the child is clamped.
 func (self *Clamp) TighteningThreshold() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
@@ -142,8 +158,7 @@ func (self *Clamp) SetChild(child gtk.Widgetter) {
 	C.adw_clamp_set_child(_arg0, _arg1)
 }
 
-// SetMaximumSize sets the maximum size to allocate to the contained child. It
-// is the width if self is horizontal, or the height if it is vertical.
+// SetMaximumSize sets the maximum size allocated to the child.
 func (self *Clamp) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
@@ -154,8 +169,7 @@ func (self *Clamp) SetMaximumSize(maximumSize int) {
 	C.adw_clamp_set_maximum_size(_arg0, _arg1)
 }
 
-// SetTighteningThreshold sets the size starting from which the clamp will
-// tighten its grip on the child.
+// SetTighteningThreshold sets the size above which the child is clamped.
 func (self *Clamp) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out

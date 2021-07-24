@@ -21,6 +21,19 @@ func init() {
 	})
 }
 
+// PreferencesGroup: group of preference rows.
+//
+// An AdwPreferencesGroup represents a group or tightly related preferences,
+// which in turn are represented by adw.PreferencesRow.
+//
+// To summarize the role of the preferences it gathers, a group can have both a
+// title and a description. The title will be used by adw.PreferencesWindow to
+// let the user look for a preference.
+//
+//
+// CSS nodes
+//
+// AdwPreferencesGroup has a single CSS node with name preferencesgroup.
 type PreferencesGroup struct {
 	gtk.Widget
 }
@@ -51,7 +64,7 @@ func marshalPreferencesGrouper(p uintptr) (interface{}, error) {
 	return wrapPreferencesGroup(obj), nil
 }
 
-// NewPreferencesGroup creates a new PreferencesGroup.
+// NewPreferencesGroup creates a new AdwPreferencesGroup.
 func NewPreferencesGroup() *PreferencesGroup {
 	var _cret *C.GtkWidget // in
 
@@ -64,6 +77,7 @@ func NewPreferencesGroup() *PreferencesGroup {
 	return _preferencesGroup
 }
 
+// Add adds a child to self.
 func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
@@ -74,6 +88,7 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	C.adw_preferences_group_add(_arg0, _arg1)
 }
 
+// Description gets the description of self.
 func (self *PreferencesGroup) Description() string {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _cret *C.char                // in
@@ -84,7 +99,9 @@ func (self *PreferencesGroup) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -105,6 +122,7 @@ func (self *PreferencesGroup) Title() string {
 	return _utf8
 }
 
+// Remove removes a child from self.
 func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
@@ -121,8 +139,10 @@ func (self *PreferencesGroup) SetDescription(description string) {
 	var _arg1 *C.char                // out
 
 	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if description != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_preferences_group_set_description(_arg0, _arg1)
 }

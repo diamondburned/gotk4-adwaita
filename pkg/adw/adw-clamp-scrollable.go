@@ -22,6 +22,12 @@ func init() {
 	})
 }
 
+// ClampScrollable: scrollable adw.Clamp.
+//
+// AdwClampScrollable is a variant of adw.Clamp that implements the
+// gtk.Scrollable interface.
+//
+// The primary use case for AdwClampScrollable is clamping gtk.ListView.
 type ClampScrollable struct {
 	gtk.Widget
 
@@ -63,7 +69,7 @@ func marshalClampScrollabler(p uintptr) (interface{}, error) {
 	return wrapClampScrollable(obj), nil
 }
 
-// NewClampScrollable creates a new ClampScrollable.
+// NewClampScrollable creates a new AdwClampScrollable.
 func NewClampScrollable() *ClampScrollable {
 	var _cret *C.GtkWidget // in
 
@@ -99,8 +105,7 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 	return _widget
 }
 
-// MaximumSize gets the maximum size to allocate to the contained child. It is
-// the width if self is horizontal, or the height if it is vertical.
+// MaximumSize gets the maximum size allocated to the child.
 func (self *ClampScrollable) MaximumSize() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
@@ -116,8 +121,7 @@ func (self *ClampScrollable) MaximumSize() int {
 	return _gint
 }
 
-// TighteningThreshold gets the size starting from which the clamp will tighten
-// its grip on the child.
+// TighteningThreshold gets the size above which the child is clamped.
 func (self *ClampScrollable) TighteningThreshold() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
@@ -146,8 +150,7 @@ func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	C.adw_clamp_scrollable_set_child(_arg0, _arg1)
 }
 
-// SetMaximumSize sets the maximum size to allocate to the contained child. It
-// is the width if self is horizontal, or the height if it is vertical.
+// SetMaximumSize sets the maximum size allocated to the child.
 func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
@@ -158,8 +161,7 @@ func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	C.adw_clamp_scrollable_set_maximum_size(_arg0, _arg1)
 }
 
-// SetTighteningThreshold sets the size starting from which the clamp will
-// tighten its grip on the child.
+// SetTighteningThreshold sets the size above which the child is clamped.
 func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out

@@ -5,7 +5,8 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -16,8 +17,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <adwaita.h>
 // #include <glib-object.h>
-// GdkPixbuf* _gotk4_adw1_AvatarImageLoadFunc(int, gpointer);
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -26,32 +25,24 @@ func init() {
 	})
 }
 
-// AvatarImageLoadFunc: returned Pixbuf is expected to be square with width and
-// height set to size. The image is cropped to a circle without any scaling or
-// transformation.
-type AvatarImageLoadFunc func(size int) (pixbuf *gdkpixbuf.Pixbuf)
-
-//export _gotk4_adw1_AvatarImageLoadFunc
-func _gotk4_adw1_AvatarImageLoadFunc(arg0 C.int, arg1 C.gpointer) (cret *C.GdkPixbuf) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var size int // out
-
-	size = int(arg0)
-
-	fn := v.(AvatarImageLoadFunc)
-	pixbuf := fn(size)
-
-	if pixbuf != nil {
-		cret = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	}
-
-	return cret
-}
-
+// Avatar: widget displaying an image, with a generated fallback.
+//
+// AdwAvatar is a widget that shows a round avatar.
+//
+// AdwAvatar generates an avatar with the initials of the adw.Avatar:text on top
+// of a colored background.
+//
+// The color is picked based on the hash of the adw.Avatar:text.
+//
+// If adw.Avatar:show-initials is set to FALSE, adw.Avatar:icon-name or
+// avatar-default-symbolic is shown instead of the initials.
+//
+// Use adw.Avatar:custom-image to set a custom image.
+//
+//
+// CSS nodes
+//
+// AdwAvatar has a single CSS node with name avatar.
 type Avatar struct {
 	gtk.Widget
 }
@@ -82,7 +73,7 @@ func marshalAvatarrer(p uintptr) (interface{}, error) {
 	return wrapAvatar(obj), nil
 }
 
-// NewAvatar creates a new Avatar.
+// NewAvatar creates a new AdwAvatar.
 func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	var _arg1 C.int        // out
 	var _arg2 *C.char      // out
@@ -107,8 +98,9 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	return _avatar
 }
 
-// DrawToPixbuf renders self into a pixbuf at size and scale_factor. This can be
-// used to export the fallback avatar.
+// DrawToPixbuf renders self into a gdkpixbuf.Pixbuf at size and scale_factor.
+//
+// This can be used to export the fallback avatar.
 func (self *Avatar) DrawToPixbuf(size int, scaleFactor int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.int        // out
@@ -138,8 +130,25 @@ func (self *Avatar) DrawToPixbuf(size int, scaleFactor int) *gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-// IconName gets the name of the icon in the icon theme to use when the icon
-// should be displayed.
+// CustomImage gets the custom image paintable.
+func (self *Avatar) CustomImage() gdk.Paintabler {
+	var _arg0 *C.AdwAvatar    // out
+	var _cret *C.GdkPaintable // in
+
+	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_avatar_get_custom_image(_arg0)
+
+	var _paintable gdk.Paintabler // out
+
+	if _cret != nil {
+		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	}
+
+	return _paintable
+}
+
+// IconName gets the name of an icon to use as a fallback.
 func (self *Avatar) IconName() string {
 	var _arg0 *C.AdwAvatar // out
 	var _cret *C.char      // in
@@ -157,7 +166,8 @@ func (self *Avatar) IconName() string {
 	return _utf8
 }
 
-// ShowInitials returns whether initials are used for the fallback or the icon.
+// ShowInitials gets whether initials are used instead of an icon on the
+// fallback avatar.
 func (self *Avatar) ShowInitials() bool {
 	var _arg0 *C.AdwAvatar // out
 	var _cret C.gboolean   // in
@@ -175,7 +185,7 @@ func (self *Avatar) ShowInitials() bool {
 	return _ok
 }
 
-// Size returns the size of the avatar.
+// Size gets the size of the avatar.
 func (self *Avatar) Size() int {
 	var _arg0 *C.AdwAvatar // out
 	var _cret C.int        // in
@@ -191,7 +201,7 @@ func (self *Avatar) Size() int {
 	return _gint
 }
 
-// Text: get the text used to generate the fallback initials and color
+// Text gets the text used to generate the fallback initials and color.
 func (self *Avatar) Text() string {
 	var _arg0 *C.AdwAvatar // out
 	var _cret *C.char      // in
@@ -209,11 +219,22 @@ func (self *Avatar) Text() string {
 	return _utf8
 }
 
-// SetIconName sets the name of the icon in the icon theme to use when the icon
-// should be displayed. If no name is set, the avatar-default-symbolic icon will
-// be used. If the name doesn't match a valid icon, it is an error and no icon
-// will be displayed. If the icon theme is changed, the image will be updated
-// automatically.
+// SetCustomImage sets the custom image paintable.
+func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
+	var _arg0 *C.AdwAvatar    // out
+	var _arg1 *C.GdkPaintable // out
+
+	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
+	if customImage != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(customImage.Native()))
+	}
+
+	C.adw_avatar_set_custom_image(_arg0, _arg1)
+}
+
+// SetIconName sets the name of an icon to use as a fallback.
+//
+// If no name is set, avatar-default-symbolic will be used.
 func (self *Avatar) SetIconName(iconName string) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 *C.char      // out
@@ -227,26 +248,8 @@ func (self *Avatar) SetIconName(iconName string) {
 	C.adw_avatar_set_icon_name(_arg0, _arg1)
 }
 
-// SetImageLoadFunc: callback which is called when the custom image need to be
-// reloaded for some reason (e.g. scale-factor changes).
-func (self *Avatar) SetImageLoadFunc(loadImage AvatarImageLoadFunc) {
-	var _arg0 *C.AdwAvatar             // out
-	var _arg1 C.AdwAvatarImageLoadFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
-	if loadImage != nil {
-		_arg1 = (*[0]byte)(C._gotk4_adw1_AvatarImageLoadFunc)
-		_arg2 = C.gpointer(gbox.Assign(loadImage))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.adw_avatar_set_image_load_func(_arg0, _arg1, _arg2, _arg3)
-}
-
-// SetShowInitials sets whether the initials should be shown on the fallback
-// avatar or the icon.
+// SetShowInitials sets whether to use initials instead of an icon on the
+// fallback avatar.
 func (self *Avatar) SetShowInitials(showInitials bool) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.gboolean   // out
@@ -270,7 +273,7 @@ func (self *Avatar) SetSize(size int) {
 	C.adw_avatar_set_size(_arg0, _arg1)
 }
 
-// SetText: set the text used to generate the fallback initials color
+// SetText sets the text used to generate the fallback initials and color.
 func (self *Avatar) SetText(text string) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 *C.char      // out

@@ -23,6 +23,15 @@ func init() {
 	})
 }
 
+// ApplicationWindow: freeform application window.
+//
+// AdwApplicationWindow is a gtk.ApplicationWindow subclass providing the same
+// features as adw.Window.
+//
+// See adw.Window for details.
+//
+// Using gtk.Application:menubar is not supported and may result in visual
+// glitches.
 type ApplicationWindow struct {
 	gtk.ApplicationWindow
 }
@@ -87,7 +96,7 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 	return wrapApplicationWindow(obj), nil
 }
 
-// NewApplicationWindow creates a new ApplicationWindow for app.
+// NewApplicationWindow creates a new AdwApplicationWindow for app.
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -98,12 +107,14 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 
 	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = wrapApplicationWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
 
 // Child gets the child widget of self.
+//
+// This method should always be used instead of gtk.Window.GetChild().
 func (self *ApplicationWindow) Child() gtk.Widgetter {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _cret *C.GtkWidget            // in
@@ -122,6 +133,8 @@ func (self *ApplicationWindow) Child() gtk.Widgetter {
 }
 
 // SetChild sets the child widget of self.
+//
+// This method should always be used instead of gtk.Window.SetChild().
 func (self *ApplicationWindow) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _arg1 *C.GtkWidget            // out

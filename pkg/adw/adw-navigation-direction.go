@@ -21,8 +21,7 @@ func init() {
 	})
 }
 
-// NavigationDirection represents direction of a swipe navigation gesture in
-// Leaflet.
+// NavigationDirection describes the direction of a swipe navigation gesture.
 type NavigationDirection int
 
 const (

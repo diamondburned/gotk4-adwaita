@@ -21,6 +21,16 @@ func init() {
 	})
 }
 
+// PreferencesWindow: window to present an application's preferences.
+//
+// The AdwPreferencesWindow widget presents an application's preferences
+// gathered into pages and groups. The preferences are searchable by the user.
+//
+//
+// CSS nodes
+//
+// AdwPreferencesWindow has a main CSS node with the name window and the style
+// class .preferences.
 type PreferencesWindow struct {
 	Window
 }
@@ -78,7 +88,7 @@ func marshalPreferencesWindower(p uintptr) (interface{}, error) {
 	return wrapPreferencesWindow(obj), nil
 }
 
-// NewPreferencesWindow creates a new PreferencesWindow.
+// NewPreferencesWindow creates a new AdwPreferencesWindow.
 func NewPreferencesWindow() *PreferencesWindow {
 	var _cret *C.GtkWidget // in
 
@@ -91,6 +101,7 @@ func NewPreferencesWindow() *PreferencesWindow {
 	return _preferencesWindow
 }
 
+// Add adds a preferences page to self.
 func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
@@ -101,8 +112,11 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	C.adw_preferences_window_add(_arg0, _arg1)
 }
 
-// CloseSubpage closes the current subpage to return back to the preferences, if
-// there is no presented subpage, this does nothing.
+// CloseSubpage closes the current subpage.
+//
+// If there is no presented subpage, this does nothing.
+//
+// See adw.PreferencesWindow.CloseSubpage().
 func (self *PreferencesWindow) CloseSubpage() {
 	var _arg0 *C.AdwPreferencesWindow // out
 
@@ -111,8 +125,8 @@ func (self *PreferencesWindow) CloseSubpage() {
 	C.adw_preferences_window_close_subpage(_arg0)
 }
 
-// CanSwipeBack returns whether or not self allows switching from a subpage to
-// the preferences via a swipe gesture.
+// CanSwipeBack gets whether or not self allows closing subpages via a swipe
+// gesture.
 func (self *PreferencesWindow) CanSwipeBack() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
@@ -148,8 +162,45 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 	return _ok
 }
 
-// PresentSubpage sets subpage as the window's subpage and present it. The
-// transition can be cancelled by the user, in which case visible child will
+// VisiblePage gets the currently visible page of self.
+func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
+	var _arg0 *C.AdwPreferencesWindow // out
+	var _cret *C.AdwPreferencesPage   // in
+
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_preferences_window_get_visible_page(_arg0)
+
+	var _preferencesPage *PreferencesPage // out
+
+	if _cret != nil {
+		_preferencesPage = wrapPreferencesPage(externglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _preferencesPage
+}
+
+// VisiblePageName gets the name of currently visible page of self.
+func (self *PreferencesWindow) VisiblePageName() string {
+	var _arg0 *C.AdwPreferencesWindow // out
+	var _cret *C.char                 // in
+
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_preferences_window_get_visible_page_name(_arg0)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// PresentSubpage sets subpage as the window's subpage and opens it.
+//
+// The transition can be cancelled by the user, in which case visible child will
 // change back to the previously visible child.
 func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -161,6 +212,7 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	C.adw_preferences_window_present_subpage(_arg0, _arg1)
 }
 
+// Remove removes a page from self.
 func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
@@ -171,8 +223,8 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	C.adw_preferences_window_remove(_arg0, _arg1)
 }
 
-// SetCanSwipeBack sets whether or not self allows switching from a subpage to
-// the preferences via a swipe gesture.
+// SetCanSwipeBack sets whether or not self allows closing subpages via a swipe
+// gesture.
 func (self *PreferencesWindow) SetCanSwipeBack(canSwipeBack bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
@@ -196,4 +248,27 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 	}
 
 	C.adw_preferences_window_set_search_enabled(_arg0, _arg1)
+}
+
+// SetVisiblePage makes page the visible page of self.
+func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
+	var _arg0 *C.AdwPreferencesWindow // out
+	var _arg1 *C.AdwPreferencesPage   // out
+
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
+
+	C.adw_preferences_window_set_visible_page(_arg0, _arg1)
+}
+
+// SetVisiblePageName makes the page with the given name visible.
+func (self *PreferencesWindow) SetVisiblePageName(name string) {
+	var _arg0 *C.AdwPreferencesWindow // out
+	var _arg1 *C.char                 // out
+
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.adw_preferences_window_set_visible_page_name(_arg0, _arg1)
 }

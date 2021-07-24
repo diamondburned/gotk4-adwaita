@@ -22,6 +22,28 @@ func init() {
 	})
 }
 
+// Window: freeform window.
+//
+// The AdwWindow widget is a subclass of gtk.Window which has no titlebar area.
+// It means gtk.HeaderBar can be used as follows:
+//
+//    <object class="AdwWindow"/>
+//      <child>
+//        <object class="GtkBox">
+//          <property name="orientation">vertical</property>
+//          <child>
+//            <object class="GtkHeaderBar"/>
+//          </child>
+//          <child>
+//            ...
+//          </child>
+//        </object>
+//      </child>
+//    </object>
+//
+//
+// Using gtk.Window.GetTitlebar() and gtk.Window.SetTitlebar() is not supported
+// and will result in a crash.
 type Window struct {
 	gtk.Window
 }
@@ -77,7 +99,7 @@ func marshalWindower(p uintptr) (interface{}, error) {
 	return wrapWindow(obj), nil
 }
 
-// NewWindow creates a new Window.
+// NewWindow creates a new AdwWindow.
 func NewWindow() *Window {
 	var _cret *C.GtkWidget // in
 
@@ -85,12 +107,14 @@ func NewWindow() *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
 
 // Child gets the child widget of self.
+//
+// This method should always be used instead of gtk.Window.GetChild().
 func (self *Window) Child() gtk.Widgetter {
 	var _arg0 *C.AdwWindow // out
 	var _cret *C.GtkWidget // in
@@ -109,6 +133,8 @@ func (self *Window) Child() gtk.Widgetter {
 }
 
 // SetChild sets the child widget of self.
+//
+// This method should always be used instead of gtk.Window.SetChild().
 func (self *Window) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out
 	var _arg1 *C.GtkWidget // out

@@ -21,6 +21,34 @@ func init() {
 	})
 }
 
+// ExpanderRow: gtk.ListBoxRow used to reveal widgets.
+//
+// The AdwExpanderRow widget allows the user to reveal or hide widgets below it.
+// It also allows the user to enable the expansion of the row, allowing to
+// disable all that the row contains.
+//
+//
+// AdwExpanderRow as GtkBuildable
+//
+// The AdwExpanderRow implementation of the gtk.Buildable interface supports
+// adding a child as an action widget by specifying “action” as the “type”
+// attribute of a <child> element.
+//
+// It also supports adding it as a prefix widget by specifying “prefix” as the
+// “type” attribute of a <child> element.
+//
+//
+// CSS nodes
+//
+// AdwExpanderRow has a main CSS node with name row and the .expander style
+// class. It has the .empty style class when it contains no children.
+//
+// It contains the subnodes row.header for its main embedded row, list.nested
+// for the list it can expand, and image.expander-row-arrow for its arrow.
+//
+// When expanded, AdwExpanderRow will add the
+// .checked-expander-row-previous-sibling style class to its previous sibling,
+// and remove it when retracted.
 type ExpanderRow struct {
 	PreferencesRow
 }
@@ -73,7 +101,7 @@ func marshalExpanderRower(p uintptr) (interface{}, error) {
 	return wrapExpanderRow(obj), nil
 }
 
-// NewExpanderRow creates a new ExpanderRow.
+// NewExpanderRow creates a new AdwExpanderRow.
 func NewExpanderRow() *ExpanderRow {
 	var _cret *C.GtkWidget // in
 
@@ -86,6 +114,9 @@ func NewExpanderRow() *ExpanderRow {
 	return _expanderRow
 }
 
+// Add adds a widget to self.
+//
+// The widget will appear in the expanding list below self.
 func (self *ExpanderRow) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
@@ -136,6 +167,7 @@ func (self *ExpanderRow) EnableExpansion() bool {
 	return _ok
 }
 
+// Expanded gets whether self is expanded.
 func (self *ExpanderRow) Expanded() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -164,7 +196,9 @@ func (self *ExpanderRow) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -199,16 +233,13 @@ func (self *ExpanderRow) Subtitle() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
-// UseUnderline gets whether an embedded underline in the text of the title and
-// subtitle labels indicates a mnemonic. See
-// adw_expander_row_set_use_underline().
+// UseUnderline gets whether underlines in title or subtitle are interpreted as
+// mnemonics.
 func (self *ExpanderRow) UseUnderline() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -249,6 +280,7 @@ func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 	C.adw_expander_row_set_enable_expansion(_arg0, _arg1)
 }
 
+// SetExpanded sets whether self is expanded.
 func (self *ExpanderRow) SetExpanded(expanded bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
@@ -267,8 +299,10 @@ func (self *ExpanderRow) SetIconName(iconName string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_expander_row_set_icon_name(_arg0, _arg1)
 }
@@ -293,17 +327,14 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	if subtitle != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_expander_row_set_subtitle(_arg0, _arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text of the title and subtitle
-// labels indicates the next character should be used for the mnemonic
-// accelerator key.
+// SetUseUnderline sets whether underlines in title or subtitle are interpreted
+// as mnemonics.
 func (self *ExpanderRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out

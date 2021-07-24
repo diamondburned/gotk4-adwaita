@@ -21,6 +21,19 @@ func init() {
 	})
 }
 
+// CarouselIndicatorLines lines indicator for adw.Carousel.
+//
+// The AdwCarouselIndicatorLines widget shows a set of lines for each page of a
+// given adw.Carousel. The carousel's active page is shown as another line that
+// moves between them to match the carousel's position.
+//
+// See also adw.CarouselIndicatorDots.
+//
+//
+// CSS nodes
+//
+// AdwCarouselIndicatorLines has a single CSS node with name
+// carouselindicatorlines.
 type CarouselIndicatorLines struct {
 	gtk.Widget
 
@@ -58,7 +71,7 @@ func marshalCarouselIndicatorLinesser(p uintptr) (interface{}, error) {
 	return wrapCarouselIndicatorLines(obj), nil
 }
 
-// NewCarouselIndicatorLines: create a new CarouselIndicatorLines widget.
+// NewCarouselIndicatorLines creates a new AdwCarouselIndicatorLines.
 func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 	var _cret *C.GtkWidget // in
 
@@ -66,7 +79,7 @@ func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 
 	var _carouselIndicatorLines *CarouselIndicatorLines // out
 
-	_carouselIndicatorLines = wrapCarouselIndicatorLines(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_carouselIndicatorLines = wrapCarouselIndicatorLines(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _carouselIndicatorLines
 }
@@ -76,9 +89,7 @@ func (self *CarouselIndicatorLines) Native() uintptr {
 	return self.Object.Native()
 }
 
-// Carousel: get the Carousel the indicator uses.
-//
-// See: adw_carousel_indicator_lines_set_carousel()
+// Carousel gets the displayed carousel.
 func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
 	var _cret *C.AdwCarousel               // in
@@ -96,7 +107,7 @@ func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	return _carousel
 }
 
-// SetCarousel sets the Carousel to use.
+// SetCarousel sets the displayed carousel.
 func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
 	var _arg1 *C.AdwCarousel               // out

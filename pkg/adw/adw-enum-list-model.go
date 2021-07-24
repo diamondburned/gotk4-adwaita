@@ -21,6 +21,9 @@ func init() {
 	})
 }
 
+// EnumListModel: GListModel representing values of a given enum.
+//
+// AdwEnumListModel contains objects of type adwenumvalueobject.
 type EnumListModel struct {
 	*externglib.Object
 
@@ -42,6 +45,7 @@ func marshalEnumListModeller(p uintptr) (interface{}, error) {
 	return wrapEnumListModel(obj), nil
 }
 
+// NewEnumListModel creates a new AdwEnumListModel for enum_type.
 func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	var _arg1 C.GType             // out
 	var _cret *C.AdwEnumListModel // in
@@ -57,6 +61,7 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	return _enumListModel
 }
 
+// FindPosition finds the position of a given enum value in self.
 func (self *EnumListModel) FindPosition(value int) uint {
 	var _arg0 *C.AdwEnumListModel // out
 	var _arg1 C.int               // out
@@ -74,6 +79,7 @@ func (self *EnumListModel) FindPosition(value int) uint {
 	return _guint
 }
 
+// EnumType gets the type of the enum represented by self.
 func (self *EnumListModel) EnumType() externglib.Type {
 	var _arg0 *C.AdwEnumListModel // out
 	var _cret C.GType             // in

@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -18,10 +19,61 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.adw_view_switcher_policy_get_type()), F: marshalViewSwitcherPolicy},
 		{T: externglib.Type(C.adw_view_switcher_get_type()), F: marshalViewSwitcherer},
 	})
 }
 
+// ViewSwitcherPolicy describes the adaptive modes of adw.ViewSwitcher.
+type ViewSwitcherPolicy int
+
+const (
+	// ViewSwitcherPolicyAuto: automatically adapt to the best fitting mode
+	ViewSwitcherPolicyAuto ViewSwitcherPolicy = iota
+	// ViewSwitcherPolicyNarrow: force the narrow mode
+	ViewSwitcherPolicyNarrow
+	// ViewSwitcherPolicyWide: force the wide mode
+	ViewSwitcherPolicyWide
+)
+
+func marshalViewSwitcherPolicy(p uintptr) (interface{}, error) {
+	return ViewSwitcherPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ViewSwitcherPolicy.
+func (v ViewSwitcherPolicy) String() string {
+	switch v {
+	case ViewSwitcherPolicyAuto:
+		return "Auto"
+	case ViewSwitcherPolicyNarrow:
+		return "Narrow"
+	case ViewSwitcherPolicyWide:
+		return "Wide"
+	default:
+		return fmt.Sprintf("ViewSwitcherPolicy(%d)", v)
+	}
+}
+
+// ViewSwitcher: adaptive view switcher.
+//
+// An adaptive view switcher designed to switch between multiple views contained
+// in a adw.ViewStack in a similar fashion to gtk.StackSwitcher.
+//
+// Depending on the available width, the view switcher can adapt from a wide
+// mode showing the view's icon and title side by side, to a narrow mode showing
+// the view's icon and title one on top of the other, in a more compact way.
+// This can be controlled via the adw.ViewSwitcher:policy property.
+//
+//
+// CSS nodes
+//
+// AdwViewSwitcher has a single CSS node with name viewswitcher.
+//
+//
+// Accessibility
+//
+// AdwViewSwitcher uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
+// GTK_ACCESSIBLE_ROLE_TAB for its buttons.
 type ViewSwitcher struct {
 	gtk.Widget
 }
@@ -52,7 +104,7 @@ func marshalViewSwitcherer(p uintptr) (interface{}, error) {
 	return wrapViewSwitcher(obj), nil
 }
 
-// NewViewSwitcher creates a new ViewSwitcher widget.
+// NewViewSwitcher creates a new AdwViewSwitcher.
 func NewViewSwitcher() *ViewSwitcher {
 	var _cret *C.GtkWidget // in
 
@@ -65,8 +117,7 @@ func NewViewSwitcher() *ViewSwitcher {
 	return _viewSwitcher
 }
 
-// NarrowEllipsize: get the ellipsizing position of the narrow mode label. See
-// adw_view_switcher_set_narrow_ellipsize().
+// NarrowEllipsize gets the ellipsizing position for the titles.
 func (self *ViewSwitcher) NarrowEllipsize() pango.EllipsizeMode {
 	var _arg0 *C.AdwViewSwitcher   // out
 	var _cret C.PangoEllipsizeMode // in
@@ -98,47 +149,25 @@ func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	return _viewSwitcherPolicy
 }
 
-// Stack: get the Stack being controlled by the ViewSwitcher.
-//
-// See: adw_view_switcher_set_stack()
-func (self *ViewSwitcher) Stack() *gtk.Stack {
+// Stack gets the stack controlled by self.
+func (self *ViewSwitcher) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcher // out
-	var _cret *C.GtkStack        // in
+	var _cret *C.AdwViewStack    // in
 
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_get_stack(_arg0)
 
-	var _stack *gtk.Stack // out
+	var _viewStack *ViewStack // out
 
 	if _cret != nil {
-		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
-			_stack = &gtk.Stack{
-				Widget: gtk.Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: gtk.Accessible{
-						Object: obj,
-					},
-					Buildable: gtk.Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: gtk.ConstraintTarget{
-						Object: obj,
-					},
-					Object: obj,
-				},
-			}
-		}
+		_viewStack = wrapViewStack(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
-	return _stack
+	return _viewStack
 }
 
-// SetNarrowEllipsize: set the mode used to ellipsize the text in narrow mode if
-// there is not enough space to render the entire string.
+// SetNarrowEllipsize sets the ellipsizing position for the titles.
 func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.AdwViewSwitcher   // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -160,14 +189,14 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 	C.adw_view_switcher_set_policy(_arg0, _arg1)
 }
 
-// SetStack sets the Stack to control.
-func (self *ViewSwitcher) SetStack(stack *gtk.Stack) {
+// SetStack sets the stack controlled by self.
+func (self *ViewSwitcher) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcher // out
-	var _arg1 *C.GtkStack        // out
+	var _arg1 *C.AdwViewStack    // out
 
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
 	if stack != nil {
-		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+		_arg1 = (*C.AdwViewStack)(unsafe.Pointer(stack.Native()))
 	}
 
 	C.adw_view_switcher_set_stack(_arg0, _arg1)

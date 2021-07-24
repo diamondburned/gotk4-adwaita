@@ -20,6 +20,8 @@ func init() {
 	})
 }
 
+// EnumValueObject: AdwEnumValueObject is the type of items in a
+// adw.EnumListModel.
 type EnumValueObject struct {
 	*externglib.Object
 }
@@ -36,6 +38,7 @@ func marshalEnumValueObjector(p uintptr) (interface{}, error) {
 	return wrapEnumValueObject(obj), nil
 }
 
+// Name gets the enum value name.
 func (self *EnumValueObject) Name() string {
 	var _arg0 *C.AdwEnumValueObject // out
 	var _cret *C.char               // in
@@ -51,6 +54,7 @@ func (self *EnumValueObject) Name() string {
 	return _utf8
 }
 
+// Nick gets the enum value nick.
 func (self *EnumValueObject) Nick() string {
 	var _arg0 *C.AdwEnumValueObject // out
 	var _cret *C.char               // in
@@ -66,6 +70,7 @@ func (self *EnumValueObject) Nick() string {
 	return _utf8
 }
 
+// Value gets the enum value.
 func (self *EnumValueObject) Value() int {
 	var _arg0 *C.AdwEnumValueObject // out
 	var _cret C.int                 // in

@@ -22,6 +22,15 @@ func init() {
 	})
 }
 
+// SwipeTracker: swipe tracker used in adw.Carousel and adw.Leaflet.
+//
+// The AdwSwipeTracker object can be used for implementing widgets with swipe
+// gestures. It supports touch-based swipes, pointer dragging, and touchpad
+// scrolling.
+//
+// The widgets will probably want to expose the adw.SwipeTracker:enabled
+// property. If they expect to use horizontal orientation,
+// adw.SwipeTracker:reversed can be used for supporting RTL text direction.
 type SwipeTracker struct {
 	*externglib.Object
 
@@ -43,7 +52,7 @@ func marshalSwipeTrackerer(p uintptr) (interface{}, error) {
 	return wrapSwipeTracker(obj), nil
 }
 
-// NewSwipeTracker: create a new SwipeTracker object on widget.
+// NewSwipeTracker creates a new AdwSwipeTracker for widget.
 func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 	var _arg1 *C.AdwSwipeable    // out
 	var _cret *C.AdwSwipeTracker // in
@@ -59,9 +68,8 @@ func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 	return _swipeTracker
 }
 
-// AllowLongSwipes: whether to allow swiping for more than one snap point at a
-// time. If the value is FALSE, each swipe can only move to the adjacent snap
-// points.
+// AllowLongSwipes gets whether to allow swiping for more than one snap point at
+// a time.
 func (self *SwipeTracker) AllowLongSwipes() bool {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret C.gboolean         // in
@@ -79,7 +87,7 @@ func (self *SwipeTracker) AllowLongSwipes() bool {
 	return _ok
 }
 
-// AllowMouseDrag: get whether self can be dragged with mouse pointer.
+// AllowMouseDrag gets whether self can be dragged with mouse pointer.
 func (self *SwipeTracker) AllowMouseDrag() bool {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret C.gboolean         // in
@@ -97,8 +105,7 @@ func (self *SwipeTracker) AllowMouseDrag() bool {
 	return _ok
 }
 
-// Enabled: get whether self is enabled. When it's not enabled, no events will
-// be processed. Generally widgets will want to expose this via a property.
+// Enabled gets whether self is enabled.
 func (self *SwipeTracker) Enabled() bool {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret C.gboolean         // in
@@ -116,7 +123,7 @@ func (self *SwipeTracker) Enabled() bool {
 	return _ok
 }
 
-// Reversed: get whether self is reversing the swipe direction.
+// Reversed gets whether self is reversing the swipe direction.
 func (self *SwipeTracker) Reversed() bool {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret C.gboolean         // in
@@ -134,7 +141,7 @@ func (self *SwipeTracker) Reversed() bool {
 	return _ok
 }
 
-// Swipeable: get self's swipeable widget.
+// Swipeable: get the widget self is attached to.
 func (self *SwipeTracker) Swipeable() Swipeabler {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret *C.AdwSwipeable    // in
@@ -151,8 +158,7 @@ func (self *SwipeTracker) Swipeable() Swipeabler {
 }
 
 // SetAllowLongSwipes sets whether to allow swiping for more than one snap point
-// at a time. If the value is FALSE, each swipe can only move to the adjacent
-// snap points.
+// at a time.
 func (self *SwipeTracker) SetAllowLongSwipes(allowLongSwipes bool) {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _arg1 C.gboolean         // out
@@ -165,8 +171,7 @@ func (self *SwipeTracker) SetAllowLongSwipes(allowLongSwipes bool) {
 	C.adw_swipe_tracker_set_allow_long_swipes(_arg0, _arg1)
 }
 
-// SetAllowMouseDrag: set whether self can be dragged with mouse pointer. This
-// should usually be FALSE.
+// SetAllowMouseDrag sets whether self can be dragged with mouse pointer.
 func (self *SwipeTracker) SetAllowMouseDrag(allowMouseDrag bool) {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _arg1 C.gboolean         // out
@@ -179,8 +184,7 @@ func (self *SwipeTracker) SetAllowMouseDrag(allowMouseDrag bool) {
 	C.adw_swipe_tracker_set_allow_mouse_drag(_arg0, _arg1)
 }
 
-// SetEnabled: set whether self is enabled. When it's not enabled, no events
-// will be processed. Usually widgets will want to expose this via a property.
+// SetEnabled sets whether self is enabled.
 func (self *SwipeTracker) SetEnabled(enabled bool) {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _arg1 C.gboolean         // out
@@ -193,8 +197,7 @@ func (self *SwipeTracker) SetEnabled(enabled bool) {
 	C.adw_swipe_tracker_set_enabled(_arg0, _arg1)
 }
 
-// SetReversed: set whether to reverse the swipe direction. If self is
-// horizontal, can be used for supporting RTL text direction.
+// SetReversed sets whether to reverse the swipe direction.
 func (self *SwipeTracker) SetReversed(reversed bool) {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _arg1 C.gboolean         // out
@@ -207,8 +210,10 @@ func (self *SwipeTracker) SetReversed(reversed bool) {
 	C.adw_swipe_tracker_set_reversed(_arg0, _arg1)
 }
 
-// ShiftPosition: move the current progress value by delta. This can be used to
-// adjust the current position if snap points move during the gesture.
+// ShiftPosition moves the current progress value by delta.
+//
+// This can be used to adjust the current position if snap points move during
+// the gesture.
 func (self *SwipeTracker) ShiftPosition(delta float64) {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _arg1 C.double           // out

@@ -21,6 +21,15 @@ func init() {
 	})
 }
 
+// PreferencesRow: gtk.ListBoxRow used to present preferences.
+//
+// The AdwPreferencesRow widget has a title that adw.PreferencesWindow will use
+// to let the user look for a preference. It doesn't present the title in any
+// way and lets you present the preference as you please.
+//
+// adw.ActionRow and its derivatives are convenient to use as preference rows as
+// they take care of presenting the preference's title while letting you compose
+// the inputs of the preference around it.
 type PreferencesRow struct {
 	gtk.ListBoxRow
 }
@@ -71,7 +80,7 @@ func marshalPreferencesRower(p uintptr) (interface{}, error) {
 	return wrapPreferencesRow(obj), nil
 }
 
-// NewPreferencesRow creates a new PreferencesRow.
+// NewPreferencesRow creates a new AdwPreferencesRow.
 func NewPreferencesRow() *PreferencesRow {
 	var _cret *C.GtkWidget // in
 
@@ -95,15 +104,13 @@ func (self *PreferencesRow) Title() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
-// UseUnderline gets whether an embedded underline in the text of the title
-// indicates a mnemonic. See adw_preferences_row_set_use_underline().
+// UseUnderline gets whether an embedded underline in the title indicates a
+// mnemonic.
 func (self *PreferencesRow) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _cret C.gboolean           // in
@@ -127,16 +134,14 @@ func (self *PreferencesRow) SetTitle(title string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_row_set_title(_arg0, _arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text of the title indicates the
-// next character should be used for the mnemonic accelerator key.
+// SetUseUnderline sets whether an embedded underline in the title indicates a
+// mnemonic.
 func (self *PreferencesRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _arg1 C.gboolean           // out

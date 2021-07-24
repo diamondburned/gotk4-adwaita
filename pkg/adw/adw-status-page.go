@@ -22,6 +22,15 @@ func init() {
 	})
 }
 
+// StatusPage: page used for empty/error states and similar use-cases.
+//
+// The AdwStatusPage widget can have an icon, a title, a description and a
+// custom widget which is displayed below them.
+//
+//
+// CSS nodes
+//
+// AdwStatusPage has a main CSS node with name statuspage.
 type StatusPage struct {
 	gtk.Widget
 }
@@ -52,7 +61,7 @@ func marshalStatusPager(p uintptr) (interface{}, error) {
 	return wrapStatusPage(obj), nil
 }
 
-// NewStatusPage creates a new StatusPage.
+// NewStatusPage creates a new AdwStatusPage.
 func NewStatusPage() *StatusPage {
 	var _cret *C.GtkWidget // in
 
@@ -130,9 +139,7 @@ func (self *StatusPage) Title() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -184,10 +191,8 @@ func (self *StatusPage) SetTitle(title string) {
 	var _arg1 *C.char          // out
 
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_status_page_set_title(_arg0, _arg1)
 }

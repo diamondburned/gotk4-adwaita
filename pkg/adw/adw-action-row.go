@@ -27,9 +27,41 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ActionRowOverrider interface {
+	// Activate activates self.
 	Activate()
 }
 
+// ActionRow: gtk.ListBoxRow used to present actions.
+//
+// The AdwActionRow widget can have a title, a subtitle and an icon. The row can
+// receive additional widgets at its end, or prefix widgets at its start.
+//
+// It is convenient to present a preference and its related actions.
+//
+// AdwActionRow is unactivatable by default, giving it an activatable widget
+// will automatically make it activatable, but unsetting it won't change the
+// row's activatability.
+//
+//
+// AdwActionRow as GtkBuildable
+//
+// The AdwActionRow implementation of the gtk.Buildable interface supports
+// adding a child at its end by specifying “suffix” or omitting the “type”
+// attribute of a <child> element or.
+//
+// It also supports adding a child as a prefix widget by specifying “prefix” as
+// the “type” attribute of a <child> element.
+//
+//
+// CSS nodes
+//
+// AdwActionRow has a main CSS node with name row.
+//
+// It contains the subnode box.header for its main horizontal box, and box.title
+// for the vertical box containing the title and subtitle labels.
+//
+// It contains subnodes label.title and label.subtitle representing respectively
+// the title label and subtitle label.
 type ActionRow struct {
 	PreferencesRow
 }
@@ -82,7 +114,7 @@ func marshalActionRower(p uintptr) (interface{}, error) {
 	return wrapActionRow(obj), nil
 }
 
-// NewActionRow creates a new ActionRow.
+// NewActionRow creates a new AdwActionRow.
 func NewActionRow() *ActionRow {
 	var _cret *C.GtkWidget // in
 
@@ -95,6 +127,7 @@ func NewActionRow() *ActionRow {
 	return _actionRow
 }
 
+// Activate activates self.
 func (self *ActionRow) Activate() {
 	var _arg0 *C.AdwActionRow // out
 
@@ -154,7 +187,9 @@ func (self *ActionRow) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -178,7 +213,9 @@ func (self *ActionRow) Subtitle() string {
 }
 
 // SubtitleLines gets the number of lines at the end of which the subtitle label
-// will be ellipsized. If the value is 0, the number of lines won't be limited.
+// will be ellipsized.
+//
+// If the value is 0, the number of lines won't be limited.
 func (self *ActionRow) SubtitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
@@ -195,7 +232,9 @@ func (self *ActionRow) SubtitleLines() int {
 }
 
 // TitleLines gets the number of lines at the end of which the title label will
-// be ellipsized. If the value is 0, the number of lines won't be limited.
+// be ellipsized.
+//
+// If the value is 0, the number of lines won't be limited.
 func (self *ActionRow) TitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
@@ -211,8 +250,8 @@ func (self *ActionRow) TitleLines() int {
 	return _gint
 }
 
-// UseUnderline gets whether an embedded underline in the text of the title and
-// subtitle labels indicates a mnemonic. See adw_action_row_set_use_underline().
+// UseUnderline gets whether underlines in title or subtitle are interpreted as
+// mnemonics.
 func (self *ActionRow) UseUnderline() bool {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.gboolean      // in
@@ -241,13 +280,7 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 	C.adw_action_row_remove(_arg0, _arg1)
 }
 
-// SetActivatableWidget sets the widget to activate when self is activated,
-// either by clicking on it, by calling adw_action_row_activate(), or via
-// mnemonics in the title or the subtitle. See the “use_underline” property to
-// enable mnemonics.
-//
-// The target widget will be activated by emitting the
-// GtkWidget::mnemonic-activate signal on it.
+// SetActivatableWidget sets the widget to activate when self is activated.
 func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
@@ -266,8 +299,10 @@ func (self *ActionRow) SetIconName(iconName string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.adw_action_row_set_icon_name(_arg0, _arg1)
 }
@@ -278,17 +313,16 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	if subtitle != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_action_row_set_subtitle(_arg0, _arg1)
 }
 
 // SetSubtitleLines sets the number of lines at the end of which the subtitle
-// label will be ellipsized. If the value is 0, the number of lines won't be
-// limited.
+// label will be ellipsized.
+//
+// If the value is 0, the number of lines won't be limited.
 func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
@@ -300,7 +334,9 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 }
 
 // SetTitleLines sets the number of lines at the end of which the title label
-// will be ellipsized. If the value is 0, the number of lines won't be limited.
+// will be ellipsized.
+//
+// If the value is 0, the number of lines won't be limited.
 func (self *ActionRow) SetTitleLines(titleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
@@ -311,9 +347,8 @@ func (self *ActionRow) SetTitleLines(titleLines int) {
 	C.adw_action_row_set_title_lines(_arg0, _arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text of the title and subtitle
-// labels indicates the next character should be used for the mnemonic
-// accelerator key.
+// SetUseUnderline sets whether underlines in title or subtitle are interpreted
+// as mnemonics.
 func (self *ActionRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.gboolean      // out

@@ -22,6 +22,12 @@ func init() {
 	})
 }
 
+// Bin: widget with one child.
+//
+// The AdwBin widget has only one child, set with the adw.Bin:child property.
+//
+// It is useful for deriving subclasses, since it provides common code needed
+// for handling a single child widget.
 type Bin struct {
 	gtk.Widget
 }
@@ -52,7 +58,7 @@ func marshalBinner(p uintptr) (interface{}, error) {
 	return wrapBin(obj), nil
 }
 
-// NewBin creates a new Bin.
+// NewBin creates a new AdwBin.
 func NewBin() *Bin {
 	var _cret *C.GtkWidget // in
 

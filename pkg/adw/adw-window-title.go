@@ -21,6 +21,15 @@ func init() {
 	})
 }
 
+// WindowTitle: helper widget for setting a window's title and subtitle.
+//
+// AdwWindowTitle shows a title and subtitle. It's intended to be used as the
+// title child of gtk.HeaderBar or adw.HeaderBar.
+//
+//
+// CSS nodes
+//
+// AdwWindowTitle has a single CSS node with name windowtitle.
 type WindowTitle struct {
 	gtk.Widget
 }
@@ -51,20 +60,16 @@ func marshalWindowTitler(p uintptr) (interface{}, error) {
 	return wrapWindowTitle(obj), nil
 }
 
-// NewWindowTitle creates a new WindowTitle widget.
+// NewWindowTitle creates a new AdwWindowTitle.
 func NewWindowTitle(title string, subtitle string) *WindowTitle {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if subtitle != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.adw_window_title_new(_arg1, _arg2)
 
@@ -75,7 +80,7 @@ func NewWindowTitle(title string, subtitle string) *WindowTitle {
 	return _windowTitle
 }
 
-// Subtitle gets the subtitle of self. See adw_window_title_set_subtitle().
+// Subtitle gets the subtitle of self.
 func (self *WindowTitle) Subtitle() string {
 	var _arg0 *C.AdwWindowTitle // out
 	var _cret *C.char           // in
@@ -86,14 +91,12 @@ func (self *WindowTitle) Subtitle() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
-// Title gets the title of self. See adw_window_title_set_title().
+// Title gets the title of self.
 func (self *WindowTitle) Title() string {
 	var _arg0 *C.AdwWindowTitle // out
 	var _cret *C.char           // in
@@ -104,42 +107,31 @@ func (self *WindowTitle) Title() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
 // SetSubtitle sets the subtitle of self.
-//
-// The subtitle should give a user additional details.
 func (self *WindowTitle) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwWindowTitle // out
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
-	if subtitle != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_subtitle(_arg0, _arg1)
 }
 
 // SetTitle sets the title of self.
-//
-// The title typically identifies the current view or content item, and
-// generally does not use the application name.
 func (self *WindowTitle) SetTitle(title string) {
 	var _arg0 *C.AdwWindowTitle // out
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_title(_arg0, _arg1)
 }

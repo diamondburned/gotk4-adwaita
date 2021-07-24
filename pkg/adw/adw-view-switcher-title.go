@@ -21,6 +21,54 @@ func init() {
 	})
 }
 
+// ViewSwitcherTitle: view switcher title.
+//
+// A widget letting you switch between multiple views contained by a
+// adw.ViewStack via an adw.ViewSwitcher.
+//
+// It is designed to be used as the title widget of a adw.HeaderBar, and will
+// display the window's title when the window is too narrow to fit the view
+// switcher e.g. on mobile phones, or if there are less than two views.
+//
+// You can conveniently bind the adw.ViewSwitcherBar:reveal property to
+// adw.ViewSwitcherTitle:title-visible to automatically reveal the view switcher
+// bar when the title label is displayed in place of the view switcher.
+//
+// An example of the UI definition for a common use case:
+//
+//    <object class="GtkWindow"/>
+//      <child type="titlebar">
+//        <object class="AdwHeaderBar">
+//          <property name="centering-policy">strict</property>
+//          <child type="title">
+//            <object class="AdwViewSwitcherTitle" id="title">
+//              <property name="stack">stack</property>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//      <child>
+//        <object class="GtkBox">
+//          <child>
+//            <object class="AdwViewStack" id="stack"/>
+//          </child>
+//          <child>
+//            <object class="AdwViewSwitcherBar">
+//              <property name="stack">stack</property>
+//              <binding name="reveal">
+//                <lookup name="title-visible">title</lookup>
+//              </binding>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//    </object>
+//
+//
+//
+// CSS nodes
+//
+// AdwViewSwitcherTitle has a single CSS node with name viewswitchertitle.
 type ViewSwitcherTitle struct {
 	gtk.Widget
 }
@@ -51,7 +99,7 @@ func marshalViewSwitcherTitler(p uintptr) (interface{}, error) {
 	return wrapViewSwitcherTitle(obj), nil
 }
 
-// NewViewSwitcherTitle creates a new ViewSwitcherTitle widget.
+// NewViewSwitcherTitle creates a new AdwViewSwitcherTitle.
 func NewViewSwitcherTitle() *ViewSwitcherTitle {
 	var _cret *C.GtkWidget // in
 
@@ -80,45 +128,25 @@ func (self *ViewSwitcherTitle) Policy() ViewSwitcherPolicy {
 	return _viewSwitcherPolicy
 }
 
-// Stack: get the Stack being controlled by the ViewSwitcher.
-func (self *ViewSwitcherTitle) Stack() *gtk.Stack {
+// Stack gets the stack controlled by self.
+func (self *ViewSwitcherTitle) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _cret *C.GtkStack             // in
+	var _cret *C.AdwViewStack         // in
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_stack(_arg0)
 
-	var _stack *gtk.Stack // out
+	var _viewStack *ViewStack // out
 
 	if _cret != nil {
-		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
-			_stack = &gtk.Stack{
-				Widget: gtk.Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: gtk.Accessible{
-						Object: obj,
-					},
-					Buildable: gtk.Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: gtk.ConstraintTarget{
-						Object: obj,
-					},
-					Object: obj,
-				},
-			}
-		}
+		_viewStack = wrapViewStack(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
-	return _stack
+	return _viewStack
 }
 
-// Subtitle gets the subtitle of self. See
-// adw_view_switcher_title_set_subtitle().
+// Subtitle gets the subtitle of self.
 func (self *ViewSwitcherTitle) Subtitle() string {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret *C.char                 // in
@@ -129,14 +157,12 @@ func (self *ViewSwitcherTitle) Subtitle() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
-// Title gets the title of self. See adw_view_switcher_title_set_title().
+// Title gets the title of self.
 func (self *ViewSwitcherTitle) Title() string {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret *C.char                 // in
@@ -147,14 +173,12 @@ func (self *ViewSwitcherTitle) Title() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
 
-// TitleVisible: get whether the title label of self is visible.
+// TitleVisible gets whether the title of self is currently visible.
 func (self *ViewSwitcherTitle) TitleVisible() bool {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret C.gboolean              // in
@@ -173,8 +197,6 @@ func (self *ViewSwitcherTitle) TitleVisible() bool {
 }
 
 // ViewSwitcherEnabled gets whether self's view switcher is enabled.
-//
-// See adw_view_switcher_title_set_view_switcher_enabled().
 func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret C.gboolean              // in
@@ -203,56 +225,44 @@ func (self *ViewSwitcherTitle) SetPolicy(policy ViewSwitcherPolicy) {
 	C.adw_view_switcher_title_set_policy(_arg0, _arg1)
 }
 
-// SetStack sets the Stack to control.
-func (self *ViewSwitcherTitle) SetStack(stack *gtk.Stack) {
+// SetStack sets the stack controlled by self.
+func (self *ViewSwitcherTitle) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _arg1 *C.GtkStack             // out
+	var _arg1 *C.AdwViewStack         // out
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 	if stack != nil {
-		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+		_arg1 = (*C.AdwViewStack)(unsafe.Pointer(stack.Native()))
 	}
 
 	C.adw_view_switcher_title_set_stack(_arg0, _arg1)
 }
 
-// SetSubtitle sets the subtitle of self. The subtitle should give a user
-// additional details.
+// SetSubtitle sets the subtitle of self.
 func (self *ViewSwitcherTitle) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-	if subtitle != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_subtitle(_arg0, _arg1)
 }
 
-// SetTitle sets the title of self. The title should give a user additional
-// details. A good title should not include the application name.
+// SetTitle sets the title of self.
 func (self *ViewSwitcherTitle) SetTitle(title string) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_title(_arg0, _arg1)
 }
 
-// SetViewSwitcherEnabled: make self enable or disable its view switcher. If it
-// is disabled, the title will be displayed instead. This allows to
-// programmatically and prematurely hide the view switcher of self even if it
-// fits in the available space.
-//
-// This can be used e.g. to ensure the view switcher is hidden below a certain
-// window width, or any other constraint you find suitable.
+// SetViewSwitcherEnabled sets whether self's view switcher is enabled.
 func (self *ViewSwitcherTitle) SetViewSwitcherEnabled(enabled bool) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 C.gboolean              // out

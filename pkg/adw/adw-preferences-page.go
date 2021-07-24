@@ -21,6 +21,15 @@ func init() {
 	})
 }
 
+// PreferencesPage: page from adw.PreferencesWindow.
+//
+// The AdwPreferencesPage widget gathers preferences groups into a single page
+// of a preferences window.
+//
+//
+// CSS nodes
+//
+// AdwPreferencesPage has a single CSS node with name preferencespage.
 type PreferencesPage struct {
 	gtk.Widget
 }
@@ -51,7 +60,7 @@ func marshalPreferencesPager(p uintptr) (interface{}, error) {
 	return wrapPreferencesPage(obj), nil
 }
 
-// NewPreferencesPage creates a new PreferencesPage.
+// NewPreferencesPage creates a new AdwPreferencesPage.
 func NewPreferencesPage() *PreferencesPage {
 	var _cret *C.GtkWidget // in
 
@@ -64,6 +73,7 @@ func NewPreferencesPage() *PreferencesPage {
 	return _preferencesPage
 }
 
+// Add adds a preferences group to self.
 func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
@@ -74,7 +84,7 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	C.adw_preferences_page_add(_arg0, _arg1)
 }
 
-// IconName gets the icon name for self, or NULL.
+// IconName gets the icon name for self.
 func (self *PreferencesPage) IconName() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
@@ -92,14 +102,14 @@ func (self *PreferencesPage) IconName() string {
 	return _utf8
 }
 
-// Title gets the title of self, or NULL.
-func (self *PreferencesPage) Title() string {
+// Name gets the name of self.
+func (self *PreferencesPage) Name() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
 
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_preferences_page_get_title(_arg0)
+	_cret = C.adw_preferences_page_get_name(_arg0)
 
 	var _utf8 string // out
 
@@ -110,8 +120,24 @@ func (self *PreferencesPage) Title() string {
 	return _utf8
 }
 
-// UseUnderline gets whether an embedded underline in the text of the title
-// label indicates a mnemonic. See adw_preferences_page_set_use_underline().
+// Title gets the title of self.
+func (self *PreferencesPage) Title() string {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _cret *C.char               // in
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_preferences_page_get_title(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// UseUnderline gets whether an embedded underline in the title indicates a
+// mnemonic.
 func (self *PreferencesPage) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret C.gboolean            // in
@@ -129,6 +155,7 @@ func (self *PreferencesPage) UseUnderline() bool {
 	return _ok
 }
 
+// Remove removes a group from self.
 func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
@@ -153,22 +180,34 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 	C.adw_preferences_page_set_icon_name(_arg0, _arg1)
 }
 
+// SetName sets the name of self.
+func (self *PreferencesPage) SetName(name string) {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _arg1 *C.char               // out
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.adw_preferences_page_set_name(_arg0, _arg1)
+}
+
 // SetTitle sets the title of self.
 func (self *PreferencesPage) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
 
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
-	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_page_set_title(_arg0, _arg1)
 }
 
-// SetUseUnderline: if true, an underline in the title label indicates the next
-// character should be used for the mnemonic accelerator key.
+// SetUseUnderline sets whether an embedded underline in the title indicates a
+// mnemonic.
 func (self *PreferencesPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 C.gboolean            // out

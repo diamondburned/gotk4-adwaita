@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ValueObject: object representing a GValue.
+//
+// The AdwValueObject object represents a GValue, allowing it to be used with
+// GListModel.
 type ValueObject struct {
 	*externglib.Object
 }
@@ -36,7 +40,7 @@ func marshalValueObjector(p uintptr) (interface{}, error) {
 	return wrapValueObject(obj), nil
 }
 
-// NewValueObject: create a new ValueObject.
+// NewValueObject: create a new AdwValueObject from value.
 func NewValueObject(value *externglib.Value) *ValueObject {
 	var _arg1 *C.GValue         // out
 	var _cret *C.AdwValueObject // in
@@ -52,7 +56,7 @@ func NewValueObject(value *externglib.Value) *ValueObject {
 	return _valueObject
 }
 
-// CopyValue: copy data from the contained #GValue into dest.
+// CopyValue copies data from the contained Value into dest.
 func (value *ValueObject) CopyValue(dest *externglib.Value) {
 	var _arg0 *C.AdwValueObject // out
 	var _arg1 *C.GValue         // out
@@ -63,8 +67,7 @@ func (value *ValueObject) CopyValue(dest *externglib.Value) {
 	C.adw_value_object_copy_value(_arg0, _arg1)
 }
 
-// DupString returns a copy of the contained string if the value is of type
-// TYPE_STRING.
+// DupString copies the contained string if the value is of type G_TYPE_STRING.
 func (value *ValueObject) DupString() string {
 	var _arg0 *C.AdwValueObject // out
 	var _cret *C.char           // in
@@ -81,7 +84,7 @@ func (value *ValueObject) DupString() string {
 	return _utf8
 }
 
-// String returns the contained string if the value is of type TYPE_STRING.
+// String gets the contained string if the value is of type G_TYPE_STRING.
 func (value *ValueObject) String() string {
 	var _arg0 *C.AdwValueObject // out
 	var _cret *C.char           // in
@@ -97,7 +100,7 @@ func (value *ValueObject) String() string {
 	return _utf8
 }
 
-// Value: return the contained value.
+// Value gets the contained value.
 func (value *ValueObject) Value() *externglib.Value {
 	var _arg0 *C.AdwValueObject // out
 	var _cret *C.GValue         // in

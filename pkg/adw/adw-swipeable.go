@@ -31,28 +31,29 @@ type SwipeableOverrider interface {
 	// CancelProgress gets the progress self will snap back to after the gesture
 	// is canceled.
 	CancelProgress() float64
-	// Distance gets the swipe distance of self. This corresponds to how many
-	// pixels 1 unit represents.
+	// Distance gets the swipe distance of self.
+	//
+	// This corresponds to how many pixels 1 unit represents.
 	Distance() float64
-	// Progress gets the current progress of self
+	// Progress gets the current progress of self.
 	Progress() float64
 	// SwipeArea gets the area self can start a swipe from for the given
-	// direction and gesture type. This can be used to restrict swipes to only
-	// be possible from a certain area, for example, to only allow edge swipes,
-	// or to have a draggable element and ignore swipes elsewhere.
+	// direction and gesture type.
 	//
-	// Swipe area is only considered for direct swipes (as in, not initiated by
-	// SwipeGroup).
+	// This can be used to restrict swipes to only be possible from a certain
+	// area, for example, to only allow edge swipes, or to have a draggable
+	// element and ignore swipes elsewhere.
 	//
 	// If not implemented, the default implementation returns the allocation of
 	// self, allowing swipes from anywhere.
 	SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle
-	// SwipeTracker gets the SwipeTracker used by this swipeable widget.
-	SwipeTracker() *SwipeTracker
-	// SwitchChild: see AdwSwipeable::child-switched.
-	SwitchChild(index uint, duration int64)
 }
 
+// Swipeable: interface for swipeable widgets.
+//
+// The AdwSwipeable interface is implemented by all swipeable widgets.
+//
+// See adw.SwipeTracker for details about implementing it.
 type Swipeable struct {
 	gtk.Widget
 }
@@ -61,22 +62,16 @@ type Swipeable struct {
 type Swipeabler interface {
 	gextras.Objector
 
-	// EmitChildSwitched emits AdwSwipeable::child-switched signal.
-	EmitChildSwitched(index uint, duration int64)
 	// CancelProgress gets the progress self will snap back to after the gesture
 	// is canceled.
 	CancelProgress() float64
 	// Distance gets the swipe distance of self.
 	Distance() float64
-	// Progress gets the current progress of self
+	// Progress gets the current progress of self.
 	Progress() float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
 	SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle
-	// SwipeTracker gets the SwipeTracker used by this swipeable widget.
-	SwipeTracker() *SwipeTracker
-	// SwitchChild: see AdwSwipeable::child-switched.
-	SwitchChild(index uint, duration int64)
 }
 
 var _ Swipeabler = (*Swipeable)(nil)
@@ -107,22 +102,6 @@ func marshalSwipeabler(p uintptr) (interface{}, error) {
 	return wrapSwipeable(obj), nil
 }
 
-// EmitChildSwitched emits AdwSwipeable::child-switched signal. This should be
-// called when the widget switches visible child widget.
-//
-// duration can be 0 if the child is switched without animation.
-func (self *Swipeable) EmitChildSwitched(index uint, duration int64) {
-	var _arg0 *C.AdwSwipeable // out
-	var _arg1 C.guint         // out
-	var _arg2 C.gint64        // out
-
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
-	_arg1 = C.guint(index)
-	_arg2 = C.gint64(duration)
-
-	C.adw_swipeable_emit_child_switched(_arg0, _arg1, _arg2)
-}
-
 // CancelProgress gets the progress self will snap back to after the gesture is
 // canceled.
 func (self *Swipeable) CancelProgress() float64 {
@@ -140,8 +119,9 @@ func (self *Swipeable) CancelProgress() float64 {
 	return _gdouble
 }
 
-// Distance gets the swipe distance of self. This corresponds to how many pixels
-// 1 unit represents.
+// Distance gets the swipe distance of self.
+//
+// This corresponds to how many pixels 1 unit represents.
 func (self *Swipeable) Distance() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
@@ -157,7 +137,7 @@ func (self *Swipeable) Distance() float64 {
 	return _gdouble
 }
 
-// Progress gets the current progress of self
+// Progress gets the current progress of self.
 func (self *Swipeable) Progress() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
@@ -174,12 +154,11 @@ func (self *Swipeable) Progress() float64 {
 }
 
 // SwipeArea gets the area self can start a swipe from for the given direction
-// and gesture type. This can be used to restrict swipes to only be possible
-// from a certain area, for example, to only allow edge swipes, or to have a
-// draggable element and ignore swipes elsewhere.
+// and gesture type.
 //
-// Swipe area is only considered for direct swipes (as in, not initiated by
-// SwipeGroup).
+// This can be used to restrict swipes to only be possible from a certain area,
+// for example, to only allow edge swipes, or to have a draggable element and
+// ignore swipes elsewhere.
 //
 // If not implemented, the default implementation returns the allocation of
 // self, allowing swipes from anywhere.
@@ -202,33 +181,4 @@ func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag
 	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _rect
-}
-
-// SwipeTracker gets the SwipeTracker used by this swipeable widget.
-func (self *Swipeable) SwipeTracker() *SwipeTracker {
-	var _arg0 *C.AdwSwipeable    // out
-	var _cret *C.AdwSwipeTracker // in
-
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_swipeable_get_swipe_tracker(_arg0)
-
-	var _swipeTracker *SwipeTracker // out
-
-	_swipeTracker = wrapSwipeTracker(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _swipeTracker
-}
-
-// SwitchChild: see AdwSwipeable::child-switched.
-func (self *Swipeable) SwitchChild(index uint, duration int64) {
-	var _arg0 *C.AdwSwipeable // out
-	var _arg1 C.guint         // out
-	var _arg2 C.gint64        // out
-
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
-	_arg1 = C.guint(index)
-	_arg2 = C.gint64(duration)
-
-	C.adw_swipeable_switch_child(_arg0, _arg1, _arg2)
 }

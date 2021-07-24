@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -18,10 +19,105 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.adw_centering_policy_get_type()), F: marshalCenteringPolicy},
 		{T: externglib.Type(C.adw_header_bar_get_type()), F: marshalHeaderBarrer},
 	})
 }
 
+// CenteringPolicy describes title centering behavior of a adw.HeaderBar widget.
+type CenteringPolicy int
+
+const (
+	// CenteringPolicyLoose: keep the title centered when possible
+	CenteringPolicyLoose CenteringPolicy = iota
+	// CenteringPolicyStrict: keep the title centered at all cost
+	CenteringPolicyStrict
+)
+
+func marshalCenteringPolicy(p uintptr) (interface{}, error) {
+	return CenteringPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CenteringPolicy.
+func (c CenteringPolicy) String() string {
+	switch c {
+	case CenteringPolicyLoose:
+		return "Loose"
+	case CenteringPolicyStrict:
+		return "Strict"
+	default:
+		return fmt.Sprintf("CenteringPolicy(%d)", c)
+	}
+}
+
+// HeaderBar: title bar widget.
+//
+// AdwHeaderBar is similar to gtk.HeaderBar, but provides additional features
+// compared to it. Refer to GtkHeaderBar for details.
+//
+// adw.HeaderBar:centering-policy allows to enforce strict centering of the
+// title widget, this is useful for adw.ViewSwitcherTitle.
+//
+// adw.HeaderBar:show-start-title-buttons and
+// adw.HeaderBar:show-end-title-buttons allow to easily create split header bar
+// layouts using adw.Leaflet, as follows:
+//
+//    <object class="AdwLeaflet" id="leaflet">
+//      <child>
+//        <object class="GtkBox">
+//          <property name="orientation">vertical</property>
+//          <object class="AdwHeaderBar">
+//            <binding name="show-end-title-buttons">
+//              <lookup name="folded">leaflet</lookup>
+//            </binding>
+//          </object>
+//          ...
+//        </object>
+//      </child>
+//      ...
+//      <child>
+//        <object class="GtkBox">
+//          <property name="orientation">vertical</property>
+//          <object class="AdwHeaderBar">
+//            <binding name="show-start-title-buttons">
+//              <lookup name="folded">leaflet</lookup>
+//            </binding>
+//          </object>
+//          ...
+//        </object>
+//      </child>
+//    </object>
+//
+//
+// CSS nodes
+//
+//    headerbar
+//    ╰── windowhandle
+//        ╰── box
+//            ├── widget
+//            │   ╰── box.start
+//            │       ├── windowcontrols.start
+//            │       ╰── [other children]
+//            ├── [Title Widget]
+//            ╰── widget
+//                ╰── box.end
+//                    ├── [other children]
+//                    ╰── windowcontrols.end
+//
+//
+// AdwHeaderBar's CSS node is called headerbar. It contains a windowhandle
+// subnode, which contains a box subnode, which contains two widget subnodes at
+// the start and end of the header bar, each of which contains a box subnode
+// with the .start and .end style classes respectively, as well as a center node
+// that represents the title.
+//
+// Each of the boxes contains a windowcontrols subnode, see gtk.WindowControls
+// for details, as well as other children.
+//
+//
+// Accessibility
+//
+// AdwHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar struct {
 	gtk.Widget
 }
@@ -52,7 +148,7 @@ func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 	return wrapHeaderBar(obj), nil
 }
 
-// NewHeaderBar creates a new HeaderBar widget.
+// NewHeaderBar creates a new AdwHeaderBar.
 func NewHeaderBar() *HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -65,8 +161,7 @@ func NewHeaderBar() *HeaderBar {
 	return _headerBar
 }
 
-// CenteringPolicy gets the policy self follows to horizontally align its center
-// widget.
+// CenteringPolicy gets the policy for aligning the center widget.
 func (self *HeaderBar) CenteringPolicy() CenteringPolicy {
 	var _arg0 *C.AdwHeaderBar      // out
 	var _cret C.AdwCenteringPolicy // in
@@ -82,8 +177,7 @@ func (self *HeaderBar) CenteringPolicy() CenteringPolicy {
 	return _centeringPolicy
 }
 
-// DecorationLayout gets the decoration layout set with
-// adw_header_bar_set_decoration_layout().
+// DecorationLayout gets the decoration layout for self.
 func (self *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret *C.char         // in
@@ -101,8 +195,7 @@ func (self *HeaderBar) DecorationLayout() string {
 	return _utf8
 }
 
-// ShowEndTitleButtons returns whether this header bar shows the standard window
-// title buttons.
+// ShowEndTitleButtons gets whether to show title buttons at the end of self.
 func (self *HeaderBar) ShowEndTitleButtons() bool {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret C.gboolean      // in
@@ -120,8 +213,8 @@ func (self *HeaderBar) ShowEndTitleButtons() bool {
 	return _ok
 }
 
-// ShowStartTitleButtons returns whether this header bar shows the standard
-// window title buttons.
+// ShowStartTitleButtons gets whether to show title buttons at the start of
+// self.
 func (self *HeaderBar) ShowStartTitleButtons() bool {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret C.gboolean      // in
@@ -139,8 +232,7 @@ func (self *HeaderBar) ShowStartTitleButtons() bool {
 	return _ok
 }
 
-// TitleWidget retrieves the title widget widget of the header. See
-// adw_header_bar_set_title_widget().
+// TitleWidget gets the title widget widget of self.
 func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret *C.GtkWidget    // in
@@ -158,7 +250,7 @@ func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 	return _widget
 }
 
-// PackEnd adds child to self, packed with reference to the end of the self.
+// PackEnd adds child to self, packed with reference to the end of self.
 func (self *HeaderBar) PackEnd(child gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -180,9 +272,10 @@ func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 	C.adw_header_bar_pack_start(_arg0, _arg1)
 }
 
-// Remove removes a child from self, after it has been added with
-// adw_header_bar_pack_start(), adw_header_bar_pack_end() or
-// adw_header_bar_set_title_widget().
+// Remove removes a child from self.
+//
+// The child must have been added with adw.HeaderBar.PackStart(),
+// adw.HeaderBar.PackEnd() or adw.HeaderBar:title-widget.
 func (self *HeaderBar) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -193,8 +286,7 @@ func (self *HeaderBar) Remove(child gtk.Widgetter) {
 	C.adw_header_bar_remove(_arg0, _arg1)
 }
 
-// SetCenteringPolicy sets the policy self must follow to horizontally align its
-// center widget.
+// SetCenteringPolicy sets the policy for aligning the center widget.
 func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 	var _arg0 *C.AdwHeaderBar      // out
 	var _arg1 C.AdwCenteringPolicy // out
@@ -205,21 +297,7 @@ func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 	C.adw_header_bar_set_centering_policy(_arg0, _arg1)
 }
 
-// SetDecorationLayout sets the decoration layout for this header bar,
-// overriding the Settings:gtk-decoration-layout setting.
-//
-// There can be valid reasons for overriding the setting, such as a header bar
-// design that does not allow for buttons to take room on the right, or only
-// offers room for a single close button. Split header bars are another example
-// for overriding the setting.
-//
-// The format of the string is button names, separated by commas. A colon
-// separates the buttons that should appear on the left from those on the right.
-// Recognized button names are minimize, maximize, close and icon (the window
-// icon).
-//
-// For example, “icon:minimize,maximize,close” specifies an icon on the left,
-// and minimize, maximize and close buttons on the right.
+// SetDecorationLayout sets the decoration layout for self.
 func (self *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.char         // out
@@ -233,8 +311,7 @@ func (self *HeaderBar) SetDecorationLayout(layout string) {
 	C.adw_header_bar_set_decoration_layout(_arg0, _arg1)
 }
 
-// SetShowEndTitleButtons sets whether this header bar shows the standard window
-// title buttons including close, maximize, and minimize.
+// SetShowEndTitleButtons sets whether to show title buttons at the end of self.
 func (self *HeaderBar) SetShowEndTitleButtons(setting bool) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -247,8 +324,8 @@ func (self *HeaderBar) SetShowEndTitleButtons(setting bool) {
 	C.adw_header_bar_set_show_end_title_buttons(_arg0, _arg1)
 }
 
-// SetShowStartTitleButtons sets whether this header bar shows the standard
-// window title buttons including close, maximize, and minimize.
+// SetShowStartTitleButtons sets whether to show title buttons at the start of
+// self.
 func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -261,16 +338,7 @@ func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 	C.adw_header_bar_set_show_start_title_buttons(_arg0, _arg1)
 }
 
-// SetTitleWidget sets the title for the HeaderBar.
-//
-// When set to NULL, the headerbar will display the title of the window it is
-// contained in.
-//
-// The title should help a user identify the current view. To achieve the same
-// style as the builtin title, use the “title” style class.
-//
-// You should set the title widget to NULL, for the window title label to be
-// visible again.
+// SetTitleWidget sets the title widget for self.
 func (self *HeaderBar) SetTitleWidget(titleWidget gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out

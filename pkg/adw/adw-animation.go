@@ -29,7 +29,8 @@ func EaseOutCubic(t float64) float64 {
 	return _gdouble
 }
 
-// GetEnableAnimations returns whether animations are enabled for that widget.
+// GetEnableAnimations checks whether animations are enabled for widget.
+//
 // This should be used when implementing an animated widget to know whether to
 // animate it or not.
 func GetEnableAnimations(widget gtk.Widgetter) bool {

@@ -7,10 +7,13 @@ package adw
 // #include <adwaita.h>
 import "C"
 
-// Init: call this function just after initializing GTK, if you are using
-// Application it means it must be called when the #GApplication::startup signal
-// is emitted. If libadwaita has already been initialized, the function will
-// simply return.
+// Init initializes Libadwaita.
+//
+// Call this function just after initializing GTK, if you are using
+// gtk.Application it means it must be called when the GApplication::startup
+// signal is emitted.
+//
+// If Libadwaita has already been initialized, the function will simply return.
 //
 // This makes sure translations, types, themes, and icons for the Adwaita
 // library are set up properly.

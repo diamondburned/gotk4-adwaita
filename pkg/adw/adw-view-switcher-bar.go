@@ -21,6 +21,52 @@ func init() {
 	})
 }
 
+// ViewSwitcherBar: view switcher action bar.
+//
+// An action bar letting you switch between multiple views contained in a
+// adw.ViewStack, via an adw.ViewSwitcher. It is designed to be put at the
+// bottom of a window and to be revealed only on really narrow windows, e.g. on
+// mobile phones. It can't be revealed if there are less than two pages.
+//
+// You can conveniently bind the adw.ViewSwitcherBar:reveal property to
+// adw.ViewSwitcherTitle:title-visible to automatically reveal the view switcher
+// bar when the title label is displayed in place of the view switcher.
+//
+// An example of the UI definition for a common use case:
+//
+//    <object class="GtkWindow"/>
+//      <child type="titlebar">
+//        <object class="AdwHeaderBar">
+//          <property name="centering-policy">strict</property>
+//          <child type="title">
+//            <object class="AdwViewSwitcherTitle" id="title">
+//              <property name="stack">stack</property>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//      <child>
+//        <object class="GtkBox">
+//          <child>
+//            <object class="AdwViewStack" id="stack"/>
+//          </child>
+//          <child>
+//            <object class="AdwViewSwitcherBar">
+//              <property name="stack">stack</property>
+//              <binding name="reveal">
+//                <lookup name="title-visible">title</lookup>
+//              </binding>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//    </object>
+//
+//
+//
+// CSS nodes
+//
+// AdwViewSwitcherBar has a single CSS node with name viewswitcherbar.
 type ViewSwitcherBar struct {
 	gtk.Widget
 }
@@ -51,7 +97,7 @@ func marshalViewSwitcherBarrer(p uintptr) (interface{}, error) {
 	return wrapViewSwitcherBar(obj), nil
 }
 
-// NewViewSwitcherBar creates a new ViewSwitcherBar widget.
+// NewViewSwitcherBar creates a new AdwViewSwitcherBar.
 func NewViewSwitcherBar() *ViewSwitcherBar {
 	var _cret *C.GtkWidget // in
 
@@ -80,7 +126,7 @@ func (self *ViewSwitcherBar) Policy() ViewSwitcherPolicy {
 	return _viewSwitcherPolicy
 }
 
-// Reveal gets whether self should be revealed or not.
+// Reveal gets whether self should be revealed or hidden.
 func (self *ViewSwitcherBar) Reveal() bool {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _cret C.gboolean            // in
@@ -98,41 +144,22 @@ func (self *ViewSwitcherBar) Reveal() bool {
 	return _ok
 }
 
-// Stack: get the Stack being controlled by the ViewSwitcher.
-func (self *ViewSwitcherBar) Stack() *gtk.Stack {
+// Stack gets the stack controlled by self.
+func (self *ViewSwitcherBar) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherBar // out
-	var _cret *C.GtkStack           // in
+	var _cret *C.AdwViewStack       // in
 
 	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_bar_get_stack(_arg0)
 
-	var _stack *gtk.Stack // out
+	var _viewStack *ViewStack // out
 
 	if _cret != nil {
-		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
-			_stack = &gtk.Stack{
-				Widget: gtk.Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: gtk.Accessible{
-						Object: obj,
-					},
-					Buildable: gtk.Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: gtk.ConstraintTarget{
-						Object: obj,
-					},
-					Object: obj,
-				},
-			}
-		}
+		_viewStack = wrapViewStack(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
-	return _stack
+	return _viewStack
 }
 
 // SetPolicy sets the policy of self.
@@ -146,7 +173,7 @@ func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
 	C.adw_view_switcher_bar_set_policy(_arg0, _arg1)
 }
 
-// SetReveal sets whether self should be revealed or not.
+// SetReveal sets whether self should be revealed or hidden.
 func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _arg1 C.gboolean            // out
@@ -159,14 +186,14 @@ func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 	C.adw_view_switcher_bar_set_reveal(_arg0, _arg1)
 }
 
-// SetStack sets the Stack to control.
-func (self *ViewSwitcherBar) SetStack(stack *gtk.Stack) {
+// SetStack sets the stack controlled by self.
+func (self *ViewSwitcherBar) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherBar // out
-	var _arg1 *C.GtkStack           // out
+	var _arg1 *C.AdwViewStack       // out
 
 	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
 	if stack != nil {
-		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+		_arg1 = (*C.AdwViewStack)(unsafe.Pointer(stack.Native()))
 	}
 
 	C.adw_view_switcher_bar_set_stack(_arg0, _arg1)
