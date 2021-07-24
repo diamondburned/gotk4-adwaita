@@ -35,4 +35,7 @@ let gotk4_src = systemPkgs.fetchFromGitHub {
 
 in gotk4.overrideAttrs (old: {
 	buildInputs = old.buildInputs ++ [ libadwaita ];
-})
+}) // {
+	# Expose libadwaita for external use.
+	inherit libadwaita;
+}
