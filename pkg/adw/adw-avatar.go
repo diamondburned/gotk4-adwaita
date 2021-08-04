@@ -5,12 +5,11 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -142,7 +141,7 @@ func (self *Avatar) CustomImage() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 	}
 
 	return _paintable

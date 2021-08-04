@@ -5,9 +5,8 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -100,11 +99,6 @@ func NewCarousel() *Carousel {
 	_carousel = wrapCarousel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _carousel
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *Carousel) Native() uintptr {
-	return self.Object.Native()
 }
 
 // Append appends child to self.
@@ -237,7 +231,7 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 
 	return _widget
 }

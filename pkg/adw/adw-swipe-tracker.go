@@ -5,9 +5,8 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -152,7 +151,7 @@ func (self *SwipeTracker) Swipeable() Swipeabler {
 
 	var _swipeable Swipeabler // out
 
-	_swipeable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Swipeabler)
+	_swipeable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Swipeabler)
 
 	return _swipeable
 }

@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -153,11 +152,6 @@ func NewLeaflet() *Leaflet {
 	return _leaflet
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *Leaflet) Native() uintptr {
-	return self.Object.Native()
-}
-
 // Append adds a child to self.
 func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -197,7 +191,7 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -278,7 +272,7 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -449,7 +443,7 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
 
 	return _selectionModel
 }
@@ -483,7 +477,7 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -787,7 +781,7 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 
 	return _widget
 }

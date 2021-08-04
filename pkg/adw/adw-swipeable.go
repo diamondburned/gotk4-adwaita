@@ -6,9 +6,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -60,7 +60,7 @@ type Swipeable struct {
 
 // Swipeabler describes Swipeable's abstract methods.
 type Swipeabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CancelProgress gets the progress self will snap back to after the gesture
 	// is canceled.

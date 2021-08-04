@@ -5,7 +5,7 @@ package adw
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -45,7 +45,7 @@ func NewValueObject(value *externglib.Value) *ValueObject {
 	var _arg1 *C.GValue         // out
 	var _cret *C.AdwValueObject // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.adw_value_object_new(_arg1)
 
@@ -62,7 +62,7 @@ func (value *ValueObject) CopyValue(dest *externglib.Value) {
 	var _arg1 *C.GValue         // out
 
 	_arg0 = (*C.AdwValueObject)(unsafe.Pointer(value.Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&dest.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(dest.Native()))
 
 	C.adw_value_object_copy_value(_arg0, _arg1)
 }

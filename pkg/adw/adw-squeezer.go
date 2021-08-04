@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -116,11 +115,6 @@ func NewSqueezer() *Squeezer {
 	return _squeezer
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *Squeezer) Native() uintptr {
-	return self.Object.Native()
-}
-
 // Add adds a child to self.
 func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
@@ -209,7 +203,7 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
 
 	return _selectionModel
 }
@@ -277,7 +271,7 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -427,7 +421,7 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 
 	return _widget
 }

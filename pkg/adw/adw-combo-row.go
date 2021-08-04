@@ -5,10 +5,9 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -125,7 +124,7 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 	var _expression gtk.Expressioner // out
 
 	if _cret != nil {
-		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Expressioner)
+		_expression = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Expressioner)
 	}
 
 	return _expression
@@ -190,7 +189,7 @@ func (self *ComboRow) Model() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
-		_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+		_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 	}
 
 	return _listModel

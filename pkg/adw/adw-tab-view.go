@@ -5,10 +5,9 @@ package adw
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -52,7 +51,7 @@ func (self *TabPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 
 	return _widget
 }
@@ -69,7 +68,7 @@ func (self *TabPage) Icon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon
@@ -105,7 +104,7 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon
@@ -551,7 +550,7 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }
@@ -586,7 +585,7 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+		_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 	}
 
 	return _menuModel
@@ -692,7 +691,7 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
 
 	return _selectionModel
 }
@@ -727,7 +726,7 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget

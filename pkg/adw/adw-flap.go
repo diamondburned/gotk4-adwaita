@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -207,11 +206,6 @@ func NewFlap() *Flap {
 	return _flap
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *Flap) Native() uintptr {
-	return self.Object.Native()
-}
-
 // Content gets the content widget for self.
 func (self *Flap) Content() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
@@ -224,7 +218,7 @@ func (self *Flap) Content() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -242,7 +236,7 @@ func (self *Flap) Flap() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget
@@ -429,7 +423,7 @@ func (self *Flap) Separator() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
 	}
 
 	return _widget

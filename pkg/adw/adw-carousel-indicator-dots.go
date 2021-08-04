@@ -5,8 +5,8 @@ package adw
 import (
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -83,11 +83,6 @@ func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 	_carouselIndicatorDots = wrapCarouselIndicatorDots(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _carouselIndicatorDots
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *CarouselIndicatorDots) Native() uintptr {
-	return self.Object.Native()
 }
 
 // Carousel gets the displayed carousel.
