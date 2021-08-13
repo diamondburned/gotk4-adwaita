@@ -3,7 +3,7 @@ module github.com/diamondburned/gotk4-adwaita
 go 1.17
 
 require (
-	github.com/diamondburned/gotk4 v0.0.0-20210813074859-682b87e45cb6
+	github.com/diamondburned/gotk4 v0.0.0-20210813205752-5e6959447f1a
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
