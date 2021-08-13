@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -78,6 +79,7 @@ func (self *Bin) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwBin)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_bin_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -99,4 +101,6 @@ func (self *Bin) SetChild(child gtk.Widgetter) {
 	}
 
 	C.adw_bin_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }

@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,7 @@ func (self *TabBar) Autohide() bool {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_autohide(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -107,6 +109,7 @@ func (self *TabBar) EndActionWidget() gtk.Widgetter {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_end_action_widget(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -125,6 +128,7 @@ func (self *TabBar) ExpandTabs() bool {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_expand_tabs(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -143,6 +147,7 @@ func (self *TabBar) Inverted() bool {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_inverted(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -161,6 +166,7 @@ func (self *TabBar) IsOverflowing() bool {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_is_overflowing(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -179,6 +185,7 @@ func (self *TabBar) StartActionWidget() gtk.Widgetter {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_start_action_widget(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -197,6 +204,7 @@ func (self *TabBar) TabsRevealed() bool {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_tabs_revealed(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -215,6 +223,7 @@ func (self *TabBar) View() *TabView {
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_bar_get_view(_arg0)
+	runtime.KeepAlive(self)
 
 	var _tabView *TabView // out
 
@@ -236,6 +245,8 @@ func (self *TabBar) SetAutohide(autohide bool) {
 	}
 
 	C.adw_tab_bar_set_autohide(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(autohide)
 }
 
 // SetEndActionWidget sets the widget to show after the tabs.
@@ -249,6 +260,8 @@ func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 	}
 
 	C.adw_tab_bar_set_end_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetExpandTabs sets whether tabs expand to full width.
@@ -262,6 +275,8 @@ func (self *TabBar) SetExpandTabs(expandTabs bool) {
 	}
 
 	C.adw_tab_bar_set_expand_tabs(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expandTabs)
 }
 
 // SetInverted sets whether tabs tabs use inverted layout.
@@ -275,6 +290,8 @@ func (self *TabBar) SetInverted(inverted bool) {
 	}
 
 	C.adw_tab_bar_set_inverted(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(inverted)
 }
 
 // SetStartActionWidget sets the widget to show before the tabs.
@@ -288,6 +305,8 @@ func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 	}
 
 	C.adw_tab_bar_set_start_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetView sets the tab view self controls.
@@ -301,6 +320,8 @@ func (self *TabBar) SetView(view *TabView) {
 	}
 
 	C.adw_tab_bar_set_view(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(view)
 }
 
 // SetupExtraDropTarget sets the supported types for this drop target.
@@ -333,4 +354,7 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	}
 
 	C.adw_tab_bar_setup_extra_drop_target(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(actions)
+	runtime.KeepAlive(types)
 }

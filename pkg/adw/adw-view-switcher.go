@@ -4,6 +4,7 @@ package adw
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -125,6 +126,7 @@ func (self *ViewSwitcher) NarrowEllipsize() pango.EllipsizeMode {
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_get_narrow_ellipsize(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
@@ -141,6 +143,7 @@ func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_get_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewSwitcherPolicy ViewSwitcherPolicy // out
 
@@ -157,6 +160,7 @@ func (self *ViewSwitcher) Stack() *ViewStack {
 	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_get_stack(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewStack *ViewStack // out
 
@@ -176,6 +180,8 @@ func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
 	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.adw_view_switcher_set_narrow_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(mode)
 }
 
 // SetPolicy sets the policy of self.
@@ -187,6 +193,8 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 	_arg1 = C.AdwViewSwitcherPolicy(policy)
 
 	C.adw_view_switcher_set_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetStack sets the stack controlled by self.
@@ -200,4 +208,6 @@ func (self *ViewSwitcher) SetStack(stack *ViewStack) {
 	}
 
 	C.adw_view_switcher_set_stack(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stack)
 }

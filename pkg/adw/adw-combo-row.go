@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -120,6 +121,7 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_expression(_arg0)
+	runtime.KeepAlive(self)
 
 	var _expression gtk.Expressioner // out
 
@@ -138,6 +140,7 @@ func (self *ComboRow) Factory() *gtk.ListItemFactory {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_factory(_arg0)
+	runtime.KeepAlive(self)
 
 	var _listItemFactory *gtk.ListItemFactory // out
 
@@ -162,6 +165,7 @@ func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_list_factory(_arg0)
+	runtime.KeepAlive(self)
 
 	var _listItemFactory *gtk.ListItemFactory // out
 
@@ -185,6 +189,7 @@ func (self *ComboRow) Model() gio.ListModeller {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_model(_arg0)
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -203,6 +208,7 @@ func (self *ComboRow) Selected() uint {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_selected(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -219,6 +225,7 @@ func (self *ComboRow) SelectedItem() *externglib.Object {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_selected_item(_arg0)
+	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out
 
@@ -235,6 +242,7 @@ func (self *ComboRow) UseSubtitle() bool {
 	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_combo_row_get_use_subtitle(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -258,6 +266,8 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	}
 
 	C.adw_combo_row_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
@@ -271,6 +281,8 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	}
 
 	C.adw_combo_row_set_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetListFactory sets the GtkListItemFactory to use for populating list items
@@ -285,6 +297,8 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	}
 
 	C.adw_combo_row_set_list_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetModel sets the GListModel to use.
@@ -298,6 +312,8 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 	}
 
 	C.adw_combo_row_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetSelected selects the item at the given position.
@@ -309,6 +325,8 @@ func (self *ComboRow) SetSelected(position uint) {
 	_arg1 = C.guint(position)
 
 	C.adw_combo_row_set_selected(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }
 
 // SetUseSubtitle sets whether to use the current value as the subtitle.
@@ -322,4 +340,6 @@ func (self *ComboRow) SetUseSubtitle(useSubtitle bool) {
 	}
 
 	C.adw_combo_row_set_use_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useSubtitle)
 }

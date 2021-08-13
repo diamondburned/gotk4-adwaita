@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -82,6 +83,8 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(group.Native()))
 
 	C.adw_preferences_page_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(group)
 }
 
 // IconName gets the icon name for self.
@@ -92,6 +95,7 @@ func (self *PreferencesPage) IconName() string {
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_page_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -110,6 +114,7 @@ func (self *PreferencesPage) Name() string {
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_page_get_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -128,6 +133,7 @@ func (self *PreferencesPage) Title() string {
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_page_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -145,6 +151,7 @@ func (self *PreferencesPage) UseUnderline() bool {
 	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_page_get_use_underline(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -164,6 +171,8 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(group.Native()))
 
 	C.adw_preferences_page_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(group)
 }
 
 // SetIconName sets the icon name for self.
@@ -178,6 +187,8 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 	}
 
 	C.adw_preferences_page_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetName sets the name of self.
@@ -192,6 +203,8 @@ func (self *PreferencesPage) SetName(name string) {
 	}
 
 	C.adw_preferences_page_set_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // SetTitle sets the title of self.
@@ -204,6 +217,8 @@ func (self *PreferencesPage) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_page_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetUseUnderline sets whether an embedded underline in the title indicates a
@@ -218,4 +233,6 @@ func (self *PreferencesPage) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.adw_preferences_page_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useUnderline)
 }

@@ -4,6 +4,7 @@ package adw
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -214,6 +215,7 @@ func (self *Flap) Content() gtk.Widgetter {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_content(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -232,6 +234,7 @@ func (self *Flap) Flap() gtk.Widgetter {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_flap(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -250,6 +253,7 @@ func (self *Flap) FlapPosition() gtk.PackType {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_flap_position(_arg0)
+	runtime.KeepAlive(self)
 
 	var _packType gtk.PackType // out
 
@@ -266,6 +270,7 @@ func (self *Flap) FoldDuration() uint {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_fold_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -282,6 +287,7 @@ func (self *Flap) FoldPolicy() FlapFoldPolicy {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_fold_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _flapFoldPolicy FlapFoldPolicy // out
 
@@ -298,6 +304,7 @@ func (self *Flap) FoldThresholdPolicy() FoldThresholdPolicy {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_fold_threshold_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _foldThresholdPolicy FoldThresholdPolicy // out
 
@@ -314,6 +321,7 @@ func (self *Flap) Folded() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_folded(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -332,6 +340,7 @@ func (self *Flap) Locked() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_locked(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -350,6 +359,7 @@ func (self *Flap) Modal() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_modal(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -369,6 +379,7 @@ func (self *Flap) RevealDuration() uint {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_reveal_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -385,6 +396,7 @@ func (self *Flap) RevealFlap() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_reveal_flap(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -403,6 +415,7 @@ func (self *Flap) RevealProgress() float64 {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_reveal_progress(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -419,6 +432,7 @@ func (self *Flap) Separator() gtk.Widgetter {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_separator(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -437,6 +451,7 @@ func (self *Flap) SwipeToClose() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_swipe_to_close(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -455,6 +470,7 @@ func (self *Flap) SwipeToOpen() bool {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_swipe_to_open(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -474,6 +490,7 @@ func (self *Flap) TransitionType() FlapTransitionType {
 	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_flap_get_transition_type(_arg0)
+	runtime.KeepAlive(self)
 
 	var _flapTransitionType FlapTransitionType // out
 
@@ -493,6 +510,8 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 	}
 
 	C.adw_flap_set_content(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(content)
 }
 
 // SetFlap sets the flap widget for self.
@@ -506,6 +525,8 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	}
 
 	C.adw_flap_set_flap(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(flap)
 }
 
 // SetFlapPosition sets the flap position for self.
@@ -517,6 +538,8 @@ func (self *Flap) SetFlapPosition(position gtk.PackType) {
 	_arg1 = C.GtkPackType(position)
 
 	C.adw_flap_set_flap_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }
 
 // SetFoldDuration sets the duration that fold transitions in self will take.
@@ -528,6 +551,8 @@ func (self *Flap) SetFoldDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_flap_set_fold_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetFoldPolicy sets the fold policy for self.
@@ -539,6 +564,8 @@ func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 	_arg1 = C.AdwFlapFoldPolicy(policy)
 
 	C.adw_flap_set_fold_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
@@ -550,6 +577,8 @@ func (self *Flap) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	_arg1 = C.AdwFoldThresholdPolicy(policy)
 
 	C.adw_flap_set_fold_threshold_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetLocked sets whether self is locked.
@@ -563,6 +592,8 @@ func (self *Flap) SetLocked(locked bool) {
 	}
 
 	C.adw_flap_set_locked(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(locked)
 }
 
 // SetModal sets whether self is modal.
@@ -576,6 +607,8 @@ func (self *Flap) SetModal(modal bool) {
 	}
 
 	C.adw_flap_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(modal)
 }
 
 // SetRevealDuration sets the duration that reveal transitions in self will
@@ -588,6 +621,8 @@ func (self *Flap) SetRevealDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_flap_set_reveal_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetRevealFlap sets whether the flap widget is revealed for self.
@@ -601,6 +636,8 @@ func (self *Flap) SetRevealFlap(revealFlap bool) {
 	}
 
 	C.adw_flap_set_reveal_flap(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(revealFlap)
 }
 
 // SetSeparator sets the separator widget for self.
@@ -614,6 +651,8 @@ func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	}
 
 	C.adw_flap_set_separator(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(separator)
 }
 
 // SetSwipeToClose sets whether self can be closed with a swipe gesture.
@@ -627,6 +666,8 @@ func (self *Flap) SetSwipeToClose(swipeToClose bool) {
 	}
 
 	C.adw_flap_set_swipe_to_close(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(swipeToClose)
 }
 
 // SetSwipeToOpen sets whether self can be opened with a swipe gesture.
@@ -640,6 +681,8 @@ func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 	}
 
 	C.adw_flap_set_swipe_to_open(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(swipeToOpen)
 }
 
 // SetTransitionType sets the type of animation used for reveal and fold
@@ -652,4 +695,6 @@ func (self *Flap) SetTransitionType(transitionType FlapTransitionType) {
 	_arg1 = C.AdwFlapTransitionType(transitionType)
 
 	C.adw_flap_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(transitionType)
 }

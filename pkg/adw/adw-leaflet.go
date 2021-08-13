@@ -4,6 +4,7 @@ package adw
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -162,6 +163,8 @@ func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_append(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _leafletPage *LeafletPage // out
 
@@ -187,6 +190,8 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 	_arg1 = C.AdwNavigationDirection(direction)
 
 	_cret = C.adw_leaflet_get_adjacent_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(direction)
 
 	var _widget gtk.Widgetter // out
 
@@ -206,6 +211,7 @@ func (self *Leaflet) CanSwipeBack() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_can_swipe_back(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -225,6 +231,7 @@ func (self *Leaflet) CanSwipeForward() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_can_swipe_forward(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -243,6 +250,7 @@ func (self *Leaflet) CanUnfold() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_can_unfold(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -268,6 +276,8 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.adw_leaflet_get_child_by_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 
 	var _widget gtk.Widgetter // out
 
@@ -287,6 +297,7 @@ func (self *Leaflet) ChildTransitionDuration() uint {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_child_transition_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -304,6 +315,7 @@ func (self *Leaflet) ChildTransitionRunning() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_child_transition_running(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -322,6 +334,7 @@ func (self *Leaflet) FoldThresholdPolicy() FoldThresholdPolicy {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_fold_threshold_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _foldThresholdPolicy FoldThresholdPolicy // out
 
@@ -338,6 +351,7 @@ func (self *Leaflet) Folded() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_folded(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -366,6 +380,9 @@ func (self *Leaflet) Homogeneous(folded bool, orientation gtk.Orientation) bool 
 	_arg2 = C.GtkOrientation(orientation)
 
 	_cret = C.adw_leaflet_get_homogeneous(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(folded)
+	runtime.KeepAlive(orientation)
 
 	var _ok bool // out
 
@@ -385,6 +402,7 @@ func (self *Leaflet) InterpolateSize() bool {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_interpolate_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -403,6 +421,7 @@ func (self *Leaflet) ModeTransitionDuration() uint {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_mode_transition_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -421,6 +440,8 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_get_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _leafletPage *LeafletPage // out
 
@@ -440,6 +461,7 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _selectionModel gtk.SelectionModeller // out
 
@@ -457,6 +479,7 @@ func (self *Leaflet) TransitionType() LeafletTransitionType {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_transition_type(_arg0)
+	runtime.KeepAlive(self)
 
 	var _leafletTransitionType LeafletTransitionType // out
 
@@ -473,6 +496,7 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_visible_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -491,6 +515,7 @@ func (self *Leaflet) VisibleChildName() string {
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_get_visible_child_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -518,6 +543,9 @@ func (self *Leaflet) InsertChildAfter(child gtk.Widgetter, sibling gtk.Widgetter
 	}
 
 	_cret = C.adw_leaflet_insert_child_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(sibling)
 
 	var _leafletPage *LeafletPage // out
 
@@ -542,6 +570,8 @@ func (self *Leaflet) Navigate(direction NavigationDirection) bool {
 	_arg1 = C.AdwNavigationDirection(direction)
 
 	_cret = C.adw_leaflet_navigate(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(direction)
 
 	var _ok bool // out
 
@@ -562,6 +592,8 @@ func (self *Leaflet) Prepend(child gtk.Widgetter) *LeafletPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_leaflet_prepend(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _leafletPage *LeafletPage // out
 
@@ -579,6 +611,8 @@ func (self *Leaflet) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_leaflet_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // ReorderChildAfter moves child to the position after sibling in the list of
@@ -597,6 +631,9 @@ func (self *Leaflet) ReorderChildAfter(child gtk.Widgetter, sibling gtk.Widgette
 	}
 
 	C.adw_leaflet_reorder_child_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(sibling)
 }
 
 // SetCanSwipeBack sets whether a swipe gesture can be used to navigate to the
@@ -611,6 +648,8 @@ func (self *Leaflet) SetCanSwipeBack(canSwipeBack bool) {
 	}
 
 	C.adw_leaflet_set_can_swipe_back(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canSwipeBack)
 }
 
 // SetCanSwipeForward sets whether a swipe gesture can be used to navigate to
@@ -625,6 +664,8 @@ func (self *Leaflet) SetCanSwipeForward(canSwipeForward bool) {
 	}
 
 	C.adw_leaflet_set_can_swipe_forward(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canSwipeForward)
 }
 
 // SetCanUnfold sets whether self can unfold.
@@ -638,6 +679,8 @@ func (self *Leaflet) SetCanUnfold(canUnfold bool) {
 	}
 
 	C.adw_leaflet_set_can_unfold(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canUnfold)
 }
 
 // SetChildTransitionDuration sets the child transition animation duration for
@@ -650,6 +693,8 @@ func (self *Leaflet) SetChildTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_leaflet_set_child_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
@@ -661,6 +706,8 @@ func (self *Leaflet) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	_arg1 = C.AdwFoldThresholdPolicy(policy)
 
 	C.adw_leaflet_set_fold_threshold_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetHomogeneous sets self to be homogeneous or not for the given fold and
@@ -688,6 +735,10 @@ func (self *Leaflet) SetHomogeneous(folded bool, orientation gtk.Orientation, ho
 	}
 
 	C.adw_leaflet_set_homogeneous(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(folded)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetInterpolateSize sets whether the leaflet interpolates its size when
@@ -702,6 +753,8 @@ func (self *Leaflet) SetInterpolateSize(interpolateSize bool) {
 	}
 
 	C.adw_leaflet_set_interpolate_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(interpolateSize)
 }
 
 // SetModeTransitionDuration sets the mode transition animation duration for
@@ -714,6 +767,8 @@ func (self *Leaflet) SetModeTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_leaflet_set_mode_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetTransitionType sets the type of animation used for transitions between
@@ -726,6 +781,8 @@ func (self *Leaflet) SetTransitionType(transition LeafletTransitionType) {
 	_arg1 = C.AdwLeafletTransitionType(transition)
 
 	C.adw_leaflet_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(transition)
 }
 
 // SetVisibleChild sets the widget currently visible when the leaflet is folded.
@@ -737,6 +794,8 @@ func (self *Leaflet) SetVisibleChild(visibleChild gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(visibleChild.Native()))
 
 	C.adw_leaflet_set_visible_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(visibleChild)
 }
 
 // SetVisibleChildName makes the child with the name name visible.
@@ -751,6 +810,8 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_leaflet_set_visible_child_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // LeafletPage: auxiliary class used by adw.Leaflet.
@@ -778,6 +839,7 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_page_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -794,6 +856,7 @@ func (self *LeafletPage) Name() string {
 	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_page_get_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -812,6 +875,7 @@ func (self *LeafletPage) Navigatable() bool {
 	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_leaflet_page_get_navigatable(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -834,6 +898,8 @@ func (self *LeafletPage) SetName(name string) {
 	}
 
 	C.adw_leaflet_page_set_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // SetNavigatable sets whether self can be navigated to when folded.
@@ -847,4 +913,6 @@ func (self *LeafletPage) SetNavigatable(navigatable bool) {
 	}
 
 	C.adw_leaflet_page_set_navigatable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(navigatable)
 }

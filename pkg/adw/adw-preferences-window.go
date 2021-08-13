@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -110,6 +111,8 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_preferences_window_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // CloseSubpage closes the current subpage.
@@ -123,6 +126,7 @@ func (self *PreferencesWindow) CloseSubpage() {
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
 	C.adw_preferences_window_close_subpage(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // CanSwipeBack gets whether or not self allows closing subpages via a swipe
@@ -134,6 +138,7 @@ func (self *PreferencesWindow) CanSwipeBack() bool {
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_window_get_can_swipe_back(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -152,6 +157,7 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_window_get_search_enabled(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -170,6 +176,7 @@ func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_window_get_visible_page(_arg0)
+	runtime.KeepAlive(self)
 
 	var _preferencesPage *PreferencesPage // out
 
@@ -188,6 +195,7 @@ func (self *PreferencesWindow) VisiblePageName() string {
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_window_get_visible_page_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -210,6 +218,8 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(subpage.Native()))
 
 	C.adw_preferences_window_present_subpage(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subpage)
 }
 
 // Remove removes a page from self.
@@ -221,6 +231,8 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_preferences_window_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // SetCanSwipeBack sets whether or not self allows closing subpages via a swipe
@@ -235,6 +247,8 @@ func (self *PreferencesWindow) SetCanSwipeBack(canSwipeBack bool) {
 	}
 
 	C.adw_preferences_window_set_can_swipe_back(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canSwipeBack)
 }
 
 // SetSearchEnabled sets whether search is enabled for self.
@@ -248,6 +262,8 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 	}
 
 	C.adw_preferences_window_set_search_enabled(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(searchEnabled)
 }
 
 // SetVisiblePage makes page the visible page of self.
@@ -259,6 +275,8 @@ func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_preferences_window_set_visible_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // SetVisiblePageName makes the page with the given name visible.
@@ -271,4 +289,6 @@ func (self *PreferencesWindow) SetVisiblePageName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_window_set_visible_page_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }

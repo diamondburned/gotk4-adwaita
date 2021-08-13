@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -122,6 +123,8 @@ func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_view_stack_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _viewStackPage *ViewStackPage // out
 
@@ -147,6 +150,9 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 	}
 
 	_cret = C.adw_view_stack_add_named(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
 
 	var _viewStackPage *ViewStackPage // out
 
@@ -176,6 +182,10 @@ func (self *ViewStack) AddTitled(child gtk.Widgetter, name string, title string)
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.adw_view_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(title)
 
 	var _viewStackPage *ViewStackPage // out
 
@@ -195,6 +205,8 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.adw_view_stack_get_child_by_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 
 	var _widget gtk.Widgetter // out
 
@@ -213,6 +225,7 @@ func (self *ViewStack) Hhomogeneous() bool {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_hhomogeneous(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -232,6 +245,7 @@ func (self *ViewStack) InterpolateSize() bool {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_interpolate_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -252,6 +266,8 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_view_stack_get_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _viewStackPage *ViewStackPage // out
 
@@ -271,6 +287,7 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _selectionModel gtk.SelectionModeller // out
 
@@ -288,6 +305,7 @@ func (self *ViewStack) TransitionRunning() bool {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_transition_running(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -306,6 +324,7 @@ func (self *ViewStack) Vhomogeneous() bool {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_vhomogeneous(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -324,6 +343,7 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_visible_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -342,6 +362,7 @@ func (self *ViewStack) VisibleChildName() string {
 	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_get_visible_child_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -361,6 +382,8 @@ func (self *ViewStack) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_view_stack_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetHhomogeneous sets self to be horizontally homogeneous or not.
@@ -374,6 +397,8 @@ func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 	}
 
 	C.adw_view_stack_set_hhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hhomogeneous)
 }
 
 // SetInterpolateSize sets whether self will interpolate its size when changing
@@ -388,6 +413,8 @@ func (self *ViewStack) SetInterpolateSize(interpolateSize bool) {
 	}
 
 	C.adw_view_stack_set_interpolate_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(interpolateSize)
 }
 
 // SetVhomogeneous sets self to be vertically homogeneous or not.
@@ -401,6 +428,8 @@ func (self *ViewStack) SetVhomogeneous(vhomogeneous bool) {
 	}
 
 	C.adw_view_stack_set_vhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(vhomogeneous)
 }
 
 // SetVisibleChild makes child the visible child of self.
@@ -412,6 +441,8 @@ func (self *ViewStack) SetVisibleChild(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_view_stack_set_visible_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetVisibleChildName makes the child with name visible.
@@ -424,6 +455,8 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_stack_set_visible_child_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // ViewStackPage: auxiliary class used by adw.ViewStack.
@@ -451,6 +484,7 @@ func (self *ViewStackPage) BadgeNumber() uint {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_badge_number(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -467,6 +501,7 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -483,6 +518,7 @@ func (self *ViewStackPage) IconName() string {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -501,6 +537,7 @@ func (self *ViewStackPage) Name() string {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -519,6 +556,7 @@ func (self *ViewStackPage) NeedsAttention() bool {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_needs_attention(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -537,6 +575,7 @@ func (self *ViewStackPage) Title() string {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -555,6 +594,7 @@ func (self *ViewStackPage) UseUnderline() bool {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_use_underline(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -575,6 +615,7 @@ func (self *ViewStackPage) Visible() bool {
 	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_stack_page_get_visible(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -594,6 +635,8 @@ func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 	_arg1 = C.guint(badgeNumber)
 
 	C.adw_view_stack_page_set_badge_number(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(badgeNumber)
 }
 
 // SetIconName sets the icon name of the page.
@@ -608,6 +651,8 @@ func (self *ViewStackPage) SetIconName(iconName string) {
 	}
 
 	C.adw_view_stack_page_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetName sets the name of the page.
@@ -622,6 +667,8 @@ func (self *ViewStackPage) SetName(name string) {
 	}
 
 	C.adw_view_stack_page_set_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // SetNeedsAttention sets whether the page is marked as “needs attention”.
@@ -635,6 +682,8 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 	}
 
 	C.adw_view_stack_page_set_needs_attention(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(needsAttention)
 }
 
 // SetTitle sets the page title.
@@ -649,6 +698,8 @@ func (self *ViewStackPage) SetTitle(title string) {
 	}
 
 	C.adw_view_stack_page_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetUseUnderline sets whether underlines in the page title indicate mnemonics.
@@ -662,6 +713,8 @@ func (self *ViewStackPage) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.adw_view_stack_page_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useUnderline)
 }
 
 // SetVisible sets whether page is visible in its AdwViewStack.
@@ -675,4 +728,6 @@ func (self *ViewStackPage) SetVisible(visible bool) {
 	}
 
 	C.adw_view_stack_page_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(visible)
 }

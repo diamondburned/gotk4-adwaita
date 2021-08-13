@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -111,6 +112,7 @@ func (self *Swipeable) CancelProgress() float64 {
 	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipeable_get_cancel_progress(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -129,6 +131,7 @@ func (self *Swipeable) Distance() float64 {
 	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipeable_get_distance(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -145,6 +148,7 @@ func (self *Swipeable) Progress() float64 {
 	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipeable_get_progress(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -175,6 +179,9 @@ func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag
 	}
 
 	C.adw_swipeable_get_swipe_area(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(navigationDirection)
+	runtime.KeepAlive(isDrag)
 
 	var _rect gdk.Rectangle // out
 

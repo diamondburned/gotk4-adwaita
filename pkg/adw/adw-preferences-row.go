@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -101,6 +102,7 @@ func (self *PreferencesRow) Title() string {
 	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_row_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -118,6 +120,7 @@ func (self *PreferencesRow) UseUnderline() bool {
 	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_row_get_use_underline(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -138,6 +141,8 @@ func (self *PreferencesRow) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_row_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetUseUnderline sets whether an embedded underline in the title indicates a
@@ -152,4 +157,6 @@ func (self *PreferencesRow) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.adw_preferences_row_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useUnderline)
 }

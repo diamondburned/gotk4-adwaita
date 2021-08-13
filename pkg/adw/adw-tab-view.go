@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -48,6 +49,7 @@ func (self *TabPage) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -64,6 +66,7 @@ func (self *TabPage) Icon() gio.Iconner {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_icon(_arg0)
+	runtime.KeepAlive(self)
 
 	var _icon gio.Iconner // out
 
@@ -82,6 +85,7 @@ func (self *TabPage) IndicatorActivatable() bool {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_indicator_activatable(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -100,6 +104,7 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_indicator_icon(_arg0)
+	runtime.KeepAlive(self)
 
 	var _icon gio.Iconner // out
 
@@ -118,6 +123,7 @@ func (self *TabPage) Loading() bool {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_loading(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -136,6 +142,7 @@ func (self *TabPage) NeedsAttention() bool {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_needs_attention(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -154,6 +161,7 @@ func (self *TabPage) Parent() *TabPage {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_parent(_arg0)
+	runtime.KeepAlive(self)
 
 	var _tabPage *TabPage // out
 
@@ -172,6 +180,7 @@ func (self *TabPage) Pinned() bool {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_pinned(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -190,6 +199,7 @@ func (self *TabPage) Selected() bool {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_selected(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -208,6 +218,7 @@ func (self *TabPage) Title() string {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -224,6 +235,7 @@ func (self *TabPage) Tooltip() string {
 	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_page_get_tooltip(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -245,6 +257,8 @@ func (self *TabPage) SetIcon(icon gio.Iconner) {
 	}
 
 	C.adw_tab_page_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(icon)
 }
 
 // SetIndicatorActivatable sets whether the indicator of self is activatable.
@@ -258,6 +272,8 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	}
 
 	C.adw_tab_page_set_indicator_activatable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(activatable)
 }
 
 // SetIndicatorIcon sets the indicator icon of self.
@@ -271,6 +287,8 @@ func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 	}
 
 	C.adw_tab_page_set_indicator_icon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(indicatorIcon)
 }
 
 // SetLoading sets wether self is loading.
@@ -284,6 +302,8 @@ func (self *TabPage) SetLoading(loading bool) {
 	}
 
 	C.adw_tab_page_set_loading(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(loading)
 }
 
 // SetNeedsAttention sets whether self needs attention.
@@ -297,6 +317,8 @@ func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 	}
 
 	C.adw_tab_page_set_needs_attention(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(needsAttention)
 }
 
 // SetTitle sets the title of self.
@@ -309,6 +331,8 @@ func (self *TabPage) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_tab_page_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetTooltip sets the tooltip of self.
@@ -321,6 +345,8 @@ func (self *TabPage) SetTooltip(tooltip string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_tab_page_set_tooltip(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tooltip)
 }
 
 // TabView: dynamic tabbed container.
@@ -409,6 +435,9 @@ func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 	}
 
 	_cret = C.adw_tab_view_add_page(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(parent)
 
 	var _tabPage *TabPage // out
 
@@ -427,6 +456,8 @@ func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_tab_view_append(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _tabPage *TabPage // out
 
@@ -445,6 +476,8 @@ func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_tab_view_append_pinned(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _tabPage *TabPage // out
 
@@ -462,6 +495,8 @@ func (self *TabView) CloseOtherPages(page *TabPage) {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_tab_view_close_other_pages(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // ClosePage requests to close page.
@@ -494,6 +529,8 @@ func (self *TabView) ClosePage(page *TabPage) {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_tab_view_close_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // ClosePageFinish completes a adw.TabView.ClosePage() call for page.
@@ -515,6 +552,9 @@ func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
 	}
 
 	C.adw_tab_view_close_page_finish(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(confirm)
 }
 
 // ClosePagesAfter requests to close all pages after page.
@@ -526,6 +566,8 @@ func (self *TabView) ClosePagesAfter(page *TabPage) {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_tab_view_close_pages_after(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // ClosePagesBefore requests to close all pages before page.
@@ -537,6 +579,8 @@ func (self *TabView) ClosePagesBefore(page *TabPage) {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	C.adw_tab_view_close_pages_before(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 }
 
 // DefaultIcon gets the default icon of self.
@@ -547,6 +591,7 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_default_icon(_arg0)
+	runtime.KeepAlive(self)
 
 	var _icon gio.Iconner // out
 
@@ -563,6 +608,7 @@ func (self *TabView) IsTransferringPage() bool {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_is_transferring_page(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -581,6 +627,7 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_menu_model(_arg0)
+	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
 
@@ -599,6 +646,7 @@ func (self *TabView) NPages() int {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_n_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -615,6 +663,7 @@ func (self *TabView) NPinnedPages() int {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_n_pinned_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -633,6 +682,8 @@ func (self *TabView) NthPage(position int) *TabPage {
 	_arg1 = C.int(position)
 
 	_cret = C.adw_tab_view_get_nth_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 
 	var _tabPage *TabPage // out
 
@@ -651,6 +702,8 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_tab_view_get_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _tabPage *TabPage // out
 
@@ -669,6 +722,8 @@ func (self *TabView) PagePosition(page *TabPage) int {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.adw_tab_view_get_page_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 
 	var _gint int // out
 
@@ -688,6 +743,7 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _selectionModel gtk.SelectionModeller // out
 
@@ -704,6 +760,7 @@ func (self *TabView) SelectedPage() *TabPage {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_selected_page(_arg0)
+	runtime.KeepAlive(self)
 
 	var _tabPage *TabPage // out
 
@@ -722,6 +779,7 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_get_shortcut_widget(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -747,6 +805,9 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 	_arg2 = C.int(position)
 
 	_cret = C.adw_tab_view_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 
 	var _tabPage *TabPage // out
 
@@ -770,6 +831,9 @@ func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 	_arg2 = C.int(position)
 
 	_cret = C.adw_tab_view_insert_pinned(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 
 	var _tabPage *TabPage // out
 
@@ -788,6 +852,8 @@ func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_tab_view_prepend(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _tabPage *TabPage // out
 
@@ -806,6 +872,8 @@ func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_tab_view_prepend_pinned(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _tabPage *TabPage // out
 
@@ -824,6 +892,8 @@ func (self *TabView) ReorderBackward(page *TabPage) bool {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.adw_tab_view_reorder_backward(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -844,6 +914,8 @@ func (self *TabView) ReorderFirst(page *TabPage) bool {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.adw_tab_view_reorder_first(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -864,6 +936,8 @@ func (self *TabView) ReorderForward(page *TabPage) bool {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.adw_tab_view_reorder_forward(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -884,6 +958,8 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.adw_tab_view_reorder_last(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -909,6 +985,9 @@ func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 	_arg2 = C.int(position)
 
 	_cret = C.adw_tab_view_reorder_page(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(position)
 
 	var _ok bool // out
 
@@ -929,6 +1008,7 @@ func (self *TabView) SelectNextPage() bool {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_select_next_page(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -949,6 +1029,7 @@ func (self *TabView) SelectPreviousPage() bool {
 	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_tab_view_select_previous_page(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -968,6 +1049,8 @@ func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(defaultIcon.Native()))
 
 	C.adw_tab_view_set_default_icon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(defaultIcon)
 }
 
 // SetMenuModel sets the tab context menu model for self.
@@ -981,6 +1064,8 @@ func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 	}
 
 	C.adw_tab_view_set_menu_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(menuModel)
 }
 
 // SetPagePinned pins or unpins page.
@@ -1018,6 +1103,9 @@ func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
 	}
 
 	C.adw_tab_view_set_page_pinned(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(pinned)
 }
 
 // SetSelectedPage sets the currently selected page in self.
@@ -1029,6 +1117,8 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(selectedPage.Native()))
 
 	C.adw_tab_view_set_selected_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(selectedPage)
 }
 
 // SetShortcutWidget sets the shortcut widget for self.
@@ -1042,6 +1132,8 @@ func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 	}
 
 	C.adw_tab_view_set_shortcut_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // TransferPage transfers page from self to other_view.
@@ -1062,4 +1154,8 @@ func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position in
 	_arg3 = C.int(position)
 
 	C.adw_tab_view_transfer_page(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(otherView)
+	runtime.KeepAlive(position)
 }

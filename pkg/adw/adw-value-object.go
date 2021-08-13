@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -48,6 +49,7 @@ func NewValueObject(value *externglib.Value) *ValueObject {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.adw_value_object_new(_arg1)
+	runtime.KeepAlive(value)
 
 	var _valueObject *ValueObject // out
 
@@ -65,6 +67,8 @@ func (value *ValueObject) CopyValue(dest *externglib.Value) {
 	_arg1 = (*C.GValue)(unsafe.Pointer(dest.Native()))
 
 	C.adw_value_object_copy_value(_arg0, _arg1)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(dest)
 }
 
 // DupString copies the contained string if the value is of type G_TYPE_STRING.
@@ -75,6 +79,7 @@ func (value *ValueObject) DupString() string {
 	_arg0 = (*C.AdwValueObject)(unsafe.Pointer(value.Native()))
 
 	_cret = C.adw_value_object_dup_string(_arg0)
+	runtime.KeepAlive(value)
 
 	var _utf8 string // out
 
@@ -92,6 +97,7 @@ func (value *ValueObject) String() string {
 	_arg0 = (*C.AdwValueObject)(unsafe.Pointer(value.Native()))
 
 	_cret = C.adw_value_object_get_string(_arg0)
+	runtime.KeepAlive(value)
 
 	var _utf8 string // out
 
@@ -108,6 +114,7 @@ func (value *ValueObject) Value() *externglib.Value {
 	_arg0 = (*C.AdwValueObject)(unsafe.Pointer(value.Native()))
 
 	_cret = C.adw_value_object_get_value(_arg0)
+	runtime.KeepAlive(value)
 
 	var _ret *externglib.Value // out
 

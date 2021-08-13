@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -72,6 +73,8 @@ func NewWindowTitle(title string, subtitle string) *WindowTitle {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.adw_window_title_new(_arg1, _arg2)
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(subtitle)
 
 	var _windowTitle *WindowTitle // out
 
@@ -88,6 +91,7 @@ func (self *WindowTitle) Subtitle() string {
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_window_title_get_subtitle(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -104,6 +108,7 @@ func (self *WindowTitle) Title() string {
 	_arg0 = (*C.AdwWindowTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_window_title_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -122,6 +127,8 @@ func (self *WindowTitle) SetSubtitle(subtitle string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subtitle)
 }
 
 // SetTitle sets the title of self.
@@ -134,4 +141,6 @@ func (self *WindowTitle) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_window_title_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }

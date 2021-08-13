@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -125,6 +126,8 @@ func (self *ExpanderRow) Add(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_expander_row_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // AddAction adds an action widget to self.
@@ -136,6 +139,8 @@ func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_expander_row_add_action(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // AddPrefix adds a prefix widget to self.
@@ -147,6 +152,8 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_expander_row_add_prefix(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // EnableExpansion gets whether the expansion of self is enabled.
@@ -157,6 +164,7 @@ func (self *ExpanderRow) EnableExpansion() bool {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_enable_expansion(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -175,6 +183,7 @@ func (self *ExpanderRow) Expanded() bool {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_expanded(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -193,6 +202,7 @@ func (self *ExpanderRow) IconName() string {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -212,6 +222,7 @@ func (self *ExpanderRow) ShowEnableSwitch() bool {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_show_enable_switch(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -230,6 +241,7 @@ func (self *ExpanderRow) Subtitle() string {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_subtitle(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -247,6 +259,7 @@ func (self *ExpanderRow) UseUnderline() bool {
 	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_expander_row_get_use_underline(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -265,6 +278,8 @@ func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_expander_row_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetEnableExpansion sets whether the expansion of self is enabled.
@@ -278,6 +293,8 @@ func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 	}
 
 	C.adw_expander_row_set_enable_expansion(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableExpansion)
 }
 
 // SetExpanded sets whether self is expanded.
@@ -291,6 +308,8 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 	}
 
 	C.adw_expander_row_set_expanded(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expanded)
 }
 
 // SetIconName sets the icon name for self.
@@ -305,6 +324,8 @@ func (self *ExpanderRow) SetIconName(iconName string) {
 	}
 
 	C.adw_expander_row_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetShowEnableSwitch sets whether the switch enabling the expansion of self is
@@ -319,6 +340,8 @@ func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 	}
 
 	C.adw_expander_row_set_show_enable_switch(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(showEnableSwitch)
 }
 
 // SetSubtitle sets the subtitle for self.
@@ -331,6 +354,8 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_expander_row_set_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subtitle)
 }
 
 // SetUseUnderline sets whether underlines in title or subtitle are interpreted
@@ -345,4 +370,6 @@ func (self *ExpanderRow) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.adw_expander_row_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useUnderline)
 }

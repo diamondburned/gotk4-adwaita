@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -46,6 +47,7 @@ func (self *EnumValueObject) Name() string {
 	_arg0 = (*C.AdwEnumValueObject)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_enum_value_object_get_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -62,6 +64,7 @@ func (self *EnumValueObject) Nick() string {
 	_arg0 = (*C.AdwEnumValueObject)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_enum_value_object_get_nick(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -78,6 +81,7 @@ func (self *EnumValueObject) Value() int {
 	_arg0 = (*C.AdwEnumValueObject)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_enum_value_object_get_value(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 

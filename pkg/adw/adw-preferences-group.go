@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -86,6 +87,8 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_preferences_group_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // Description gets the description of self.
@@ -96,6 +99,7 @@ func (self *PreferencesGroup) Description() string {
 	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_group_get_description(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -114,6 +118,7 @@ func (self *PreferencesGroup) Title() string {
 	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_preferences_group_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -131,6 +136,8 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_preferences_group_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetDescription sets the description for self.
@@ -145,6 +152,8 @@ func (self *PreferencesGroup) SetDescription(description string) {
 	}
 
 	C.adw_preferences_group_set_description(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(description)
 }
 
 // SetTitle sets the title for self.
@@ -157,4 +166,6 @@ func (self *PreferencesGroup) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_preferences_group_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }

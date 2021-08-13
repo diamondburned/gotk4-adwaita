@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -133,6 +134,7 @@ func (self *ActionRow) Activate() {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	C.adw_action_row_activate(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // AddPrefix adds a prefix widget to self.
@@ -144,6 +146,8 @@ func (self *ActionRow) AddPrefix(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_add_prefix(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // AddSuffix adds a suffix widget to self.
@@ -155,6 +159,8 @@ func (self *ActionRow) AddSuffix(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_add_suffix(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // ActivatableWidget gets the widget activated when self is activated.
@@ -165,6 +171,7 @@ func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_activatable_widget(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -183,6 +190,7 @@ func (self *ActionRow) IconName() string {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -201,6 +209,7 @@ func (self *ActionRow) Subtitle() string {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_subtitle(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -222,6 +231,7 @@ func (self *ActionRow) SubtitleLines() int {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_subtitle_lines(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -241,6 +251,7 @@ func (self *ActionRow) TitleLines() int {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_title_lines(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -258,6 +269,7 @@ func (self *ActionRow) UseUnderline() bool {
 	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_action_row_get_use_underline(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -277,6 +289,8 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_action_row_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetActivatableWidget sets the widget to activate when self is activated.
@@ -290,6 +304,8 @@ func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	}
 
 	C.adw_action_row_set_activatable_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetIconName sets the icon name for self.
@@ -304,6 +320,8 @@ func (self *ActionRow) SetIconName(iconName string) {
 	}
 
 	C.adw_action_row_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetSubtitle sets the subtitle for self.
@@ -316,6 +334,8 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_action_row_set_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subtitle)
 }
 
 // SetSubtitleLines sets the number of lines at the end of which the subtitle
@@ -330,6 +350,8 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 	_arg1 = C.int(subtitleLines)
 
 	C.adw_action_row_set_subtitle_lines(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subtitleLines)
 }
 
 // SetTitleLines sets the number of lines at the end of which the title label
@@ -344,6 +366,8 @@ func (self *ActionRow) SetTitleLines(titleLines int) {
 	_arg1 = C.int(titleLines)
 
 	C.adw_action_row_set_title_lines(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(titleLines)
 }
 
 // SetUseUnderline sets whether underlines in title or subtitle are interpreted
@@ -358,4 +382,6 @@ func (self *ActionRow) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.adw_action_row_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useUnderline)
 }

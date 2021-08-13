@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -80,6 +81,7 @@ func (self *ClampLayout) MaximumSize() int {
 	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_clamp_layout_get_maximum_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -96,6 +98,7 @@ func (self *ClampLayout) TighteningThreshold() int {
 	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_clamp_layout_get_tightening_threshold(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -113,6 +116,8 @@ func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 	_arg1 = C.int(maximumSize)
 
 	C.adw_clamp_layout_set_maximum_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(maximumSize)
 }
 
 // SetTighteningThreshold sets the size above which the children are clamped.
@@ -124,4 +129,6 @@ func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int) {
 	_arg1 = C.int(tighteningThreshold)
 
 	C.adw_clamp_layout_set_tightening_threshold(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tighteningThreshold)
 }

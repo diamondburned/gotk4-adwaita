@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -59,6 +60,7 @@ func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer(swipeable.Native()))
 
 	_cret = C.adw_swipe_tracker_new(_arg1)
+	runtime.KeepAlive(swipeable)
 
 	var _swipeTracker *SwipeTracker // out
 
@@ -76,6 +78,7 @@ func (self *SwipeTracker) AllowLongSwipes() bool {
 	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipe_tracker_get_allow_long_swipes(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -94,6 +97,7 @@ func (self *SwipeTracker) AllowMouseDrag() bool {
 	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipe_tracker_get_allow_mouse_drag(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -112,6 +116,7 @@ func (self *SwipeTracker) Enabled() bool {
 	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipe_tracker_get_enabled(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -130,6 +135,7 @@ func (self *SwipeTracker) Reversed() bool {
 	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipe_tracker_get_reversed(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -148,6 +154,7 @@ func (self *SwipeTracker) Swipeable() Swipeabler {
 	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_swipe_tracker_get_swipeable(_arg0)
+	runtime.KeepAlive(self)
 
 	var _swipeable Swipeabler // out
 
@@ -168,6 +175,8 @@ func (self *SwipeTracker) SetAllowLongSwipes(allowLongSwipes bool) {
 	}
 
 	C.adw_swipe_tracker_set_allow_long_swipes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowLongSwipes)
 }
 
 // SetAllowMouseDrag sets whether self can be dragged with mouse pointer.
@@ -181,6 +190,8 @@ func (self *SwipeTracker) SetAllowMouseDrag(allowMouseDrag bool) {
 	}
 
 	C.adw_swipe_tracker_set_allow_mouse_drag(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowMouseDrag)
 }
 
 // SetEnabled sets whether self is enabled.
@@ -194,6 +205,8 @@ func (self *SwipeTracker) SetEnabled(enabled bool) {
 	}
 
 	C.adw_swipe_tracker_set_enabled(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enabled)
 }
 
 // SetReversed sets whether to reverse the swipe direction.
@@ -207,6 +220,8 @@ func (self *SwipeTracker) SetReversed(reversed bool) {
 	}
 
 	C.adw_swipe_tracker_set_reversed(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(reversed)
 }
 
 // ShiftPosition moves the current progress value by delta.
@@ -221,4 +236,6 @@ func (self *SwipeTracker) ShiftPosition(delta float64) {
 	_arg1 = C.double(delta)
 
 	C.adw_swipe_tracker_shift_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(delta)
 }

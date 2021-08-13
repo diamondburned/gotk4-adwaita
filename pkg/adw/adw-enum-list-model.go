@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -53,6 +54,7 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	_arg1 = C.GType(enumType)
 
 	_cret = C.adw_enum_list_model_new(_arg1)
+	runtime.KeepAlive(enumType)
 
 	var _enumListModel *EnumListModel // out
 
@@ -71,6 +73,8 @@ func (self *EnumListModel) FindPosition(value int) uint {
 	_arg1 = C.int(value)
 
 	_cret = C.adw_enum_list_model_find_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 
 	var _guint uint // out
 
@@ -87,6 +91,7 @@ func (self *EnumListModel) EnumType() externglib.Type {
 	_arg0 = (*C.AdwEnumListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_enum_list_model_get_enum_type(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gType externglib.Type // out
 

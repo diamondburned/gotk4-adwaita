@@ -4,6 +4,7 @@ package adw
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -125,6 +126,8 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_squeezer_add(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _squeezerPage *SqueezerPage // out
 
@@ -142,6 +145,7 @@ func (self *Squeezer) Homogeneous() bool {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_homogeneous(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -161,6 +165,7 @@ func (self *Squeezer) InterpolateSize() bool {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_interpolate_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -181,6 +186,8 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.adw_squeezer_get_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 
 	var _squeezerPage *SqueezerPage // out
 
@@ -200,6 +207,7 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _selectionModel gtk.SelectionModeller // out
 
@@ -216,6 +224,7 @@ func (self *Squeezer) TransitionDuration() uint {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_transition_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -232,6 +241,7 @@ func (self *Squeezer) TransitionRunning() bool {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_transition_running(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -251,6 +261,7 @@ func (self *Squeezer) TransitionType() SqueezerTransitionType {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_transition_type(_arg0)
+	runtime.KeepAlive(self)
 
 	var _squeezerTransitionType SqueezerTransitionType // out
 
@@ -267,6 +278,7 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_visible_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -285,6 +297,7 @@ func (self *Squeezer) XAlign() float32 {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_xalign(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out
 
@@ -301,6 +314,7 @@ func (self *Squeezer) YAlign() float32 {
 	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_get_yalign(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out
 
@@ -318,6 +332,8 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_squeezer_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetHomogeneous sets hether all children have the same size for the opposite
@@ -332,6 +348,8 @@ func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.adw_squeezer_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetInterpolateSize sets whether self interpolates its size when changing the
@@ -346,6 +364,8 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	}
 
 	C.adw_squeezer_set_interpolate_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(interpolateSize)
 }
 
 // SetTransitionDuration sets the transition animation duration for self.
@@ -357,6 +377,8 @@ func (self *Squeezer) SetTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_squeezer_set_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetTransitionType sets the type of animation used for transitions between
@@ -369,6 +391,8 @@ func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 	_arg1 = C.AdwSqueezerTransitionType(transition)
 
 	C.adw_squeezer_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(transition)
 }
 
 // SetXAlign sets the horizontal alignment, from 0 (start) to 1 (end).
@@ -380,6 +404,8 @@ func (self *Squeezer) SetXAlign(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.adw_squeezer_set_xalign(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(xalign)
 }
 
 // SetYAlign sets the vertical alignment, from 0 (top) to 1 (bottom).
@@ -391,6 +417,8 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 	_arg1 = C.float(yalign)
 
 	C.adw_squeezer_set_yalign(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(yalign)
 }
 
 // SqueezerPage: auxiliary class used by adw.Squeezer.
@@ -418,6 +446,7 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwSqueezerPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_page_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -434,6 +463,7 @@ func (self *SqueezerPage) Enabled() bool {
 	_arg0 = (*C.AdwSqueezerPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_squeezer_page_get_enabled(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -455,4 +485,6 @@ func (self *SqueezerPage) SetEnabled(enabled bool) {
 	}
 
 	C.adw_squeezer_page_set_enabled(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enabled)
 }

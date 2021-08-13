@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -110,6 +111,8 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_append(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // AllowLongSwipes gets whether to allow swiping for more than one page at a
@@ -121,6 +124,7 @@ func (self *Carousel) AllowLongSwipes() bool {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_allow_long_swipes(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -139,6 +143,7 @@ func (self *Carousel) AllowMouseDrag() bool {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_allow_mouse_drag(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -157,6 +162,7 @@ func (self *Carousel) AllowScrollWheel() bool {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_allow_scroll_wheel(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -176,6 +182,7 @@ func (self *Carousel) AnimationDuration() uint {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_animation_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -192,6 +199,7 @@ func (self *Carousel) Interactive() bool {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_interactive(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -210,6 +218,7 @@ func (self *Carousel) NPages() uint {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_n_pages(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -228,6 +237,8 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 	_arg1 = C.guint(n)
 
 	_cret = C.adw_carousel_get_nth_page(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(n)
 
 	var _widget gtk.Widgetter // out
 
@@ -246,6 +257,7 @@ func (self *Carousel) Position() float64 {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_position(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -263,6 +275,7 @@ func (self *Carousel) RevealDuration() uint {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_reveal_duration(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -279,6 +292,7 @@ func (self *Carousel) Spacing() uint {
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_get_spacing(_arg0)
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -301,6 +315,9 @@ func (self *Carousel) Insert(child gtk.Widgetter, position int) {
 	_arg2 = C.int(position)
 
 	C.adw_carousel_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // Prepend prepends child to self.
@@ -312,6 +329,8 @@ func (self *Carousel) Prepend(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_prepend(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // Remove removes child from self.
@@ -323,6 +342,8 @@ func (self *Carousel) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_carousel_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // Reorder moves child into position position.
@@ -339,6 +360,9 @@ func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 	_arg2 = C.int(position)
 
 	C.adw_carousel_reorder(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // ScrollTo scrolls to widget with an animation.
@@ -353,6 +377,8 @@ func (self *Carousel) ScrollTo(widget gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.adw_carousel_scroll_to(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // ScrollToFull scrolls to widget with an animation.
@@ -366,6 +392,9 @@ func (self *Carousel) ScrollToFull(widget gtk.Widgetter, duration int64) {
 	_arg2 = C.gint64(duration)
 
 	C.adw_carousel_scroll_to_full(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(duration)
 }
 
 // SetAllowLongSwipes sets whether to allow swiping for more than one page at a
@@ -380,6 +409,8 @@ func (self *Carousel) SetAllowLongSwipes(allowLongSwipes bool) {
 	}
 
 	C.adw_carousel_set_allow_long_swipes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowLongSwipes)
 }
 
 // SetAllowMouseDrag sets whether self can be dragged with mouse pointer.
@@ -393,6 +424,8 @@ func (self *Carousel) SetAllowMouseDrag(allowMouseDrag bool) {
 	}
 
 	C.adw_carousel_set_allow_mouse_drag(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowMouseDrag)
 }
 
 // SetAllowScrollWheel sets whether self will respond to scroll wheel events.
@@ -406,6 +439,8 @@ func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 	}
 
 	C.adw_carousel_set_allow_scroll_wheel(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowScrollWheel)
 }
 
 // SetAnimationDuration sets the animation duration used by
@@ -418,6 +453,8 @@ func (self *Carousel) SetAnimationDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.adw_carousel_set_animation_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetInteractive sets whether self can be navigated.
@@ -431,6 +468,8 @@ func (self *Carousel) SetInteractive(interactive bool) {
 	}
 
 	C.adw_carousel_set_interactive(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(interactive)
 }
 
 // SetRevealDuration sets duration of the animation used when adding or removing
@@ -443,6 +482,8 @@ func (self *Carousel) SetRevealDuration(revealDuration uint) {
 	_arg1 = C.guint(revealDuration)
 
 	C.adw_carousel_set_reveal_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(revealDuration)
 }
 
 // SetSpacing sets spacing between pages in pixels.
@@ -454,4 +495,6 @@ func (self *Carousel) SetSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.adw_carousel_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(spacing)
 }

@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -103,6 +104,7 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	_arg1 = (*C.GtkApplication)(unsafe.Pointer(app.Native()))
 
 	_cret = C.adw_application_window_new(_arg1)
+	runtime.KeepAlive(app)
 
 	var _applicationWindow *ApplicationWindow // out
 
@@ -121,6 +123,7 @@ func (self *ApplicationWindow) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_application_window_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -144,4 +147,6 @@ func (self *ApplicationWindow) SetChild(child gtk.Widgetter) {
 	}
 
 	C.adw_application_window_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }

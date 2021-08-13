@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,9 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	}
 
 	_cret = C.adw_avatar_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(showInitials)
 
 	var _avatar *Avatar // out
 
@@ -111,6 +115,9 @@ func (self *Avatar) DrawToPixbuf(size int, scaleFactor int) *gdkpixbuf.Pixbuf {
 	_arg2 = C.int(scaleFactor)
 
 	_cret = C.adw_avatar_draw_to_pixbuf(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scaleFactor)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -137,6 +144,7 @@ func (self *Avatar) CustomImage() gdk.Paintabler {
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_avatar_get_custom_image(_arg0)
+	runtime.KeepAlive(self)
 
 	var _paintable gdk.Paintabler // out
 
@@ -155,6 +163,7 @@ func (self *Avatar) IconName() string {
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_avatar_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -174,6 +183,7 @@ func (self *Avatar) ShowInitials() bool {
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_avatar_get_show_initials(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -192,6 +202,7 @@ func (self *Avatar) Size() int {
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_avatar_get_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -208,6 +219,7 @@ func (self *Avatar) Text() string {
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_avatar_get_text(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -229,6 +241,8 @@ func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 	}
 
 	C.adw_avatar_set_custom_image(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(customImage)
 }
 
 // SetIconName sets the name of an icon to use as a fallback.
@@ -245,6 +259,8 @@ func (self *Avatar) SetIconName(iconName string) {
 	}
 
 	C.adw_avatar_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetShowInitials sets whether to use initials instead of an icon on the
@@ -259,6 +275,8 @@ func (self *Avatar) SetShowInitials(showInitials bool) {
 	}
 
 	C.adw_avatar_set_show_initials(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(showInitials)
 }
 
 // SetSize sets the size of the avatar.
@@ -270,6 +288,8 @@ func (self *Avatar) SetSize(size int) {
 	_arg1 = C.int(size)
 
 	C.adw_avatar_set_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(size)
 }
 
 // SetText sets the text used to generate the fallback initials and color.
@@ -284,4 +304,6 @@ func (self *Avatar) SetText(text string) {
 	}
 
 	C.adw_avatar_set_text(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(text)
 }

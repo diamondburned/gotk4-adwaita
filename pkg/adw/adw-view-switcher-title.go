@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -120,6 +121,7 @@ func (self *ViewSwitcherTitle) Policy() ViewSwitcherPolicy {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewSwitcherPolicy ViewSwitcherPolicy // out
 
@@ -136,6 +138,7 @@ func (self *ViewSwitcherTitle) Stack() *ViewStack {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_stack(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewStack *ViewStack // out
 
@@ -154,6 +157,7 @@ func (self *ViewSwitcherTitle) Subtitle() string {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_subtitle(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -170,6 +174,7 @@ func (self *ViewSwitcherTitle) Title() string {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -186,6 +191,7 @@ func (self *ViewSwitcherTitle) TitleVisible() bool {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_title_visible(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -204,6 +210,7 @@ func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_title_get_view_switcher_enabled(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -223,6 +230,8 @@ func (self *ViewSwitcherTitle) SetPolicy(policy ViewSwitcherPolicy) {
 	_arg1 = C.AdwViewSwitcherPolicy(policy)
 
 	C.adw_view_switcher_title_set_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetStack sets the stack controlled by self.
@@ -236,6 +245,8 @@ func (self *ViewSwitcherTitle) SetStack(stack *ViewStack) {
 	}
 
 	C.adw_view_switcher_title_set_stack(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stack)
 }
 
 // SetSubtitle sets the subtitle of self.
@@ -248,6 +259,8 @@ func (self *ViewSwitcherTitle) SetSubtitle(subtitle string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(subtitle)
 }
 
 // SetTitle sets the title of self.
@@ -260,6 +273,8 @@ func (self *ViewSwitcherTitle) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_view_switcher_title_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetViewSwitcherEnabled sets whether self's view switcher is enabled.
@@ -273,4 +288,6 @@ func (self *ViewSwitcherTitle) SetViewSwitcherEnabled(enabled bool) {
 	}
 
 	C.adw_view_switcher_title_set_view_switcher_enabled(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enabled)
 }

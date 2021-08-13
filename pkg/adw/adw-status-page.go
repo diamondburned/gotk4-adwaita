@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -81,6 +82,7 @@ func (self *StatusPage) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_status_page_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -99,6 +101,7 @@ func (self *StatusPage) Description() string {
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_status_page_get_description(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -117,6 +120,7 @@ func (self *StatusPage) IconName() string {
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_status_page_get_icon_name(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -135,6 +139,7 @@ func (self *StatusPage) Title() string {
 	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_status_page_get_title(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -154,6 +159,8 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	}
 
 	C.adw_status_page_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetDescription sets the description for self.
@@ -168,6 +175,8 @@ func (self *StatusPage) SetDescription(description string) {
 	}
 
 	C.adw_status_page_set_description(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(description)
 }
 
 // SetIconName sets the icon name for self.
@@ -182,6 +191,8 @@ func (self *StatusPage) SetIconName(iconName string) {
 	}
 
 	C.adw_status_page_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetTitle sets the title for self.
@@ -194,4 +205,6 @@ func (self *StatusPage) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_status_page_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }

@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -92,6 +93,7 @@ func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_carousel_indicator_lines_get_carousel(_arg0)
+	runtime.KeepAlive(self)
 
 	var _carousel *Carousel // out
 
@@ -113,4 +115,6 @@ func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
 	}
 
 	C.adw_carousel_indicator_lines_set_carousel(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(carousel)
 }

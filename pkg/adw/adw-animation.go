@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -21,6 +22,7 @@ func EaseOutCubic(t float64) float64 {
 	_arg1 = C.double(t)
 
 	_cret = C.adw_ease_out_cubic(_arg1)
+	runtime.KeepAlive(t)
 
 	var _gdouble float64 // out
 
@@ -40,6 +42,7 @@ func GetEnableAnimations(widget gtk.Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.adw_get_enable_animations(_arg1)
+	runtime.KeepAlive(widget)
 
 	var _ok bool // out
 

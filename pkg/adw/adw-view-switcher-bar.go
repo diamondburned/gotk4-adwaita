@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -118,6 +119,7 @@ func (self *ViewSwitcherBar) Policy() ViewSwitcherPolicy {
 	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_bar_get_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewSwitcherPolicy ViewSwitcherPolicy // out
 
@@ -134,6 +136,7 @@ func (self *ViewSwitcherBar) Reveal() bool {
 	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_bar_get_reveal(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -152,6 +155,7 @@ func (self *ViewSwitcherBar) Stack() *ViewStack {
 	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_view_switcher_bar_get_stack(_arg0)
+	runtime.KeepAlive(self)
 
 	var _viewStack *ViewStack // out
 
@@ -171,6 +175,8 @@ func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
 	_arg1 = C.AdwViewSwitcherPolicy(policy)
 
 	C.adw_view_switcher_bar_set_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetReveal sets whether self should be revealed or hidden.
@@ -184,6 +190,8 @@ func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 	}
 
 	C.adw_view_switcher_bar_set_reveal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(reveal)
 }
 
 // SetStack sets the stack controlled by self.
@@ -197,4 +205,6 @@ func (self *ViewSwitcherBar) SetStack(stack *ViewStack) {
 	}
 
 	C.adw_view_switcher_bar_set_stack(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stack)
 }

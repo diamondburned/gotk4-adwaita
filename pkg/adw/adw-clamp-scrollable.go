@@ -3,6 +3,7 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,7 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_clamp_scrollable_get_child(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -107,6 +109,7 @@ func (self *ClampScrollable) MaximumSize() int {
 	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_clamp_scrollable_get_maximum_size(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -123,6 +126,7 @@ func (self *ClampScrollable) TighteningThreshold() int {
 	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_clamp_scrollable_get_tightening_threshold(_arg0)
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -142,6 +146,8 @@ func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	}
 
 	C.adw_clamp_scrollable_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetMaximumSize sets the maximum size allocated to the child.
@@ -153,6 +159,8 @@ func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	_arg1 = C.int(maximumSize)
 
 	C.adw_clamp_scrollable_set_maximum_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(maximumSize)
 }
 
 // SetTighteningThreshold sets the size above which the child is clamped.
@@ -164,4 +172,6 @@ func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int) {
 	_arg1 = C.int(tighteningThreshold)
 
 	C.adw_clamp_scrollable_set_tightening_threshold(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tighteningThreshold)
 }

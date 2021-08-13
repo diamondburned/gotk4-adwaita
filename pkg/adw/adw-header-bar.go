@@ -4,6 +4,7 @@ package adw
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -168,6 +169,7 @@ func (self *HeaderBar) CenteringPolicy() CenteringPolicy {
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_header_bar_get_centering_policy(_arg0)
+	runtime.KeepAlive(self)
 
 	var _centeringPolicy CenteringPolicy // out
 
@@ -184,6 +186,7 @@ func (self *HeaderBar) DecorationLayout() string {
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_header_bar_get_decoration_layout(_arg0)
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -202,6 +205,7 @@ func (self *HeaderBar) ShowEndTitleButtons() bool {
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_header_bar_get_show_end_title_buttons(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -221,6 +225,7 @@ func (self *HeaderBar) ShowStartTitleButtons() bool {
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_header_bar_get_show_start_title_buttons(_arg0)
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -239,6 +244,7 @@ func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 	_arg0 = (*C.AdwHeaderBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.adw_header_bar_get_title_widget(_arg0)
+	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
 
@@ -258,6 +264,8 @@ func (self *HeaderBar) PackEnd(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_pack_end(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // PackStart adds child to self, packed with reference to the start of the self.
@@ -269,6 +277,8 @@ func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_pack_start(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // Remove removes a child from self.
@@ -283,6 +293,8 @@ func (self *HeaderBar) Remove(child gtk.Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.adw_header_bar_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetCenteringPolicy sets the policy for aligning the center widget.
@@ -294,6 +306,8 @@ func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 	_arg1 = C.AdwCenteringPolicy(centeringPolicy)
 
 	C.adw_header_bar_set_centering_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(centeringPolicy)
 }
 
 // SetDecorationLayout sets the decoration layout for self.
@@ -308,6 +322,8 @@ func (self *HeaderBar) SetDecorationLayout(layout string) {
 	}
 
 	C.adw_header_bar_set_decoration_layout(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(layout)
 }
 
 // SetShowEndTitleButtons sets whether to show title buttons at the end of self.
@@ -321,6 +337,8 @@ func (self *HeaderBar) SetShowEndTitleButtons(setting bool) {
 	}
 
 	C.adw_header_bar_set_show_end_title_buttons(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowStartTitleButtons sets whether to show title buttons at the start of
@@ -335,6 +353,8 @@ func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 	}
 
 	C.adw_header_bar_set_show_start_title_buttons(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetTitleWidget sets the title widget for self.
@@ -348,4 +368,6 @@ func (self *HeaderBar) SetTitleWidget(titleWidget gtk.Widgetter) {
 	}
 
 	C.adw_header_bar_set_title_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(titleWidget)
 }
