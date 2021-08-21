@@ -38,6 +38,11 @@ type SwipeableOverrider interface {
 	Distance() float64
 	// Progress gets the current progress of self.
 	Progress() float64
+	// SnapPoints gets the snap points of self.
+	//
+	// Each snap point represents a progress value that is considered acceptable
+	// to end the swipe on.
+	SnapPoints() []float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
 	//
@@ -70,6 +75,8 @@ type Swipeabler interface {
 	Distance() float64
 	// Progress gets the current progress of self.
 	Progress() float64
+	// SnapPoints gets the snap points of self.
+	SnapPoints() []float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
 	SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle
@@ -155,6 +162,29 @@ func (self *Swipeable) Progress() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
+}
+
+// SnapPoints gets the snap points of self.
+//
+// Each snap point represents a progress value that is considered acceptable to
+// end the swipe on.
+func (self *Swipeable) SnapPoints() []float64 {
+	var _arg0 *C.AdwSwipeable // out
+	var _cret *C.double       // in
+	var _arg1 C.int           // in
+
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_swipeable_get_snap_points(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _gdoubles []float64 // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_gdoubles = make([]float64, _arg1)
+	copy(_gdoubles, unsafe.Slice((*float64)(unsafe.Pointer(_cret)), _arg1))
+
+	return _gdoubles
 }
 
 // SwipeArea gets the area self can start a swipe from for the given direction
