@@ -50,6 +50,8 @@ github.com/diamondburned/gotk4 v0.0.0-20210820075903-8cbc5d9033e7 h1:O3g1vH04aNE
 github.com/diamondburned/gotk4 v0.0.0-20210820075903-8cbc5d9033e7/go.mod h1:WbOkeM91aOubLbxqcbYwd7q/HCKxAmqObvT5Dhpzm1Y=
 github.com/diamondburned/gotk4 v0.0.0-20210821013848-e07dfa2d23cb h1:+Ke4WfvgkVUneaCg5FldrfL0byi8f9yuFfxT4M1cK88=
 github.com/diamondburned/gotk4 v0.0.0-20210821013848-e07dfa2d23cb/go.mod h1:WbOkeM91aOubLbxqcbYwd7q/HCKxAmqObvT5Dhpzm1Y=
+github.com/diamondburned/gotk4 v0.0.0-20210824051836-cf3f6994d2e2 h1:gjwyfCcn2OWYrgzWqLQ5IMpW4tTLk+aPURqK9lkLzOk=
+github.com/diamondburned/gotk4 v0.0.0-20210824051836-cf3f6994d2e2/go.mod h1:WbOkeM91aOubLbxqcbYwd7q/HCKxAmqObvT5Dhpzm1Y=
 github.com/fatih/color v1.10.0 h1:s36xzo75JdqLaaWoiEHk767eHiwo0598uUxyfiPkDsg=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
 github.com/mattn/go-colorable v0.1.8 h1:c1ghPdyEDarC70ftn0y+A/Ee++9zz8ljHG1b13eJ0s8=
