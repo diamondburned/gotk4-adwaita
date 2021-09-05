@@ -175,7 +175,7 @@ func (self *Carousel) AllowScrollWheel() bool {
 
 // AnimationDuration gets the animation duration used by
 // adw.Carousel.ScrollTo().
-func (self *Carousel) AnimationDuration() uint {
+func (self *Carousel) AnimationDuration() uint32 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
@@ -184,9 +184,9 @@ func (self *Carousel) AnimationDuration() uint {
 	_cret = C.adw_carousel_get_animation_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -211,7 +211,7 @@ func (self *Carousel) Interactive() bool {
 }
 
 // NPages gets the number of pages in self.
-func (self *Carousel) NPages() uint {
+func (self *Carousel) NPages() uint32 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
@@ -220,15 +220,15 @@ func (self *Carousel) NPages() uint {
 	_cret = C.adw_carousel_get_n_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // NthPage gets the page at position n.
-func (self *Carousel) NthPage(n uint) gtk.Widgetter {
+func (self *Carousel) NthPage(n uint32) gtk.Widgetter {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 	var _cret *C.GtkWidget   // in
@@ -268,7 +268,7 @@ func (self *Carousel) Position() float64 {
 
 // RevealDuration gets duration of the animation used when adding or removing
 // pages.
-func (self *Carousel) RevealDuration() uint {
+func (self *Carousel) RevealDuration() uint32 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
@@ -277,15 +277,15 @@ func (self *Carousel) RevealDuration() uint {
 	_cret = C.adw_carousel_get_reveal_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // Spacing gets spacing between pages in pixels.
-func (self *Carousel) Spacing() uint {
+func (self *Carousel) Spacing() uint32 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
@@ -294,9 +294,9 @@ func (self *Carousel) Spacing() uint {
 	_cret = C.adw_carousel_get_spacing(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -305,7 +305,7 @@ func (self *Carousel) Spacing() uint {
 //
 // If position is -1, or larger than the number of pages, child will be appended
 // to the end.
-func (self *Carousel) Insert(child gtk.Widgetter, position int) {
+func (self *Carousel) Insert(child gtk.Widgetter, position int32) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -350,7 +350,7 @@ func (self *Carousel) Remove(child gtk.Widgetter) {
 //
 // If position is -1, or larger than the number of pages, child will be moved at
 // the end.
-func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
+func (self *Carousel) Reorder(child gtk.Widgetter, position int32) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -445,7 +445,7 @@ func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 
 // SetAnimationDuration sets the animation duration used by
 // adw.Carousel.ScrollTo().
-func (self *Carousel) SetAnimationDuration(duration uint) {
+func (self *Carousel) SetAnimationDuration(duration uint32) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 
@@ -474,7 +474,7 @@ func (self *Carousel) SetInteractive(interactive bool) {
 
 // SetRevealDuration sets duration of the animation used when adding or removing
 // pages.
-func (self *Carousel) SetRevealDuration(revealDuration uint) {
+func (self *Carousel) SetRevealDuration(revealDuration uint32) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 
@@ -487,7 +487,7 @@ func (self *Carousel) SetRevealDuration(revealDuration uint) {
 }
 
 // SetSpacing sets spacing between pages in pixels.
-func (self *Carousel) SetSpacing(spacing uint) {
+func (self *Carousel) SetSpacing(spacing uint32) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 

@@ -74,7 +74,7 @@ func NewClampLayout() *ClampLayout {
 }
 
 // MaximumSize gets the maximum size allocated to the children.
-func (self *ClampLayout) MaximumSize() int {
+func (self *ClampLayout) MaximumSize() int32 {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in
 
@@ -83,15 +83,15 @@ func (self *ClampLayout) MaximumSize() int {
 	_cret = C.adw_clamp_layout_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // TighteningThreshold gets the size above which the children are clamped.
-func (self *ClampLayout) TighteningThreshold() int {
+func (self *ClampLayout) TighteningThreshold() int32 {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in
 
@@ -100,15 +100,15 @@ func (self *ClampLayout) TighteningThreshold() int {
 	_cret = C.adw_clamp_layout_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // SetMaximumSize sets the maximum size allocated to the children.
-func (self *ClampLayout) SetMaximumSize(maximumSize int) {
+func (self *ClampLayout) SetMaximumSize(maximumSize int32) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out
 
@@ -121,7 +121,7 @@ func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 }
 
 // SetTighteningThreshold sets the size above which the children are clamped.
-func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int) {
+func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int32) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out
 

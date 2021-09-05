@@ -201,7 +201,7 @@ func (self *ComboRow) Model() gio.ListModeller {
 }
 
 // Selected gets the position of the selected item.
-func (self *ComboRow) Selected() uint {
+func (self *ComboRow) Selected() uint32 {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.guint        // in
 
@@ -210,9 +210,9 @@ func (self *ComboRow) Selected() uint {
 	_cret = C.adw_combo_row_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -317,7 +317,7 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 }
 
 // SetSelected selects the item at the given position.
-func (self *ComboRow) SetSelected(position uint) {
+func (self *ComboRow) SetSelected(position uint32) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.guint        // out
 

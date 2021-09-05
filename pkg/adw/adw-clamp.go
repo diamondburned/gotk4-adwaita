@@ -110,7 +110,7 @@ func (self *Clamp) Child() gtk.Widgetter {
 }
 
 // MaximumSize gets the maximum size allocated to the child.
-func (self *Clamp) MaximumSize() int {
+func (self *Clamp) MaximumSize() int32 {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
@@ -119,15 +119,15 @@ func (self *Clamp) MaximumSize() int {
 	_cret = C.adw_clamp_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
-func (self *Clamp) TighteningThreshold() int {
+func (self *Clamp) TighteningThreshold() int32 {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
@@ -136,9 +136,9 @@ func (self *Clamp) TighteningThreshold() int {
 	_cret = C.adw_clamp_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -159,7 +159,7 @@ func (self *Clamp) SetChild(child gtk.Widgetter) {
 }
 
 // SetMaximumSize sets the maximum size allocated to the child.
-func (self *Clamp) SetMaximumSize(maximumSize int) {
+func (self *Clamp) SetMaximumSize(maximumSize int32) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 
@@ -172,7 +172,7 @@ func (self *Clamp) SetMaximumSize(maximumSize int) {
 }
 
 // SetTighteningThreshold sets the size above which the child is clamped.
-func (self *Clamp) SetTighteningThreshold(tighteningThreshold int) {
+func (self *Clamp) SetTighteningThreshold(tighteningThreshold int32) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 

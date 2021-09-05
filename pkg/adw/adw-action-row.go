@@ -224,7 +224,7 @@ func (self *ActionRow) Subtitle() string {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SubtitleLines() int {
+func (self *ActionRow) SubtitleLines() int32 {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
@@ -233,9 +233,9 @@ func (self *ActionRow) SubtitleLines() int {
 	_cret = C.adw_action_row_get_subtitle_lines(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -244,7 +244,7 @@ func (self *ActionRow) SubtitleLines() int {
 // be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) TitleLines() int {
+func (self *ActionRow) TitleLines() int32 {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
@@ -253,9 +253,9 @@ func (self *ActionRow) TitleLines() int {
 	_cret = C.adw_action_row_get_title_lines(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -342,7 +342,7 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 // label will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
+func (self *ActionRow) SetSubtitleLines(subtitleLines int32) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 
@@ -358,7 +358,7 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SetTitleLines(titleLines int) {
+func (self *ActionRow) SetTitleLines(titleLines int32) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 

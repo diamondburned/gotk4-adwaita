@@ -290,7 +290,7 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 
 // ChildTransitionDuration gets the child transition animation duration for
 // self.
-func (self *Leaflet) ChildTransitionDuration() uint {
+func (self *Leaflet) ChildTransitionDuration() uint32 {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
 
@@ -299,9 +299,9 @@ func (self *Leaflet) ChildTransitionDuration() uint {
 	_cret = C.adw_leaflet_get_child_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -414,7 +414,7 @@ func (self *Leaflet) InterpolateSize() bool {
 }
 
 // ModeTransitionDuration gets the mode transition animation duration for self.
-func (self *Leaflet) ModeTransitionDuration() uint {
+func (self *Leaflet) ModeTransitionDuration() uint32 {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
 
@@ -423,9 +423,9 @@ func (self *Leaflet) ModeTransitionDuration() uint {
 	_cret = C.adw_leaflet_get_mode_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -685,7 +685,7 @@ func (self *Leaflet) SetCanUnfold(canUnfold bool) {
 
 // SetChildTransitionDuration sets the child transition animation duration for
 // self.
-func (self *Leaflet) SetChildTransitionDuration(duration uint) {
+func (self *Leaflet) SetChildTransitionDuration(duration uint32) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.guint       // out
 
@@ -759,7 +759,7 @@ func (self *Leaflet) SetInterpolateSize(interpolateSize bool) {
 
 // SetModeTransitionDuration sets the mode transition animation duration for
 // self.
-func (self *Leaflet) SetModeTransitionDuration(duration uint) {
+func (self *Leaflet) SetModeTransitionDuration(duration uint32) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.guint       // out
 

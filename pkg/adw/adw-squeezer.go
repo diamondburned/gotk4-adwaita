@@ -217,7 +217,7 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 }
 
 // TransitionDuration gets the transition animation duration for self.
-func (self *Squeezer) TransitionDuration() uint {
+func (self *Squeezer) TransitionDuration() uint32 {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.guint        // in
 
@@ -226,9 +226,9 @@ func (self *Squeezer) TransitionDuration() uint {
 	_cret = C.adw_squeezer_get_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -369,7 +369,7 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 }
 
 // SetTransitionDuration sets the transition animation duration for self.
-func (self *Squeezer) SetTransitionDuration(duration uint) {
+func (self *Squeezer) SetTransitionDuration(duration uint32) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.guint        // out
 

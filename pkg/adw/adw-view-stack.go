@@ -477,7 +477,7 @@ func marshalViewStackPager(p uintptr) (interface{}, error) {
 }
 
 // BadgeNumber gets the badge number for this page.
-func (self *ViewStackPage) BadgeNumber() uint {
+func (self *ViewStackPage) BadgeNumber() uint32 {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.guint             // in
 
@@ -486,9 +486,9 @@ func (self *ViewStackPage) BadgeNumber() uint {
 	_cret = C.adw_view_stack_page_get_badge_number(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -627,7 +627,7 @@ func (self *ViewStackPage) Visible() bool {
 }
 
 // SetBadgeNumber sets the badge number for this page.
-func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
+func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint32) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.guint             // out
 

@@ -263,7 +263,7 @@ func (self *Flap) FlapPosition() gtk.PackType {
 }
 
 // FoldDuration gets the duration that fold transitions in self will take.
-func (self *Flap) FoldDuration() uint {
+func (self *Flap) FoldDuration() uint32 {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
 
@@ -272,9 +272,9 @@ func (self *Flap) FoldDuration() uint {
 	_cret = C.adw_flap_get_fold_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -372,7 +372,7 @@ func (self *Flap) Modal() bool {
 
 // RevealDuration returns the duration that reveal transitions in self will
 // take.
-func (self *Flap) RevealDuration() uint {
+func (self *Flap) RevealDuration() uint32 {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
 
@@ -381,9 +381,9 @@ func (self *Flap) RevealDuration() uint {
 	_cret = C.adw_flap_get_reveal_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -543,7 +543,7 @@ func (self *Flap) SetFlapPosition(position gtk.PackType) {
 }
 
 // SetFoldDuration sets the duration that fold transitions in self will take.
-func (self *Flap) SetFoldDuration(duration uint) {
+func (self *Flap) SetFoldDuration(duration uint32) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
 
@@ -613,7 +613,7 @@ func (self *Flap) SetModal(modal bool) {
 
 // SetRevealDuration sets the duration that reveal transitions in self will
 // take.
-func (self *Flap) SetRevealDuration(duration uint) {
+func (self *Flap) SetRevealDuration(duration uint32) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
 

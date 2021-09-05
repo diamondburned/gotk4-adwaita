@@ -74,7 +74,7 @@ func marshalAvatarrer(p uintptr) (interface{}, error) {
 }
 
 // NewAvatar creates a new AdwAvatar.
-func NewAvatar(size int, text string, showInitials bool) *Avatar {
+func NewAvatar(size int32, text string, showInitials bool) *Avatar {
 	var _arg1 C.int        // out
 	var _arg2 *C.char      // out
 	var _arg3 C.gboolean   // out
@@ -104,7 +104,7 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 // DrawToPixbuf renders self into a gdkpixbuf.Pixbuf at size and scale_factor.
 //
 // This can be used to export the fallback avatar.
-func (self *Avatar) DrawToPixbuf(size int, scaleFactor int) *gdkpixbuf.Pixbuf {
+func (self *Avatar) DrawToPixbuf(size int32, scaleFactor int32) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -195,7 +195,7 @@ func (self *Avatar) ShowInitials() bool {
 }
 
 // Size gets the size of the avatar.
-func (self *Avatar) Size() int {
+func (self *Avatar) Size() int32 {
 	var _arg0 *C.AdwAvatar // out
 	var _cret C.int        // in
 
@@ -204,9 +204,9 @@ func (self *Avatar) Size() int {
 	_cret = C.adw_avatar_get_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -280,7 +280,7 @@ func (self *Avatar) SetShowInitials(showInitials bool) {
 }
 
 // SetSize sets the size of the avatar.
-func (self *Avatar) SetSize(size int) {
+func (self *Avatar) SetSize(size int32) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.int        // out
 

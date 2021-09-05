@@ -639,7 +639,7 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 }
 
 // NPages gets the number of pages in self.
-func (self *TabView) NPages() int {
+func (self *TabView) NPages() int32 {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
 
@@ -648,15 +648,15 @@ func (self *TabView) NPages() int {
 	_cret = C.adw_tab_view_get_n_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NPinnedPages gets the number of pinned pages in self.
-func (self *TabView) NPinnedPages() int {
+func (self *TabView) NPinnedPages() int32 {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
 
@@ -665,15 +665,15 @@ func (self *TabView) NPinnedPages() int {
 	_cret = C.adw_tab_view_get_n_pinned_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NthPage gets the adw.TabPage representing the child at position.
-func (self *TabView) NthPage(position int) *TabPage {
+func (self *TabView) NthPage(position int32) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 C.int         // out
 	var _cret *C.AdwTabPage // in
@@ -713,7 +713,7 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 }
 
 // PagePosition finds the position of page in self, starting from 0.
-func (self *TabView) PagePosition(page *TabPage) int {
+func (self *TabView) PagePosition(page *TabPage) int32 {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _cret C.int         // in
@@ -725,9 +725,9 @@ func (self *TabView) PagePosition(page *TabPage) int {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(page)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -794,7 +794,7 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 //
 // It's an error to try to insert a page before a pinned page, in that case
 // adw.TabView.InsertPinned() should be used instead.
-func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
+func (self *TabView) Insert(child gtk.Widgetter, position int32) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -820,7 +820,7 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 //
 // It's an error to try to insert a pinned page after a non-pinned page, in that
 // case adw.TabView.Insert() should be used instead.
-func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
+func (self *TabView) InsertPinned(child gtk.Widgetter, position int32) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -974,7 +974,7 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 //
 // It's a programmer error to try to reorder a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
-func (self *TabView) ReorderPage(page *TabPage, position int) bool {
+func (self *TabView) ReorderPage(page *TabPage, position int32) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _arg2 C.int         // out
@@ -1142,7 +1142,7 @@ func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 //
 // It's a programmer error to try to insert a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
-func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int) {
+func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int32) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _arg2 *C.AdwTabView // out
