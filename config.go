@@ -43,7 +43,7 @@ func AdwInitPreserveTheme(nsgen *girgen.NamespaceGenerator) error {
 		// For more information, see
 		// https://gitlab.gnome.org/GNOME/libadwaita/-/issues/215.
 		func InitPreserveTheme() {
-			adw.Init()
+			Init()
 			settings := gtk.SettingsGetDefault()
 			settings.ResetProperty("gtk-theme-name")
 		}
