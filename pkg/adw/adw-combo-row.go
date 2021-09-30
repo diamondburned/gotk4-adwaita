@@ -126,7 +126,16 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 	var _expression gtk.Expressioner // out
 
 	if _cret != nil {
-		_expression = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Expressioner)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Expressioner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+			}
+			_expression = rv
+		}
 	}
 
 	return _expression
@@ -194,14 +203,23 @@ func (self *ComboRow) Model() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
-		_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+			}
+			_listModel = rv
+		}
 	}
 
 	return _listModel
 }
 
 // Selected gets the position of the selected item.
-func (self *ComboRow) Selected() uint32 {
+func (self *ComboRow) Selected() uint {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.guint        // in
 
@@ -210,9 +228,9 @@ func (self *ComboRow) Selected() uint32 {
 	_cret = C.adw_combo_row_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -317,7 +335,7 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 }
 
 // SetSelected selects the item at the given position.
-func (self *ComboRow) SetSelected(position uint32) {
+func (self *ComboRow) SetSelected(position uint) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.guint        // out
 

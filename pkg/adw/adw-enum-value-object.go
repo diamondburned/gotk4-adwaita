@@ -74,7 +74,7 @@ func (self *EnumValueObject) Nick() string {
 }
 
 // Value gets the enum value.
-func (self *EnumValueObject) Value() int32 {
+func (self *EnumValueObject) Value() int {
 	var _arg0 *C.AdwEnumValueObject // out
 	var _cret C.int                 // in
 
@@ -83,9 +83,9 @@ func (self *EnumValueObject) Value() int32 {
 	_cret = C.adw_enum_value_object_get_value(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

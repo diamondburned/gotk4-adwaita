@@ -176,7 +176,16 @@ func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -224,7 +233,7 @@ func (self *ActionRow) Subtitle() string {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SubtitleLines() int32 {
+func (self *ActionRow) SubtitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
@@ -233,9 +242,9 @@ func (self *ActionRow) SubtitleLines() int32 {
 	_cret = C.adw_action_row_get_subtitle_lines(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -244,7 +253,7 @@ func (self *ActionRow) SubtitleLines() int32 {
 // be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) TitleLines() int32 {
+func (self *ActionRow) TitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
@@ -253,9 +262,9 @@ func (self *ActionRow) TitleLines() int32 {
 	_cret = C.adw_action_row_get_title_lines(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -342,7 +351,7 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 // label will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SetSubtitleLines(subtitleLines int32) {
+func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 
@@ -358,7 +367,7 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int32) {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
-func (self *ActionRow) SetTitleLines(titleLines int32) {
+func (self *ActionRow) SetTitleLines(titleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 

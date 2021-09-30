@@ -211,7 +211,16 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -291,7 +300,19 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.SelectionModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+		}
+		_selectionModel = rv
+	}
 
 	return _selectionModel
 }
@@ -348,7 +369,16 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -477,7 +507,7 @@ func marshalViewStackPager(p uintptr) (interface{}, error) {
 }
 
 // BadgeNumber gets the badge number for this page.
-func (self *ViewStackPage) BadgeNumber() uint32 {
+func (self *ViewStackPage) BadgeNumber() uint {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.guint             // in
 
@@ -486,9 +516,9 @@ func (self *ViewStackPage) BadgeNumber() uint32 {
 	_cret = C.adw_view_stack_page_get_badge_number(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -505,7 +535,19 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -627,7 +669,7 @@ func (self *ViewStackPage) Visible() bool {
 }
 
 // SetBadgeNumber sets the badge number for this page.
-func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint32) {
+func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.guint             // out
 

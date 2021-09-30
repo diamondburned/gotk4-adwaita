@@ -220,7 +220,16 @@ func (self *Flap) Content() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -239,7 +248,16 @@ func (self *Flap) Flap() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -263,7 +281,7 @@ func (self *Flap) FlapPosition() gtk.PackType {
 }
 
 // FoldDuration gets the duration that fold transitions in self will take.
-func (self *Flap) FoldDuration() uint32 {
+func (self *Flap) FoldDuration() uint {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
 
@@ -272,9 +290,9 @@ func (self *Flap) FoldDuration() uint32 {
 	_cret = C.adw_flap_get_fold_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -372,7 +390,7 @@ func (self *Flap) Modal() bool {
 
 // RevealDuration returns the duration that reveal transitions in self will
 // take.
-func (self *Flap) RevealDuration() uint32 {
+func (self *Flap) RevealDuration() uint {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
 
@@ -381,9 +399,9 @@ func (self *Flap) RevealDuration() uint32 {
 	_cret = C.adw_flap_get_reveal_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -437,7 +455,16 @@ func (self *Flap) Separator() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -543,7 +570,7 @@ func (self *Flap) SetFlapPosition(position gtk.PackType) {
 }
 
 // SetFoldDuration sets the duration that fold transitions in self will take.
-func (self *Flap) SetFoldDuration(duration uint32) {
+func (self *Flap) SetFoldDuration(duration uint) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
 
@@ -613,7 +640,7 @@ func (self *Flap) SetModal(modal bool) {
 
 // SetRevealDuration sets the duration that reveal transitions in self will
 // take.
-func (self *Flap) SetRevealDuration(duration uint32) {
+func (self *Flap) SetRevealDuration(duration uint) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
 

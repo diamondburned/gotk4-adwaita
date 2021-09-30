@@ -103,14 +103,23 @@ func (self *Clamp) Child() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
 }
 
 // MaximumSize gets the maximum size allocated to the child.
-func (self *Clamp) MaximumSize() int32 {
+func (self *Clamp) MaximumSize() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
@@ -119,15 +128,15 @@ func (self *Clamp) MaximumSize() int32 {
 	_cret = C.adw_clamp_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
-func (self *Clamp) TighteningThreshold() int32 {
+func (self *Clamp) TighteningThreshold() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
@@ -136,9 +145,9 @@ func (self *Clamp) TighteningThreshold() int32 {
 	_cret = C.adw_clamp_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -159,7 +168,7 @@ func (self *Clamp) SetChild(child gtk.Widgetter) {
 }
 
 // SetMaximumSize sets the maximum size allocated to the child.
-func (self *Clamp) SetMaximumSize(maximumSize int32) {
+func (self *Clamp) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 
@@ -172,7 +181,7 @@ func (self *Clamp) SetMaximumSize(maximumSize int32) {
 }
 
 // SetTighteningThreshold sets the size above which the child is clamped.
-func (self *Clamp) SetTighteningThreshold(tighteningThreshold int32) {
+func (self *Clamp) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 

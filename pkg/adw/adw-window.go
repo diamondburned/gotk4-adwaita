@@ -127,7 +127,16 @@ func (self *Window) Child() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget

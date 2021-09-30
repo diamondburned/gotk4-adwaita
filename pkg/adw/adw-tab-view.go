@@ -53,7 +53,19 @@ func (self *TabPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -71,7 +83,16 @@ func (self *TabPage) Icon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon
@@ -109,7 +130,16 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon
@@ -595,7 +625,19 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+		}
+		_icon = rv
+	}
 
 	return _icon
 }
@@ -632,14 +674,23 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			}
+			_menuModel = rv
+		}
 	}
 
 	return _menuModel
 }
 
 // NPages gets the number of pages in self.
-func (self *TabView) NPages() int32 {
+func (self *TabView) NPages() int {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
 
@@ -648,15 +699,15 @@ func (self *TabView) NPages() int32 {
 	_cret = C.adw_tab_view_get_n_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NPinnedPages gets the number of pinned pages in self.
-func (self *TabView) NPinnedPages() int32 {
+func (self *TabView) NPinnedPages() int {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
 
@@ -665,15 +716,15 @@ func (self *TabView) NPinnedPages() int32 {
 	_cret = C.adw_tab_view_get_n_pinned_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NthPage gets the adw.TabPage representing the child at position.
-func (self *TabView) NthPage(position int32) *TabPage {
+func (self *TabView) NthPage(position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 C.int         // out
 	var _cret *C.AdwTabPage // in
@@ -713,7 +764,7 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 }
 
 // PagePosition finds the position of page in self, starting from 0.
-func (self *TabView) PagePosition(page *TabPage) int32 {
+func (self *TabView) PagePosition(page *TabPage) int {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _cret C.int         // in
@@ -725,9 +776,9 @@ func (self *TabView) PagePosition(page *TabPage) int32 {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(page)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -747,7 +798,19 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.SelectionModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+		}
+		_selectionModel = rv
+	}
 
 	return _selectionModel
 }
@@ -784,7 +847,16 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -794,7 +866,7 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 //
 // It's an error to try to insert a page before a pinned page, in that case
 // adw.TabView.InsertPinned() should be used instead.
-func (self *TabView) Insert(child gtk.Widgetter, position int32) *TabPage {
+func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -820,7 +892,7 @@ func (self *TabView) Insert(child gtk.Widgetter, position int32) *TabPage {
 //
 // It's an error to try to insert a pinned page after a non-pinned page, in that
 // case adw.TabView.Insert() should be used instead.
-func (self *TabView) InsertPinned(child gtk.Widgetter, position int32) *TabPage {
+func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -974,7 +1046,7 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 //
 // It's a programmer error to try to reorder a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
-func (self *TabView) ReorderPage(page *TabPage, position int32) bool {
+func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _arg2 C.int         // out
@@ -1142,7 +1214,7 @@ func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 //
 // It's a programmer error to try to insert a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
-func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int32) {
+func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
 	var _arg2 *C.AdwTabView // out

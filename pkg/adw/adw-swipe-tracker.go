@@ -158,7 +158,19 @@ func (self *SwipeTracker) Swipeable() Swipeabler {
 
 	var _swipeable Swipeabler // out
 
-	_swipeable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Swipeabler)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type adw.Swipeabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(Swipeabler)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not adw.Swipeabler")
+		}
+		_swipeable = rv
+	}
 
 	return _swipeable
 }

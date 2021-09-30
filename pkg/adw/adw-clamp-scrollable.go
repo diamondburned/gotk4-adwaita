@@ -95,14 +95,23 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
 }
 
 // MaximumSize gets the maximum size allocated to the child.
-func (self *ClampScrollable) MaximumSize() int32 {
+func (self *ClampScrollable) MaximumSize() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
 
@@ -111,15 +120,15 @@ func (self *ClampScrollable) MaximumSize() int32 {
 	_cret = C.adw_clamp_scrollable_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
-func (self *ClampScrollable) TighteningThreshold() int32 {
+func (self *ClampScrollable) TighteningThreshold() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
 
@@ -128,9 +137,9 @@ func (self *ClampScrollable) TighteningThreshold() int32 {
 	_cret = C.adw_clamp_scrollable_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -151,7 +160,7 @@ func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 }
 
 // SetMaximumSize sets the maximum size allocated to the child.
-func (self *ClampScrollable) SetMaximumSize(maximumSize int32) {
+func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
 
@@ -164,7 +173,7 @@ func (self *ClampScrollable) SetMaximumSize(maximumSize int32) {
 }
 
 // SetTighteningThreshold sets the size above which the child is clamped.
-func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int32) {
+func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
 

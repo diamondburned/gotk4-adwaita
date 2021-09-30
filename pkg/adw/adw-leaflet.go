@@ -196,7 +196,16 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -282,7 +291,16 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -290,7 +308,7 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 
 // ChildTransitionDuration gets the child transition animation duration for
 // self.
-func (self *Leaflet) ChildTransitionDuration() uint32 {
+func (self *Leaflet) ChildTransitionDuration() uint {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
 
@@ -299,9 +317,9 @@ func (self *Leaflet) ChildTransitionDuration() uint32 {
 	_cret = C.adw_leaflet_get_child_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -414,7 +432,7 @@ func (self *Leaflet) InterpolateSize() bool {
 }
 
 // ModeTransitionDuration gets the mode transition animation duration for self.
-func (self *Leaflet) ModeTransitionDuration() uint32 {
+func (self *Leaflet) ModeTransitionDuration() uint {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
 
@@ -423,9 +441,9 @@ func (self *Leaflet) ModeTransitionDuration() uint32 {
 	_cret = C.adw_leaflet_get_mode_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -465,7 +483,19 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.SelectionModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+		}
+		_selectionModel = rv
+	}
 
 	return _selectionModel
 }
@@ -501,7 +531,16 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -685,7 +724,7 @@ func (self *Leaflet) SetCanUnfold(canUnfold bool) {
 
 // SetChildTransitionDuration sets the child transition animation duration for
 // self.
-func (self *Leaflet) SetChildTransitionDuration(duration uint32) {
+func (self *Leaflet) SetChildTransitionDuration(duration uint) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.guint       // out
 
@@ -759,7 +798,7 @@ func (self *Leaflet) SetInterpolateSize(interpolateSize bool) {
 
 // SetModeTransitionDuration sets the mode transition animation duration for
 // self.
-func (self *Leaflet) SetModeTransitionDuration(duration uint32) {
+func (self *Leaflet) SetModeTransitionDuration(duration uint) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.guint       // out
 
@@ -843,7 +882,19 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }

@@ -211,13 +211,25 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 
 	var _selectionModel gtk.SelectionModeller // out
 
-	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gtk.SelectionModeller)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.SelectionModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+		}
+		_selectionModel = rv
+	}
 
 	return _selectionModel
 }
 
 // TransitionDuration gets the transition animation duration for self.
-func (self *Squeezer) TransitionDuration() uint32 {
+func (self *Squeezer) TransitionDuration() uint {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.guint        // in
 
@@ -226,9 +238,9 @@ func (self *Squeezer) TransitionDuration() uint32 {
 	_cret = C.adw_squeezer_get_transition_duration(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -283,7 +295,16 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	var _widget gtk.Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -369,7 +390,7 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 }
 
 // SetTransitionDuration sets the transition animation duration for self.
-func (self *Squeezer) SetTransitionDuration(duration uint32) {
+func (self *Squeezer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.guint        // out
 
@@ -450,7 +471,19 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 
 	var _widget gtk.Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gtk.Widgetter)
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }

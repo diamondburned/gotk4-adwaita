@@ -64,7 +64,7 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 }
 
 // FindPosition finds the position of a given enum value in self.
-func (self *EnumListModel) FindPosition(value int32) uint32 {
+func (self *EnumListModel) FindPosition(value int) uint {
 	var _arg0 *C.AdwEnumListModel // out
 	var _arg1 C.int               // out
 	var _cret C.guint             // in
@@ -76,9 +76,9 @@ func (self *EnumListModel) FindPosition(value int32) uint32 {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
