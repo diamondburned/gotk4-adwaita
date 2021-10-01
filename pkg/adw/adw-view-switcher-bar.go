@@ -111,23 +111,6 @@ func NewViewSwitcherBar() *ViewSwitcherBar {
 	return _viewSwitcherBar
 }
 
-// Policy gets the policy of self.
-func (self *ViewSwitcherBar) Policy() ViewSwitcherPolicy {
-	var _arg0 *C.AdwViewSwitcherBar   // out
-	var _cret C.AdwViewSwitcherPolicy // in
-
-	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_bar_get_policy(_arg0)
-	runtime.KeepAlive(self)
-
-	var _viewSwitcherPolicy ViewSwitcherPolicy // out
-
-	_viewSwitcherPolicy = ViewSwitcherPolicy(_cret)
-
-	return _viewSwitcherPolicy
-}
-
 // Reveal gets whether self should be revealed or hidden.
 func (self *ViewSwitcherBar) Reveal() bool {
 	var _arg0 *C.AdwViewSwitcherBar // out
@@ -164,19 +147,6 @@ func (self *ViewSwitcherBar) Stack() *ViewStack {
 	}
 
 	return _viewStack
-}
-
-// SetPolicy sets the policy of self.
-func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
-	var _arg0 *C.AdwViewSwitcherBar   // out
-	var _arg1 C.AdwViewSwitcherPolicy // out
-
-	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
-	_arg1 = C.AdwViewSwitcherPolicy(policy)
-
-	C.adw_view_switcher_bar_set_policy(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(policy)
 }
 
 // SetReveal sets whether self should be revealed or hidden.

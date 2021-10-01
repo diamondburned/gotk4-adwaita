@@ -25,9 +25,9 @@ func init() {
 type FoldThresholdPolicy int
 
 const (
-	// FoldThresholdPolicyMinimum: folding is based on the minimum size
+	// FoldThresholdPolicyMinimum: folding is based on the minimum size.
 	FoldThresholdPolicyMinimum FoldThresholdPolicy = iota
-	// FoldThresholdPolicyNatural: folding is based on the natural size
+	// FoldThresholdPolicyNatural: folding is based on the natural size.
 	FoldThresholdPolicyNatural
 )
 

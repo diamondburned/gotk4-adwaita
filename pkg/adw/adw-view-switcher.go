@@ -9,7 +9,6 @@ import (
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -29,11 +28,9 @@ func init() {
 type ViewSwitcherPolicy int
 
 const (
-	// ViewSwitcherPolicyAuto: automatically adapt to the best fitting mode
-	ViewSwitcherPolicyAuto ViewSwitcherPolicy = iota
-	// ViewSwitcherPolicyNarrow: force the narrow mode
-	ViewSwitcherPolicyNarrow
-	// ViewSwitcherPolicyWide: force the wide mode
+	// ViewSwitcherPolicyNarrow: force the narrow mode.
+	ViewSwitcherPolicyNarrow ViewSwitcherPolicy = iota
+	// ViewSwitcherPolicyWide: force the wide mode.
 	ViewSwitcherPolicyWide
 )
 
@@ -44,8 +41,6 @@ func marshalViewSwitcherPolicy(p uintptr) (interface{}, error) {
 // String returns the name in string for ViewSwitcherPolicy.
 func (v ViewSwitcherPolicy) String() string {
 	switch v {
-	case ViewSwitcherPolicyAuto:
-		return "Auto"
 	case ViewSwitcherPolicyNarrow:
 		return "Narrow"
 	case ViewSwitcherPolicyWide:
@@ -118,23 +113,6 @@ func NewViewSwitcher() *ViewSwitcher {
 	return _viewSwitcher
 }
 
-// NarrowEllipsize gets the ellipsizing position for the titles.
-func (self *ViewSwitcher) NarrowEllipsize() pango.EllipsizeMode {
-	var _arg0 *C.AdwViewSwitcher   // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_get_narrow_ellipsize(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
 // Policy gets the policy of self.
 func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	var _arg0 *C.AdwViewSwitcher      // out
@@ -169,19 +147,6 @@ func (self *ViewSwitcher) Stack() *ViewStack {
 	}
 
 	return _viewStack
-}
-
-// SetNarrowEllipsize sets the ellipsizing position for the titles.
-func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.AdwViewSwitcher   // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
-	_arg1 = C.PangoEllipsizeMode(mode)
-
-	C.adw_view_switcher_set_narrow_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(mode)
 }
 
 // SetPolicy sets the policy of self.

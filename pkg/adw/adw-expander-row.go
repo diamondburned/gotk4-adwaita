@@ -46,10 +46,6 @@ func init() {
 //
 // It contains the subnodes row.header for its main embedded row, list.nested
 // for the list it can expand, and image.expander-row-arrow for its arrow.
-//
-// When expanded, AdwExpanderRow will add the
-// .checked-expander-row-previous-sibling style class to its previous sibling,
-// and remove it when retracted.
 type ExpanderRow struct {
 	PreferencesRow
 }

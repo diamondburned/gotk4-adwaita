@@ -26,10 +26,10 @@ type NavigationDirection int
 
 const (
 	// NavigationDirectionBack corresponds to start or top, depending on
-	// orientation and text direction
+	// orientation and text direction.
 	NavigationDirectionBack NavigationDirection = iota
 	// NavigationDirectionForward corresponds to end or bottom, depending on
-	// orientation and text direction
+	// orientation and text direction.
 	NavigationDirectionForward
 )
 

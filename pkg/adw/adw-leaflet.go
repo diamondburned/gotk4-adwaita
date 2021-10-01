@@ -32,16 +32,16 @@ func init() {
 type LeafletTransitionType int
 
 const (
-	// LeafletTransitionTypeOver the old page or uncover the new page, sliding
-	// from or towards the end according to orientation, text direction and
-	// children order
+	// LeafletTransitionTypeOver: cover the old page or uncover the new page,
+	// sliding from or towards the end according to orientation, text direction
+	// and children order.
 	LeafletTransitionTypeOver LeafletTransitionType = iota
 	// LeafletTransitionTypeUnder: uncover the new page or cover the old page,
 	// sliding from or towards the start according to orientation, text
-	// direction and children order
+	// direction and children order.
 	LeafletTransitionTypeUnder
 	// LeafletTransitionTypeSlide: slide from left, right, up or down according
-	// to the orientation, text direction and the children order
+	// to the orientation, text direction and the children order.
 	LeafletTransitionTypeSlide
 )
 
@@ -380,46 +380,14 @@ func (self *Leaflet) Folded() bool {
 	return _ok
 }
 
-// Homogeneous gets whether self is homogeneous for the given fold and
-// orientation.
-//
-// See adw.Leaflet:hhomogeneous-folded, adw.Leaflet:vhomogeneous-folded,
-// adw.Leaflet:hhomogeneous-unfolded, adw.Leaflet:vhomogeneous-unfolded.
-func (self *Leaflet) Homogeneous(folded bool, orientation gtk.Orientation) bool {
-	var _arg0 *C.AdwLeaflet    // out
-	var _arg1 C.gboolean       // out
-	var _arg2 C.GtkOrientation // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if folded {
-		_arg1 = C.TRUE
-	}
-	_arg2 = C.GtkOrientation(orientation)
-
-	_cret = C.adw_leaflet_get_homogeneous(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(folded)
-	runtime.KeepAlive(orientation)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// InterpolateSize gets whether the leaflet interpolates its size when changing
-// the visible child.
-func (self *Leaflet) InterpolateSize() bool {
+// Homogeneous gets whether self is homogeneous.
+func (self *Leaflet) Homogeneous() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_leaflet_get_interpolate_size(_arg0)
+	_cret = C.adw_leaflet_get_homogeneous(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -468,7 +436,7 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	return _leafletPage
 }
 
-// Pages returns a GListModel that contains the pages of the leaflet.
+// Pages returns a gio.ListModel that contains the pages of the leaflet.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
@@ -749,51 +717,22 @@ func (self *Leaflet) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	runtime.KeepAlive(policy)
 }
 
-// SetHomogeneous sets self to be homogeneous or not for the given fold and
-// orientation.
+// SetHomogeneous sets self to be homogeneous or not.
 //
-// If it is homogeneous, self will request the same width or height for all its
-// children depending on the orientation. If it isn't and it is folded, the
-// leaflet may change width or height when a different child becomes visible.
-//
-// See adw.Leaflet:hhomogeneous-folded, adw.Leaflet:vhomogeneous-folded,
-// adw.Leaflet:hhomogeneous-unfolded, adw.Leaflet:vhomogeneous-unfolded.
-func (self *Leaflet) SetHomogeneous(folded bool, orientation gtk.Orientation, homogeneous bool) {
-	var _arg0 *C.AdwLeaflet    // out
-	var _arg1 C.gboolean       // out
-	var _arg2 C.GtkOrientation // out
-	var _arg3 C.gboolean       // out
-
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if folded {
-		_arg1 = C.TRUE
-	}
-	_arg2 = C.GtkOrientation(orientation)
-	if homogeneous {
-		_arg3 = C.TRUE
-	}
-
-	C.adw_leaflet_set_homogeneous(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(folded)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(homogeneous)
-}
-
-// SetInterpolateSize sets whether the leaflet interpolates its size when
-// changing the visible child.
-func (self *Leaflet) SetInterpolateSize(interpolateSize bool) {
+// If set to FALSE, different children can have different size along the
+// opposite orientation.
+func (self *Leaflet) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if interpolateSize {
+	if homogeneous {
 		_arg1 = C.TRUE
 	}
 
-	C.adw_leaflet_set_interpolate_size(_arg0, _arg1)
+	C.adw_leaflet_set_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(interpolateSize)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetModeTransitionDuration sets the mode transition animation duration for

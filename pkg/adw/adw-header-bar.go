@@ -28,9 +28,9 @@ func init() {
 type CenteringPolicy int
 
 const (
-	// CenteringPolicyLoose: keep the title centered when possible
+	// CenteringPolicyLoose: keep the title centered when possible.
 	CenteringPolicyLoose CenteringPolicy = iota
-	// CenteringPolicyStrict: keep the title centered at all cost
+	// CenteringPolicyStrict: keep the title centered at all cost.
 	CenteringPolicyStrict
 )
 

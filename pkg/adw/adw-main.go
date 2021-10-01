@@ -10,8 +10,10 @@ import "C"
 // Init initializes Libadwaita.
 //
 // Call this function just after initializing GTK, if you are using
-// gtk.Application it means it must be called when the GApplication::startup
+// gtk.Application it means it must be called when the gio.Application::startup
 // signal is emitted.
+//
+// There's no need to call this function if you're using adw.Application.
 //
 // If Libadwaita has already been initialized, the function will simply return.
 //
@@ -19,4 +21,20 @@ import "C"
 // library are set up properly.
 func Init() {
 	C.adw_init()
+}
+
+// IsInitialized: use this function to check if libadwaita has been initialized
+// with adw_init().
+func IsInitialized() bool {
+	var _cret C.gboolean // in
+
+	_cret = C.adw_is_initialized()
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

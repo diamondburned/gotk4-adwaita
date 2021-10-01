@@ -783,7 +783,7 @@ func (self *TabView) PagePosition(page *TabPage) int {
 	return _gint
 }
 
-// Pages returns a GListModel that contains the pages of self.
+// Pages returns a gio.ListModel that contains the pages of self.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the selected page.

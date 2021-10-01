@@ -9,6 +9,12 @@ in {
 	}),
 
 	pkgs ? (import "${gotk4}/.nix/pkgs.nix" {
+		src = systemPkgs.fetchFromGitHub {
+			owner = "NixOS";
+			repo  = "nixpkgs";
+			rev   = "3fdd780";
+			hash  = "sha256:0df9v2snlk9ag7jnmxiv31pzhd0rqx2h3kzpsxpj07xns8k8dghz";
+		};
 		overlays = [ (import ./overlay.nix) ];
 	}),
 }:

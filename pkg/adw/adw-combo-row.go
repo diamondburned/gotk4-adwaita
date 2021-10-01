@@ -36,7 +36,7 @@ func init() {
 //
 // CSS nodes
 //
-// AdwComboRow has a main CSS node with name row.
+// AdwComboRow has a main CSS node with name row and the .combo style class.
 //
 // Its popover has the node named popover with the .combo style class, it
 // contains a gtk.ScrolledWindow, which in turn contains a gtk.ListView, both
@@ -319,7 +319,7 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	runtime.KeepAlive(factory)
 }
 
-// SetModel sets the GListModel to use.
+// SetModel sets the gio.ListModel to use.
 func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 *C.GListModel  // out

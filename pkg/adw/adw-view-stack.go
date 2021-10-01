@@ -285,7 +285,7 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	return _viewStackPage
 }
 
-// Pages returns a GListModel that contains the pages of the stack.
+// Pages returns a gio.ListModel that contains the pages of the stack.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.

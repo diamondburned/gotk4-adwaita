@@ -113,23 +113,6 @@ func NewViewSwitcherTitle() *ViewSwitcherTitle {
 	return _viewSwitcherTitle
 }
 
-// Policy gets the policy of self.
-func (self *ViewSwitcherTitle) Policy() ViewSwitcherPolicy {
-	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _cret C.AdwViewSwitcherPolicy // in
-
-	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_title_get_policy(_arg0)
-	runtime.KeepAlive(self)
-
-	var _viewSwitcherPolicy ViewSwitcherPolicy // out
-
-	_viewSwitcherPolicy = ViewSwitcherPolicy(_cret)
-
-	return _viewSwitcherPolicy
-}
-
 // Stack gets the stack controlled by self.
 func (self *ViewSwitcherTitle) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherTitle // out
@@ -219,19 +202,6 @@ func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 	}
 
 	return _ok
-}
-
-// SetPolicy sets the policy of self.
-func (self *ViewSwitcherTitle) SetPolicy(policy ViewSwitcherPolicy) {
-	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _arg1 C.AdwViewSwitcherPolicy // out
-
-	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-	_arg1 = C.AdwViewSwitcherPolicy(policy)
-
-	C.adw_view_switcher_title_set_policy(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(policy)
 }
 
 // SetStack sets the stack controlled by self.
