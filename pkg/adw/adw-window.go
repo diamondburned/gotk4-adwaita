@@ -94,9 +94,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new AdwWindow.
@@ -145,6 +143,11 @@ func (self *Window) Content() gtk.Widgetter {
 // SetContent sets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
+//
+// The function takes the following parameters:
+//
+//    - content widget.
+//
 func (self *Window) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out
 	var _arg1 *C.GtkWidget // out

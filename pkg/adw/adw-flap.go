@@ -38,7 +38,7 @@ const (
 )
 
 func marshalFlapFoldPolicy(p uintptr) (interface{}, error) {
-	return FlapFoldPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FlapFoldPolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FlapFoldPolicy.
@@ -77,7 +77,7 @@ const (
 )
 
 func marshalFlapTransitionType(p uintptr) (interface{}, error) {
-	return FlapTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FlapTransitionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FlapTransitionType.
@@ -189,9 +189,7 @@ func wrapFlap(obj *externglib.Object) *Flap {
 }
 
 func marshalFlapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlap(obj), nil
+	return wrapFlap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFlap creates a new AdwFlap.
@@ -527,6 +525,11 @@ func (self *Flap) TransitionType() FlapTransitionType {
 }
 
 // SetContent sets the content widget for self.
+//
+// The function takes the following parameters:
+//
+//    - content widget.
+//
 func (self *Flap) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
 	var _arg1 *C.GtkWidget // out
@@ -542,6 +545,11 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 }
 
 // SetFlap sets the flap widget for self.
+//
+// The function takes the following parameters:
+//
+//    - flap widget.
+//
 func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
 	var _arg1 *C.GtkWidget // out
@@ -557,6 +565,11 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 }
 
 // SetFlapPosition sets the flap position for self.
+//
+// The function takes the following parameters:
+//
+//    - position: new value.
+//
 func (self *Flap) SetFlapPosition(position gtk.PackType) {
 	var _arg0 *C.AdwFlap    // out
 	var _arg1 C.GtkPackType // out
@@ -570,6 +583,11 @@ func (self *Flap) SetFlapPosition(position gtk.PackType) {
 }
 
 // SetFoldDuration sets the duration that fold transitions in self will take.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (self *Flap) SetFoldDuration(duration uint) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
@@ -583,6 +601,11 @@ func (self *Flap) SetFoldDuration(duration uint) {
 }
 
 // SetFoldPolicy sets the fold policy for self.
+//
+// The function takes the following parameters:
+//
+//    - policy: fold policy.
+//
 func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 	var _arg0 *C.AdwFlap          // out
 	var _arg1 C.AdwFlapFoldPolicy // out
@@ -596,6 +619,11 @@ func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 }
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
+//
+// The function takes the following parameters:
+//
+//    - policy to use.
+//
 func (self *Flap) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	var _arg0 *C.AdwFlap               // out
 	var _arg1 C.AdwFoldThresholdPolicy // out
@@ -609,6 +637,11 @@ func (self *Flap) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 }
 
 // SetLocked sets whether self is locked.
+//
+// The function takes the following parameters:
+//
+//    - locked: new value.
+//
 func (self *Flap) SetLocked(locked bool) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.gboolean // out
@@ -624,6 +657,11 @@ func (self *Flap) SetLocked(locked bool) {
 }
 
 // SetModal sets whether self is modal.
+//
+// The function takes the following parameters:
+//
+//    - modal: whether self is modal.
+//
 func (self *Flap) SetModal(modal bool) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.gboolean // out
@@ -640,6 +678,11 @@ func (self *Flap) SetModal(modal bool) {
 
 // SetRevealDuration sets the duration that reveal transitions in self will
 // take.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (self *Flap) SetRevealDuration(duration uint) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.guint    // out
@@ -653,6 +696,11 @@ func (self *Flap) SetRevealDuration(duration uint) {
 }
 
 // SetRevealFlap sets whether the flap widget is revealed for self.
+//
+// The function takes the following parameters:
+//
+//    - revealFlap: whether to reveal the flap widget.
+//
 func (self *Flap) SetRevealFlap(revealFlap bool) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.gboolean // out
@@ -668,6 +716,11 @@ func (self *Flap) SetRevealFlap(revealFlap bool) {
 }
 
 // SetSeparator sets the separator widget for self.
+//
+// The function takes the following parameters:
+//
+//    - separator widget.
+//
 func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
 	var _arg1 *C.GtkWidget // out
@@ -683,6 +736,11 @@ func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 }
 
 // SetSwipeToClose sets whether self can be closed with a swipe gesture.
+//
+// The function takes the following parameters:
+//
+//    - swipeToClose: whether self can be closed with a swipe gesture.
+//
 func (self *Flap) SetSwipeToClose(swipeToClose bool) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.gboolean // out
@@ -698,6 +756,11 @@ func (self *Flap) SetSwipeToClose(swipeToClose bool) {
 }
 
 // SetSwipeToOpen sets whether self can be opened with a swipe gesture.
+//
+// The function takes the following parameters:
+//
+//    - swipeToOpen: whether self can be opened with a swipe gesture.
+//
 func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 	var _arg0 *C.AdwFlap // out
 	var _arg1 C.gboolean // out
@@ -714,6 +777,11 @@ func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 
 // SetTransitionType sets the type of animation used for reveal and fold
 // transitions in self.
+//
+// The function takes the following parameters:
+//
+//    - transitionType: new transition type.
+//
 func (self *Flap) SetTransitionType(transitionType FlapTransitionType) {
 	var _arg0 *C.AdwFlap              // out
 	var _arg1 C.AdwFlapTransitionType // out

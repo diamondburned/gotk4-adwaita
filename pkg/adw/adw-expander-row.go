@@ -93,9 +93,7 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 }
 
 func marshalExpanderRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpanderRow(obj), nil
+	return wrapExpanderRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewExpanderRow creates a new AdwExpanderRow.
@@ -114,6 +112,11 @@ func NewExpanderRow() *ExpanderRow {
 // Add adds a widget to self.
 //
 // The widget will appear in the expanding list below self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget.
+//
 func (self *ExpanderRow) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
@@ -127,6 +130,11 @@ func (self *ExpanderRow) Add(child gtk.Widgetter) {
 }
 
 // AddAction adds an action widget to self.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget.
+//
 func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
@@ -140,6 +148,11 @@ func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 }
 
 // AddPrefix adds a prefix widget to self.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget.
+//
 func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
@@ -266,6 +279,11 @@ func (self *ExpanderRow) UseUnderline() bool {
 	return _ok
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
@@ -279,6 +297,11 @@ func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 }
 
 // SetEnableExpansion sets whether the expansion of self is enabled.
+//
+// The function takes the following parameters:
+//
+//    - enableExpansion: whether to enable the expansion.
+//
 func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
@@ -294,6 +317,11 @@ func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 }
 
 // SetExpanded sets whether self is expanded.
+//
+// The function takes the following parameters:
+//
+//    - expanded: whether to expand the row.
+//
 func (self *ExpanderRow) SetExpanded(expanded bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
@@ -309,6 +337,11 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 }
 
 // SetIconName sets the icon name for self.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (self *ExpanderRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.char           // out
@@ -326,6 +359,11 @@ func (self *ExpanderRow) SetIconName(iconName string) {
 
 // SetShowEnableSwitch sets whether the switch enabling the expansion of self is
 // visible.
+//
+// The function takes the following parameters:
+//
+//    - showEnableSwitch: whether to show the switch enabling the expansion.
+//
 func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
@@ -341,6 +379,11 @@ func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 }
 
 // SetSubtitle sets the subtitle for self.
+//
+// The function takes the following parameters:
+//
+//    - subtitle: subtitle.
+//
 func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.char           // out
@@ -356,6 +399,11 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 
 // SetUseUnderline sets whether underlines in title or subtitle are interpreted
 // as mnemonics.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: whether underlines are interpreted as mnemonics.
+//
 func (self *ExpanderRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out

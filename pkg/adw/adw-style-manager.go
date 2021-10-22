@@ -45,7 +45,7 @@ const (
 )
 
 func marshalColorScheme(p uintptr) (interface{}, error) {
-	return ColorScheme(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ColorScheme(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ColorScheme.
@@ -85,9 +85,7 @@ func wrapStyleManager(obj *externglib.Object) *StyleManager {
 }
 
 func marshalStyleManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleManager(obj), nil
+	return wrapStyleManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ColorScheme gets the requested application color scheme.
@@ -194,6 +192,11 @@ func (self *StyleManager) SystemSupportsColorSchemes() bool {
 // The effective appearance will be decided based on the application color
 // scheme and the system preferred color scheme. The adw.StyleManager:dark
 // property can be used to query the current effective appearance.
+//
+// The function takes the following parameters:
+//
+//    - colorScheme: color scheme.
+//
 func (self *StyleManager) SetColorScheme(colorScheme ColorScheme) {
 	var _arg0 *C.AdwStyleManager // out
 	var _arg1 C.AdwColorScheme   // out
@@ -230,6 +233,11 @@ func StyleManagerGetDefault() *StyleManager {
 // whole application.
 //
 // Most applications should use adw.StyleManager().GetDefault instead.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func StyleManagerGetForDisplay(display *gdk.Display) *StyleManager {
 	var _arg1 *C.GdkDisplay      // out
 	var _cret *C.AdwStyleManager // in

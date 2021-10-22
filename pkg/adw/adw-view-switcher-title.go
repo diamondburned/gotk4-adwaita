@@ -95,9 +95,7 @@ func wrapViewSwitcherTitle(obj *externglib.Object) *ViewSwitcherTitle {
 }
 
 func marshalViewSwitcherTitler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewSwitcherTitle(obj), nil
+	return wrapViewSwitcherTitle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewSwitcherTitle creates a new AdwViewSwitcherTitle.
@@ -205,6 +203,11 @@ func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 }
 
 // SetStack sets the stack controlled by self.
+//
+// The function takes the following parameters:
+//
+//    - stack: stack.
+//
 func (self *ViewSwitcherTitle) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 *C.AdwViewStack         // out
@@ -220,6 +223,11 @@ func (self *ViewSwitcherTitle) SetStack(stack *ViewStack) {
 }
 
 // SetSubtitle sets the subtitle of self.
+//
+// The function takes the following parameters:
+//
+//    - subtitle: subtitle.
+//
 func (self *ViewSwitcherTitle) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 *C.char                 // out
@@ -234,6 +242,11 @@ func (self *ViewSwitcherTitle) SetSubtitle(subtitle string) {
 }
 
 // SetTitle sets the title of self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *ViewSwitcherTitle) SetTitle(title string) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 *C.char                 // out
@@ -248,6 +261,11 @@ func (self *ViewSwitcherTitle) SetTitle(title string) {
 }
 
 // SetViewSwitcherEnabled sets whether self's view switcher is enabled.
+//
+// The function takes the following parameters:
+//
+//    - enabled: whether the view switcher is enabled.
+//
 func (self *ViewSwitcherTitle) SetViewSwitcherEnabled(enabled bool) {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _arg1 C.gboolean              // out

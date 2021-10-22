@@ -64,7 +64,7 @@ type Swipeable struct {
 	gtk.Widget
 }
 
-// Swipeabler describes Swipeable's abstract methods.
+// Swipeabler describes Swipeable's interface methods.
 type Swipeabler interface {
 	externglib.Objector
 
@@ -105,9 +105,7 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 }
 
 func marshalSwipeabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwipeable(obj), nil
+	return wrapSwipeable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CancelProgress gets the progress self will snap back to after the gesture is
@@ -196,6 +194,12 @@ func (self *Swipeable) SnapPoints() []float64 {
 //
 // If not implemented, the default implementation returns the allocation of
 // self, allowing swipes from anywhere.
+//
+// The function takes the following parameters:
+//
+//    - navigationDirection: direction of the swipe.
+//    - isDrag: whether the swipe is caused by a dragging gesture.
+//
 func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle {
 	var _arg0 *C.AdwSwipeable          // out
 	var _arg1 C.AdwNavigationDirection // out

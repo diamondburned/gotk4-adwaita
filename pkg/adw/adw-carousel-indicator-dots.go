@@ -68,9 +68,7 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 }
 
 func marshalCarouselIndicatorDotser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCarouselIndicatorDots(obj), nil
+	return wrapCarouselIndicatorDots(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCarouselIndicatorDots creates a new AdwCarouselIndicatorDots.
@@ -106,6 +104,11 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 }
 
 // SetCarousel sets the displayed carousel.
+//
+// The function takes the following parameters:
+//
+//    - carousel: carousel.
+//
 func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _arg1 *C.AdwCarousel              // out

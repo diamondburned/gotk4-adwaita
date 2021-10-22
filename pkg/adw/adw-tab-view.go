@@ -36,9 +36,7 @@ func wrapTabPage(obj *externglib.Object) *TabPage {
 }
 
 func marshalTabPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTabPage(obj), nil
+	return wrapTabPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child gets the child of self.
@@ -277,6 +275,11 @@ func (self *TabPage) Tooltip() string {
 }
 
 // SetIcon sets the icon of self.
+//
+// The function takes the following parameters:
+//
+//    - icon of self.
+//
 func (self *TabPage) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.GIcon      // out
@@ -292,6 +295,11 @@ func (self *TabPage) SetIcon(icon gio.Iconner) {
 }
 
 // SetIndicatorActivatable sets whether the indicator of self is activatable.
+//
+// The function takes the following parameters:
+//
+//    - activatable: whether the indicator is activatable.
+//
 func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
@@ -307,6 +315,11 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 }
 
 // SetIndicatorIcon sets the indicator icon of self.
+//
+// The function takes the following parameters:
+//
+//    - indicatorIcon: indicator icon of self.
+//
 func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.GIcon      // out
@@ -322,6 +335,11 @@ func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 }
 
 // SetLoading sets wether self is loading.
+//
+// The function takes the following parameters:
+//
+//    - loading: whether self is loading.
+//
 func (self *TabPage) SetLoading(loading bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
@@ -337,6 +355,11 @@ func (self *TabPage) SetLoading(loading bool) {
 }
 
 // SetNeedsAttention sets whether self needs attention.
+//
+// The function takes the following parameters:
+//
+//    - needsAttention: whether self needs attention.
+//
 func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
@@ -352,6 +375,11 @@ func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 }
 
 // SetTitle sets the title of self.
+//
+// The function takes the following parameters:
+//
+//    - title of self.
+//
 func (self *TabPage) SetTitle(title string) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.char       // out
@@ -366,6 +394,11 @@ func (self *TabPage) SetTitle(title string) {
 }
 
 // SetTooltip sets the tooltip of self.
+//
+// The function takes the following parameters:
+//
+//    - tooltip of self.
+//
 func (self *TabPage) SetTooltip(tooltip string) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.char       // out
@@ -427,9 +460,7 @@ func wrapTabView(obj *externglib.Object) *TabView {
 }
 
 func marshalTabViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTabView(obj), nil
+	return wrapTabView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTabView creates a new AdwTabView.
@@ -452,6 +483,12 @@ func NewTabView() *TabView {
 // adw.TabView.ClosePage()).
 //
 // If parent is NULL, this function is equivalent to adw.TabView.Append().
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - parent page for child.
+//
 func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -477,6 +514,11 @@ func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 }
 
 // Append inserts child as the last non-pinned page.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -497,6 +539,11 @@ func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 }
 
 // AppendPinned inserts child as the last pinned page.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -517,6 +564,11 @@ func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 }
 
 // CloseOtherPages requests to close all pages other than page.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) CloseOtherPages(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -551,6 +603,11 @@ func (self *TabView) CloseOtherPages(page *TabPage) {
 // If it's not NULL, the previous page will be selected if it's a descendant
 // (possibly indirect) of the parent. If both the previous page and the parent
 // are pinned, the parent will be selected instead.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ClosePage(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -570,6 +627,12 @@ func (self *TabView) ClosePage(page *TabPage) {
 //
 // This function should not be called unless a custom handler for
 // adw.TabView::close-page is used.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//    - confirm: whether to confirm or deny closing page.
+//
 func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -588,6 +651,11 @@ func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
 }
 
 // ClosePagesAfter requests to close all pages after page.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ClosePagesAfter(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -601,6 +669,11 @@ func (self *TabView) ClosePagesAfter(page *TabPage) {
 }
 
 // ClosePagesBefore requests to close all pages before page.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ClosePagesBefore(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -724,6 +797,11 @@ func (self *TabView) NPinnedPages() int {
 }
 
 // NthPage gets the adw.TabPage representing the child at position.
+//
+// The function takes the following parameters:
+//
+//    - position: index of the page in self, starting from 0.
+//
 func (self *TabView) NthPage(position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 C.int         // out
@@ -744,6 +822,11 @@ func (self *TabView) NthPage(position int) *TabPage {
 }
 
 // Page gets the adw.TabPage object representing child.
+//
+// The function takes the following parameters:
+//
+//    - child in self.
+//
 func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -764,6 +847,11 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 }
 
 // PagePosition finds the position of page in self, starting from 0.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) PagePosition(page *TabPage) int {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -866,6 +954,12 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 //
 // It's an error to try to insert a page before a pinned page, in that case
 // adw.TabView.InsertPinned() should be used instead.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - position to add child at, starting from 0.
+//
 func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -892,6 +986,12 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 //
 // It's an error to try to insert a pinned page after a non-pinned page, in that
 // case adw.TabView.Insert() should be used instead.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - position to add child at, starting from 0.
+//
 func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -915,6 +1015,11 @@ func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 }
 
 // Prepend inserts child as the first non-pinned page.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -935,6 +1040,11 @@ func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 }
 
 // PrependPinned inserts child as the first pinned page.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -955,6 +1065,11 @@ func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 }
 
 // ReorderBackward reorders page to before its previous page if possible.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ReorderBackward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -977,6 +1092,11 @@ func (self *TabView) ReorderBackward(page *TabPage) bool {
 }
 
 // ReorderFirst reorders page to the first possible position.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ReorderFirst(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -999,6 +1119,11 @@ func (self *TabView) ReorderFirst(page *TabPage) bool {
 }
 
 // ReorderForward reorders page to after its next page if possible.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ReorderForward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1021,6 +1146,11 @@ func (self *TabView) ReorderForward(page *TabPage) bool {
 }
 
 // ReorderLast reorders page to the last possible position.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *TabView) ReorderLast(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1046,6 +1176,12 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 //
 // It's a programmer error to try to reorder a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//    - position to insert the page at, starting at 0.
+//
 func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1113,6 +1249,11 @@ func (self *TabView) SelectPreviousPage() bool {
 }
 
 // SetDefaultIcon sets the default page icon for self.
+//
+// The function takes the following parameters:
+//
+//    - defaultIcon: default icon.
+//
 func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GIcon      // out
@@ -1126,6 +1267,11 @@ func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 }
 
 // SetMenuModel sets the tab context menu model for self.
+//
+// The function takes the following parameters:
+//
+//    - menuModel: menu model.
+//
 func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GMenuModel // out
@@ -1163,6 +1309,12 @@ func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 // to override that behavior.
 //
 // Changes the value of the adw.TabPage:pinned property.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//    - pinned: whether page should be pinned.
+//
 func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1181,6 +1333,11 @@ func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
 }
 
 // SetSelectedPage sets the currently selected page in self.
+//
+// The function takes the following parameters:
+//
+//    - selectedPage: page in self.
+//
 func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1194,6 +1351,11 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 }
 
 // SetShortcutWidget sets the shortcut widget for self.
+//
+// The function takes the following parameters:
+//
+//    - widget: shortcut widget.
+//
 func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -1214,6 +1376,13 @@ func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 //
 // It's a programmer error to try to insert a pinned page after a non-pinned
 // one, or a non-pinned page before a pinned one.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//    - otherView: tab view to transfer the page to.
+//    - position to insert the page at, starting at 0.
+//
 func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int) {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1230,4 +1399,91 @@ func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position in
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(otherView)
 	runtime.KeepAlive(position)
+}
+
+// ConnectClosePage: emitted after adw.TabView.ClosePage() has been called for
+// page.
+//
+// The handler is expected to call adw.TabView.ClosePageFinish() to confirm or
+// reject the closing.
+//
+// The default handler will immediately confirm closing for non-pinned pages, or
+// reject it for pinned pages, equivalent to the following example:
+//
+//    static gboolean
+//    close_page_cb (AdwTabView *view,
+//                   AdwTabPage *page,
+//                   gpointer    user_data)
+//    {
+//      adw_tab_view_close_page_finish (view, page, !adw_tab_page_get_pinned (page));
+//
+//      return GDK_EVENT_STOP;
+//    }
+//
+//
+// The adw.TabView.ClosePageFinish() call doesn't have to happen inside the
+// handler, so can be used to do asynchronous checks before confirming the
+// closing.
+//
+// A typical reason to connect to this signal is to show a confirmation dialog
+// for closing a tab.
+func (self *TabView) ConnectClosePage(f func(page TabPage) bool) externglib.SignalHandle {
+	return self.Connect("close-page", f)
+}
+
+// ConnectCreateWindow: emitted when a tab should be transferred into a new
+// window.
+//
+// This can happen after a tab has been dropped on desktop.
+//
+// The signal handler is expected to create a new window, position it as needed
+// and return its AdwTabView that the page will be transferred into.
+func (self *TabView) ConnectCreateWindow(f func() TabView) externglib.SignalHandle {
+	return self.Connect("create-window", f)
+}
+
+// ConnectIndicatorActivated: emitted after the indicator icon on page has been
+// activated.
+//
+// See adw.TabPage:indicator-icon and adw.TabPage:indicator-activatable.
+func (self *TabView) ConnectIndicatorActivated(f func(page TabPage)) externglib.SignalHandle {
+	return self.Connect("indicator-activated", f)
+}
+
+// ConnectPageAttached: emitted when a page has been created or transferred to
+// self.
+//
+// A typical reason to connect to this signal would be to connect to page
+// signals for things such as updating window title.
+func (self *TabView) ConnectPageAttached(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-attached", f)
+}
+
+// ConnectPageDetached: emitted when a page has been removed or transferred to
+// another view.
+//
+// A typical reason to connect to this signal would be to disconnect signal
+// handlers connected in the adw.TabView::page-attached handler.
+//
+// It is important not to try and destroy the page child in the handler of this
+// function as the child might merely be moved to another window; use child
+// dispose handler for that or do it in sync with your
+// adw.TabView.ClosePageFinish() calls.
+func (self *TabView) ConnectPageDetached(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-detached", f)
+}
+
+// ConnectPageReordered: emitted after page has been reordered to position.
+func (self *TabView) ConnectPageReordered(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-reordered", f)
+}
+
+// ConnectSetupMenu: emitted when a context menu is opened or closed for page.
+//
+// If the menu has been closed, page will be set to NULL.
+//
+// It can be used to set up menu actions before showing the menu, for example
+// disable actions not applicable to page.
+func (self *TabView) ConnectSetupMenu(f func(page TabPage)) externglib.SignalHandle {
+	return self.Connect("setup-menu", f)
 }

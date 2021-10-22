@@ -59,9 +59,7 @@ func wrapStatusPage(obj *externglib.Object) *StatusPage {
 }
 
 func marshalStatusPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusPage(obj), nil
+	return wrapStatusPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStatusPage creates a new AdwStatusPage.
@@ -161,6 +159,11 @@ func (self *StatusPage) Title() string {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.GtkWidget     // out
@@ -176,6 +179,11 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 }
 
 // SetDescription sets the description for self.
+//
+// The function takes the following parameters:
+//
+//    - description: description.
+//
 func (self *StatusPage) SetDescription(description string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out
@@ -192,6 +200,11 @@ func (self *StatusPage) SetDescription(description string) {
 }
 
 // SetIconName sets the icon name for self.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (self *StatusPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out
@@ -208,6 +221,11 @@ func (self *StatusPage) SetIconName(iconName string) {
 }
 
 // SetTitle sets the title for self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *StatusPage) SetTitle(title string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out

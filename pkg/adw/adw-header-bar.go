@@ -35,7 +35,7 @@ const (
 )
 
 func marshalCenteringPolicy(p uintptr) (interface{}, error) {
-	return CenteringPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CenteringPolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CenteringPolicy.
@@ -143,9 +143,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 }
 
 func marshalHeaderBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBar(obj), nil
+	return wrapHeaderBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHeaderBar creates a new AdwHeaderBar.
@@ -265,6 +263,11 @@ func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 }
 
 // PackEnd adds child to self, packed with reference to the end of self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to be added to self.
+//
 func (self *HeaderBar) PackEnd(child gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -278,6 +281,11 @@ func (self *HeaderBar) PackEnd(child gtk.Widgetter) {
 }
 
 // PackStart adds child to self, packed with reference to the start of the self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to be added to self.
+//
 func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -294,6 +302,11 @@ func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 //
 // The child must have been added with adw.HeaderBar.PackStart(),
 // adw.HeaderBar.PackEnd() or adw.HeaderBar:title-widget.
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (self *HeaderBar) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -307,6 +320,11 @@ func (self *HeaderBar) Remove(child gtk.Widgetter) {
 }
 
 // SetCenteringPolicy sets the policy for aligning the center widget.
+//
+// The function takes the following parameters:
+//
+//    - centeringPolicy: centering policy.
+//
 func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 	var _arg0 *C.AdwHeaderBar      // out
 	var _arg1 C.AdwCenteringPolicy // out
@@ -320,6 +338,11 @@ func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 }
 
 // SetDecorationLayout sets the decoration layout for self.
+//
+// The function takes the following parameters:
+//
+//    - layout: decoration layout, or NULL to unset the layout.
+//
 func (self *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.char         // out
@@ -336,6 +359,11 @@ func (self *HeaderBar) SetDecorationLayout(layout string) {
 }
 
 // SetShowEndTitleButtons sets whether to show title buttons at the end of self.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to show standard title buttons.
+//
 func (self *HeaderBar) SetShowEndTitleButtons(setting bool) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -352,6 +380,11 @@ func (self *HeaderBar) SetShowEndTitleButtons(setting bool) {
 
 // SetShowStartTitleButtons sets whether to show title buttons at the start of
 // self.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to show standard title buttons.
+//
 func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -367,6 +400,11 @@ func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 }
 
 // SetTitleWidget sets the title widget for self.
+//
+// The function takes the following parameters:
+//
+//    - titleWidget: widget to use for a title.
+//
 func (self *HeaderBar) SetTitleWidget(titleWidget gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out
 	var _arg1 *C.GtkWidget    // out

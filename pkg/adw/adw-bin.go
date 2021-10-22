@@ -53,9 +53,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 }
 
 func marshalBinner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBin(obj), nil
+	return wrapBin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBin creates a new AdwBin.
@@ -100,6 +98,11 @@ func (self *Bin) Child() gtk.Widgetter {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *Bin) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwBin    // out
 	var _arg1 *C.GtkWidget // out

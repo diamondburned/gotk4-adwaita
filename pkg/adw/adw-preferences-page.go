@@ -56,9 +56,7 @@ func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 }
 
 func marshalPreferencesPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPreferencesPage(obj), nil
+	return wrapPreferencesPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesPage creates a new AdwPreferencesPage.
@@ -75,6 +73,11 @@ func NewPreferencesPage() *PreferencesPage {
 }
 
 // Add adds a preferences group to self.
+//
+// The function takes the following parameters:
+//
+//    - group to add.
+//
 func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
@@ -163,6 +166,11 @@ func (self *PreferencesPage) UseUnderline() bool {
 }
 
 // Remove removes a group from self.
+//
+// The function takes the following parameters:
+//
+//    - group to remove.
+//
 func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
@@ -176,6 +184,11 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 }
 
 // SetIconName sets the icon name for self.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (self *PreferencesPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
@@ -192,6 +205,11 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 }
 
 // SetName sets the name of self.
+//
+// The function takes the following parameters:
+//
+//    - name: name.
+//
 func (self *PreferencesPage) SetName(name string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
@@ -208,6 +226,11 @@ func (self *PreferencesPage) SetName(name string) {
 }
 
 // SetTitle sets the title of self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *PreferencesPage) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
@@ -223,6 +246,11 @@ func (self *PreferencesPage) SetTitle(title string) {
 
 // SetUseUnderline sets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//
 func (self *PreferencesPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 C.gboolean            // out

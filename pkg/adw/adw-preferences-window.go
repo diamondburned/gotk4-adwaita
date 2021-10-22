@@ -84,9 +84,7 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 }
 
 func marshalPreferencesWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPreferencesWindow(obj), nil
+	return wrapPreferencesWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesWindow creates a new AdwPreferencesWindow.
@@ -103,6 +101,11 @@ func NewPreferencesWindow() *PreferencesWindow {
 }
 
 // Add adds a preferences page to self.
+//
+// The function takes the following parameters:
+//
+//    - page to add.
+//
 func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
@@ -210,6 +213,11 @@ func (self *PreferencesWindow) VisiblePageName() string {
 //
 // The transition can be cancelled by the user, in which case visible child will
 // change back to the previously visible child.
+//
+// The function takes the following parameters:
+//
+//    - subpage: subpage.
+//
 func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.GtkWidget            // out
@@ -223,6 +231,11 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 }
 
 // Remove removes a page from self.
+//
+// The function takes the following parameters:
+//
+//    - page to remove.
+//
 func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
@@ -237,6 +250,11 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 
 // SetCanSwipeBack sets whether or not self allows closing subpages via a swipe
 // gesture.
+//
+// The function takes the following parameters:
+//
+//    - canSwipeBack: new value.
+//
 func (self *PreferencesWindow) SetCanSwipeBack(canSwipeBack bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
@@ -252,6 +270,11 @@ func (self *PreferencesWindow) SetCanSwipeBack(canSwipeBack bool) {
 }
 
 // SetSearchEnabled sets whether search is enabled for self.
+//
+// The function takes the following parameters:
+//
+//    - searchEnabled: whether search is enabled.
+//
 func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
@@ -267,6 +290,11 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 }
 
 // SetVisiblePage makes page the visible page of self.
+//
+// The function takes the following parameters:
+//
+//    - page of self.
+//
 func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
@@ -280,6 +308,11 @@ func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 }
 
 // SetVisiblePageName makes the page with the given name visible.
+//
+// The function takes the following parameters:
+//
+//    - name of the page to make visible.
+//
 func (self *PreferencesWindow) SetVisiblePageName(name string) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.char                 // out

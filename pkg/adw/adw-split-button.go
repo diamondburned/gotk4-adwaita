@@ -100,9 +100,7 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 }
 
 func marshalSplitButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSplitButton(obj), nil
+	return wrapSplitButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSplitButton creates a new AdwSplitButton.
@@ -331,6 +329,11 @@ func (self *SplitButton) Popup() {
 }
 
 // SetChild sets the child widget.
+//
+// The function takes the following parameters:
+//
+//    - child: new child widget.
+//
 func (self *SplitButton) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GtkWidget      // out
@@ -346,6 +349,11 @@ func (self *SplitButton) SetChild(child gtk.Widgetter) {
 }
 
 // SetDirection sets the direction in which the popup will be popped up.
+//
+// The function takes the following parameters:
+//
+//    - direction: direction.
+//
 func (self *SplitButton) SetDirection(direction gtk.ArrowType) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 C.GtkArrowType    // out
@@ -360,6 +368,11 @@ func (self *SplitButton) SetDirection(direction gtk.ArrowType) {
 
 // SetIconName sets the name of the icon used to automatically populate the
 // button.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name to set.
+//
 func (self *SplitButton) SetIconName(iconName string) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.char           // out
@@ -374,6 +387,11 @@ func (self *SplitButton) SetIconName(iconName string) {
 }
 
 // SetLabel sets the label for self.
+//
+// The function takes the following parameters:
+//
+//    - label to set.
+//
 func (self *SplitButton) SetLabel(label string) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.char           // out
@@ -388,6 +406,11 @@ func (self *SplitButton) SetLabel(label string) {
 }
 
 // SetMenuModel sets the menu model from which the popup will be created.
+//
+// The function takes the following parameters:
+//
+//    - menuModel: menu model.
+//
 func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GMenuModel     // out
@@ -404,6 +427,11 @@ func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 
 // SetPopover sets the popover that will be popped up when the dropdown is
 // clicked.
+//
+// The function takes the following parameters:
+//
+//    - popover: popover.
+//
 func (self *SplitButton) SetPopover(popover *gtk.Popover) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GtkPopover     // out
@@ -419,6 +447,11 @@ func (self *SplitButton) SetPopover(popover *gtk.Popover) {
 }
 
 // SetUseUnderline sets whether an underline in the text indicates a mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: whether an underline in the text indicates a mnemonic.
+//
 func (self *SplitButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 C.gboolean        // out
@@ -431,4 +464,18 @@ func (self *SplitButton) SetUseUnderline(useUnderline bool) {
 	C.adw_split_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(useUnderline)
+}
+
+// ConnectActivate: emitted to animate press then release.
+//
+// This is an action signal. Applications should never connect to this signal,
+// but use the adw.SplitButton::clicked signal.
+func (self *SplitButton) ConnectActivate(f func()) externglib.SignalHandle {
+	return self.Connect("activate", f)
+}
+
+// ConnectClicked: emitted when the button has been activated (pressed and
+// released).
+func (self *SplitButton) ConnectClicked(f func()) externglib.SignalHandle {
+	return self.Connect("clicked", f)
 }

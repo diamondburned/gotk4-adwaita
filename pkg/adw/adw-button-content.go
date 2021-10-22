@@ -86,9 +86,7 @@ func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 }
 
 func marshalButtonContenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonContent(obj), nil
+	return wrapButtonContent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewButtonContent creates a new AdwButtonContent.
@@ -158,6 +156,11 @@ func (self *ButtonContent) UseUnderline() bool {
 }
 
 // SetIconName sets the name of the displayed icon.
+//
+// The function takes the following parameters:
+//
+//    - iconName: new icon name.
+//
 func (self *ButtonContent) SetIconName(iconName string) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 *C.char             // out
@@ -172,6 +175,11 @@ func (self *ButtonContent) SetIconName(iconName string) {
 }
 
 // SetLabel sets the displayed label.
+//
+// The function takes the following parameters:
+//
+//    - label: new label.
+//
 func (self *ButtonContent) SetLabel(label string) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 *C.char             // out
@@ -186,6 +194,11 @@ func (self *ButtonContent) SetLabel(label string) {
 }
 
 // SetUseUnderline sets whether an underline in the text indicates a mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: whether an underline in the text indicates a mnemonic.
+//
 func (self *ButtonContent) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 C.gboolean          // out

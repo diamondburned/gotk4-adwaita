@@ -91,12 +91,15 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 }
 
 func marshalApplicationWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindow(obj), nil
+	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplicationWindow creates a new AdwApplicationWindow for app.
+//
+// The function takes the following parameters:
+//
+//    - app: application instance.
+//
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -146,6 +149,11 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 // SetContent sets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
+//
+// The function takes the following parameters:
+//
+//    - content widget.
+//
 func (self *ApplicationWindow) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _arg1 *C.GtkWidget            // out
