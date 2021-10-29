@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -29,7 +30,7 @@ func init() {
 // widget.
 //
 // New values may be added to this enumeration over time.
-type LeafletTransitionType int
+type LeafletTransitionType C.gint
 
 const (
 	// LeafletTransitionTypeOver: cover the old page or uncover the new page,
@@ -92,6 +93,11 @@ type Leaflet struct {
 	gtk.Orientable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*Leaflet)(nil)
+	_ externglib.Objector = (*Leaflet)(nil)
+)
 
 func wrapLeaflet(obj *externglib.Object) *Leaflet {
 	return &Leaflet{
@@ -891,6 +897,10 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 type LeafletPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*LeafletPage)(nil)
+)
 
 func wrapLeafletPage(obj *externglib.Object) *LeafletPage {
 	return &LeafletPage{

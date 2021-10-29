@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -38,6 +39,10 @@ func init() {
 type PreferencesGroup struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*PreferencesGroup)(nil)
+)
 
 func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 	return &PreferencesGroup{

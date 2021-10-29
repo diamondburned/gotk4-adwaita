@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -35,6 +36,11 @@ func init() {
 type ApplicationWindow struct {
 	gtk.ApplicationWindow
 }
+
+var (
+	_ externglib.Objector = (*ApplicationWindow)(nil)
+	_ gtk.Widgetter       = (*ApplicationWindow)(nil)
+)
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{

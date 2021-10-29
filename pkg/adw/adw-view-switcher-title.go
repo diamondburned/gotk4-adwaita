@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -73,6 +74,10 @@ func init() {
 type ViewSwitcherTitle struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*ViewSwitcherTitle)(nil)
+)
 
 func wrapViewSwitcherTitle(obj *externglib.Object) *ViewSwitcherTitle {
 	return &ViewSwitcherTitle{

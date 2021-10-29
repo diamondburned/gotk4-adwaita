@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -22,7 +23,7 @@ func init() {
 }
 
 // FoldThresholdPolicy determines when adw.Flap and adw.Leaflet will fold.
-type FoldThresholdPolicy int
+type FoldThresholdPolicy C.gint
 
 const (
 	// FoldThresholdPolicyMinimum: folding is based on the minimum size.

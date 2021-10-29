@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -60,6 +61,11 @@ type SplitButton struct {
 	gtk.Actionable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*SplitButton)(nil)
+	_ externglib.Objector = (*SplitButton)(nil)
+)
 
 func wrapSplitButton(obj *externglib.Object) *SplitButton {
 	return &SplitButton{

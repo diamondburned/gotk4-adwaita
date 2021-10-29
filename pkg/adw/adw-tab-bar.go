@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -42,6 +43,10 @@ func init() {
 type TabBar struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*TabBar)(nil)
+)
 
 func wrapTabBar(obj *externglib.Object) *TabBar {
 	return &TabBar{
@@ -396,7 +401,7 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GdkDragAction(actions)
 	_arg3 = (C.gsize)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
+	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))

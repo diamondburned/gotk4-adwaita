@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -37,6 +38,10 @@ func init() {
 type StatusPage struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*StatusPage)(nil)
+)
 
 func wrapStatusPage(obj *externglib.Object) *StatusPage {
 	return &StatusPage{

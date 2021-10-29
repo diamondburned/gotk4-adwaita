@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -41,6 +42,11 @@ type ClampLayout struct {
 	gtk.Orientable
 	*externglib.Object
 }
+
+var (
+	_ gtk.LayoutManagerer = (*ClampLayout)(nil)
+	_ externglib.Objector = (*ClampLayout)(nil)
+)
 
 func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 	return &ClampLayout{

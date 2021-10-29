@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -34,6 +35,10 @@ func init() {
 type WindowTitle struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*WindowTitle)(nil)
+)
 
 func wrapWindowTitle(obj *externglib.Object) *WindowTitle {
 	return &WindowTitle{

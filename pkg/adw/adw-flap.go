@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -26,7 +27,7 @@ func init() {
 }
 
 // FlapFoldPolicy describes the possible folding behavior of a adw.Flap widget.
-type FlapFoldPolicy int
+type FlapFoldPolicy C.gint
 
 const (
 	// FlapFoldPolicyNever: disable folding, the flap cannot reach narrow sizes.
@@ -62,7 +63,7 @@ func (f FlapFoldPolicy) String() string {
 // adw.Flap:swipe-to-open and adw.Flap:swipe-to-close.
 //
 // New values may be added to this enum over time.
-type FlapTransitionType int
+type FlapTransitionType C.gint
 
 const (
 	// FlapTransitionTypeOver: flap slides over the content, which is dimmed.
@@ -146,6 +147,11 @@ type Flap struct {
 	gtk.Orientable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*Flap)(nil)
+	_ externglib.Objector = (*Flap)(nil)
+)
 
 func wrapFlap(obj *externglib.Object) *Flap {
 	return &Flap{

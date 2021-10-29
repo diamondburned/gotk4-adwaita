@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -25,7 +26,7 @@ func init() {
 }
 
 // CenteringPolicy describes title centering behavior of a adw.HeaderBar widget.
-type CenteringPolicy int
+type CenteringPolicy C.gint
 
 const (
 	// CenteringPolicyLoose: keep the title centered when possible.
@@ -121,6 +122,10 @@ func (c CenteringPolicy) String() string {
 type HeaderBar struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*HeaderBar)(nil)
+)
 
 func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{

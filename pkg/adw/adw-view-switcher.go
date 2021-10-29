@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -25,7 +26,7 @@ func init() {
 }
 
 // ViewSwitcherPolicy describes the adaptive modes of adw.ViewSwitcher.
-type ViewSwitcherPolicy int
+type ViewSwitcherPolicy C.gint
 
 const (
 	// ViewSwitcherPolicyNarrow: force the narrow mode.
@@ -73,6 +74,10 @@ func (v ViewSwitcherPolicy) String() string {
 type ViewSwitcher struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*ViewSwitcher)(nil)
+)
 
 func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 	return &ViewSwitcher{

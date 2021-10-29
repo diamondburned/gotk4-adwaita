@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -34,6 +35,11 @@ func init() {
 type PreferencesRow struct {
 	gtk.ListBoxRow
 }
+
+var (
+	_ gtk.Widgetter       = (*PreferencesRow)(nil)
+	_ externglib.Objector = (*PreferencesRow)(nil)
+)
 
 func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 	return &PreferencesRow{

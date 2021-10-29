@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -64,6 +65,10 @@ func init() {
 type ButtonContent struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*ButtonContent)(nil)
+)
 
 func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 	return &ButtonContent{

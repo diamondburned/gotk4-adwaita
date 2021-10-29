@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -25,7 +26,7 @@ func init() {
 }
 
 // ColorScheme: application color schemes for adw.StyleManager:color-scheme.
-type ColorScheme int
+type ColorScheme C.gint
 
 const (
 	// ColorSchemeDefault: inherit the parent color-scheme. When set on the
@@ -77,6 +78,10 @@ func (c ColorScheme) String() string {
 type StyleManager struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*StyleManager)(nil)
+)
 
 func wrapStyleManager(obj *externglib.Object) *StyleManager {
 	return &StyleManager{

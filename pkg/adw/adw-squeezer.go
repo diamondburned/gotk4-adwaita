@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -27,7 +28,7 @@ func init() {
 
 // SqueezerTransitionType describes the possible transitions in a adw.Squeezer
 // widget.
-type SqueezerTransitionType int
+type SqueezerTransitionType C.gint
 
 const (
 	// SqueezerTransitionTypeNone: no transition.
@@ -72,6 +73,11 @@ type Squeezer struct {
 	gtk.Orientable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*Squeezer)(nil)
+	_ externglib.Objector = (*Squeezer)(nil)
+)
 
 func wrapSqueezer(obj *externglib.Object) *Squeezer {
 	return &Squeezer{
@@ -565,6 +571,10 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 type SqueezerPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*SqueezerPage)(nil)
+)
 
 func wrapSqueezerPage(obj *externglib.Object) *SqueezerPage {
 	return &SqueezerPage{

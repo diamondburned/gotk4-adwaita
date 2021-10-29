@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -31,6 +32,10 @@ func init() {
 type Bin struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*Bin)(nil)
+)
 
 func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{

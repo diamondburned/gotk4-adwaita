@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -73,6 +74,10 @@ func init() {
 type ViewStack struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*ViewStack)(nil)
+)
 
 func wrapViewStack(obj *externglib.Object) *ViewStack {
 	return &ViewStack{
@@ -549,6 +554,10 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 type ViewStackPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*ViewStackPage)(nil)
+)
 
 func wrapViewStackPage(obj *externglib.Object) *ViewStackPage {
 	return &ViewStackPage{

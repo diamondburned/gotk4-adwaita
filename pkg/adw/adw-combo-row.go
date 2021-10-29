@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -49,6 +50,11 @@ func init() {
 type ComboRow struct {
 	ActionRow
 }
+
+var (
+	_ gtk.Widgetter       = (*ComboRow)(nil)
+	_ externglib.Objector = (*ComboRow)(nil)
+)
 
 func wrapComboRow(obj *externglib.Object) *ComboRow {
 	return &ComboRow{

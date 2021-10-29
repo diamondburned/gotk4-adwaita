@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -28,6 +29,10 @@ func init() {
 type TabPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*TabPage)(nil)
+)
 
 func wrapTabPage(obj *externglib.Object) *TabPage {
 	return &TabPage{
@@ -438,6 +443,10 @@ func (self *TabPage) SetTooltip(tooltip string) {
 type TabView struct {
 	gtk.Widget
 }
+
+var (
+	_ gtk.Widgetter = (*TabView)(nil)
+)
 
 func wrapTabView(obj *externglib.Object) *TabView {
 	return &TabView{

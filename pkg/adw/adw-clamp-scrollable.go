@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -35,6 +36,11 @@ type ClampScrollable struct {
 	gtk.Scrollable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*ClampScrollable)(nil)
+	_ externglib.Objector = (*ClampScrollable)(nil)
+)
 
 func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 	return &ClampScrollable{

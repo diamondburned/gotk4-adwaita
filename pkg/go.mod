@@ -2,7 +2,7 @@ module github.com/diamondburned/gotk4-adwaita/pkg
 
 go 1.17
 
-require github.com/diamondburned/gotk4/pkg v0.0.0-20211022031617-dd5e83cfdbee
+require github.com/diamondburned/gotk4/pkg v0.0.0-20211029022411-ad571a40956f
 
 require (
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20201222180813-1025295fd063 // indirect

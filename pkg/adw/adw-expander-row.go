@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -49,6 +50,11 @@ func init() {
 type ExpanderRow struct {
 	PreferencesRow
 }
+
+var (
+	_ gtk.Widgetter       = (*ExpanderRow)(nil)
+	_ externglib.Objector = (*ExpanderRow)(nil)
+)
 
 func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 	return &ExpanderRow{

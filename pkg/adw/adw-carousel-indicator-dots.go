@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -42,6 +43,11 @@ type CarouselIndicatorDots struct {
 	gtk.Orientable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*CarouselIndicatorDots)(nil)
+	_ externglib.Objector = (*CarouselIndicatorDots)(nil)
+)
 
 func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 	return &CarouselIndicatorDots{

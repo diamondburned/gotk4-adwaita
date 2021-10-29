@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -65,6 +66,11 @@ type ActionRowOverrider interface {
 type ActionRow struct {
 	PreferencesRow
 }
+
+var (
+	_ gtk.Widgetter       = (*ActionRow)(nil)
+	_ externglib.Objector = (*ActionRow)(nil)
+)
 
 func wrapActionRow(obj *externglib.Object) *ActionRow {
 	return &ActionRow{
