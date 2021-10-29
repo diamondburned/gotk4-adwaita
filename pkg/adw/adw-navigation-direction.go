@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -22,19 +23,19 @@ func init() {
 }
 
 // NavigationDirection describes the direction of a swipe navigation gesture.
-type NavigationDirection int
+type NavigationDirection C.gint
 
 const (
 	// NavigationDirectionBack corresponds to start or top, depending on
-	// orientation and text direction
+	// orientation and text direction.
 	NavigationDirectionBack NavigationDirection = iota
 	// NavigationDirectionForward corresponds to end or bottom, depending on
-	// orientation and text direction
+	// orientation and text direction.
 	NavigationDirectionForward
 )
 
 func marshalNavigationDirection(p uintptr) (interface{}, error) {
-	return NavigationDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NavigationDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NavigationDirection.

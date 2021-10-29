@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -43,6 +44,10 @@ type TabBar struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*TabBar)(nil)
+)
+
 func wrapTabBar(obj *externglib.Object) *TabBar {
 	return &TabBar{
 		Widget: gtk.Widget{
@@ -64,9 +69,7 @@ func wrapTabBar(obj *externglib.Object) *TabBar {
 }
 
 func marshalTabBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTabBar(obj), nil
+	return wrapTabBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTabBar creates a new AdwTabBar.
@@ -253,6 +256,11 @@ func (self *TabBar) View() *TabView {
 }
 
 // SetAutohide sets whether the tabs automatically hide.
+//
+// The function takes the following parameters:
+//
+//    - autohide: whether the tabs automatically hide.
+//
 func (self *TabBar) SetAutohide(autohide bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
@@ -268,6 +276,11 @@ func (self *TabBar) SetAutohide(autohide bool) {
 }
 
 // SetEndActionWidget sets the widget to show after the tabs.
+//
+// The function takes the following parameters:
+//
+//    - widget to show after the tabs.
+//
 func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 *C.GtkWidget // out
@@ -283,6 +296,11 @@ func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 }
 
 // SetExpandTabs sets whether tabs expand to full width.
+//
+// The function takes the following parameters:
+//
+//    - expandTabs: whether to expand tabs.
+//
 func (self *TabBar) SetExpandTabs(expandTabs bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
@@ -298,6 +316,11 @@ func (self *TabBar) SetExpandTabs(expandTabs bool) {
 }
 
 // SetInverted sets whether tabs tabs use inverted layout.
+//
+// The function takes the following parameters:
+//
+//    - inverted: whether tabs use inverted layout.
+//
 func (self *TabBar) SetInverted(inverted bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
@@ -313,6 +336,11 @@ func (self *TabBar) SetInverted(inverted bool) {
 }
 
 // SetStartActionWidget sets the widget to show before the tabs.
+//
+// The function takes the following parameters:
+//
+//    - widget to show before the tabs.
+//
 func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 *C.GtkWidget // out
@@ -328,6 +356,11 @@ func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 }
 
 // SetView sets the tab view self controls.
+//
+// The function takes the following parameters:
+//
+//    - view: tab view.
+//
 func (self *TabBar) SetView(view *TabView) {
 	var _arg0 *C.AdwTabBar  // out
 	var _arg1 *C.AdwTabView // out
@@ -353,6 +386,12 @@ func (self *TabBar) SetView(view *TabView) {
 // it will be automatically selected.
 //
 // The adw.TabBar::extra-drag-drop signal can be used to handle the drop.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions.
+//    - types: all supported GTypes that can be dropped.
+//
 func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externglib.Type) {
 	var _arg0 *C.AdwTabBar    // out
 	var _arg1 C.GdkDragAction // out
@@ -362,7 +401,7 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GdkDragAction(actions)
 	_arg3 = (C.gsize)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
+	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -375,4 +414,15 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(actions)
 	runtime.KeepAlive(types)
+}
+
+// ConnectExtraDragDrop: this signal is emitted when content is dropped onto a
+// tab.
+//
+// The content must be of one of the types set up via
+// adw.TabBar.SetupExtraDropTarget().
+//
+// See gtk.DropTarget::drop.
+func (self *TabBar) ConnectExtraDragDrop(f func(page TabPage, value externglib.Value) bool) externglib.SignalHandle {
+	return self.Connect("extra-drag-drop", f)
 }

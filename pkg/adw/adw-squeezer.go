@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -27,17 +28,17 @@ func init() {
 
 // SqueezerTransitionType describes the possible transitions in a adw.Squeezer
 // widget.
-type SqueezerTransitionType int
+type SqueezerTransitionType C.gint
 
 const (
-	// SqueezerTransitionTypeNone: no transition
+	// SqueezerTransitionTypeNone: no transition.
 	SqueezerTransitionTypeNone SqueezerTransitionType = iota
-	// SqueezerTransitionTypeCrossfade: cross-fade
+	// SqueezerTransitionTypeCrossfade: cross-fade.
 	SqueezerTransitionTypeCrossfade
 )
 
 func marshalSqueezerTransitionType(p uintptr) (interface{}, error) {
-	return SqueezerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SqueezerTransitionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SqueezerTransitionType.
@@ -73,6 +74,11 @@ type Squeezer struct {
 	*externglib.Object
 }
 
+var (
+	_ gtk.Widgetter       = (*Squeezer)(nil)
+	_ externglib.Objector = (*Squeezer)(nil)
+)
+
 func wrapSqueezer(obj *externglib.Object) *Squeezer {
 	return &Squeezer{
 		Widget: gtk.Widget{
@@ -98,9 +104,7 @@ func wrapSqueezer(obj *externglib.Object) *Squeezer {
 }
 
 func marshalSqueezerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSqueezer(obj), nil
+	return wrapSqueezer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSqueezer creates a new AdwSqueezer.
@@ -117,6 +121,11 @@ func NewSqueezer() *Squeezer {
 }
 
 // Add adds a child to self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
 	var _arg1 *C.GtkWidget       // out
@@ -177,6 +186,11 @@ func (self *Squeezer) InterpolateSize() bool {
 }
 
 // Page returns the adw.SqueezerPage object for child.
+//
+// The function takes the following parameters:
+//
+//    - child of self.
+//
 func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
 	var _arg1 *C.GtkWidget       // out
@@ -345,6 +359,11 @@ func (self *Squeezer) YAlign() float32 {
 }
 
 // Remove removes a child widget from self.
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (self *Squeezer) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 *C.GtkWidget   // out
@@ -359,6 +378,11 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 
 // SetHomogeneous sets hether all children have the same size for the opposite
 // orientation.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: whether self is homogeneous.
+//
 func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.gboolean     // out
@@ -375,6 +399,11 @@ func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 
 // SetInterpolateSize sets whether self interpolates its size when changing the
 // visible child.
+//
+// The function takes the following parameters:
+//
+//    - interpolateSize: whether to interpolate the size.
+//
 func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.gboolean     // out
@@ -390,6 +419,11 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 }
 
 // SetTransitionDuration sets the transition animation duration for self.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (self *Squeezer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.guint        // out
@@ -404,6 +438,11 @@ func (self *Squeezer) SetTransitionDuration(duration uint) {
 
 // SetTransitionType sets the type of animation used for transitions between
 // children in self.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
 func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 	var _arg0 *C.AdwSqueezer              // out
 	var _arg1 C.AdwSqueezerTransitionType // out
@@ -417,6 +456,11 @@ func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 }
 
 // SetXAlign sets the horizontal alignment, from 0 (start) to 1 (end).
+//
+// The function takes the following parameters:
+//
+//    - xalign: new alignment value.
+//
 func (self *Squeezer) SetXAlign(xalign float32) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.float        // out
@@ -430,6 +474,11 @@ func (self *Squeezer) SetXAlign(xalign float32) {
 }
 
 // SetYAlign sets the vertical alignment, from 0 (top) to 1 (bottom).
+//
+// The function takes the following parameters:
+//
+//    - yalign: new alignment value.
+//
 func (self *Squeezer) SetYAlign(yalign float32) {
 	var _arg0 *C.AdwSqueezer // out
 	var _arg1 C.float        // out
@@ -447,6 +496,10 @@ type SqueezerPage struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SqueezerPage)(nil)
+)
+
 func wrapSqueezerPage(obj *externglib.Object) *SqueezerPage {
 	return &SqueezerPage{
 		Object: obj,
@@ -454,9 +507,7 @@ func wrapSqueezerPage(obj *externglib.Object) *SqueezerPage {
 }
 
 func marshalSqueezerPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSqueezerPage(obj), nil
+	return wrapSqueezerPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child returns the squeezer child to which self belongs.
@@ -508,6 +559,11 @@ func (self *SqueezerPage) Enabled() bool {
 }
 
 // SetEnabled sets whether self is enabled.
+//
+// The function takes the following parameters:
+//
+//    - enabled: whether self is enabled.
+//
 func (self *SqueezerPage) SetEnabled(enabled bool) {
 	var _arg0 *C.AdwSqueezerPage // out
 	var _arg1 C.gboolean         // out

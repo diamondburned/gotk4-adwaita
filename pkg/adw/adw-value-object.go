@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -29,6 +30,10 @@ type ValueObject struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ValueObject)(nil)
+)
+
 func wrapValueObject(obj *externglib.Object) *ValueObject {
 	return &ValueObject{
 		Object: obj,
@@ -36,12 +41,15 @@ func wrapValueObject(obj *externglib.Object) *ValueObject {
 }
 
 func marshalValueObjector(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapValueObject(obj), nil
+	return wrapValueObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewValueObject: create a new AdwValueObject from value.
+//
+// The function takes the following parameters:
+//
+//    - value to store.
+//
 func NewValueObject(value *externglib.Value) *ValueObject {
 	var _arg1 *C.GValue         // out
 	var _cret *C.AdwValueObject // in
@@ -59,6 +67,11 @@ func NewValueObject(value *externglib.Value) *ValueObject {
 }
 
 // CopyValue copies data from the contained Value into dest.
+//
+// The function takes the following parameters:
+//
+//    - dest: GValue with correct type to copy into.
+//
 func (value *ValueObject) CopyValue(dest *externglib.Value) {
 	var _arg0 *C.AdwValueObject // out
 	var _arg1 *C.GValue         // out

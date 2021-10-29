@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -31,6 +32,10 @@ type EnumListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*EnumListModel)(nil)
+)
+
 func wrapEnumListModel(obj *externglib.Object) *EnumListModel {
 	return &EnumListModel{
 		Object: obj,
@@ -41,12 +46,15 @@ func wrapEnumListModel(obj *externglib.Object) *EnumListModel {
 }
 
 func marshalEnumListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEnumListModel(obj), nil
+	return wrapEnumListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEnumListModel creates a new AdwEnumListModel for enum_type.
+//
+// The function takes the following parameters:
+//
+//    - enumType: type of the enum to construct the model from.
+//
 func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	var _arg1 C.GType             // out
 	var _cret *C.AdwEnumListModel // in
@@ -64,6 +72,11 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 }
 
 // FindPosition finds the position of a given enum value in self.
+//
+// The function takes the following parameters:
+//
+//    - value: enum value.
+//
 func (self *EnumListModel) FindPosition(value int) uint {
 	var _arg0 *C.AdwEnumListModel // out
 	var _arg1 C.int               // out

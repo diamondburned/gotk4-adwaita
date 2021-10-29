@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -49,6 +50,11 @@ func init() {
 type ComboRow struct {
 	ActionRow
 }
+
+var (
+	_ gtk.Widgetter       = (*ComboRow)(nil)
+	_ externglib.Objector = (*ComboRow)(nil)
+)
 
 func wrapComboRow(obj *externglib.Object) *ComboRow {
 	return &ComboRow{
@@ -95,9 +101,7 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 }
 
 func marshalComboRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboRow(obj), nil
+	return wrapComboRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewComboRow creates a new AdwComboRow.
@@ -274,6 +278,11 @@ func (self *ComboRow) UseSubtitle() bool {
 // SetExpression sets the expression used to obtain strings from items.
 //
 // The expression must have a value type of G_TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - expression: expression.
+//
 func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	var _arg0 *C.AdwComboRow   // out
 	var _arg1 *C.GtkExpression // out
@@ -289,6 +298,11 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
+//
+// The function takes the following parameters:
+//
+//    - factory to use.
+//
 func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -305,6 +319,11 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 
 // SetListFactory sets the GtkListItemFactory to use for populating list items
 // in the popup.
+//
+// The function takes the following parameters:
+//
+//    - factory to use.
+//
 func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -320,6 +339,11 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 }
 
 // SetModel sets the GListModel to use.
+//
+// The function takes the following parameters:
+//
+//    - model to use.
+//
 func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 *C.GListModel  // out
@@ -335,6 +359,11 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 }
 
 // SetSelected selects the item at the given position.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to select, or GTK_INVALID_LIST_POSITION.
+//
 func (self *ComboRow) SetSelected(position uint) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.guint        // out
@@ -348,6 +377,11 @@ func (self *ComboRow) SetSelected(position uint) {
 }
 
 // SetUseSubtitle sets whether to use the current value as the subtitle.
+//
+// The function takes the following parameters:
+//
+//    - useSubtitle: whether to use the current value as the subtitle.
+//
 func (self *ComboRow) SetUseSubtitle(useSubtitle bool) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.gboolean     // out

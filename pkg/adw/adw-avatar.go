@@ -15,6 +15,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -47,6 +48,10 @@ type Avatar struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*Avatar)(nil)
+)
+
 func wrapAvatar(obj *externglib.Object) *Avatar {
 	return &Avatar{
 		Widget: gtk.Widget{
@@ -68,12 +73,17 @@ func wrapAvatar(obj *externglib.Object) *Avatar {
 }
 
 func marshalAvatarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAvatar(obj), nil
+	return wrapAvatar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAvatar creates a new AdwAvatar.
+//
+// The function takes the following parameters:
+//
+//    - size of the avatar.
+//    - text used to get the initials and color.
+//    - showInitials: whether to use initials instead of an icon as fallback.
+//
 func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	var _arg1 C.int        // out
 	var _arg2 *C.char      // out
@@ -104,7 +114,13 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 // DrawToPixbuf renders self into a gdkpixbuf.Pixbuf at size and scale_factor.
 //
 // This can be used to export the fallback avatar.
-func (self *Avatar) DrawToPixbuf(size int, scaleFactor int) *gdkpixbuf.Pixbuf {
+//
+// The function takes the following parameters:
+//
+//    - size of the pixbuf.
+//    - scaleFactor: scale factor.
+//
+func (self *Avatar) DrawToPixbuf(size, scaleFactor int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -240,6 +256,11 @@ func (self *Avatar) Text() string {
 }
 
 // SetCustomImage sets the custom image paintable.
+//
+// The function takes the following parameters:
+//
+//    - customImage: custom image.
+//
 func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 	var _arg0 *C.AdwAvatar    // out
 	var _arg1 *C.GdkPaintable // out
@@ -257,6 +278,11 @@ func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 // SetIconName sets the name of an icon to use as a fallback.
 //
 // If no name is set, avatar-default-symbolic will be used.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (self *Avatar) SetIconName(iconName string) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 *C.char      // out
@@ -274,6 +300,11 @@ func (self *Avatar) SetIconName(iconName string) {
 
 // SetShowInitials sets whether to use initials instead of an icon on the
 // fallback avatar.
+//
+// The function takes the following parameters:
+//
+//    - showInitials: whether to use initials instead of an icon as fallback.
+//
 func (self *Avatar) SetShowInitials(showInitials bool) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.gboolean   // out
@@ -289,6 +320,11 @@ func (self *Avatar) SetShowInitials(showInitials bool) {
 }
 
 // SetSize sets the size of the avatar.
+//
+// The function takes the following parameters:
+//
+//    - size of the avatar.
+//
 func (self *Avatar) SetSize(size int) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 C.int        // out
@@ -302,6 +338,11 @@ func (self *Avatar) SetSize(size int) {
 }
 
 // SetText sets the text used to generate the fallback initials and color.
+//
+// The function takes the following parameters:
+//
+//    - text used to get the initials and color.
+//
 func (self *Avatar) SetText(text string) {
 	var _arg0 *C.AdwAvatar // out
 	var _arg1 *C.char      // out

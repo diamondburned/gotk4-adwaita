@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -22,17 +23,17 @@ func init() {
 }
 
 // FoldThresholdPolicy determines when adw.Flap and adw.Leaflet will fold.
-type FoldThresholdPolicy int
+type FoldThresholdPolicy C.gint
 
 const (
-	// FoldThresholdPolicyMinimum: folding is based on the minimum size
+	// FoldThresholdPolicyMinimum: folding is based on the minimum size.
 	FoldThresholdPolicyMinimum FoldThresholdPolicy = iota
-	// FoldThresholdPolicyNatural: folding is based on the natural size
+	// FoldThresholdPolicyNatural: folding is based on the natural size.
 	FoldThresholdPolicyNatural
 )
 
 func marshalFoldThresholdPolicy(p uintptr) (interface{}, error) {
-	return FoldThresholdPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FoldThresholdPolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FoldThresholdPolicy.

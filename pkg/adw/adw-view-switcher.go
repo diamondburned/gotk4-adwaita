@@ -14,6 +14,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -26,19 +27,19 @@ func init() {
 }
 
 // ViewSwitcherPolicy describes the adaptive modes of adw.ViewSwitcher.
-type ViewSwitcherPolicy int
+type ViewSwitcherPolicy C.gint
 
 const (
-	// ViewSwitcherPolicyAuto: automatically adapt to the best fitting mode
+	// ViewSwitcherPolicyAuto: automatically adapt to the best fitting mode.
 	ViewSwitcherPolicyAuto ViewSwitcherPolicy = iota
-	// ViewSwitcherPolicyNarrow: force the narrow mode
+	// ViewSwitcherPolicyNarrow: force the narrow mode.
 	ViewSwitcherPolicyNarrow
-	// ViewSwitcherPolicyWide: force the wide mode
+	// ViewSwitcherPolicyWide: force the wide mode.
 	ViewSwitcherPolicyWide
 )
 
 func marshalViewSwitcherPolicy(p uintptr) (interface{}, error) {
-	return ViewSwitcherPolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ViewSwitcherPolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ViewSwitcherPolicy.
@@ -79,6 +80,10 @@ type ViewSwitcher struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*ViewSwitcher)(nil)
+)
+
 func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 	return &ViewSwitcher{
 		Widget: gtk.Widget{
@@ -100,9 +105,7 @@ func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 }
 
 func marshalViewSwitcherer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewSwitcher(obj), nil
+	return wrapViewSwitcher(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewSwitcher creates a new AdwViewSwitcher.
@@ -172,6 +175,11 @@ func (self *ViewSwitcher) Stack() *ViewStack {
 }
 
 // SetNarrowEllipsize sets the ellipsizing position for the titles.
+//
+// The function takes the following parameters:
+//
+//    - mode: new value.
+//
 func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.AdwViewSwitcher   // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -185,6 +193,11 @@ func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
 }
 
 // SetPolicy sets the policy of self.
+//
+// The function takes the following parameters:
+//
+//    - policy: new policy.
+//
 func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 	var _arg0 *C.AdwViewSwitcher      // out
 	var _arg1 C.AdwViewSwitcherPolicy // out
@@ -198,6 +211,11 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 }
 
 // SetStack sets the stack controlled by self.
+//
+// The function takes the following parameters:
+//
+//    - stack: stack.
+//
 func (self *ViewSwitcher) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcher // out
 	var _arg1 *C.AdwViewStack    // out

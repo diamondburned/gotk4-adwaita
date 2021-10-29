@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -35,6 +36,11 @@ type ClampScrollable struct {
 	gtk.Scrollable
 	*externglib.Object
 }
+
+var (
+	_ gtk.Widgetter       = (*ClampScrollable)(nil)
+	_ externglib.Objector = (*ClampScrollable)(nil)
+)
 
 func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 	return &ClampScrollable{
@@ -64,9 +70,7 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 }
 
 func marshalClampScrollabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClampScrollable(obj), nil
+	return wrapClampScrollable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClampScrollable creates a new AdwClampScrollable.
@@ -145,6 +149,11 @@ func (self *ClampScrollable) TighteningThreshold() int {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 *C.GtkWidget          // out
@@ -160,6 +169,11 @@ func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 }
 
 // SetMaximumSize sets the maximum size allocated to the child.
+//
+// The function takes the following parameters:
+//
+//    - maximumSize: maximum size.
+//
 func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
@@ -173,6 +187,11 @@ func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 }
 
 // SetTighteningThreshold sets the size above which the child is clamped.
+//
+// The function takes the following parameters:
+//
+//    - tighteningThreshold: tightening threshold.
+//
 func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out

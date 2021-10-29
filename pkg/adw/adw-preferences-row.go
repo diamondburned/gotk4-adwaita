@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -34,6 +35,11 @@ func init() {
 type PreferencesRow struct {
 	gtk.ListBoxRow
 }
+
+var (
+	_ gtk.Widgetter       = (*PreferencesRow)(nil)
+	_ externglib.Objector = (*PreferencesRow)(nil)
+)
 
 func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 	return &PreferencesRow{
@@ -76,9 +82,7 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 }
 
 func marshalPreferencesRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPreferencesRow(obj), nil
+	return wrapPreferencesRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesRow creates a new AdwPreferencesRow.
@@ -132,6 +136,11 @@ func (self *PreferencesRow) UseUnderline() bool {
 }
 
 // SetTitle sets the title of the preference represented by self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *PreferencesRow) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _arg1 *C.char              // out
@@ -147,6 +156,11 @@ func (self *PreferencesRow) SetTitle(title string) {
 
 // SetUseUnderline sets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//
 func (self *PreferencesRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _arg1 C.gboolean           // out

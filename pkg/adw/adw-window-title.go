@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -35,6 +36,10 @@ type WindowTitle struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*WindowTitle)(nil)
+)
+
 func wrapWindowTitle(obj *externglib.Object) *WindowTitle {
 	return &WindowTitle{
 		Widget: gtk.Widget{
@@ -56,13 +61,17 @@ func wrapWindowTitle(obj *externglib.Object) *WindowTitle {
 }
 
 func marshalWindowTitler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowTitle(obj), nil
+	return wrapWindowTitle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowTitle creates a new AdwWindowTitle.
-func NewWindowTitle(title string, subtitle string) *WindowTitle {
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//    - subtitle: subtitle.
+//
+func NewWindowTitle(title, subtitle string) *WindowTitle {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -118,6 +127,11 @@ func (self *WindowTitle) Title() string {
 }
 
 // SetSubtitle sets the subtitle of self.
+//
+// The function takes the following parameters:
+//
+//    - subtitle: subtitle.
+//
 func (self *WindowTitle) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwWindowTitle // out
 	var _arg1 *C.char           // out
@@ -132,6 +146,11 @@ func (self *WindowTitle) SetSubtitle(subtitle string) {
 }
 
 // SetTitle sets the title of self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *WindowTitle) SetTitle(title string) {
 	var _arg0 *C.AdwWindowTitle // out
 	var _arg1 *C.char           // out

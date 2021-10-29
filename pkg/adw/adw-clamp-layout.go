@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -42,6 +43,11 @@ type ClampLayout struct {
 	*externglib.Object
 }
 
+var (
+	_ gtk.LayoutManagerer = (*ClampLayout)(nil)
+	_ externglib.Objector = (*ClampLayout)(nil)
+)
+
 func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 	return &ClampLayout{
 		LayoutManager: gtk.LayoutManager{
@@ -55,9 +61,7 @@ func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 }
 
 func marshalClampLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClampLayout(obj), nil
+	return wrapClampLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClampLayout creates a new AdwClampLayout.
@@ -108,6 +112,11 @@ func (self *ClampLayout) TighteningThreshold() int {
 }
 
 // SetMaximumSize sets the maximum size allocated to the children.
+//
+// The function takes the following parameters:
+//
+//    - maximumSize: maximum size.
+//
 func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out
@@ -121,6 +130,11 @@ func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 }
 
 // SetTighteningThreshold sets the size above which the children are clamped.
+//
+// The function takes the following parameters:
+//
+//    - tighteningThreshold: tightening threshold.
+//
 func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out

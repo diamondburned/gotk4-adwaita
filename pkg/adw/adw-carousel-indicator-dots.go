@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -43,6 +44,11 @@ type CarouselIndicatorDots struct {
 	*externglib.Object
 }
 
+var (
+	_ gtk.Widgetter       = (*CarouselIndicatorDots)(nil)
+	_ externglib.Objector = (*CarouselIndicatorDots)(nil)
+)
+
 func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 	return &CarouselIndicatorDots{
 		Widget: gtk.Widget{
@@ -68,9 +74,7 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 }
 
 func marshalCarouselIndicatorDotser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCarouselIndicatorDots(obj), nil
+	return wrapCarouselIndicatorDots(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCarouselIndicatorDots creates a new AdwCarouselIndicatorDots.
@@ -106,6 +110,11 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 }
 
 // SetCarousel sets the displayed carousel.
+//
+// The function takes the following parameters:
+//
+//    - carousel: carousel.
+//
 func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _arg1 *C.AdwCarousel              // out

@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -35,6 +36,11 @@ func init() {
 type ApplicationWindow struct {
 	gtk.ApplicationWindow
 }
+
+var (
+	_ externglib.Objector = (*ApplicationWindow)(nil)
+	_ gtk.Widgetter       = (*ApplicationWindow)(nil)
+)
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -91,12 +97,15 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 }
 
 func marshalApplicationWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindow(obj), nil
+	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplicationWindow creates a new AdwApplicationWindow for app.
+//
+// The function takes the following parameters:
+//
+//    - app: application instance.
+//
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -146,6 +155,11 @@ func (self *ApplicationWindow) Child() gtk.Widgetter {
 // SetChild sets the child widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *ApplicationWindow) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _arg1 *C.GtkWidget            // out

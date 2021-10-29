@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -66,6 +67,11 @@ type ActionRow struct {
 	PreferencesRow
 }
 
+var (
+	_ gtk.Widgetter       = (*ActionRow)(nil)
+	_ externglib.Objector = (*ActionRow)(nil)
+)
+
 func wrapActionRow(obj *externglib.Object) *ActionRow {
 	return &ActionRow{
 		PreferencesRow: PreferencesRow{
@@ -109,9 +115,7 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 }
 
 func marshalActionRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionRow(obj), nil
+	return wrapActionRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewActionRow creates a new AdwActionRow.
@@ -138,6 +142,11 @@ func (self *ActionRow) Activate() {
 }
 
 // AddPrefix adds a prefix widget to self.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget.
+//
 func (self *ActionRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
@@ -151,6 +160,11 @@ func (self *ActionRow) AddPrefix(widget gtk.Widgetter) {
 }
 
 // AddSuffix adds a suffix widget to self.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget.
+//
 func (self *ActionRow) AddSuffix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
@@ -290,6 +304,11 @@ func (self *ActionRow) UseUnderline() bool {
 }
 
 // Remove removes a child from self.
+//
+// The function takes the following parameters:
+//
+//    - widget: child to be removed.
+//
 func (self *ActionRow) Remove(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
@@ -303,6 +322,11 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 }
 
 // SetActivatableWidget sets the widget to activate when self is activated.
+//
+// The function takes the following parameters:
+//
+//    - widget: target widget.
+//
 func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
@@ -318,6 +342,11 @@ func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 }
 
 // SetIconName sets the icon name for self.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (self *ActionRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.char         // out
@@ -334,6 +363,11 @@ func (self *ActionRow) SetIconName(iconName string) {
 }
 
 // SetSubtitle sets the subtitle for self.
+//
+// The function takes the following parameters:
+//
+//    - subtitle: subtitle.
+//
 func (self *ActionRow) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.char         // out
@@ -351,6 +385,12 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 // label will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
+//
+// The function takes the following parameters:
+//
+//    - subtitleLines: number of lines at the end of which the subtitle label
+//    will be ellipsized.
+//
 func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
@@ -367,6 +407,12 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
+//
+// The function takes the following parameters:
+//
+//    - titleLines: number of lines at the end of which the title label will be
+//    ellipsized.
+//
 func (self *ActionRow) SetTitleLines(titleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
@@ -381,6 +427,11 @@ func (self *ActionRow) SetTitleLines(titleLines int) {
 
 // SetUseUnderline sets whether underlines in title or subtitle are interpreted
 // as mnemonics.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: whether underlines are interpreted as mnemonics.
+//
 func (self *ActionRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.gboolean      // out
@@ -393,4 +444,9 @@ func (self *ActionRow) SetUseUnderline(useUnderline bool) {
 	C.adw_action_row_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(useUnderline)
+}
+
+// ConnectActivated: this signal is emitted after the row has been activated.
+func (self *ActionRow) ConnectActivated(f func()) externglib.SignalHandle {
+	return self.Connect("activated", f)
 }

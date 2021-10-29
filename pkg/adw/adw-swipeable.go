@@ -14,6 +14,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -52,7 +53,7 @@ type SwipeableOverrider interface {
 	//
 	// If not implemented, the default implementation returns the allocation of
 	// self, allowing swipes from anywhere.
-	SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle
+	SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle
 }
 
 // Swipeable: interface for swipeable widgets.
@@ -64,7 +65,11 @@ type Swipeable struct {
 	gtk.Widget
 }
 
-// Swipeabler describes Swipeable's abstract methods.
+var (
+	_ gtk.Widgetter = (*Swipeable)(nil)
+)
+
+// Swipeabler describes Swipeable's interface methods.
 type Swipeabler interface {
 	externglib.Objector
 
@@ -79,7 +84,7 @@ type Swipeabler interface {
 	SnapPoints() []float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
-	SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle
+	SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle
 }
 
 var _ Swipeabler = (*Swipeable)(nil)
@@ -105,9 +110,7 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 }
 
 func marshalSwipeabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwipeable(obj), nil
+	return wrapSwipeable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CancelProgress gets the progress self will snap back to after the gesture is
@@ -196,7 +199,13 @@ func (self *Swipeable) SnapPoints() []float64 {
 //
 // If not implemented, the default implementation returns the allocation of
 // self, allowing swipes from anywhere.
-func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) gdk.Rectangle {
+//
+// The function takes the following parameters:
+//
+//    - navigationDirection: direction of the swipe.
+//    - isDrag: whether the swipe is caused by a dragging gesture.
+//
+func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle {
 	var _arg0 *C.AdwSwipeable          // out
 	var _arg1 C.AdwNavigationDirection // out
 	var _arg2 C.gboolean               // out
@@ -213,9 +222,9 @@ func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag
 	runtime.KeepAlive(navigationDirection)
 	runtime.KeepAlive(isDrag)
 
-	var _rect gdk.Rectangle // out
+	var _rect *gdk.Rectangle // out
 
-	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _rect
 }

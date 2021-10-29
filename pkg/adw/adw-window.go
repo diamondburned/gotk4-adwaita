@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -47,6 +48,11 @@ func init() {
 type Window struct {
 	gtk.Window
 }
+
+var (
+	_ gtk.Widgetter       = (*Window)(nil)
+	_ externglib.Objector = (*Window)(nil)
+)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -94,9 +100,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new AdwWindow.
@@ -145,6 +149,11 @@ func (self *Window) Child() gtk.Widgetter {
 // SetChild sets the child widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *Window) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out
 	var _arg1 *C.GtkWidget // out

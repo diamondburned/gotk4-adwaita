@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -39,6 +40,10 @@ type PreferencesGroup struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*PreferencesGroup)(nil)
+)
+
 func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 	return &PreferencesGroup{
 		Widget: gtk.Widget{
@@ -60,9 +65,7 @@ func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 }
 
 func marshalPreferencesGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPreferencesGroup(obj), nil
+	return wrapPreferencesGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesGroup creates a new AdwPreferencesGroup.
@@ -79,6 +82,11 @@ func NewPreferencesGroup() *PreferencesGroup {
 }
 
 // Add adds a child to self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
@@ -128,6 +136,11 @@ func (self *PreferencesGroup) Title() string {
 }
 
 // Remove removes a child from self.
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
@@ -141,6 +154,11 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 }
 
 // SetDescription sets the description for self.
+//
+// The function takes the following parameters:
+//
+//    - description: description.
+//
 func (self *PreferencesGroup) SetDescription(description string) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.char                // out
@@ -157,6 +175,11 @@ func (self *PreferencesGroup) SetDescription(description string) {
 }
 
 // SetTitle sets the title for self.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (self *PreferencesGroup) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.char                // out

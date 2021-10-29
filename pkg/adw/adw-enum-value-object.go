@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -27,6 +28,10 @@ type EnumValueObject struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EnumValueObject)(nil)
+)
+
 func wrapEnumValueObject(obj *externglib.Object) *EnumValueObject {
 	return &EnumValueObject{
 		Object: obj,
@@ -34,9 +39,7 @@ func wrapEnumValueObject(obj *externglib.Object) *EnumValueObject {
 }
 
 func marshalEnumValueObjector(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEnumValueObject(obj), nil
+	return wrapEnumValueObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Name gets the enum value name.

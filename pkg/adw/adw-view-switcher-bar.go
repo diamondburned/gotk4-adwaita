@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: libadwaita-1
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
@@ -72,6 +73,10 @@ type ViewSwitcherBar struct {
 	gtk.Widget
 }
 
+var (
+	_ gtk.Widgetter = (*ViewSwitcherBar)(nil)
+)
+
 func wrapViewSwitcherBar(obj *externglib.Object) *ViewSwitcherBar {
 	return &ViewSwitcherBar{
 		Widget: gtk.Widget{
@@ -93,9 +98,7 @@ func wrapViewSwitcherBar(obj *externglib.Object) *ViewSwitcherBar {
 }
 
 func marshalViewSwitcherBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewSwitcherBar(obj), nil
+	return wrapViewSwitcherBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewSwitcherBar creates a new AdwViewSwitcherBar.
@@ -167,6 +170,11 @@ func (self *ViewSwitcherBar) Stack() *ViewStack {
 }
 
 // SetPolicy sets the policy of self.
+//
+// The function takes the following parameters:
+//
+//    - policy: new policy.
+//
 func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
 	var _arg0 *C.AdwViewSwitcherBar   // out
 	var _arg1 C.AdwViewSwitcherPolicy // out
@@ -180,6 +188,11 @@ func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
 }
 
 // SetReveal sets whether self should be revealed or hidden.
+//
+// The function takes the following parameters:
+//
+//    - reveal: whether to reveal self.
+//
 func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _arg1 C.gboolean            // out
@@ -195,6 +208,11 @@ func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 }
 
 // SetStack sets the stack controlled by self.
+//
+// The function takes the following parameters:
+//
+//    - stack: stack.
+//
 func (self *ViewSwitcherBar) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _arg1 *C.AdwViewStack       // out
