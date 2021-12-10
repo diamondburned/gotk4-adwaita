@@ -46,6 +46,7 @@ func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -55,7 +56,6 @@ func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

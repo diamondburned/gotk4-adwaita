@@ -49,6 +49,7 @@ func wrapStatusPage(obj *externglib.Object) *StatusPage {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -58,7 +59,6 @@ func wrapStatusPage(obj *externglib.Object) *StatusPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -70,8 +70,8 @@ func (s SqueezerTransitionType) String() string {
 type Squeezer struct {
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -85,6 +85,7 @@ func wrapSqueezer(obj *externglib.Object) *Squeezer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -94,12 +95,11 @@ func wrapSqueezer(obj *externglib.Object) *Squeezer {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

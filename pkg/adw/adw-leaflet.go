@@ -89,9 +89,9 @@ func (l LeafletTransitionType) String() string {
 type Leaflet struct {
 	gtk.Widget
 
+	*externglib.Object
 	Swipeable
 	gtk.Orientable
-	*externglib.Object
 }
 
 var (
@@ -105,6 +105,7 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -114,13 +115,14 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -130,13 +132,11 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

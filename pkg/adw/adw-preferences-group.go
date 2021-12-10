@@ -50,6 +50,7 @@ func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -59,7 +60,6 @@ func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

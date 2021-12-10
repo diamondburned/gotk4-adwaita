@@ -58,8 +58,8 @@ func init() {
 type SplitButton struct {
 	gtk.Widget
 
-	gtk.Actionable
 	*externglib.Object
+	gtk.Actionable
 }
 
 var (
@@ -73,6 +73,7 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -82,13 +83,14 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: gtk.Actionable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -98,10 +100,8 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 
@@ -256,6 +256,7 @@ func (self *SplitButton) Popover() *gtk.Popover {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -265,13 +266,14 @@ func (self *SplitButton) Popover() *gtk.Popover {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -281,13 +283,11 @@ func (self *SplitButton) Popover() *gtk.Popover {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			}
 		}
 	}

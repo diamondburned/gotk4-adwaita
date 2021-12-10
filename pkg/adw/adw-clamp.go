@@ -44,8 +44,8 @@ func init() {
 type Clamp struct {
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -59,6 +59,7 @@ func wrapClamp(obj *externglib.Object) *Clamp {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -68,12 +69,11 @@ func wrapClamp(obj *externglib.Object) *Clamp {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

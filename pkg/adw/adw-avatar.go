@@ -56,6 +56,7 @@ func wrapAvatar(obj *externglib.Object) *Avatar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -65,7 +66,6 @@ func wrapAvatar(obj *externglib.Object) *Avatar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

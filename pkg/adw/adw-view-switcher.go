@@ -85,6 +85,7 @@ func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -94,7 +95,6 @@ func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -454,6 +454,7 @@ func wrapTabView(obj *externglib.Object) *TabView {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -463,7 +464,6 @@ func wrapTabView(obj *externglib.Object) *TabView {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

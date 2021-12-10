@@ -64,6 +64,7 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -73,13 +74,14 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -89,10 +91,8 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
-				Object: obj,
 			},
 		},
 	}

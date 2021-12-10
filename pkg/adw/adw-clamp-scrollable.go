@@ -32,9 +32,9 @@ func init() {
 type ClampScrollable struct {
 	gtk.Widget
 
+	*externglib.Object
 	gtk.Orientable
 	gtk.Scrollable
-	*externglib.Object
 }
 
 var (
@@ -48,6 +48,7 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -57,15 +58,14 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
 		Scrollable: gtk.Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

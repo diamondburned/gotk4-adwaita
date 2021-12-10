@@ -39,8 +39,8 @@ func init() {
 type ClampLayout struct {
 	gtk.LayoutManager
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -53,10 +53,10 @@ func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 		LayoutManager: gtk.LayoutManager{
 			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

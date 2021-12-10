@@ -133,6 +133,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -142,7 +143,6 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

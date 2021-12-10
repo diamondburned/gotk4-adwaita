@@ -85,6 +85,7 @@ func wrapViewStack(obj *externglib.Object) *ViewStack {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -94,7 +95,6 @@ func wrapViewStack(obj *externglib.Object) *ViewStack {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

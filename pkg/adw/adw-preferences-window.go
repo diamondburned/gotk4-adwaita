@@ -50,6 +50,7 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -59,14 +60,15 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: gtk.Root{
 					NativeSurface: gtk.NativeSurface{
 						Widget: gtk.Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: gtk.Accessible{
 								Object: obj,
 							},
@@ -76,14 +78,12 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 	}

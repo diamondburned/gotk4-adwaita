@@ -143,9 +143,9 @@ func (f FlapTransitionType) String() string {
 type Flap struct {
 	gtk.Widget
 
+	*externglib.Object
 	Swipeable
 	gtk.Orientable
-	*externglib.Object
 }
 
 var (
@@ -159,6 +159,7 @@ func wrapFlap(obj *externglib.Object) *Flap {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -168,13 +169,14 @@ func wrapFlap(obj *externglib.Object) *Flap {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -184,13 +186,11 @@ func wrapFlap(obj *externglib.Object) *Flap {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

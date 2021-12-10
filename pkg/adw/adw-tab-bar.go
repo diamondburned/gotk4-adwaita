@@ -54,6 +54,7 @@ func wrapTabBar(obj *externglib.Object) *TabBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -63,7 +64,6 @@ func wrapTabBar(obj *externglib.Object) *TabBar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
@@ -401,7 +401,7 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GdkDragAction(actions)
 	_arg3 = (C.gsize)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))

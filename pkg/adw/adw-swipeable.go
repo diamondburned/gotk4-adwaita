@@ -95,6 +95,7 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -104,7 +105,6 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

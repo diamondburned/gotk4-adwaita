@@ -48,6 +48,7 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -57,13 +58,14 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Actionable: gtk.Actionable{
 				Widget: gtk.Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -73,10 +75,8 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
-			Object: obj,
 		},
 	}
 }

@@ -65,6 +65,7 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -74,13 +75,14 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
+					Object: obj,
 					Actionable: gtk.Actionable{
 						Widget: gtk.Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: gtk.Accessible{
 								Object: obj,
 							},
@@ -90,10 +92,8 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
-					Object: obj,
 				},
 			},
 		},

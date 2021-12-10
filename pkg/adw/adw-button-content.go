@@ -76,6 +76,7 @@ func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -85,7 +86,6 @@ func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -80,6 +80,7 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -89,13 +90,14 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -105,10 +107,8 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
-				Object: obj,
 			},
 		},
 	}

@@ -40,8 +40,8 @@ func init() {
 type CarouselIndicatorDots struct {
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -55,6 +55,7 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -64,12 +65,11 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

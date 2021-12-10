@@ -46,6 +46,7 @@ func wrapWindowTitle(obj *externglib.Object) *WindowTitle {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -55,7 +56,6 @@ func wrapWindowTitle(obj *externglib.Object) *WindowTitle {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

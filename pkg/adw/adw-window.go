@@ -61,6 +61,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -70,14 +71,15 @@ func wrapWindow(obj *externglib.Object) *Window {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Root: gtk.Root{
 				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -87,14 +89,12 @@ func wrapWindow(obj *externglib.Object) *Window {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: gtk.ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

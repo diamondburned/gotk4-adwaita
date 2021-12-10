@@ -43,6 +43,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -52,7 +53,6 @@ func wrapBin(obj *externglib.Object) *Bin {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

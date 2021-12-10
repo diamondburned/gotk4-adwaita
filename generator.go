@@ -52,16 +52,17 @@ func main() {
 		return
 	}
 
-	gen := girgen.NewGenerator(repos, genutil.ModulePath(adwaitaModule, overrides))
+	opts := girgen.DefaultOpts
+	if verbose {
+		opts.LogLevel = logger.Debug
+	}
+
+	gen := girgen.NewGeneratorOpts(repos, genutil.ModulePath(adwaitaModule, overrides), opts)
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.AddFilters(gendata.Filters)
 	gen.AddFilters(filters)
 	gen.AddPostprocessors(postprocessors)
 	gen.ApplyPreprocessors(gendata.Preprocessors)
-
-	if verbose {
-		gen.LogLevel = logger.Debug
-	}
 
 	if err := genutil.CleanDirectory(output, pkgExceptions); err != nil {
 		log.Fatalln("failed to clean output directory:", err)
