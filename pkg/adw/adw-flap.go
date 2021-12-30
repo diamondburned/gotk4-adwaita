@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -141,6 +139,7 @@ func (f FlapTransitionType) String() string {
 // AdwFlap has a single CSS node with name flap. The node will get the style
 // classes .folded when it is folded, and .unfolded when it's not.
 type Flap struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -199,6 +198,11 @@ func marshalFlapper(p uintptr) (interface{}, error) {
 }
 
 // NewFlap creates a new AdwFlap.
+//
+// The function returns the following values:
+//
+//    - flap: newly created AdwFlap.
+//
 func NewFlap() *Flap {
 	var _cret *C.GtkWidget // in
 
@@ -212,6 +216,11 @@ func NewFlap() *Flap {
 }
 
 // Content gets the content widget for self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): content widget for self.
+//
 func (self *Flap) Content() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
 	var _cret *C.GtkWidget // in
@@ -228,9 +237,13 @@ func (self *Flap) Content() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -240,6 +253,11 @@ func (self *Flap) Content() gtk.Widgetter {
 }
 
 // Flap gets the flap widget for self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): flap widget for self.
+//
 func (self *Flap) Flap() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
 	var _cret *C.GtkWidget // in
@@ -256,9 +274,13 @@ func (self *Flap) Flap() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -268,6 +290,11 @@ func (self *Flap) Flap() gtk.Widgetter {
 }
 
 // FlapPosition gets the flap position for self.
+//
+// The function returns the following values:
+//
+//    - packType: flap position for self.
+//
 func (self *Flap) FlapPosition() gtk.PackType {
 	var _arg0 *C.AdwFlap    // out
 	var _cret C.GtkPackType // in
@@ -285,6 +312,11 @@ func (self *Flap) FlapPosition() gtk.PackType {
 }
 
 // FoldDuration gets the duration that fold transitions in self will take.
+//
+// The function returns the following values:
+//
+//    - guint: fold transition duration.
+//
 func (self *Flap) FoldDuration() uint {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
@@ -302,6 +334,11 @@ func (self *Flap) FoldDuration() uint {
 }
 
 // FoldPolicy gets the fold policy for self.
+//
+// The function returns the following values:
+//
+//    - flapFoldPolicy: fold policy for self.
+//
 func (self *Flap) FoldPolicy() FlapFoldPolicy {
 	var _arg0 *C.AdwFlap          // out
 	var _cret C.AdwFlapFoldPolicy // in
@@ -319,6 +356,9 @@ func (self *Flap) FoldPolicy() FlapFoldPolicy {
 }
 
 // FoldThresholdPolicy gets the fold threshold policy for self.
+//
+// The function returns the following values:
+//
 func (self *Flap) FoldThresholdPolicy() FoldThresholdPolicy {
 	var _arg0 *C.AdwFlap               // out
 	var _cret C.AdwFoldThresholdPolicy // in
@@ -336,6 +376,11 @@ func (self *Flap) FoldThresholdPolicy() FoldThresholdPolicy {
 }
 
 // Folded gets whether self is currently folded.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self is currently folded.
+//
 func (self *Flap) Folded() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -355,6 +400,11 @@ func (self *Flap) Folded() bool {
 }
 
 // Locked gets whether self is locked.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self is locked.
+//
 func (self *Flap) Locked() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -374,6 +424,11 @@ func (self *Flap) Locked() bool {
 }
 
 // Modal gets whether self is modal.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self is modal.
+//
 func (self *Flap) Modal() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -394,6 +449,11 @@ func (self *Flap) Modal() bool {
 
 // RevealDuration returns the duration that reveal transitions in self will
 // take.
+//
+// The function returns the following values:
+//
+//    - guint: reveal transition duration.
+//
 func (self *Flap) RevealDuration() uint {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.guint    // in
@@ -411,6 +471,11 @@ func (self *Flap) RevealDuration() uint {
 }
 
 // RevealFlap gets whether the flap widget is revealed for self.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the flap widget is revealed.
+//
 func (self *Flap) RevealFlap() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -430,6 +495,11 @@ func (self *Flap) RevealFlap() bool {
 }
 
 // RevealProgress gets the current reveal progress for self.
+//
+// The function returns the following values:
+//
+//    - gdouble: current reveal progress for self.
+//
 func (self *Flap) RevealProgress() float64 {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.double   // in
@@ -447,6 +517,11 @@ func (self *Flap) RevealProgress() float64 {
 }
 
 // Separator gets the separator widget for self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): separator widget for self.
+//
 func (self *Flap) Separator() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
 	var _cret *C.GtkWidget // in
@@ -463,9 +538,13 @@ func (self *Flap) Separator() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -475,6 +554,11 @@ func (self *Flap) Separator() gtk.Widgetter {
 }
 
 // SwipeToClose gets whether self can be closed with a swipe gesture.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self can be closed with a swipe gesture.
+//
 func (self *Flap) SwipeToClose() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -494,6 +578,11 @@ func (self *Flap) SwipeToClose() bool {
 }
 
 // SwipeToOpen gets whether self can be opened with a swipe gesture.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self can be opened with a swipe gesture.
+//
 func (self *Flap) SwipeToOpen() bool {
 	var _arg0 *C.AdwFlap // out
 	var _cret C.gboolean // in
@@ -514,6 +603,11 @@ func (self *Flap) SwipeToOpen() bool {
 
 // TransitionType gets the type of animation used for reveal and fold
 // transitions in self.
+//
+// The function returns the following values:
+//
+//    - flapTransitionType: current transition type of self.
+//
 func (self *Flap) TransitionType() FlapTransitionType {
 	var _arg0 *C.AdwFlap              // out
 	var _cret C.AdwFlapTransitionType // in
@@ -534,7 +628,7 @@ func (self *Flap) TransitionType() FlapTransitionType {
 //
 // The function takes the following parameters:
 //
-//    - content widget.
+//    - content (optional) widget.
 //
 func (self *Flap) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
@@ -554,7 +648,7 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - flap widget.
+//    - flap (optional) widget.
 //
 func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
@@ -725,7 +819,7 @@ func (self *Flap) SetRevealFlap(revealFlap bool) {
 //
 // The function takes the following parameters:
 //
-//    - separator widget.
+//    - separator (optional) widget.
 //
 func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out

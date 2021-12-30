@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -87,6 +85,7 @@ func (l LeafletTransitionType) String() string {
 // style classes .folded when it is folded, .unfolded when it's not, or none if
 // it hasn't computed its fold yet.
 type Leaflet struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -145,6 +144,11 @@ func marshalLeafletter(p uintptr) (interface{}, error) {
 }
 
 // NewLeaflet creates a new AdwLeaflet.
+//
+// The function returns the following values:
+//
+//    - leaflet: new created AdwLeaflet.
+//
 func NewLeaflet() *Leaflet {
 	var _cret *C.GtkWidget // in
 
@@ -162,6 +166,10 @@ func NewLeaflet() *Leaflet {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
+//
+// The function returns the following values:
+//
+//    - leafletPage: adw.LeafletPage for child.
 //
 func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -195,6 +203,10 @@ func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 //
 //    - direction: direction.
 //
+// The function returns the following values:
+//
+//    - widget (optional) previous or next child.
+//
 func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet            // out
 	var _arg1 C.AdwNavigationDirection // out
@@ -214,9 +226,13 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -227,6 +243,11 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 
 // CanSwipeBack gets whether a swipe gesture can be used to navigate to the
 // previous child.
+//
+// The function returns the following values:
+//
+//    - ok: whether back swipe is enabled.
+//
 func (self *Leaflet) CanSwipeBack() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -247,6 +268,11 @@ func (self *Leaflet) CanSwipeBack() bool {
 
 // CanSwipeForward gets whether a swipe gesture can be used to navigate to the
 // next child.
+//
+// The function returns the following values:
+//
+//    - ok: whether forward swipe is enabled.
+//
 func (self *Leaflet) CanSwipeForward() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -266,6 +292,11 @@ func (self *Leaflet) CanSwipeForward() bool {
 }
 
 // CanUnfold gets whether self can unfold.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can unfold.
+//
 func (self *Leaflet) CanUnfold() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -294,6 +325,10 @@ func (self *Leaflet) CanUnfold() bool {
 //
 //    - name of the child to find.
 //
+// The function returns the following values:
+//
+//    - widget (optional): requested child of self.
+//
 func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.char       // out
@@ -314,9 +349,13 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -327,6 +366,11 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 
 // ChildTransitionDuration gets the child transition animation duration for
 // self.
+//
+// The function returns the following values:
+//
+//    - guint: child transition duration, in milliseconds.
+//
 func (self *Leaflet) ChildTransitionDuration() uint {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
@@ -345,6 +389,11 @@ func (self *Leaflet) ChildTransitionDuration() uint {
 
 // ChildTransitionRunning gets whether a child transition is currently running
 // for self.
+//
+// The function returns the following values:
+//
+//    - ok: whether a transition is currently running.
+//
 func (self *Leaflet) ChildTransitionRunning() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -364,6 +413,9 @@ func (self *Leaflet) ChildTransitionRunning() bool {
 }
 
 // FoldThresholdPolicy gets the fold threshold policy for self.
+//
+// The function returns the following values:
+//
 func (self *Leaflet) FoldThresholdPolicy() FoldThresholdPolicy {
 	var _arg0 *C.AdwLeaflet            // out
 	var _cret C.AdwFoldThresholdPolicy // in
@@ -381,6 +433,11 @@ func (self *Leaflet) FoldThresholdPolicy() FoldThresholdPolicy {
 }
 
 // Folded gets whether self is folded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is folded.
+//
 func (self *Leaflet) Folded() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -400,6 +457,9 @@ func (self *Leaflet) Folded() bool {
 }
 
 // Homogeneous gets whether self is homogeneous.
+//
+// The function returns the following values:
+//
 func (self *Leaflet) Homogeneous() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
@@ -419,6 +479,11 @@ func (self *Leaflet) Homogeneous() bool {
 }
 
 // ModeTransitionDuration gets the mode transition animation duration for self.
+//
+// The function returns the following values:
+//
+//    - guint: mode transition duration, in milliseconds.
+//
 func (self *Leaflet) ModeTransitionDuration() uint {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
@@ -440,6 +505,10 @@ func (self *Leaflet) ModeTransitionDuration() uint {
 // The function takes the following parameters:
 //
 //    - child of self.
+//
+// The function returns the following values:
+//
+//    - leafletPage: page object for child.
 //
 func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -464,6 +533,11 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the leaflet's children.
+//
 func (self *Leaflet) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwLeaflet        // out
 	var _cret *C.GtkSelectionModel // in
@@ -482,9 +556,13 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -494,6 +572,11 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 
 // TransitionType gets the type of animation used for transitions between modes
 // and children.
+//
+// The function returns the following values:
+//
+//    - leafletTransitionType: current transition type of self.
+//
 func (self *Leaflet) TransitionType() LeafletTransitionType {
 	var _arg0 *C.AdwLeaflet              // out
 	var _cret C.AdwLeafletTransitionType // in
@@ -511,6 +594,11 @@ func (self *Leaflet) TransitionType() LeafletTransitionType {
 }
 
 // VisibleChild gets the widget currently visible when the leaflet is folded.
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child.
+//
 func (self *Leaflet) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret *C.GtkWidget  // in
@@ -527,9 +615,13 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -539,6 +631,11 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 }
 
 // VisibleChildName gets the name of the currently visible child widget.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible child.
+//
 func (self *Leaflet) VisibleChildName() string {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret *C.char       // in
@@ -565,7 +662,11 @@ func (self *Leaflet) VisibleChildName() string {
 // The function takes the following parameters:
 //
 //    - child: widget to insert.
-//    - sibling after which to insert child.
+//    - sibling (optional) after which to insert child.
+//
+// The function returns the following values:
+//
+//    - leafletPage: adw.LeafletPage for child.
 //
 func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -603,6 +704,10 @@ func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage
 //
 //    - direction: direction.
 //
+// The function returns the following values:
+//
+//    - ok: whether the visible child was changed.
+//
 func (self *Leaflet) Navigate(direction NavigationDirection) bool {
 	var _arg0 *C.AdwLeaflet            // out
 	var _arg1 C.AdwNavigationDirection // out
@@ -629,6 +734,10 @@ func (self *Leaflet) Navigate(direction NavigationDirection) bool {
 // The function takes the following parameters:
 //
 //    - child: widget to prepend.
+//
+// The function returns the following values:
+//
+//    - leafletPage: adw.LeafletPage for child.
 //
 func (self *Leaflet) Prepend(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -675,7 +784,7 @@ func (self *Leaflet) Remove(child gtk.Widgetter) {
 // The function takes the following parameters:
 //
 //    - child: widget to move, must be a child of self.
-//    - sibling to move child after.
+//    - sibling (optional) to move child after.
 //
 func (self *Leaflet) ReorderChildAfter(child, sibling gtk.Widgetter) {
 	var _arg0 *C.AdwLeaflet // out
@@ -895,6 +1004,7 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 
 // LeafletPage: auxiliary class used by adw.Leaflet.
 type LeafletPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -913,6 +1023,11 @@ func marshalLeafletPager(p uintptr) (interface{}, error) {
 }
 
 // Child gets the leaflet child th which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
 func (self *LeafletPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret *C.GtkWidget      // in
@@ -931,9 +1046,13 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -942,6 +1061,11 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 }
 
 // Name gets the name of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of self.
+//
 func (self *LeafletPage) Name() string {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret *C.char           // in
@@ -961,6 +1085,11 @@ func (self *LeafletPage) Name() string {
 }
 
 // Navigatable gets whether the child can be navigated to when folded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be navigated to when folded.
+//
 func (self *LeafletPage) Navigatable() bool {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret C.gboolean        // in
@@ -983,7 +1112,7 @@ func (self *LeafletPage) Navigatable() bool {
 //
 // The function takes the following parameters:
 //
-//    - name: new value to set.
+//    - name (optional): new value to set.
 //
 func (self *LeafletPage) SetName(name string) {
 	var _arg0 *C.AdwLeafletPage // out

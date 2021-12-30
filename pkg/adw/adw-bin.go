@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -30,6 +28,7 @@ func init() {
 // It is useful for deriving subclasses, since it provides common code needed
 // for handling a single child widget.
 type Bin struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -62,6 +61,11 @@ func marshalBinner(p uintptr) (interface{}, error) {
 }
 
 // NewBin creates a new AdwBin.
+//
+// The function returns the following values:
+//
+//    - bin: new created AdwBin.
+//
 func NewBin() *Bin {
 	var _cret *C.GtkWidget // in
 
@@ -75,6 +79,11 @@ func NewBin() *Bin {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *Bin) Child() gtk.Widgetter {
 	var _arg0 *C.AdwBin    // out
 	var _cret *C.GtkWidget // in
@@ -91,9 +100,13 @@ func (self *Bin) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -106,7 +119,7 @@ func (self *Bin) Child() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *Bin) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwBin    // out

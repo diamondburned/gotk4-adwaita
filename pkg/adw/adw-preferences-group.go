@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -37,6 +35,7 @@ func init() {
 //
 // AdwPreferencesGroup has a single CSS node with name preferencesgroup.
 type PreferencesGroup struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -69,6 +68,11 @@ func marshalPreferencesGrouper(p uintptr) (interface{}, error) {
 }
 
 // NewPreferencesGroup creates a new AdwPreferencesGroup.
+//
+// The function returns the following values:
+//
+//    - preferencesGroup: newly created AdwPreferencesGroup.
+//
 func NewPreferencesGroup() *PreferencesGroup {
 	var _cret *C.GtkWidget // in
 
@@ -100,6 +104,11 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 }
 
 // Description gets the description of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description of self.
+//
 func (self *PreferencesGroup) Description() string {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _cret *C.char                // in
@@ -119,6 +128,11 @@ func (self *PreferencesGroup) Description() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title of self.
+//
 func (self *PreferencesGroup) Title() string {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _cret *C.char                // in
@@ -157,7 +171,7 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - description: description.
+//    - description (optional): description.
 //
 func (self *PreferencesGroup) SetDescription(description string) {
 	var _arg0 *C.AdwPreferencesGroup // out

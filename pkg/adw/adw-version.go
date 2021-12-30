@@ -2,8 +2,6 @@
 
 package adw
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"

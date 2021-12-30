@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -30,6 +28,7 @@ func init() {
 //
 // The primary use case for AdwClampScrollable is clamping gtk.ListView.
 type ClampScrollable struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -74,6 +73,11 @@ func marshalClampScrollabler(p uintptr) (interface{}, error) {
 }
 
 // NewClampScrollable creates a new AdwClampScrollable.
+//
+// The function returns the following values:
+//
+//    - clampScrollable: newly created AdwClampScrollable.
+//
 func NewClampScrollable() *ClampScrollable {
 	var _cret *C.GtkWidget // in
 
@@ -87,6 +91,11 @@ func NewClampScrollable() *ClampScrollable {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *ClampScrollable) Child() gtk.Widgetter {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret *C.GtkWidget          // in
@@ -103,9 +112,13 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -115,6 +128,11 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 }
 
 // MaximumSize gets the maximum size allocated to the child.
+//
+// The function returns the following values:
+//
+//    - gint: maximum size to allocate to the child.
+//
 func (self *ClampScrollable) MaximumSize() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
@@ -132,6 +150,11 @@ func (self *ClampScrollable) MaximumSize() int {
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
+//
+// The function returns the following values:
+//
+//    - gint: size above which the child is clamped.
+//
 func (self *ClampScrollable) TighteningThreshold() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
@@ -152,7 +175,7 @@ func (self *ClampScrollable) TighteningThreshold() int {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwClampScrollable // out

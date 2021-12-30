@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -120,6 +118,7 @@ func (c CenteringPolicy) String() string {
 //
 // AdwHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -152,6 +151,11 @@ func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewHeaderBar creates a new AdwHeaderBar.
+//
+// The function returns the following values:
+//
+//    - headerBar: newly created AdwHeaderBar.
+//
 func NewHeaderBar() *HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -165,6 +169,11 @@ func NewHeaderBar() *HeaderBar {
 }
 
 // CenteringPolicy gets the policy for aligning the center widget.
+//
+// The function returns the following values:
+//
+//    - centeringPolicy: centering policy.
+//
 func (self *HeaderBar) CenteringPolicy() CenteringPolicy {
 	var _arg0 *C.AdwHeaderBar      // out
 	var _cret C.AdwCenteringPolicy // in
@@ -182,6 +191,11 @@ func (self *HeaderBar) CenteringPolicy() CenteringPolicy {
 }
 
 // DecorationLayout gets the decoration layout for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): decoration layout.
+//
 func (self *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret *C.char         // in
@@ -201,6 +215,11 @@ func (self *HeaderBar) DecorationLayout() string {
 }
 
 // ShowEndTitleButtons gets whether to show title buttons at the end of self.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if title buttons at the end are shown.
+//
 func (self *HeaderBar) ShowEndTitleButtons() bool {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret C.gboolean      // in
@@ -221,6 +240,11 @@ func (self *HeaderBar) ShowEndTitleButtons() bool {
 
 // ShowStartTitleButtons gets whether to show title buttons at the start of
 // self.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if title buttons at the start are shown.
+//
 func (self *HeaderBar) ShowStartTitleButtons() bool {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret C.gboolean      // in
@@ -240,6 +264,11 @@ func (self *HeaderBar) ShowStartTitleButtons() bool {
 }
 
 // TitleWidget gets the title widget widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): title widget.
+//
 func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 	var _arg0 *C.AdwHeaderBar // out
 	var _cret *C.GtkWidget    // in
@@ -256,9 +285,13 @@ func (self *HeaderBar) TitleWidget() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -346,7 +379,7 @@ func (self *HeaderBar) SetCenteringPolicy(centeringPolicy CenteringPolicy) {
 //
 // The function takes the following parameters:
 //
-//    - layout: decoration layout, or NULL to unset the layout.
+//    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (self *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.AdwHeaderBar // out
@@ -408,7 +441,7 @@ func (self *HeaderBar) SetShowStartTitleButtons(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - titleWidget: widget to use for a title.
+//    - titleWidget (optional): widget to use for a title.
 //
 func (self *HeaderBar) SetTitleWidget(titleWidget gtk.Widgetter) {
 	var _arg0 *C.AdwHeaderBar // out

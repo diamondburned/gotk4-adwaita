@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -36,6 +34,7 @@ func init() {
 //
 // AdwCarousel has a single CSS node with name carousel.
 type Carousel struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -93,7 +92,20 @@ func marshalCarouseller(p uintptr) (interface{}, error) {
 	return wrapCarousel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectPageChanged: this signal is emitted after a page has been changed.
+//
+// It can be used to implement "infinite scrolling" by amending the pages after
+// every scroll.
+func (self *Carousel) ConnectPageChanged(f func(index uint)) externglib.SignalHandle {
+	return self.Connect("page-changed", f)
+}
+
 // NewCarousel creates a new AdwCarousel.
+//
+// The function returns the following values:
+//
+//    - carousel: newly created AdwCarousel.
+//
 func NewCarousel() *Carousel {
 	var _cret *C.GtkWidget // in
 
@@ -126,6 +138,11 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 
 // AllowLongSwipes gets whether to allow swiping for more than one page at a
 // time.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if long swipes are allowed.
+//
 func (self *Carousel) AllowLongSwipes() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
@@ -145,6 +162,11 @@ func (self *Carousel) AllowLongSwipes() bool {
 }
 
 // AllowMouseDrag sets whether self can be dragged with mouse pointer.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be dragged with mouse pointer.
+//
 func (self *Carousel) AllowMouseDrag() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
@@ -164,6 +186,11 @@ func (self *Carousel) AllowMouseDrag() bool {
 }
 
 // AllowScrollWheel gets whether self will respond to scroll wheel events.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self will respond to scroll wheel events.
+//
 func (self *Carousel) AllowScrollWheel() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
@@ -184,6 +211,11 @@ func (self *Carousel) AllowScrollWheel() bool {
 
 // AnimationDuration gets the animation duration used by
 // adw.Carousel.ScrollTo().
+//
+// The function returns the following values:
+//
+//    - guint: animation duration in milliseconds.
+//
 func (self *Carousel) AnimationDuration() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
@@ -201,6 +233,11 @@ func (self *Carousel) AnimationDuration() uint {
 }
 
 // Interactive gets whether self can be navigated.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be navigated.
+//
 func (self *Carousel) Interactive() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
@@ -220,6 +257,11 @@ func (self *Carousel) Interactive() bool {
 }
 
 // NPages gets the number of pages in self.
+//
+// The function returns the following values:
+//
+//    - guint: number of pages in self.
+//
 func (self *Carousel) NPages() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
@@ -242,6 +284,10 @@ func (self *Carousel) NPages() uint {
 //
 //    - n: index of the page.
 //
+// The function returns the following values:
+//
+//    - widget: page.
+//
 func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
@@ -263,9 +309,13 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -276,6 +326,11 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 // Position gets current scroll position in self.
 //
 // It's unitless, 1 matches 1 page.
+//
+// The function returns the following values:
+//
+//    - gdouble: scroll position.
+//
 func (self *Carousel) Position() float64 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.double       // in
@@ -294,6 +349,11 @@ func (self *Carousel) Position() float64 {
 
 // RevealDuration gets duration of the animation used when adding or removing
 // pages.
+//
+// The function returns the following values:
+//
+//    - guint: duration.
+//
 func (self *Carousel) RevealDuration() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
@@ -311,6 +371,11 @@ func (self *Carousel) RevealDuration() uint {
 }
 
 // Spacing gets spacing between pages in pixels.
+//
+// The function returns the following values:
+//
+//    - guint: spacing between pages.
+//
 func (self *Carousel) Spacing() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
@@ -591,12 +656,4 @@ func (self *Carousel) SetSpacing(spacing uint) {
 	C.adw_carousel_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(spacing)
-}
-
-// ConnectPageChanged: this signal is emitted after a page has been changed.
-//
-// It can be used to implement "infinite scrolling" by amending the pages after
-// every scroll.
-func (self *Carousel) ConnectPageChanged(f func(index uint)) externglib.SignalHandle {
-	return self.Connect("page-changed", f)
 }

@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -37,6 +35,7 @@ func init() {
 // size, .small when it's allocated the full size, .medium in-between, or none
 // if it hasn't been allocated yet.
 type ClampLayout struct {
+	_ [0]func() // equal guard
 	gtk.LayoutManager
 
 	*externglib.Object
@@ -65,6 +64,11 @@ func marshalClampLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewClampLayout creates a new AdwClampLayout.
+//
+// The function returns the following values:
+//
+//    - clampLayout: newly created AdwClampLayout.
+//
 func NewClampLayout() *ClampLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -78,6 +82,11 @@ func NewClampLayout() *ClampLayout {
 }
 
 // MaximumSize gets the maximum size allocated to the children.
+//
+// The function returns the following values:
+//
+//    - gint: maximum size to allocate to the children.
+//
 func (self *ClampLayout) MaximumSize() int {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in
@@ -95,6 +104,11 @@ func (self *ClampLayout) MaximumSize() int {
 }
 
 // TighteningThreshold gets the size above which the children are clamped.
+//
+// The function returns the following values:
+//
+//    - gint: size above which the children are clamped.
+//
 func (self *ClampLayout) TighteningThreshold() int {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in

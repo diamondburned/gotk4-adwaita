@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -27,6 +25,7 @@ func init() {
 
 // TabPage: auxiliary class used by adw.TabView.
 type TabPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -45,6 +44,11 @@ func marshalTabPager(p uintptr) (interface{}, error) {
 }
 
 // Child gets the child of self.
+//
+// The function returns the following values:
+//
+//    - widget: child of self.
+//
 func (self *TabPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.GtkWidget  // in
@@ -63,9 +67,13 @@ func (self *TabPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -74,6 +82,11 @@ func (self *TabPage) Child() gtk.Widgetter {
 }
 
 // Icon gets the icon of self.
+//
+// The function returns the following values:
+//
+//    - icon (optional) of self.
+//
 func (self *TabPage) Icon() gio.Iconner {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.GIcon      // in
@@ -90,9 +103,13 @@ func (self *TabPage) Icon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Iconner)
+				return ok
+			})
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -102,6 +119,11 @@ func (self *TabPage) Icon() gio.Iconner {
 }
 
 // IndicatorActivatable gets whether the indicator of self is activatable.
+//
+// The function returns the following values:
+//
+//    - ok: whether the indicator is activatable.
+//
 func (self *TabPage) IndicatorActivatable() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
@@ -121,6 +143,11 @@ func (self *TabPage) IndicatorActivatable() bool {
 }
 
 // IndicatorIcon gets the indicator icon of self.
+//
+// The function returns the following values:
+//
+//    - icon (optional): indicator icon of self.
+//
 func (self *TabPage) IndicatorIcon() gio.Iconner {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.GIcon      // in
@@ -137,9 +164,13 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Iconner)
+				return ok
+			})
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -149,6 +180,11 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 }
 
 // Loading gets whether self is loading.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is loading.
+//
 func (self *TabPage) Loading() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
@@ -168,6 +204,11 @@ func (self *TabPage) Loading() bool {
 }
 
 // NeedsAttention gets whether self needs attention.
+//
+// The function returns the following values:
+//
+//    - ok: whether self needs attention.
+//
 func (self *TabPage) NeedsAttention() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
@@ -187,6 +228,11 @@ func (self *TabPage) NeedsAttention() bool {
 }
 
 // Parent gets the parent page of self.
+//
+// The function returns the following values:
+//
+//    - tabPage (optional): parent page.
+//
 func (self *TabPage) Parent() *TabPage {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.AdwTabPage // in
@@ -206,6 +252,11 @@ func (self *TabPage) Parent() *TabPage {
 }
 
 // Pinned gets whether self is pinned.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is pinned.
+//
 func (self *TabPage) Pinned() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
@@ -225,6 +276,11 @@ func (self *TabPage) Pinned() bool {
 }
 
 // Selected gets whether self is selected.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is selected.
+//
 func (self *TabPage) Selected() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
@@ -244,6 +300,11 @@ func (self *TabPage) Selected() bool {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title of self.
+//
 func (self *TabPage) Title() string {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.char       // in
@@ -261,6 +322,11 @@ func (self *TabPage) Title() string {
 }
 
 // Tooltip gets the tooltip of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip of self.
+//
 func (self *TabPage) Tooltip() string {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.char       // in
@@ -283,7 +349,7 @@ func (self *TabPage) Tooltip() string {
 //
 // The function takes the following parameters:
 //
-//    - icon of self.
+//    - icon (optional) of self.
 //
 func (self *TabPage) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
@@ -323,7 +389,7 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 //
 // The function takes the following parameters:
 //
-//    - indicatorIcon: indicator icon of self.
+//    - indicatorIcon (optional): indicator icon of self.
 //
 func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
@@ -441,6 +507,7 @@ func (self *TabPage) SetTooltip(tooltip string) {
 //
 // AdwTabView has a main CSS node with the name tabview.
 type TabView struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -472,7 +539,99 @@ func marshalTabViewer(p uintptr) (interface{}, error) {
 	return wrapTabView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClosePage: emitted after adw.TabView.ClosePage() has been called for
+// page.
+//
+// The handler is expected to call adw.TabView.ClosePageFinish() to confirm or
+// reject the closing.
+//
+// The default handler will immediately confirm closing for non-pinned pages, or
+// reject it for pinned pages, equivalent to the following example:
+//
+//    static gboolean
+//    close_page_cb (AdwTabView *view,
+//                   AdwTabPage *page,
+//                   gpointer    user_data)
+//    {
+//      adw_tab_view_close_page_finish (view, page, !adw_tab_page_get_pinned (page));
+//
+//      return GDK_EVENT_STOP;
+//    }
+//
+//
+// The adw.TabView.ClosePageFinish() call doesn't have to happen inside the
+// handler, so can be used to do asynchronous checks before confirming the
+// closing.
+//
+// A typical reason to connect to this signal is to show a confirmation dialog
+// for closing a tab.
+func (self *TabView) ConnectClosePage(f func(page TabPage) bool) externglib.SignalHandle {
+	return self.Connect("close-page", f)
+}
+
+// ConnectCreateWindow: emitted when a tab should be transferred into a new
+// window.
+//
+// This can happen after a tab has been dropped on desktop.
+//
+// The signal handler is expected to create a new window, position it as needed
+// and return its AdwTabView that the page will be transferred into.
+func (self *TabView) ConnectCreateWindow(f func() TabView) externglib.SignalHandle {
+	return self.Connect("create-window", f)
+}
+
+// ConnectIndicatorActivated: emitted after the indicator icon on page has been
+// activated.
+//
+// See adw.TabPage:indicator-icon and adw.TabPage:indicator-activatable.
+func (self *TabView) ConnectIndicatorActivated(f func(page TabPage)) externglib.SignalHandle {
+	return self.Connect("indicator-activated", f)
+}
+
+// ConnectPageAttached: emitted when a page has been created or transferred to
+// self.
+//
+// A typical reason to connect to this signal would be to connect to page
+// signals for things such as updating window title.
+func (self *TabView) ConnectPageAttached(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-attached", f)
+}
+
+// ConnectPageDetached: emitted when a page has been removed or transferred to
+// another view.
+//
+// A typical reason to connect to this signal would be to disconnect signal
+// handlers connected in the adw.TabView::page-attached handler.
+//
+// It is important not to try and destroy the page child in the handler of this
+// function as the child might merely be moved to another window; use child
+// dispose handler for that or do it in sync with your
+// adw.TabView.ClosePageFinish() calls.
+func (self *TabView) ConnectPageDetached(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-detached", f)
+}
+
+// ConnectPageReordered: emitted after page has been reordered to position.
+func (self *TabView) ConnectPageReordered(f func(page TabPage, position int)) externglib.SignalHandle {
+	return self.Connect("page-reordered", f)
+}
+
+// ConnectSetupMenu: emitted when a context menu is opened or closed for page.
+//
+// If the menu has been closed, page will be set to NULL.
+//
+// It can be used to set up menu actions before showing the menu, for example
+// disable actions not applicable to page.
+func (self *TabView) ConnectSetupMenu(f func(page TabPage)) externglib.SignalHandle {
+	return self.Connect("setup-menu", f)
+}
+
 // NewTabView creates a new AdwTabView.
+//
+// The function returns the following values:
+//
+//    - tabView: newly created AdwTabView.
+//
 func NewTabView() *TabView {
 	var _cret *C.AdwTabView // in
 
@@ -496,7 +655,11 @@ func NewTabView() *TabView {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - parent page for child.
+//    - parent (optional) page for child.
+//
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
 //
 func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -528,6 +691,10 @@ func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 //
 //    - child: widget to add.
 //
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
+//
 func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -552,6 +719,10 @@ func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
+//
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
 //
 func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -696,6 +867,11 @@ func (self *TabView) ClosePagesBefore(page *TabPage) {
 }
 
 // DefaultIcon gets the default icon of self.
+//
+// The function returns the following values:
+//
+//    - icon: default icon of self.
+//
 func (self *TabView) DefaultIcon() gio.Iconner {
 	var _arg0 *C.AdwTabView // out
 	var _cret *C.GIcon      // in
@@ -714,9 +890,13 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Iconner)
+			return ok
+		})
+		rv, ok := casted.(gio.Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -725,6 +905,11 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 }
 
 // IsTransferringPage: whether a page is being transferred.
+//
+// The function returns the following values:
+//
+//    - ok: whether a page is being transferred.
+//
 func (self *TabView) IsTransferringPage() bool {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.gboolean    // in
@@ -744,6 +929,11 @@ func (self *TabView) IsTransferringPage() bool {
 }
 
 // MenuModel gets the tab context menu model for self.
+//
+// The function returns the following values:
+//
+//    - menuModel (optional): tab context menu model for self.
+//
 func (self *TabView) MenuModel() gio.MenuModeller {
 	var _arg0 *C.AdwTabView // out
 	var _cret *C.GMenuModel // in
@@ -760,9 +950,13 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.MenuModeller)
+				return ok
+			})
+			rv, ok := casted.(gio.MenuModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
 			}
 			_menuModel = rv
 		}
@@ -772,6 +966,11 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 }
 
 // NPages gets the number of pages in self.
+//
+// The function returns the following values:
+//
+//    - gint: number of pages in self.
+//
 func (self *TabView) NPages() int {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
@@ -789,6 +988,11 @@ func (self *TabView) NPages() int {
 }
 
 // NPinnedPages gets the number of pinned pages in self.
+//
+// The function returns the following values:
+//
+//    - gint: number of pinned pages in self.
+//
 func (self *TabView) NPinnedPages() int {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.int         // in
@@ -810,6 +1014,10 @@ func (self *TabView) NPinnedPages() int {
 // The function takes the following parameters:
 //
 //    - position: index of the page in self, starting from 0.
+//
+// The function returns the following values:
+//
+//    - tabPage: page object at position.
 //
 func (self *TabView) NthPage(position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -836,6 +1044,10 @@ func (self *TabView) NthPage(position int) *TabPage {
 //
 //    - child in self.
 //
+// The function returns the following values:
+//
+//    - tabPage: page object for child.
+//
 func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -861,6 +1073,10 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 //
 //    - page of self.
 //
+// The function returns the following values:
+//
+//    - gint: position of page in self.
+//
 func (self *TabView) PagePosition(page *TabPage) int {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -884,6 +1100,11 @@ func (self *TabView) PagePosition(page *TabPage) int {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the selected page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the pages of self.
+//
 func (self *TabView) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwTabView        // out
 	var _cret *C.GtkSelectionModel // in
@@ -902,9 +1123,13 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -913,6 +1138,11 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 }
 
 // SelectedPage gets the currently selected page in self.
+//
+// The function returns the following values:
+//
+//    - tabPage (optional): selected page.
+//
 func (self *TabView) SelectedPage() *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _cret *C.AdwTabPage // in
@@ -932,6 +1162,11 @@ func (self *TabView) SelectedPage() *TabPage {
 }
 
 // ShortcutWidget gets the shortcut widget for self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): shortcut widget for self.
+//
 func (self *TabView) ShortcutWidget() gtk.Widgetter {
 	var _arg0 *C.AdwTabView // out
 	var _cret *C.GtkWidget  // in
@@ -948,9 +1183,13 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -968,6 +1207,10 @@ func (self *TabView) ShortcutWidget() gtk.Widgetter {
 //
 //    - child: widget to add.
 //    - position to add child at, starting from 0.
+//
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
 //
 func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -1001,6 +1244,10 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 //    - child: widget to add.
 //    - position to add child at, starting from 0.
 //
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
+//
 func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -1029,6 +1276,10 @@ func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 //
 //    - child: widget to add.
 //
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
+//
 func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -1054,6 +1305,10 @@ func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 //
 //    - child: widget to add.
 //
+// The function returns the following values:
+//
+//    - tabPage: page object representing child.
+//
 func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.GtkWidget  // out
@@ -1078,6 +1333,10 @@ func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 // The function takes the following parameters:
 //
 //    - page of self.
+//
+// The function returns the following values:
+//
+//    - ok: whether page was moved.
 //
 func (self *TabView) ReorderBackward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -1106,6 +1365,10 @@ func (self *TabView) ReorderBackward(page *TabPage) bool {
 //
 //    - page of self.
 //
+// The function returns the following values:
+//
+//    - ok: whether page was moved.
+//
 func (self *TabView) ReorderFirst(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1133,6 +1396,10 @@ func (self *TabView) ReorderFirst(page *TabPage) bool {
 //
 //    - page of self.
 //
+// The function returns the following values:
+//
+//    - ok: whether page was moved.
+//
 func (self *TabView) ReorderForward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1159,6 +1426,10 @@ func (self *TabView) ReorderForward(page *TabPage) bool {
 // The function takes the following parameters:
 //
 //    - page of self.
+//
+// The function returns the following values:
+//
+//    - ok: whether page was moved.
 //
 func (self *TabView) ReorderLast(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -1191,6 +1462,10 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 //    - page of self.
 //    - position to insert the page at, starting at 0.
 //
+// The function returns the following values:
+//
+//    - ok: whether page was moved.
+//
 func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 	var _arg0 *C.AdwTabView // out
 	var _arg1 *C.AdwTabPage // out
@@ -1218,6 +1493,11 @@ func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 // SelectNextPage selects the page after the currently selected page.
 //
 // If the last page was already selected, this function does nothing.
+//
+// The function returns the following values:
+//
+//    - ok: whether the selected page was changed.
+//
 func (self *TabView) SelectNextPage() bool {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.gboolean    // in
@@ -1239,6 +1519,11 @@ func (self *TabView) SelectNextPage() bool {
 // SelectPreviousPage selects the page before the currently selected page.
 //
 // If the first page was already selected, this function does nothing.
+//
+// The function returns the following values:
+//
+//    - ok: whether the selected page was changed.
+//
 func (self *TabView) SelectPreviousPage() bool {
 	var _arg0 *C.AdwTabView // out
 	var _cret C.gboolean    // in
@@ -1279,7 +1564,7 @@ func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - menuModel: menu model.
+//    - menuModel (optional): menu model.
 //
 func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwTabView // out
@@ -1363,7 +1648,7 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 //
 // The function takes the following parameters:
 //
-//    - widget: shortcut widget.
+//    - widget (optional): shortcut widget.
 //
 func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabView // out
@@ -1408,91 +1693,4 @@ func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position in
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(otherView)
 	runtime.KeepAlive(position)
-}
-
-// ConnectClosePage: emitted after adw.TabView.ClosePage() has been called for
-// page.
-//
-// The handler is expected to call adw.TabView.ClosePageFinish() to confirm or
-// reject the closing.
-//
-// The default handler will immediately confirm closing for non-pinned pages, or
-// reject it for pinned pages, equivalent to the following example:
-//
-//    static gboolean
-//    close_page_cb (AdwTabView *view,
-//                   AdwTabPage *page,
-//                   gpointer    user_data)
-//    {
-//      adw_tab_view_close_page_finish (view, page, !adw_tab_page_get_pinned (page));
-//
-//      return GDK_EVENT_STOP;
-//    }
-//
-//
-// The adw.TabView.ClosePageFinish() call doesn't have to happen inside the
-// handler, so can be used to do asynchronous checks before confirming the
-// closing.
-//
-// A typical reason to connect to this signal is to show a confirmation dialog
-// for closing a tab.
-func (self *TabView) ConnectClosePage(f func(page TabPage) bool) externglib.SignalHandle {
-	return self.Connect("close-page", f)
-}
-
-// ConnectCreateWindow: emitted when a tab should be transferred into a new
-// window.
-//
-// This can happen after a tab has been dropped on desktop.
-//
-// The signal handler is expected to create a new window, position it as needed
-// and return its AdwTabView that the page will be transferred into.
-func (self *TabView) ConnectCreateWindow(f func() TabView) externglib.SignalHandle {
-	return self.Connect("create-window", f)
-}
-
-// ConnectIndicatorActivated: emitted after the indicator icon on page has been
-// activated.
-//
-// See adw.TabPage:indicator-icon and adw.TabPage:indicator-activatable.
-func (self *TabView) ConnectIndicatorActivated(f func(page TabPage)) externglib.SignalHandle {
-	return self.Connect("indicator-activated", f)
-}
-
-// ConnectPageAttached: emitted when a page has been created or transferred to
-// self.
-//
-// A typical reason to connect to this signal would be to connect to page
-// signals for things such as updating window title.
-func (self *TabView) ConnectPageAttached(f func(page TabPage, position int)) externglib.SignalHandle {
-	return self.Connect("page-attached", f)
-}
-
-// ConnectPageDetached: emitted when a page has been removed or transferred to
-// another view.
-//
-// A typical reason to connect to this signal would be to disconnect signal
-// handlers connected in the adw.TabView::page-attached handler.
-//
-// It is important not to try and destroy the page child in the handler of this
-// function as the child might merely be moved to another window; use child
-// dispose handler for that or do it in sync with your
-// adw.TabView.ClosePageFinish() calls.
-func (self *TabView) ConnectPageDetached(f func(page TabPage, position int)) externglib.SignalHandle {
-	return self.Connect("page-detached", f)
-}
-
-// ConnectPageReordered: emitted after page has been reordered to position.
-func (self *TabView) ConnectPageReordered(f func(page TabPage, position int)) externglib.SignalHandle {
-	return self.Connect("page-reordered", f)
-}
-
-// ConnectSetupMenu: emitted when a context menu is opened or closed for page.
-//
-// If the menu has been closed, page will be set to NULL.
-//
-// It can be used to set up menu actions before showing the menu, for example
-// disable actions not applicable to page.
-func (self *TabView) ConnectSetupMenu(f func(page TabPage)) externglib.SignalHandle {
-	return self.Connect("setup-menu", f)
 }

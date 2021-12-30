@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -72,6 +70,7 @@ func init() {
 //
 // AdwViewSwitcherTitle has a single CSS node with name viewswitchertitle.
 type ViewSwitcherTitle struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -104,6 +103,11 @@ func marshalViewSwitcherTitler(p uintptr) (interface{}, error) {
 }
 
 // NewViewSwitcherTitle creates a new AdwViewSwitcherTitle.
+//
+// The function returns the following values:
+//
+//    - viewSwitcherTitle: newly created AdwViewSwitcherTitle.
+//
 func NewViewSwitcherTitle() *ViewSwitcherTitle {
 	var _cret *C.GtkWidget // in
 
@@ -117,6 +121,11 @@ func NewViewSwitcherTitle() *ViewSwitcherTitle {
 }
 
 // Stack gets the stack controlled by self.
+//
+// The function returns the following values:
+//
+//    - viewStack (optional): stack.
+//
 func (self *ViewSwitcherTitle) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret *C.AdwViewStack         // in
@@ -136,6 +145,11 @@ func (self *ViewSwitcherTitle) Stack() *ViewStack {
 }
 
 // Subtitle gets the subtitle of self.
+//
+// The function returns the following values:
+//
+//    - utf8: subtitle.
+//
 func (self *ViewSwitcherTitle) Subtitle() string {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret *C.char                 // in
@@ -153,6 +167,11 @@ func (self *ViewSwitcherTitle) Subtitle() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *ViewSwitcherTitle) Title() string {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret *C.char                 // in
@@ -170,6 +189,11 @@ func (self *ViewSwitcherTitle) Title() string {
 }
 
 // TitleVisible gets whether the title of self is currently visible.
+//
+// The function returns the following values:
+//
+//    - ok: whether the title of self is currently visible.
+//
 func (self *ViewSwitcherTitle) TitleVisible() bool {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret C.gboolean              // in
@@ -189,6 +213,11 @@ func (self *ViewSwitcherTitle) TitleVisible() bool {
 }
 
 // ViewSwitcherEnabled gets whether self's view switcher is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether the view switcher is enabled.
+//
 func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 	var _arg0 *C.AdwViewSwitcherTitle // out
 	var _cret C.gboolean              // in
@@ -211,7 +240,7 @@ func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - stack: stack.
+//    - stack (optional): stack.
 //
 func (self *ViewSwitcherTitle) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherTitle // out

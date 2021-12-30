@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -34,6 +32,7 @@ func init() {
 // Using gtk.Application:menubar is not supported and may result in visual
 // glitches.
 type ApplicationWindow struct {
+	_ [0]func() // equal guard
 	gtk.ApplicationWindow
 }
 
@@ -106,6 +105,10 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 //
 //    - app: application instance.
 //
+// The function returns the following values:
+//
+//    - applicationWindow: newly created AdwApplicationWindow.
+//
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -125,6 +128,11 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 // Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
+//
+// The function returns the following values:
+//
+//    - widget (optional): content widget of self.
+//
 func (self *ApplicationWindow) Content() gtk.Widgetter {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _cret *C.GtkWidget            // in
@@ -141,9 +149,13 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -158,7 +170,7 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - content widget.
+//    - content (optional) widget.
 //
 func (self *ApplicationWindow) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out

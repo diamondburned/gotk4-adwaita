@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -36,6 +34,7 @@ func init() {
 // AdwStatusPage can use the .compact style class for when it needs to fit into
 // a small space such a sidebar or a popover.
 type StatusPage struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -68,6 +67,11 @@ func marshalStatusPager(p uintptr) (interface{}, error) {
 }
 
 // NewStatusPage creates a new AdwStatusPage.
+//
+// The function returns the following values:
+//
+//    - statusPage: newly created AdwStatusPage.
+//
 func NewStatusPage() *StatusPage {
 	var _cret *C.GtkWidget // in
 
@@ -81,6 +85,11 @@ func NewStatusPage() *StatusPage {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *StatusPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.GtkWidget     // in
@@ -97,9 +106,13 @@ func (self *StatusPage) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -109,6 +122,11 @@ func (self *StatusPage) Child() gtk.Widgetter {
 }
 
 // Description gets the description for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description.
+//
 func (self *StatusPage) Description() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
@@ -128,6 +146,11 @@ func (self *StatusPage) Description() string {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name.
+//
 func (self *StatusPage) IconName() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
@@ -147,6 +170,11 @@ func (self *StatusPage) IconName() string {
 }
 
 // Title gets the title for self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *StatusPage) Title() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
@@ -167,7 +195,7 @@ func (self *StatusPage) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwStatusPage // out
@@ -187,7 +215,7 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - description: description.
+//    - description (optional): description.
 //
 func (self *StatusPage) SetDescription(description string) {
 	var _arg0 *C.AdwStatusPage // out
@@ -208,7 +236,7 @@ func (self *StatusPage) SetDescription(description string) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *StatusPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwStatusPage // out

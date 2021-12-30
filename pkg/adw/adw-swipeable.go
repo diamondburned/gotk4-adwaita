@@ -12,8 +12,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -32,17 +30,37 @@ func init() {
 type SwipeableOverrider interface {
 	// CancelProgress gets the progress self will snap back to after the gesture
 	// is canceled.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: cancel progress, unitless.
+	//
 	CancelProgress() float64
 	// Distance gets the swipe distance of self.
 	//
 	// This corresponds to how many pixels 1 unit represents.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: swipe distance in pixels.
+	//
 	Distance() float64
 	// Progress gets the current progress of self.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: current progress, unitless.
+	//
 	Progress() float64
 	// SnapPoints gets the snap points of self.
 	//
 	// Each snap point represents a progress value that is considered acceptable
 	// to end the swipe on.
+	//
+	// The function returns the following values:
+	//
+	//    - gdoubles: snap points.
+	//
 	SnapPoints() []float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
@@ -53,6 +71,16 @@ type SwipeableOverrider interface {
 	//
 	// If not implemented, the default implementation returns the allocation of
 	// self, allowing swipes from anywhere.
+	//
+	// The function takes the following parameters:
+	//
+	//    - navigationDirection: direction of the swipe.
+	//    - isDrag: whether the swipe is caused by a dragging gesture.
+	//
+	// The function returns the following values:
+	//
+	//    - rect: pointer to a rectangle to store the swipe area.
+	//
 	SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle
 }
 
@@ -62,6 +90,7 @@ type SwipeableOverrider interface {
 //
 // See adw.SwipeTracker for details about implementing it.
 type Swipeable struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -115,6 +144,11 @@ func marshalSwipeabler(p uintptr) (interface{}, error) {
 
 // CancelProgress gets the progress self will snap back to after the gesture is
 // canceled.
+//
+// The function returns the following values:
+//
+//    - gdouble: cancel progress, unitless.
+//
 func (self *Swipeable) CancelProgress() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
@@ -134,6 +168,11 @@ func (self *Swipeable) CancelProgress() float64 {
 // Distance gets the swipe distance of self.
 //
 // This corresponds to how many pixels 1 unit represents.
+//
+// The function returns the following values:
+//
+//    - gdouble: swipe distance in pixels.
+//
 func (self *Swipeable) Distance() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
@@ -151,6 +190,11 @@ func (self *Swipeable) Distance() float64 {
 }
 
 // Progress gets the current progress of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: current progress, unitless.
+//
 func (self *Swipeable) Progress() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
@@ -171,6 +215,11 @@ func (self *Swipeable) Progress() float64 {
 //
 // Each snap point represents a progress value that is considered acceptable to
 // end the swipe on.
+//
+// The function returns the following values:
+//
+//    - gdoubles: snap points.
+//
 func (self *Swipeable) SnapPoints() []float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret *C.double       // in
@@ -204,6 +253,10 @@ func (self *Swipeable) SnapPoints() []float64 {
 //
 //    - navigationDirection: direction of the swipe.
 //    - isDrag: whether the swipe is caused by a dragging gesture.
+//
+// The function returns the following values:
+//
+//    - rect: pointer to a rectangle to store the swipe area.
 //
 func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle {
 	var _arg0 *C.AdwSwipeable          // out

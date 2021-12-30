@@ -9,8 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -20,6 +18,10 @@ import "C"
 // The function takes the following parameters:
 //
 //    - t: term.
+//
+// The function returns the following values:
+//
+//    - gdouble: ease out for t.
 //
 func EaseOutCubic(t float64) float64 {
 	var _arg1 C.double // out
@@ -45,6 +47,10 @@ func EaseOutCubic(t float64) float64 {
 // The function takes the following parameters:
 //
 //    - widget: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - ok: whether animations are enabled for widget.
 //
 func GetEnableAnimations(widget gtk.Widgetter) bool {
 	var _arg1 *C.GtkWidget // out

@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -33,6 +31,7 @@ func init() {
 // they take care of presenting the preference's title while letting you compose
 // the inputs of the preference around it.
 type PreferencesRow struct {
+	_ [0]func() // equal guard
 	gtk.ListBoxRow
 }
 
@@ -86,6 +85,11 @@ func marshalPreferencesRower(p uintptr) (interface{}, error) {
 }
 
 // NewPreferencesRow creates a new AdwPreferencesRow.
+//
+// The function returns the following values:
+//
+//    - preferencesRow: newly created AdwPreferencesRow.
+//
 func NewPreferencesRow() *PreferencesRow {
 	var _cret *C.GtkWidget // in
 
@@ -99,6 +103,11 @@ func NewPreferencesRow() *PreferencesRow {
 }
 
 // Title gets the title of the preference represented by self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *PreferencesRow) Title() string {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _cret *C.char              // in
@@ -117,6 +126,11 @@ func (self *PreferencesRow) Title() string {
 
 // UseUnderline gets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//
 func (self *PreferencesRow) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _cret C.gboolean           // in

@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -51,6 +49,7 @@ func init() {
 // - style-hc-dark.css contains styles used when the system high contrast
 // preference is enabled and adw.StyleManager:dark is TRUE.
 type Application struct {
+	_ [0]func() // equal guard
 	gtk.Application
 }
 
@@ -88,8 +87,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId: application ID.
+//    - applicationId (optional): application ID.
 //    - flags: application flags.
+//
+// The function returns the following values:
+//
+//    - application: newly created AdwApplication.
 //
 func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
 	var _arg1 *C.char             // out
@@ -114,6 +117,11 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 }
 
 // StyleManager gets the style manager for self.
+//
+// The function returns the following values:
+//
+//    - styleManager: style manager.
+//
 func (self *Application) StyleManager() *StyleManager {
 	var _arg0 *C.AdwApplication  // out
 	var _cret *C.AdwStyleManager // in

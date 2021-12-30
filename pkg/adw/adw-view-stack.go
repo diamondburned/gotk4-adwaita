@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -72,6 +70,7 @@ func init() {
 //
 // AdwViewStack has a single CSS node named stack.
 type ViewStack struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -104,6 +103,11 @@ func marshalViewStacker(p uintptr) (interface{}, error) {
 }
 
 // NewViewStack creates a new AdwViewStack.
+//
+// The function returns the following values:
+//
+//    - viewStack: newly created AdwViewStack.
+//
 func NewViewStack() *ViewStack {
 	var _cret *C.GtkWidget // in
 
@@ -121,6 +125,10 @@ func NewViewStack() *ViewStack {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
+//
+// The function returns the following values:
+//
+//    - viewStackPage: adw.ViewStackPage for child.
 //
 func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -148,7 +156,11 @@ func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - name for child.
+//    - name (optional) for child.
+//
+// The function returns the following values:
+//
+//    - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -183,8 +195,12 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - name for child.
+//    - name (optional) for child.
 //    - title: human-readable title for child.
+//
+// The function returns the following values:
+//
+//    - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -221,6 +237,10 @@ func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewS
 //
 //    - name of the child to find.
 //
+// The function returns the following values:
+//
+//    - widget (optional): requested child.
+//
 func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 *C.char         // out
@@ -241,9 +261,13 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -253,6 +277,11 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 }
 
 // Hhomogeneous gets whether self is horizontally homogeneous.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is horizontally homogeneous.
+//
 func (self *ViewStack) Hhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
@@ -273,6 +302,11 @@ func (self *ViewStack) Hhomogeneous() bool {
 
 // InterpolateSize gets whether self will interpolate its size when changing the
 // visible child.
+//
+// The function returns the following values:
+//
+//    - ok: whether child sizes are interpolated.
+//
 func (self *ViewStack) InterpolateSize() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
@@ -297,6 +331,10 @@ func (self *ViewStack) InterpolateSize() bool {
 //
 //    - child of self.
 //
+// The function returns the following values:
+//
+//    - viewStackPage: page object for child.
+//
 func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
 	var _arg1 *C.GtkWidget        // out
@@ -320,6 +358,11 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the stack's children.
+//
 func (self *ViewStack) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwViewStack      // out
 	var _cret *C.GtkSelectionModel // in
@@ -338,9 +381,13 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -350,6 +397,11 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 
 // TransitionRunning gets whether the self is currently in a transition from one
 // page to another.
+//
+// The function returns the following values:
+//
+//    - ok: whether a transition is currently running.
+//
 func (self *ViewStack) TransitionRunning() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
@@ -369,6 +421,11 @@ func (self *ViewStack) TransitionRunning() bool {
 }
 
 // Vhomogeneous gets whether self is vertically homogeneous.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is vertically homogeneous.
+//
 func (self *ViewStack) Vhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
@@ -388,6 +445,11 @@ func (self *ViewStack) Vhomogeneous() bool {
 }
 
 // VisibleChild gets the currently visible child of self, .
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child.
+//
 func (self *ViewStack) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
 	var _cret *C.GtkWidget    // in
@@ -404,9 +466,13 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -416,6 +482,11 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 }
 
 // VisibleChildName returns the name of the currently visible child of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible child.
+//
 func (self *ViewStack) VisibleChildName() string {
 	var _arg0 *C.AdwViewStack // out
 	var _cret *C.char         // in
@@ -552,6 +623,7 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 
 // ViewStackPage: auxiliary class used by adw.ViewStack.
 type ViewStackPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -570,6 +642,11 @@ func marshalViewStackPager(p uintptr) (interface{}, error) {
 }
 
 // BadgeNumber gets the badge number for this page.
+//
+// The function returns the following values:
+//
+//    - guint: badge number for this page.
+//
 func (self *ViewStackPage) BadgeNumber() uint {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.guint             // in
@@ -587,6 +664,11 @@ func (self *ViewStackPage) BadgeNumber() uint {
 }
 
 // Child gets the stack child to which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
 func (self *ViewStackPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.GtkWidget        // in
@@ -605,9 +687,13 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -616,6 +702,11 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 }
 
 // IconName gets the icon name of the page.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name of the page.
+//
 func (self *ViewStackPage) IconName() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
@@ -635,6 +726,11 @@ func (self *ViewStackPage) IconName() string {
 }
 
 // Name gets the name of the page.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the page.
+//
 func (self *ViewStackPage) Name() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
@@ -654,6 +750,11 @@ func (self *ViewStackPage) Name() string {
 }
 
 // NeedsAttention gets whether the page is marked as “needs attention”.
+//
+// The function returns the following values:
+//
+//    - ok: whether the page needs attention.
+//
 func (self *ViewStackPage) NeedsAttention() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
@@ -673,6 +774,11 @@ func (self *ViewStackPage) NeedsAttention() bool {
 }
 
 // Title gets the page title.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): page title.
+//
 func (self *ViewStackPage) Title() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
@@ -692,6 +798,11 @@ func (self *ViewStackPage) Title() string {
 }
 
 // UseUnderline gets whether underlines in the page title indicate mnemonics.
+//
+// The function returns the following values:
+//
+//    - ok: whether underlines in the page title indicate mnemonics.
+//
 func (self *ViewStackPage) UseUnderline() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
@@ -713,6 +824,11 @@ func (self *ViewStackPage) UseUnderline() bool {
 // Visible gets whether self is visible in its AdwViewStack.
 //
 // This is independent from the gtk.Widget:visible property of its widget.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is visible.
+//
 func (self *ViewStackPage) Visible() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
@@ -753,7 +869,7 @@ func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *ViewStackPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -774,7 +890,7 @@ func (self *ViewStackPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name: page name.
+//    - name (optional): page name.
 //
 func (self *ViewStackPage) SetName(name string) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -815,7 +931,7 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: page title.
+//    - title (optional): page title.
 //
 func (self *ViewStackPage) SetTitle(title string) {
 	var _arg0 *C.AdwViewStackPage // out

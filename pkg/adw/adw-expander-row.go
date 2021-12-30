@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -48,6 +46,7 @@ func init() {
 // It contains the subnodes row.header for its main embedded row, list.nested
 // for the list it can expand, and image.expander-row-arrow for its arrow.
 type ExpanderRow struct {
+	_ [0]func() // equal guard
 	PreferencesRow
 }
 
@@ -103,6 +102,11 @@ func marshalExpanderRower(p uintptr) (interface{}, error) {
 }
 
 // NewExpanderRow creates a new AdwExpanderRow.
+//
+// The function returns the following values:
+//
+//    - expanderRow: newly created AdwExpanderRow.
+//
 func NewExpanderRow() *ExpanderRow {
 	var _cret *C.GtkWidget // in
 
@@ -172,6 +176,11 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 }
 
 // EnableExpansion gets whether the expansion of self is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether the expansion of self is enabled.
+//
 func (self *ExpanderRow) EnableExpansion() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -191,6 +200,11 @@ func (self *ExpanderRow) EnableExpansion() bool {
 }
 
 // Expanded gets whether self is expanded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is expanded.
+//
 func (self *ExpanderRow) Expanded() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -210,6 +224,11 @@ func (self *ExpanderRow) Expanded() bool {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name for self.
+//
 func (self *ExpanderRow) IconName() string {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret *C.char           // in
@@ -230,6 +249,11 @@ func (self *ExpanderRow) IconName() string {
 
 // ShowEnableSwitch gets whether the switch enabling the expansion of self is
 // visible.
+//
+// The function returns the following values:
+//
+//    - ok: whether the switch enabling the expansion is visible.
+//
 func (self *ExpanderRow) ShowEnableSwitch() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -249,6 +273,11 @@ func (self *ExpanderRow) ShowEnableSwitch() bool {
 }
 
 // Subtitle gets the subtitle for self.
+//
+// The function returns the following values:
+//
+//    - utf8: subtitle for self.
+//
 func (self *ExpanderRow) Subtitle() string {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret *C.char           // in
@@ -267,6 +296,11 @@ func (self *ExpanderRow) Subtitle() string {
 
 // UseUnderline gets whether underlines in title or subtitle are interpreted as
 // mnemonics.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if underlines are interpreted as mnemonics.
+//
 func (self *ExpanderRow) UseUnderline() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
@@ -285,10 +319,7 @@ func (self *ExpanderRow) UseUnderline() bool {
 	return _ok
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -346,7 +377,7 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *ExpanderRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwExpanderRow // out

@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -76,6 +74,7 @@ func (c ColorScheme) String() string {
 // property, and to query the current appearance, as well as whether a
 // system-wide color scheme preference exists.
 type StyleManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -94,6 +93,11 @@ func marshalStyleManagerer(p uintptr) (interface{}, error) {
 }
 
 // ColorScheme gets the requested application color scheme.
+//
+// The function returns the following values:
+//
+//    - colorScheme: color scheme.
+//
 func (self *StyleManager) ColorScheme() ColorScheme {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.AdwColorScheme   // in
@@ -111,6 +115,11 @@ func (self *StyleManager) ColorScheme() ColorScheme {
 }
 
 // Dark gets whether the application is using dark appearance.
+//
+// The function returns the following values:
+//
+//    - ok: whether the application is using dark appearance.
+//
 func (self *StyleManager) Dark() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
@@ -133,6 +142,11 @@ func (self *StyleManager) Dark() bool {
 //
 // The display will be NULL for the style manager returned by
 // adw.StyleManager().GetDefault.
+//
+// The function returns the following values:
+//
+//    - display: (nullable): the display.
+//
 func (self *StyleManager) Display() *gdk.Display {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret *C.GdkDisplay      // in
@@ -155,6 +169,11 @@ func (self *StyleManager) Display() *gdk.Display {
 }
 
 // HighContrast gets whether the application is using high contrast appearance.
+//
+// The function returns the following values:
+//
+//    - ok: whether the application is using high contrast appearance.
+//
 func (self *StyleManager) HighContrast() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
@@ -174,6 +193,11 @@ func (self *StyleManager) HighContrast() bool {
 }
 
 // SystemSupportsColorSchemes gets whether the system supports color schemes.
+//
+// The function returns the following values:
+//
+//    - ok: whether the system supports color schemes.
+//
 func (self *StyleManager) SystemSupportsColorSchemes() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
@@ -220,6 +244,11 @@ func (self *StyleManager) SetColorScheme(colorScheme ColorScheme) {
 // display has an override.
 //
 // See adw.StyleManager().GetForDisplay.
+//
+// The function returns the following values:
+//
+//    - styleManager: default style manager.
+//
 func StyleManagerGetDefault() *StyleManager {
 	var _cret *C.AdwStyleManager // in
 
@@ -242,6 +271,10 @@ func StyleManagerGetDefault() *StyleManager {
 // The function takes the following parameters:
 //
 //    - display: GdkDisplay.
+//
+// The function returns the following values:
+//
+//    - styleManager: style manager for display.
 //
 func StyleManagerGetForDisplay(display *gdk.Display) *StyleManager {
 	var _arg1 *C.GdkDisplay      // out

@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -33,6 +31,7 @@ func init() {
 //
 // AdwWindowTitle has a single CSS node with name windowtitle.
 type WindowTitle struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -71,6 +70,10 @@ func marshalWindowTitler(p uintptr) (interface{}, error) {
 //    - title: title.
 //    - subtitle: subtitle.
 //
+// The function returns the following values:
+//
+//    - windowTitle: newly created AdwWindowTitle.
+//
 func NewWindowTitle(title, subtitle string) *WindowTitle {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -93,6 +96,11 @@ func NewWindowTitle(title, subtitle string) *WindowTitle {
 }
 
 // Subtitle gets the subtitle of self.
+//
+// The function returns the following values:
+//
+//    - utf8: subtitle.
+//
 func (self *WindowTitle) Subtitle() string {
 	var _arg0 *C.AdwWindowTitle // out
 	var _cret *C.char           // in
@@ -110,6 +118,11 @@ func (self *WindowTitle) Subtitle() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *WindowTitle) Title() string {
 	var _arg0 *C.AdwWindowTitle // out
 	var _cret *C.char           // in

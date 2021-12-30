@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -70,6 +68,7 @@ func init() {
 //
 // AdwViewSwitcherBar has a single CSS node with name viewswitcherbar.
 type ViewSwitcherBar struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -102,6 +101,11 @@ func marshalViewSwitcherBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewViewSwitcherBar creates a new AdwViewSwitcherBar.
+//
+// The function returns the following values:
+//
+//    - viewSwitcherBar: newly created AdwViewSwitcherBar.
+//
 func NewViewSwitcherBar() *ViewSwitcherBar {
 	var _cret *C.GtkWidget // in
 
@@ -115,6 +119,11 @@ func NewViewSwitcherBar() *ViewSwitcherBar {
 }
 
 // Reveal gets whether self should be revealed or hidden.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is revealed.
+//
 func (self *ViewSwitcherBar) Reveal() bool {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _cret C.gboolean            // in
@@ -134,6 +143,11 @@ func (self *ViewSwitcherBar) Reveal() bool {
 }
 
 // Stack gets the stack controlled by self.
+//
+// The function returns the following values:
+//
+//    - viewStack (optional): stack.
+//
 func (self *ViewSwitcherBar) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherBar // out
 	var _cret *C.AdwViewStack       // in
@@ -176,7 +190,7 @@ func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 //
 // The function takes the following parameters:
 //
-//    - stack: stack.
+//    - stack (optional): stack.
 //
 func (self *ViewSwitcherBar) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherBar // out

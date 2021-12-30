@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -68,6 +66,7 @@ func (s SqueezerTransitionType) String() string {
 //
 // AdwSqueezer has a single CSS node with name squeezer.
 type Squeezer struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -108,6 +107,11 @@ func marshalSqueezerer(p uintptr) (interface{}, error) {
 }
 
 // NewSqueezer creates a new AdwSqueezer.
+//
+// The function returns the following values:
+//
+//    - squeezer: newly created AdwSqueezer.
+//
 func NewSqueezer() *Squeezer {
 	var _cret *C.GtkWidget // in
 
@@ -125,6 +129,10 @@ func NewSqueezer() *Squeezer {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
+//
+// The function returns the following values:
+//
+//    - squeezerPage: adw.SqueezerPage for child.
 //
 func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
@@ -147,6 +155,11 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 
 // AllowNone gets whether to allow squeezing beyond the last child's minimum
 // size.
+//
+// The function returns the following values:
+//
+//    - ok: whether self allows squeezing beyond the last child.
+//
 func (self *Squeezer) AllowNone() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -167,6 +180,11 @@ func (self *Squeezer) AllowNone() bool {
 
 // Homogeneous gets whether all children have the same size for the opposite
 // orientation.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is homogeneous.
+//
 func (self *Squeezer) Homogeneous() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -187,6 +205,11 @@ func (self *Squeezer) Homogeneous() bool {
 
 // InterpolateSize gets whether self interpolates its size when changing the
 // visible child.
+//
+// The function returns the following values:
+//
+//    - ok: whether the size is interpolated.
+//
 func (self *Squeezer) InterpolateSize() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -211,6 +234,10 @@ func (self *Squeezer) InterpolateSize() bool {
 //
 //    - child of self.
 //
+// The function returns the following values:
+//
+//    - squeezerPage: page object for child.
+//
 func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
 	var _arg1 *C.GtkWidget       // out
@@ -234,6 +261,11 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track the visible page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the squeezer's children.
+//
 func (self *Squeezer) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwSqueezer       // out
 	var _cret *C.GtkSelectionModel // in
@@ -252,9 +284,13 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -263,6 +299,9 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 }
 
 // SwitchThresholdPolicy gets the fold threshold policy for self.
+//
+// The function returns the following values:
+//
 func (self *Squeezer) SwitchThresholdPolicy() FoldThresholdPolicy {
 	var _arg0 *C.AdwSqueezer           // out
 	var _cret C.AdwFoldThresholdPolicy // in
@@ -280,6 +319,11 @@ func (self *Squeezer) SwitchThresholdPolicy() FoldThresholdPolicy {
 }
 
 // TransitionDuration gets the transition animation duration for self.
+//
+// The function returns the following values:
+//
+//    - guint: transition duration, in milliseconds.
+//
 func (self *Squeezer) TransitionDuration() uint {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.guint        // in
@@ -297,6 +341,11 @@ func (self *Squeezer) TransitionDuration() uint {
 }
 
 // TransitionRunning gets whether a transition is currently running for self.
+//
+// The function returns the following values:
+//
+//    - ok: whether a transition is currently running.
+//
 func (self *Squeezer) TransitionRunning() bool {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.gboolean     // in
@@ -317,6 +366,11 @@ func (self *Squeezer) TransitionRunning() bool {
 
 // TransitionType gets the type of animation used for transitions between
 // children in self.
+//
+// The function returns the following values:
+//
+//    - squeezerTransitionType: current transition type of self.
+//
 func (self *Squeezer) TransitionType() SqueezerTransitionType {
 	var _arg0 *C.AdwSqueezer              // out
 	var _cret C.AdwSqueezerTransitionType // in
@@ -334,6 +388,11 @@ func (self *Squeezer) TransitionType() SqueezerTransitionType {
 }
 
 // VisibleChild gets the currently visible child of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child.
+//
 func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret *C.GtkWidget   // in
@@ -350,9 +409,13 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -362,6 +425,11 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 }
 
 // XAlign gets the horizontal alignment, from 0 (start) to 1 (end).
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment value.
+//
 func (self *Squeezer) XAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.float        // in
@@ -379,6 +447,11 @@ func (self *Squeezer) XAlign() float32 {
 }
 
 // YAlign gets the vertical alignment, from 0 (top) to 1 (bottom).
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment value.
+//
 func (self *Squeezer) YAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
 	var _cret C.float        // in
@@ -569,6 +642,7 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 
 // SqueezerPage: auxiliary class used by adw.Squeezer.
 type SqueezerPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -587,6 +661,11 @@ func marshalSqueezerPager(p uintptr) (interface{}, error) {
 }
 
 // Child returns the squeezer child to which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
 func (self *SqueezerPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwSqueezerPage // out
 	var _cret *C.GtkWidget       // in
@@ -605,9 +684,13 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -616,6 +699,11 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 }
 
 // Enabled gets whether self is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is enabled.
+//
 func (self *SqueezerPage) Enabled() bool {
 	var _arg0 *C.AdwSqueezerPage // out
 	var _cret C.gboolean         // in

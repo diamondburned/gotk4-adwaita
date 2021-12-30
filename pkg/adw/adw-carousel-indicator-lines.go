@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -37,6 +35,7 @@ func init() {
 // AdwCarouselIndicatorLines has a single CSS node with name
 // carouselindicatorlines.
 type CarouselIndicatorLines struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
 	*externglib.Object
@@ -77,6 +76,11 @@ func marshalCarouselIndicatorLinesser(p uintptr) (interface{}, error) {
 }
 
 // NewCarouselIndicatorLines creates a new AdwCarouselIndicatorLines.
+//
+// The function returns the following values:
+//
+//    - carouselIndicatorLines: newly created AdwCarouselIndicatorLines.
+//
 func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 	var _cret *C.GtkWidget // in
 
@@ -90,6 +94,11 @@ func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 }
 
 // Carousel gets the displayed carousel.
+//
+// The function returns the following values:
+//
+//    - carousel (optional): displayed carousel.
+//
 func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
 	var _cret *C.AdwCarousel               // in
@@ -112,7 +121,7 @@ func (self *CarouselIndicatorLines) Carousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - carousel: carousel.
+//    - carousel (optional): carousel.
 //
 func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorLines // out

@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -43,6 +41,7 @@ func init() {
 //
 // AdwAvatar has a single CSS node with name avatar.
 type Avatar struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -79,8 +78,12 @@ func marshalAvatarrer(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - size of the avatar.
-//    - text used to get the initials and color.
+//    - text (optional) used to get the initials and color.
 //    - showInitials: whether to use initials instead of an icon as fallback.
+//
+// The function returns the following values:
+//
+//    - avatar: newly created AdwAvatar.
 //
 func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	var _arg1 C.int        // out
@@ -117,6 +120,10 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 //
 //    - scaleFactor: scale factor.
 //
+// The function returns the following values:
+//
+//    - texture: texture.
+//
 func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
 	var _arg0 *C.AdwAvatar  // out
 	var _arg1 C.int         // out
@@ -138,9 +145,13 @@ func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Texturer)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Texturer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Texturer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
 		}
 		_texture = rv
 	}
@@ -149,6 +160,11 @@ func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
 }
 
 // CustomImage gets the custom image paintable.
+//
+// The function returns the following values:
+//
+//    - paintable (optional): custom image.
+//
 func (self *Avatar) CustomImage() gdk.Paintabler {
 	var _arg0 *C.AdwAvatar    // out
 	var _cret *C.GdkPaintable // in
@@ -165,9 +181,13 @@ func (self *Avatar) CustomImage() gdk.Paintabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Paintabler)
+				return ok
+			})
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
 			_paintable = rv
 		}
@@ -177,6 +197,11 @@ func (self *Avatar) CustomImage() gdk.Paintabler {
 }
 
 // IconName gets the name of an icon to use as a fallback.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name.
+//
 func (self *Avatar) IconName() string {
 	var _arg0 *C.AdwAvatar // out
 	var _cret *C.char      // in
@@ -197,6 +222,11 @@ func (self *Avatar) IconName() string {
 
 // ShowInitials gets whether initials are used instead of an icon on the
 // fallback avatar.
+//
+// The function returns the following values:
+//
+//    - ok: whether initials are used instead of an icon as fallback.
+//
 func (self *Avatar) ShowInitials() bool {
 	var _arg0 *C.AdwAvatar // out
 	var _cret C.gboolean   // in
@@ -216,6 +246,11 @@ func (self *Avatar) ShowInitials() bool {
 }
 
 // Size gets the size of the avatar.
+//
+// The function returns the following values:
+//
+//    - gint: size of the avatar.
+//
 func (self *Avatar) Size() int {
 	var _arg0 *C.AdwAvatar // out
 	var _cret C.int        // in
@@ -233,6 +268,11 @@ func (self *Avatar) Size() int {
 }
 
 // Text gets the text used to generate the fallback initials and color.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text used to generate the fallback initials and color.
+//
 func (self *Avatar) Text() string {
 	var _arg0 *C.AdwAvatar // out
 	var _cret *C.char      // in
@@ -255,7 +295,7 @@ func (self *Avatar) Text() string {
 //
 // The function takes the following parameters:
 //
-//    - customImage: custom image.
+//    - customImage (optional): custom image.
 //
 func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 	var _arg0 *C.AdwAvatar    // out
@@ -277,7 +317,7 @@ func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *Avatar) SetIconName(iconName string) {
 	var _arg0 *C.AdwAvatar // out
@@ -337,7 +377,7 @@ func (self *Avatar) SetSize(size int) {
 //
 // The function takes the following parameters:
 //
-//    - text used to get the initials and color.
+//    - text (optional) used to get the initials and color.
 //
 func (self *Avatar) SetText(text string) {
 	var _arg0 *C.AdwAvatar // out

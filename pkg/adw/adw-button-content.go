@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -63,6 +61,7 @@ func init() {
 //
 // AdwSplitButton uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ButtonContent struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -95,6 +94,11 @@ func marshalButtonContenter(p uintptr) (interface{}, error) {
 }
 
 // NewButtonContent creates a new AdwButtonContent.
+//
+// The function returns the following values:
+//
+//    - buttonContent: new created AdwButtonContent.
+//
 func NewButtonContent() *ButtonContent {
 	var _cret *C.GtkWidget // in
 
@@ -108,6 +112,11 @@ func NewButtonContent() *ButtonContent {
 }
 
 // IconName gets the name of the displayed icon.
+//
+// The function returns the following values:
+//
+//    - utf8: icon name.
+//
 func (self *ButtonContent) IconName() string {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret *C.char             // in
@@ -125,6 +134,11 @@ func (self *ButtonContent) IconName() string {
 }
 
 // Label gets the displayed label.
+//
+// The function returns the following values:
+//
+//    - utf8: label.
+//
 func (self *ButtonContent) Label() string {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret *C.char             // in
@@ -142,6 +156,11 @@ func (self *ButtonContent) Label() string {
 }
 
 // UseUnderline gets whether an underline in the text indicates a mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an underline in the text indicates a mnemonic.
+//
 func (self *ButtonContent) UseUnderline() bool {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret C.gboolean          // in

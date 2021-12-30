@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -33,6 +31,7 @@ func init() {
 //
 // AdwPreferencesPage has a single CSS node with name preferencespage.
 type PreferencesPage struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -65,6 +64,11 @@ func marshalPreferencesPager(p uintptr) (interface{}, error) {
 }
 
 // NewPreferencesPage creates a new AdwPreferencesPage.
+//
+// The function returns the following values:
+//
+//    - preferencesPage: newly created AdwPreferencesPage.
+//
 func NewPreferencesPage() *PreferencesPage {
 	var _cret *C.GtkWidget // in
 
@@ -96,6 +100,11 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name for self.
+//
 func (self *PreferencesPage) IconName() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
@@ -115,6 +124,11 @@ func (self *PreferencesPage) IconName() string {
 }
 
 // Name gets the name of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of self.
+//
 func (self *PreferencesPage) Name() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
@@ -134,6 +148,11 @@ func (self *PreferencesPage) Name() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title of self.
+//
 func (self *PreferencesPage) Title() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
@@ -152,6 +171,11 @@ func (self *PreferencesPage) Title() string {
 
 // UseUnderline gets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//
 func (self *PreferencesPage) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret C.gboolean            // in
@@ -192,7 +216,7 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *PreferencesPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -213,7 +237,7 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name: name.
+//    - name (optional): name.
 //
 func (self *PreferencesPage) SetName(name string) {
 	var _arg0 *C.AdwPreferencesPage // out

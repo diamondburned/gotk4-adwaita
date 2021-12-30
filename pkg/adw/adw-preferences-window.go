@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -34,6 +32,7 @@ func init() {
 // AdwPreferencesWindow has a main CSS node with the name window and the style
 // class .preferences.
 type PreferencesWindow struct {
+	_ [0]func() // equal guard
 	Window
 }
 
@@ -94,6 +93,11 @@ func marshalPreferencesWindower(p uintptr) (interface{}, error) {
 }
 
 // NewPreferencesWindow creates a new AdwPreferencesWindow.
+//
+// The function returns the following values:
+//
+//    - preferencesWindow: newly created AdwPreferencesWindow.
+//
 func NewPreferencesWindow() *PreferencesWindow {
 	var _cret *C.GtkWidget // in
 
@@ -140,6 +144,11 @@ func (self *PreferencesWindow) CloseSubpage() {
 
 // CanSwipeBack gets whether or not self allows closing subpages via a swipe
 // gesture.
+//
+// The function returns the following values:
+//
+//    - ok: whether back swipe is enabled.
+//
 func (self *PreferencesWindow) CanSwipeBack() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
@@ -159,6 +168,11 @@ func (self *PreferencesWindow) CanSwipeBack() bool {
 }
 
 // SearchEnabled gets whether search is enabled for self.
+//
+// The function returns the following values:
+//
+//    - ok: whether search is enabled for self.
+//
 func (self *PreferencesWindow) SearchEnabled() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
@@ -178,6 +192,11 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 }
 
 // VisiblePage gets the currently visible page of self.
+//
+// The function returns the following values:
+//
+//    - preferencesPage (optional): visible page.
+//
 func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret *C.AdwPreferencesPage   // in
@@ -197,6 +216,11 @@ func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 }
 
 // VisiblePageName gets the name of currently visible page of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible page.
+//
 func (self *PreferencesWindow) VisiblePageName() string {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret *C.char                 // in

@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -48,6 +46,7 @@ func init() {
 //
 // AdwComboRow uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboRow struct {
+	_ [0]func() // equal guard
 	ActionRow
 }
 
@@ -105,6 +104,11 @@ func marshalComboRower(p uintptr) (interface{}, error) {
 }
 
 // NewComboRow creates a new AdwComboRow.
+//
+// The function returns the following values:
+//
+//    - comboRow: newly created AdwComboRow.
+//
 func NewComboRow() *ComboRow {
 	var _cret *C.GtkWidget // in
 
@@ -118,6 +122,11 @@ func NewComboRow() *ComboRow {
 }
 
 // Expression gets the expression used to obtain strings from items.
+//
+// The function returns the following values:
+//
+//    - expression (optional) used to obtain strings from items.
+//
 func (self *ComboRow) Expression() gtk.Expressioner {
 	var _arg0 *C.AdwComboRow   // out
 	var _cret *C.GtkExpression // in
@@ -134,9 +143,13 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Expressioner)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Expressioner)
+				return ok
+			})
+			rv, ok := casted.(gtk.Expressioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Expressioner")
 			}
 			_expression = rv
 		}
@@ -146,6 +159,11 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 }
 
 // Factory gets the factory that's currently used to populate list items.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *ComboRow) Factory() *gtk.ListItemFactory {
 	var _arg0 *C.AdwComboRow        // out
 	var _cret *C.GtkListItemFactory // in
@@ -171,6 +189,11 @@ func (self *ComboRow) Factory() *gtk.ListItemFactory {
 
 // ListFactory gets the factory that's currently used to populate list items in
 // the popup.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 	var _arg0 *C.AdwComboRow        // out
 	var _cret *C.GtkListItemFactory // in
@@ -195,6 +218,11 @@ func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 }
 
 // Model gets the model that provides the displayed items.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model in use.
+//
 func (self *ComboRow) Model() gio.ListModeller {
 	var _arg0 *C.AdwComboRow // out
 	var _cret *C.GListModel  // in
@@ -211,9 +239,13 @@ func (self *ComboRow) Model() gio.ListModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.ListModeller)
+				return ok
+			})
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
 			_listModel = rv
 		}
@@ -223,6 +255,12 @@ func (self *ComboRow) Model() gio.ListModeller {
 }
 
 // Selected gets the position of the selected item.
+//
+// The function returns the following values:
+//
+//    - guint: position of the selected item, or GTK_INVALID_LIST_POSITION if no
+//      item is selected.
+//
 func (self *ComboRow) Selected() uint {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.guint        // in
@@ -240,6 +278,11 @@ func (self *ComboRow) Selected() uint {
 }
 
 // SelectedItem gets the selected item.
+//
+// The function returns the following values:
+//
+//    - object (optional): selected item.
+//
 func (self *ComboRow) SelectedItem() *externglib.Object {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.gpointer     // in
@@ -257,6 +300,11 @@ func (self *ComboRow) SelectedItem() *externglib.Object {
 }
 
 // UseSubtitle gets whether to use the current value as the subtitle.
+//
+// The function returns the following values:
+//
+//    - ok: whether to use the current value as the subtitle.
+//
 func (self *ComboRow) UseSubtitle() bool {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.gboolean     // in
@@ -281,7 +329,7 @@ func (self *ComboRow) UseSubtitle() bool {
 //
 // The function takes the following parameters:
 //
-//    - expression: expression.
+//    - expression (optional): expression.
 //
 func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	var _arg0 *C.AdwComboRow   // out
@@ -301,7 +349,7 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use.
+//    - factory (optional) to use.
 //
 func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
@@ -322,7 +370,7 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use.
+//    - factory (optional) to use.
 //
 func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
@@ -342,7 +390,7 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model to use.
+//    - model (optional) to use.
 //
 func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg0 *C.AdwComboRow // out

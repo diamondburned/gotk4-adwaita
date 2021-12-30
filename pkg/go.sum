@@ -6,6 +6,8 @@ github.com/diamondburned/gotk4/pkg v0.0.0-20211029022411-ad571a40956f h1:3xmPtMn
 github.com/diamondburned/gotk4/pkg v0.0.0-20211029022411-ad571a40956f/go.mod h1:dJ2gfR0gvBsGg4IteP8aMBq/U5Q9boDw0DP7kAjXTwM=
 github.com/diamondburned/gotk4/pkg v0.0.0-20211210005627-b7feca8f66e8 h1:NQiTXqX6K5Ve/bcN1h6tQA6c/vCZE8S9npFPm5fNDBo=
 github.com/diamondburned/gotk4/pkg v0.0.0-20211210005627-b7feca8f66e8/go.mod h1:dJ2gfR0gvBsGg4IteP8aMBq/U5Q9boDw0DP7kAjXTwM=
+github.com/diamondburned/gotk4/pkg v0.0.0-20211229000402-97100df5ca16 h1:NZCQ6MuX84D6Viwuc3gGb8AhKktRUfROzP56zHDX/IM=
+github.com/diamondburned/gotk4/pkg v0.0.0-20211229000402-97100df5ca16/go.mod h1:dJ2gfR0gvBsGg4IteP8aMBq/U5Q9boDw0DP7kAjXTwM=
 go4.org/unsafe/assume-no-moving-gc v0.0.0-20201222180813-1025295fd063 h1:1tk03FUNpulq2cuWpXZWj649rwJpk0d20rxWiopKRmc=
 go4.org/unsafe/assume-no-moving-gc v0.0.0-20201222180813-1025295fd063/go.mod h1:FftLjUGFEDu5k8lt0ddY+HcrH/qU/0qk+H8j9/nTl3E=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=

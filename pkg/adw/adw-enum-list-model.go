@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
@@ -26,6 +24,7 @@ func init() {
 
 // EnumListItem: AdwEnumListItem is the type of items in a adw.EnumListModel.
 type EnumListItem struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -44,6 +43,11 @@ func marshalEnumListItemmer(p uintptr) (interface{}, error) {
 }
 
 // Name gets the enum value name.
+//
+// The function returns the following values:
+//
+//    - utf8: enum value name.
+//
 func (self *EnumListItem) Name() string {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret *C.char            // in
@@ -61,6 +65,11 @@ func (self *EnumListItem) Name() string {
 }
 
 // Nick gets the enum value nick.
+//
+// The function returns the following values:
+//
+//    - utf8: enum value nick.
+//
 func (self *EnumListItem) Nick() string {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret *C.char            // in
@@ -78,6 +87,11 @@ func (self *EnumListItem) Nick() string {
 }
 
 // Value gets the enum value.
+//
+// The function returns the following values:
+//
+//    - gint: enum value.
+//
 func (self *EnumListItem) Value() int {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret C.int              // in
@@ -98,6 +112,7 @@ func (self *EnumListItem) Value() int {
 //
 // AdwEnumListModel contains objects of type adwenumlistitem.
 type EnumListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
@@ -126,6 +141,10 @@ func marshalEnumListModeller(p uintptr) (interface{}, error) {
 //
 //    - enumType: type of the enum to construct the model from.
 //
+// The function returns the following values:
+//
+//    - enumListModel: newly created AdwEnumListModel.
+//
 func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	var _arg1 C.GType             // out
 	var _cret *C.AdwEnumListModel // in
@@ -148,6 +167,8 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 //
 //    - value: enum value.
 //
+// The function returns the following values:
+//
 func (self *EnumListModel) FindPosition(value int) uint {
 	var _arg0 *C.AdwEnumListModel // out
 	var _arg1 C.int               // out
@@ -168,6 +189,11 @@ func (self *EnumListModel) FindPosition(value int) uint {
 }
 
 // EnumType gets the type of the enum represented by self.
+//
+// The function returns the following values:
+//
+//    - gType: enum type.
+//
 func (self *EnumListModel) EnumType() externglib.Type {
 	var _arg0 *C.AdwEnumListModel // out
 	var _cret C.GType             // in
