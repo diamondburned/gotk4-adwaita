@@ -34,6 +34,9 @@ type ActionRowOverrider interface {
 
 // ActionRow: gtk.ListBoxRow used to present actions.
 //
+// <picture> <source srcset="action-row-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="action-row.png" alt="action-row"> </picture>
+//
 // The AdwActionRow widget can have a title, a subtitle and an icon. The row can
 // receive additional widgets at its end, or prefix widgets at its start.
 //
@@ -48,7 +51,7 @@ type ActionRowOverrider interface {
 //
 // The AdwActionRow implementation of the gtk.Buildable interface supports
 // adding a child at its end by specifying “suffix” or omitting the “type”
-// attribute of a <child> element or.
+// attribute of a <child> element.
 //
 // It also supports adding a child as a prefix widget by specifying “prefix” as
 // the “type” attribute of a <child> element.
@@ -283,26 +286,6 @@ func (self *ActionRow) TitleLines() int {
 	return _gint
 }
 
-// UseUnderline gets whether underlines in title or subtitle are interpreted as
-// mnemonics.
-func (self *ActionRow) UseUnderline() bool {
-	var _arg0 *C.AdwActionRow // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_action_row_get_use_underline(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Remove removes a child from self.
 //
 // The function takes the following parameters:
@@ -423,27 +406,6 @@ func (self *ActionRow) SetTitleLines(titleLines int) {
 	C.adw_action_row_set_title_lines(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(titleLines)
-}
-
-// SetUseUnderline sets whether underlines in title or subtitle are interpreted
-// as mnemonics.
-//
-// The function takes the following parameters:
-//
-//    - useUnderline: whether underlines are interpreted as mnemonics.
-//
-func (self *ActionRow) SetUseUnderline(useUnderline bool) {
-	var _arg0 *C.AdwActionRow // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	if useUnderline {
-		_arg1 = C.TRUE
-	}
-
-	C.adw_action_row_set_use_underline(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(useUnderline)
 }
 
 // ConnectActivated: this signal is emitted after the row has been activated.

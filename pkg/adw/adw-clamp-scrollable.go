@@ -23,10 +23,10 @@ func init() {
 	})
 }
 
-// ClampScrollable: scrollable adw.Clamp.
+// ClampScrollable: scrollable clamp.
 //
-// AdwClampScrollable is a variant of adw.Clamp that implements the
-// gtk.Scrollable interface.
+// AdwClampScrollable is a variant of clamp that implements the gtk.Scrollable
+// interface.
 //
 // The primary use case for AdwClampScrollable is clamping gtk.ListView.
 type ClampScrollable struct {

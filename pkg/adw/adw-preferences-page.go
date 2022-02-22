@@ -23,7 +23,11 @@ func init() {
 	})
 }
 
-// PreferencesPage: page from adw.PreferencesWindow.
+// PreferencesPage: page from preferenceswindow.
+//
+// <picture> <source srcset="preferences-page-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="preferences-page.png"
+// alt="preferences-page"> </picture>
 //
 // The AdwPreferencesPage widget gathers preferences groups into a single page
 // of a preferences window.
@@ -32,6 +36,11 @@ func init() {
 // CSS nodes
 //
 // AdwPreferencesPage has a single CSS node with name preferencespage.
+//
+//
+// Accessibility
+//
+// AdwPreferencesPage uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesPage struct {
 	gtk.Widget
 }

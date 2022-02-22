@@ -23,13 +23,17 @@ func init() {
 	})
 }
 
-// CarouselIndicatorLines lines indicator for adw.Carousel.
+// CarouselIndicatorLines lines indicator for carousel.
+//
+// <picture> <source srcset="carousel-indicator-dots-lines.png"
+// media="(prefers-color-scheme: dark)"> <img src="carousel-indicator-lines.png"
+// alt="carousel-indicator-lines"> </picture>
 //
 // The AdwCarouselIndicatorLines widget shows a set of lines for each page of a
-// given adw.Carousel. The carousel's active page is shown as another line that
+// given carousel. The carousel's active page is shown as another line that
 // moves between them to match the carousel's position.
 //
-// See also adw.CarouselIndicatorDots.
+// See also carouselindicatordots.
 //
 //
 // CSS nodes

@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// TabPage: auxiliary class used by adw.TabView.
+// TabPage: auxiliary class used by tabview.
 type TabPage struct {
 	*externglib.Object
 }
@@ -421,20 +421,30 @@ func (self *TabPage) SetTooltip(tooltip string) {
 //
 // AdwTabView is a container which shows one child at a time. While it provides
 // keyboard shortcuts for switching between pages, it does not provide a visible
-// tab bar and relies on external widgets for that, such as adw.TabBar.
+// tab bar and relies on external widgets for that, such as tabbar.
 //
-// AdwTabView maintains a adw.TabPage object for each page, which holds
-// additional per-page properties. You can obtain the AdwTabPage for a page with
-// adw.TabView.GetPage(), and as the return value for adw.TabView.Append() and
-// other functions for adding children.
+// AdwTabView maintains a tabpage object for each page, which holds additional
+// per-page properties. You can obtain the AdwTabPage for a page with
+// tabview.GetPage, and as the return value for tabview.Append and other
+// functions for adding children.
 //
 // AdwTabView only aims to be useful for dynamic tabs in multi-window
 // document-based applications, such as web browsers, file managers, text
 // editors or terminals. It does not aim to replace gtk.Notebook for use cases
 // such as tabbed dialogs.
 //
-// As such, it does not support disabling page reordering or detaching, or
-// adding children via gtk.Builder.
+// As such, it does not support disabling page reordering or detaching.
+//
+// AdwTabView adds the following shortcuts in the managed scope:
+//
+// * Ctrl+Page Up - switch to the previous page * Ctrl+Page Down - switch to the
+// next page * Ctrl+Home - switch to the first page * Ctrl+End - switch to the
+// last page * Ctrl+Shift+Page Up - move the current page backward *
+// Ctrl+Shift+Page Down - move the current page forward * Ctrl+Shift+Home - move
+// the current page at the start * Ctrl+Shift+End - move the current page at the
+// end * Ctrl+Tab - switch to the next page, with looping * Ctrl+Shift+Tab -
+// switch to the previous page, with looping * Alt+1-9 - switch to pages 1-9 *
+// Alt+0 - switch to page 10
 //
 //
 // CSS nodes
@@ -489,9 +499,9 @@ func NewTabView() *TabView {
 //
 // This function can be used to automatically position new pages, and to select
 // the correct page when this page is closed while being selected (see
-// adw.TabView.ClosePage()).
+// tabview.ClosePage).
 //
-// If parent is NULL, this function is equivalent to adw.TabView.Append().
+// If parent is NULL, this function is equivalent to tabview.Append.
 //
 // The function takes the following parameters:
 //
@@ -592,20 +602,20 @@ func (self *TabView) CloseOtherPages(page *TabPage) {
 
 // ClosePage requests to close page.
 //
-// Calling this function will result in the adw.TabView::close-page signal being
+// Calling this function will result in the tabview::close-page signal being
 // emitted for page. Closing the page can then be confirmed or denied via
-// adw.TabView.ClosePageFinish().
+// tabview.ClosePageFinish.
 //
-// If the page is waiting for a adw.TabView.ClosePageFinish() call, this
-// function will do nothing.
+// If the page is waiting for a tabview.ClosePageFinish call, this function will
+// do nothing.
 //
-// The default handler for adw.TabView::close-page will immediately confirm
-// closing the page if it's non-pinned, or reject it if it's pinned. This
-// behavior can be changed by registering your own handler for that signal.
+// The default handler for tabview::close-page will immediately confirm closing
+// the page if it's non-pinned, or reject it if it's pinned. This behavior can
+// be changed by registering your own handler for that signal.
 //
 // If page was selected, another page will be selected instead:
 //
-// If the adw.TabPage:parent value is NULL, the next page will be selected when
+// If the tabpage:parent value is NULL, the next page will be selected when
 // possible, or if the page was already last, the previous page will be selected
 // instead.
 //
@@ -629,13 +639,13 @@ func (self *TabView) ClosePage(page *TabPage) {
 	runtime.KeepAlive(page)
 }
 
-// ClosePageFinish completes a adw.TabView.ClosePage() call for page.
+// ClosePageFinish completes a tabview.ClosePage call for page.
 //
 // If confirm is TRUE, page will be closed. If it's FALSE, it will be reverted
-// to its previous state and adw.TabView.ClosePage() can be called for it again.
+// to its previous state and tabview.ClosePage can be called for it again.
 //
 // This function should not be called unless a custom handler for
-// adw.TabView::close-page is used.
+// tabview::close-page is used.
 //
 // The function takes the following parameters:
 //
@@ -805,7 +815,7 @@ func (self *TabView) NPinnedPages() int {
 	return _gint
 }
 
-// NthPage gets the adw.TabPage representing the child at position.
+// NthPage gets the tabpage representing the child at position.
 //
 // The function takes the following parameters:
 //
@@ -830,7 +840,7 @@ func (self *TabView) NthPage(position int) *TabPage {
 	return _tabPage
 }
 
-// Page gets the adw.TabPage object representing child.
+// Page gets the tabpage object representing child.
 //
 // The function takes the following parameters:
 //
@@ -880,7 +890,7 @@ func (self *TabView) PagePosition(page *TabPage) int {
 	return _gint
 }
 
-// Pages returns a GListModel that contains the pages of self.
+// Pages returns a gio.ListModel that contains the pages of self.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the selected page.
@@ -931,38 +941,10 @@ func (self *TabView) SelectedPage() *TabPage {
 	return _tabPage
 }
 
-// ShortcutWidget gets the shortcut widget for self.
-func (self *TabView) ShortcutWidget() gtk.Widgetter {
-	var _arg0 *C.AdwTabView // out
-	var _cret *C.GtkWidget  // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_tab_view_get_shortcut_widget(_arg0)
-	runtime.KeepAlive(self)
-
-	var _widget gtk.Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
-}
-
 // Insert inserts a non-pinned page at position.
 //
 // It's an error to try to insert a page before a pinned page, in that case
-// adw.TabView.InsertPinned() should be used instead.
+// tabview.InsertPinned should be used instead.
 //
 // The function takes the following parameters:
 //
@@ -994,7 +976,7 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 // InsertPinned inserts a pinned page at position.
 //
 // It's an error to try to insert a pinned page after a non-pinned page, in that
-// case adw.TabView.Insert() should be used instead.
+// case tabview.Insert should be used instead.
 //
 // The function takes the following parameters:
 //
@@ -1298,8 +1280,8 @@ func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 // SetPagePinned pins or unpins page.
 //
 // Pinned pages are guaranteed to be placed before all non-pinned pages; at any
-// given moment the first adw.TabView:n-pinned-pages pages in self are
-// guaranteed to be pinned.
+// given moment the first tabview:n-pinned-pages pages in self are guaranteed to
+// be pinned.
 //
 // When a page is pinned or unpinned, it's automatically reordered: pinning a
 // page moves it after other pinned pages; unpinning a page moves it before
@@ -1307,17 +1289,17 @@ func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // Pinned pages can still be reordered between each other.
 //
-// adw.TabBar will display pinned pages in a compact form, never showing the
-// title or close button, and only showing a single icon, selected in the
-// following order:
+// tabbar will display pinned pages in a compact form, never showing the title
+// or close button, and only showing a single icon, selected in the following
+// order:
 //
-// 1. adw.TabPage:indicator-icon 2. A spinner if adw.TabPage:loading is TRUE 3.
-// adw.TabPage:icon 4. adw.TabView:default-icon
+// 1. tabpage:indicator-icon 2. A spinner if tabpage:loading is TRUE 3.
+// tabpage:icon 4. tabview:default-icon
 //
-// Pinned pages cannot be closed by default, see adw.TabView::close-page for how
-// to override that behavior.
+// Pinned pages cannot be closed by default, see tabview::close-page for how to
+// override that behavior.
 //
-// Changes the value of the adw.TabPage:pinned property.
+// Changes the value of the tabpage:pinned property.
 //
 // The function takes the following parameters:
 //
@@ -1359,26 +1341,6 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 	runtime.KeepAlive(selectedPage)
 }
 
-// SetShortcutWidget sets the shortcut widget for self.
-//
-// The function takes the following parameters:
-//
-//    - widget: shortcut widget.
-//
-func (self *TabView) SetShortcutWidget(widget gtk.Widgetter) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(self.Native()))
-	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	}
-
-	C.adw_tab_view_set_shortcut_widget(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(widget)
-}
-
 // TransferPage transfers page from self to other_view.
 //
 // The page object will be reused.
@@ -1410,11 +1372,10 @@ func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position in
 	runtime.KeepAlive(position)
 }
 
-// ConnectClosePage: emitted after adw.TabView.ClosePage() has been called for
-// page.
+// ConnectClosePage: emitted after tabview.ClosePage has been called for page.
 //
-// The handler is expected to call adw.TabView.ClosePageFinish() to confirm or
-// reject the closing.
+// The handler is expected to call tabview.ClosePageFinish to confirm or reject
+// the closing.
 //
 // The default handler will immediately confirm closing for non-pinned pages, or
 // reject it for pinned pages, equivalent to the following example:
@@ -1430,9 +1391,8 @@ func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position in
 //    }
 //
 //
-// The adw.TabView.ClosePageFinish() call doesn't have to happen inside the
-// handler, so can be used to do asynchronous checks before confirming the
-// closing.
+// The tabview.ClosePageFinish call doesn't have to happen inside the handler,
+// so can be used to do asynchronous checks before confirming the closing.
 //
 // A typical reason to connect to this signal is to show a confirmation dialog
 // for closing a tab.
@@ -1454,7 +1414,7 @@ func (self *TabView) ConnectCreateWindow(f func() TabView) externglib.SignalHand
 // ConnectIndicatorActivated: emitted after the indicator icon on page has been
 // activated.
 //
-// See adw.TabPage:indicator-icon and adw.TabPage:indicator-activatable.
+// See tabpage:indicator-icon and tabpage:indicator-activatable.
 func (self *TabView) ConnectIndicatorActivated(f func(page TabPage)) externglib.SignalHandle {
 	return self.Connect("indicator-activated", f)
 }
@@ -1472,12 +1432,12 @@ func (self *TabView) ConnectPageAttached(f func(page TabPage, position int)) ext
 // another view.
 //
 // A typical reason to connect to this signal would be to disconnect signal
-// handlers connected in the adw.TabView::page-attached handler.
+// handlers connected in the tabview::page-attached handler.
 //
 // It is important not to try and destroy the page child in the handler of this
 // function as the child might merely be moved to another window; use child
-// dispose handler for that or do it in sync with your
-// adw.TabView.ClosePageFinish() calls.
+// dispose handler for that or do it in sync with your tabview.ClosePageFinish
+// calls.
 func (self *TabView) ConnectPageDetached(f func(page TabPage, position int)) externglib.SignalHandle {
 	return self.Connect("page-detached", f)
 }

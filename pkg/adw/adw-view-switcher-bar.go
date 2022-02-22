@@ -25,18 +25,22 @@ func init() {
 
 // ViewSwitcherBar: view switcher action bar.
 //
+// <picture> <source srcset="view-switcher-bar-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="view-switcher-bar.png"
+// alt="view-switcher-bar"> </picture>
+//
 // An action bar letting you switch between multiple views contained in a
-// adw.ViewStack, via an adw.ViewSwitcher. It is designed to be put at the
-// bottom of a window and to be revealed only on really narrow windows, e.g. on
-// mobile phones. It can't be revealed if there are less than two pages.
+// viewstack, via an viewswitcher. It is designed to be put at the bottom of a
+// window and to be revealed only on really narrow windows, e.g. on mobile
+// phones. It can't be revealed if there are less than two pages.
 //
-// You can conveniently bind the adw.ViewSwitcherBar:reveal property to
-// adw.ViewSwitcherTitle:title-visible to automatically reveal the view switcher
-// bar when the title label is displayed in place of the view switcher.
+// AdwViewSwitcherBar is intended to be used together with viewswitchertitle.
 //
-// An example of the UI definition for a common use case:
+// A common use case is to bind the viewswitcherbar:reveal property to
+// viewswitchertitle:title-visible to automatically reveal the view switcher bar
+// when the title label is displayed in place of the view switcher, as follows:
 //
-//    <object class="GtkWindow"/>
+//    <object class="GtkWindow">
 //      <child type="titlebar">
 //        <object class="AdwHeaderBar">
 //          <property name="centering-policy">strict</property>
@@ -114,23 +118,6 @@ func NewViewSwitcherBar() *ViewSwitcherBar {
 	return _viewSwitcherBar
 }
 
-// Policy gets the policy of self.
-func (self *ViewSwitcherBar) Policy() ViewSwitcherPolicy {
-	var _arg0 *C.AdwViewSwitcherBar   // out
-	var _cret C.AdwViewSwitcherPolicy // in
-
-	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_bar_get_policy(_arg0)
-	runtime.KeepAlive(self)
-
-	var _viewSwitcherPolicy ViewSwitcherPolicy // out
-
-	_viewSwitcherPolicy = ViewSwitcherPolicy(_cret)
-
-	return _viewSwitcherPolicy
-}
-
 // Reveal gets whether self should be revealed or hidden.
 func (self *ViewSwitcherBar) Reveal() bool {
 	var _arg0 *C.AdwViewSwitcherBar // out
@@ -167,24 +154,6 @@ func (self *ViewSwitcherBar) Stack() *ViewStack {
 	}
 
 	return _viewStack
-}
-
-// SetPolicy sets the policy of self.
-//
-// The function takes the following parameters:
-//
-//    - policy: new policy.
-//
-func (self *ViewSwitcherBar) SetPolicy(policy ViewSwitcherPolicy) {
-	var _arg0 *C.AdwViewSwitcherBar   // out
-	var _arg1 C.AdwViewSwitcherPolicy // out
-
-	_arg0 = (*C.AdwViewSwitcherBar)(unsafe.Pointer(self.Native()))
-	_arg1 = C.AdwViewSwitcherPolicy(policy)
-
-	C.adw_view_switcher_bar_set_policy(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(policy)
 }
 
 // SetReveal sets whether self should be revealed or hidden.

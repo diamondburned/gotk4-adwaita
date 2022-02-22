@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
@@ -25,6 +26,9 @@ func init() {
 
 // StatusPage: page used for empty/error states and similar use-cases.
 //
+// <picture> <source srcset="status-page-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="status-page.png" alt="status-page"> </picture>
+//
 // The AdwStatusPage widget can have an icon, a title, a description and a
 // custom widget which is displayed below them.
 //
@@ -32,6 +36,10 @@ func init() {
 // CSS nodes
 //
 // AdwStatusPage has a main CSS node with name statuspage.
+//
+// AdwStatusPage can use the .compact (style-classes.html#compact-status-page)
+// style class for when it needs to fit into a small space such a sidebar or a
+// popover.
 type StatusPage struct {
 	gtk.Widget
 }
@@ -143,6 +151,34 @@ func (self *StatusPage) IconName() string {
 	return _utf8
 }
 
+// Paintable gets the paintable for self.
+func (self *StatusPage) Paintable() gdk.Paintabler {
+	var _arg0 *C.AdwStatusPage // out
+	var _cret *C.GdkPaintable  // in
+
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_status_page_get_paintable(_arg0)
+	runtime.KeepAlive(self)
+
+	var _paintable gdk.Paintabler // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			}
+			_paintable = rv
+		}
+	}
+
+	return _paintable
+}
+
 // Title gets the title for self.
 func (self *StatusPage) Title() string {
 	var _arg0 *C.AdwStatusPage // out
@@ -220,6 +256,26 @@ func (self *StatusPage) SetIconName(iconName string) {
 	C.adw_status_page_set_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
+}
+
+// SetPaintable sets the paintable for self.
+//
+// The function takes the following parameters:
+//
+//    - paintable: paintable.
+//
+func (self *StatusPage) SetPaintable(paintable gdk.Paintabler) {
+	var _arg0 *C.AdwStatusPage // out
+	var _arg1 *C.GdkPaintable  // out
+
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
+
+	C.adw_status_page_set_paintable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(paintable)
 }
 
 // SetTitle sets the title for self.

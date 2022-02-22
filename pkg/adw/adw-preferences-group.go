@@ -25,17 +25,33 @@ func init() {
 
 // PreferencesGroup: group of preference rows.
 //
+// <picture> <source srcset="preferences-group-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="preferences-group.png"
+// alt="preferences-group"> </picture>
+//
 // An AdwPreferencesGroup represents a group or tightly related preferences,
-// which in turn are represented by adw.PreferencesRow.
+// which in turn are represented by preferencesrow.
 //
 // To summarize the role of the preferences it gathers, a group can have both a
-// title and a description. The title will be used by adw.PreferencesWindow to
-// let the user look for a preference.
+// title and a description. The title will be used by preferenceswindow to let
+// the user look for a preference.
+//
+//
+// AdwPreferencesGroup as GtkBuildable
+//
+// The AdwPreferencesGroup implementation of the gtk.Buildable interface will
+// add preferencesrows to the group's list. If a child is not a preferencesrow
+// the child is added to a box below the list.
 //
 //
 // CSS nodes
 //
 // AdwPreferencesGroup has a single CSS node with name preferencesgroup.
+//
+//
+// Accessibility
+//
+// AdwPreferencesGroup uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesGroup struct {
 	gtk.Widget
 }

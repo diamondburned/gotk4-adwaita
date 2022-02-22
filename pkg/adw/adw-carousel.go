@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
@@ -25,11 +26,14 @@ func init() {
 
 // Carousel: paginated scrolling widget.
 //
+// <picture> <source srcset="carousel-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="carousel.png" alt="carousel"> </picture>
+//
 // The AdwCarousel widget can be used to display a set of pages with swipe-based
 // navigation between them.
 //
-// adw.CarouselIndicatorDots and adw.CarouselIndicatorLines can be used to
-// provide page indicators for AdwCarousel.
+// carouselindicatordots and carouselindicatorlines can be used to provide page
+// indicators for AdwCarousel.
 //
 //
 // CSS nodes
@@ -182,24 +186,6 @@ func (self *Carousel) AllowScrollWheel() bool {
 	return _ok
 }
 
-// AnimationDuration gets the animation duration used by
-// adw.Carousel.ScrollTo().
-func (self *Carousel) AnimationDuration() uint {
-	var _arg0 *C.AdwCarousel // out
-	var _cret C.guint        // in
-
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_carousel_get_animation_duration(_arg0)
-	runtime.KeepAlive(self)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
 // Interactive gets whether self can be navigated.
 func (self *Carousel) Interactive() bool {
 	var _arg0 *C.AdwCarousel // out
@@ -310,6 +296,29 @@ func (self *Carousel) RevealDuration() uint {
 	return _guint
 }
 
+// ScrollParams gets the scroll animation spring parameters for self.
+func (self *Carousel) ScrollParams() *SpringParams {
+	var _arg0 *C.AdwCarousel     // out
+	var _cret *C.AdwSpringParams // in
+
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_carousel_get_scroll_params(_arg0)
+	runtime.KeepAlive(self)
+
+	var _springParams *SpringParams // out
+
+	_springParams = (*SpringParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_springParams)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.adw_spring_params_unref((*C.AdwSpringParams)(intern.C))
+		},
+	)
+
+	return _springParams
+}
+
 // Spacing gets spacing between pages in pixels.
 func (self *Carousel) Spacing() uint {
 	var _arg0 *C.AdwCarousel // out
@@ -413,47 +422,30 @@ func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 	runtime.KeepAlive(position)
 }
 
-// ScrollTo scrolls to widget with an animation.
+// ScrollTo scrolls to widget.
 //
-// The adw.Carousel:animation-duration property can be used to control the
-// duration.
-//
-// The function takes the following parameters:
-//
-//    - widget: child of self.
-//
-func (self *Carousel) ScrollTo(widget gtk.Widgetter) {
-	var _arg0 *C.AdwCarousel // out
-	var _arg1 *C.GtkWidget   // out
-
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.adw_carousel_scroll_to(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(widget)
-}
-
-// ScrollToFull scrolls to widget with an animation.
+// If animate is TRUE, the transition will be animated.
 //
 // The function takes the following parameters:
 //
 //    - widget: child of self.
-//    - duration: animation duration in milliseconds.
+//    - animate: whether to animate the transition.
 //
-func (self *Carousel) ScrollToFull(widget gtk.Widgetter, duration int64) {
+func (self *Carousel) ScrollTo(widget gtk.Widgetter, animate bool) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
-	var _arg2 C.gint64       // out
+	var _arg2 C.gboolean     // out
 
 	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.gint64(duration)
+	if animate {
+		_arg2 = C.TRUE
+	}
 
-	C.adw_carousel_scroll_to_full(_arg0, _arg1, _arg2)
+	C.adw_carousel_scroll_to(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
-	runtime.KeepAlive(duration)
+	runtime.KeepAlive(animate)
 }
 
 // SetAllowLongSwipes sets whether to allow swiping for more than one page at a
@@ -517,25 +509,6 @@ func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 	runtime.KeepAlive(allowScrollWheel)
 }
 
-// SetAnimationDuration sets the animation duration used by
-// adw.Carousel.ScrollTo().
-//
-// The function takes the following parameters:
-//
-//    - duration: animation duration in milliseconds.
-//
-func (self *Carousel) SetAnimationDuration(duration uint) {
-	var _arg0 *C.AdwCarousel // out
-	var _arg1 C.guint        // out
-
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = C.guint(duration)
-
-	C.adw_carousel_set_animation_duration(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(duration)
-}
-
 // SetInteractive sets whether self can be navigated.
 //
 // The function takes the following parameters:
@@ -573,6 +546,24 @@ func (self *Carousel) SetRevealDuration(revealDuration uint) {
 	C.adw_carousel_set_reveal_duration(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(revealDuration)
+}
+
+// SetScrollParams sets the scroll animation spring parameters for self.
+//
+// The function takes the following parameters:
+//
+//    - params: new parameters.
+//
+func (self *Carousel) SetScrollParams(params *SpringParams) {
+	var _arg0 *C.AdwCarousel     // out
+	var _arg1 *C.AdwSpringParams // out
+
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(params)))
+
+	C.adw_carousel_set_scroll_params(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(params)
 }
 
 // SetSpacing sets spacing between pages in pixels.

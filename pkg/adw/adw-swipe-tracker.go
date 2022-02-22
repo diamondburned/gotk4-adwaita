@@ -23,15 +23,15 @@ func init() {
 	})
 }
 
-// SwipeTracker: swipe tracker used in adw.Carousel and adw.Leaflet.
+// SwipeTracker: swipe tracker used in carousel, flap and leaflet.
 //
 // The AdwSwipeTracker object can be used for implementing widgets with swipe
 // gestures. It supports touch-based swipes, pointer dragging, and touchpad
 // scrolling.
 //
-// The widgets will probably want to expose the adw.SwipeTracker:enabled
-// property. If they expect to use horizontal orientation,
-// adw.SwipeTracker:reversed can be used for supporting RTL text direction.
+// The widgets will probably want to expose the swipetracker:enabled property.
+// If they expect to use horizontal orientation, swipetracker:reversed can be
+// used for supporting RTL text direction.
 type SwipeTracker struct {
 	*externglib.Object
 
@@ -285,16 +285,27 @@ func (self *SwipeTracker) ShiftPosition(delta float64) {
 	runtime.KeepAlive(delta)
 }
 
-// ConnectBeginSwipe: this signal is emitted when a possible swipe is detected.
-//
-// The direction value can be used to restrict the swipe to a certain direction.
-func (self *SwipeTracker) ConnectBeginSwipe(f func(direction NavigationDirection)) externglib.SignalHandle {
+// ConnectBeginSwipe: this signal is emitted right before a swipe will be
+// started, after the drag threshold has been passed.
+func (self *SwipeTracker) ConnectBeginSwipe(f func()) externglib.SignalHandle {
 	return self.Connect("begin-swipe", f)
 }
 
 // ConnectEndSwipe: this signal is emitted as soon as the gesture has stopped.
-func (self *SwipeTracker) ConnectEndSwipe(f func(duration int64, to float64)) externglib.SignalHandle {
+//
+// The user is expected to animate the deceleration from the current progress
+// value to to with an animation using velocity as the initial velocity,
+// provided in pixels per second. springanimation is usually a good fit for
+// this.
+func (self *SwipeTracker) ConnectEndSwipe(f func(velocity, to float64)) externglib.SignalHandle {
 	return self.Connect("end-swipe", f)
+}
+
+// ConnectPrepare: this signal is emitted when a possible swipe is detected.
+//
+// The direction value can be used to restrict the swipe to a certain direction.
+func (self *SwipeTracker) ConnectPrepare(f func(direction NavigationDirection)) externglib.SignalHandle {
+	return self.Connect("prepare", f)
 }
 
 // ConnectUpdateSwipe: this signal is emitted every time the progress value

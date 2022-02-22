@@ -25,6 +25,10 @@ func init() {
 
 // PreferencesWindow: window to present an application's preferences.
 //
+// <picture> <source srcset="preferences-window-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="preferences-window.png"
+// alt="preferences-window"> </picture>
+//
 // The AdwPreferencesWindow widget presents an application's preferences
 // gathered into pages and groups. The preferences are searchable by the user.
 //
@@ -124,11 +128,32 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	runtime.KeepAlive(page)
 }
 
+// AddToast displays toast.
+//
+// See toastoverlay.AddToast.
+//
+// The function takes the following parameters:
+//
+//    - toast: toast.
+//
+func (self *PreferencesWindow) AddToast(toast *Toast) {
+	var _arg0 *C.AdwPreferencesWindow // out
+	var _arg1 *C.AdwToast             // out
+
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.AdwToast)(unsafe.Pointer(toast.Native()))
+	C.g_object_ref(C.gpointer(toast.Native()))
+
+	C.adw_preferences_window_add_toast(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(toast)
+}
+
 // CloseSubpage closes the current subpage.
 //
 // If there is no presented subpage, this does nothing.
 //
-// See adw.PreferencesWindow.CloseSubpage().
+// See preferenceswindow.CloseSubpage.
 func (self *PreferencesWindow) CloseSubpage() {
 	var _arg0 *C.AdwPreferencesWindow // out
 
@@ -138,15 +163,15 @@ func (self *PreferencesWindow) CloseSubpage() {
 	runtime.KeepAlive(self)
 }
 
-// CanSwipeBack gets whether or not self allows closing subpages via a swipe
-// gesture.
-func (self *PreferencesWindow) CanSwipeBack() bool {
+// CanNavigateBack gets whether gestures and shortcuts for closing subpages are
+// enabled.
+func (self *PreferencesWindow) CanNavigateBack() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
 
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_preferences_window_get_can_swipe_back(_arg0)
+	_cret = C.adw_preferences_window_get_can_navigate_back(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -254,25 +279,25 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	runtime.KeepAlive(page)
 }
 
-// SetCanSwipeBack sets whether or not self allows closing subpages via a swipe
-// gesture.
+// SetCanNavigateBack sets whether gestures and shortcuts for closing subpages
+// are enabled.
 //
 // The function takes the following parameters:
 //
-//    - canSwipeBack: new value.
+//    - canNavigateBack: new value.
 //
-func (self *PreferencesWindow) SetCanSwipeBack(canSwipeBack bool) {
+func (self *PreferencesWindow) SetCanNavigateBack(canNavigateBack bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
 
 	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	if canSwipeBack {
+	if canNavigateBack {
 		_arg1 = C.TRUE
 	}
 
-	C.adw_preferences_window_set_can_swipe_back(_arg0, _arg1)
+	C.adw_preferences_window_set_can_navigate_back(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(canSwipeBack)
+	runtime.KeepAlive(canNavigateBack)
 }
 
 // SetSearchEnabled sets whether search is enabled for self.

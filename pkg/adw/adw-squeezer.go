@@ -26,7 +26,7 @@ func init() {
 	})
 }
 
-// SqueezerTransitionType describes the possible transitions in a adw.Squeezer
+// SqueezerTransitionType describes the possible transitions in a squeezer
 // widget.
 type SqueezerTransitionType C.gint
 
@@ -55,13 +55,19 @@ func (s SqueezerTransitionType) String() string {
 
 // Squeezer: best fit container.
 //
+// <picture> <source srcset="squeezer-wide-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="squeezer-wide.png"
+// alt="squeezer-wide"> </picture> <picture> <source
+// srcset="squeezer-narrow-dark.png" media="(prefers-color-scheme: dark)"> <img
+// src="squeezer-narrow.png" alt="squeezer-narrow"> </picture>
+//
 // The AdwSqueezer widget is a container which only shows the first of its
 // children that fits in the available size. It is convenient to offer different
 // widgets to represent the same data with different levels of detail, making
 // the widget seem to squeeze itself to fit in the available space.
 //
 // Transitions between children can be animated as fades. This can be controlled
-// with adw.Squeezer:transition-type.
+// with squeezer:transition-type.
 //
 //
 // CSS nodes
@@ -145,6 +151,26 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	return _squeezerPage
 }
 
+// AllowNone gets whether to allow squeezing beyond the last child's minimum
+// size.
+func (self *Squeezer) AllowNone() bool {
+	var _arg0 *C.AdwSqueezer // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_squeezer_get_allow_none(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Homogeneous gets whether all children have the same size for the opposite
 // orientation.
 func (self *Squeezer) Homogeneous() bool {
@@ -185,7 +211,7 @@ func (self *Squeezer) InterpolateSize() bool {
 	return _ok
 }
 
-// Page returns the adw.SqueezerPage object for child.
+// Page returns the squeezerpage object for child.
 //
 // The function takes the following parameters:
 //
@@ -210,7 +236,7 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	return _squeezerPage
 }
 
-// Pages returns a GListModel that contains the pages of the squeezer,
+// Pages returns a gio.ListModel that contains the pages of self.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track the visible page.
@@ -240,6 +266,23 @@ func (self *Squeezer) Pages() gtk.SelectionModeller {
 	}
 
 	return _selectionModel
+}
+
+// SwitchThresholdPolicy gets the fold threshold policy for self.
+func (self *Squeezer) SwitchThresholdPolicy() FoldThresholdPolicy {
+	var _arg0 *C.AdwSqueezer           // out
+	var _cret C.AdwFoldThresholdPolicy // in
+
+	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_squeezer_get_switch_threshold_policy(_arg0)
+	runtime.KeepAlive(self)
+
+	var _foldThresholdPolicy FoldThresholdPolicy // out
+
+	_foldThresholdPolicy = FoldThresholdPolicy(_cret)
+
+	return _foldThresholdPolicy
 }
 
 // TransitionDuration gets the transition animation duration for self.
@@ -376,7 +419,28 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 	runtime.KeepAlive(child)
 }
 
-// SetHomogeneous sets hether all children have the same size for the opposite
+// SetAllowNone sets whether to allow squeezing beyond the last child's minimum
+// size.
+//
+// The function takes the following parameters:
+//
+//    - allowNone: whether self allows squeezing beyond the last child.
+//
+func (self *Squeezer) SetAllowNone(allowNone bool) {
+	var _arg0 *C.AdwSqueezer // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
+	if allowNone {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_squeezer_set_allow_none(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(allowNone)
+}
+
+// SetHomogeneous sets whether all children have the same size for the opposite
 // orientation.
 //
 // The function takes the following parameters:
@@ -416,6 +480,24 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	C.adw_squeezer_set_interpolate_size(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(interpolateSize)
+}
+
+// SetSwitchThresholdPolicy sets the fold threshold policy for self.
+//
+// The function takes the following parameters:
+//
+//    - policy to use.
+//
+func (self *Squeezer) SetSwitchThresholdPolicy(policy FoldThresholdPolicy) {
+	var _arg0 *C.AdwSqueezer           // out
+	var _arg1 C.AdwFoldThresholdPolicy // out
+
+	_arg0 = (*C.AdwSqueezer)(unsafe.Pointer(self.Native()))
+	_arg1 = C.AdwFoldThresholdPolicy(policy)
+
+	C.adw_squeezer_set_switch_threshold_policy(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(policy)
 }
 
 // SetTransitionDuration sets the transition animation duration for self.
@@ -491,7 +573,7 @@ func (self *Squeezer) SetYAlign(yalign float32) {
 	runtime.KeepAlive(yalign)
 }
 
-// SqueezerPage: auxiliary class used by adw.Squeezer.
+// SqueezerPage: auxiliary class used by squeezer.
 type SqueezerPage struct {
 	*externglib.Object
 }

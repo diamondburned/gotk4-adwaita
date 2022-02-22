@@ -25,7 +25,10 @@ func init() {
 
 // Bin: widget with one child.
 //
-// The AdwBin widget has only one child, set with the adw.Bin:child property.
+// <picture> <source srcset="bin-dark.png" media="(prefers-color-scheme: dark)">
+// <img src="bin.png" alt="bin"> </picture>
+//
+// The AdwBin widget has only one child, set with the bin:child property.
 //
 // It is useful for deriving subclasses, since it provides common code needed
 // for handling a single child widget.

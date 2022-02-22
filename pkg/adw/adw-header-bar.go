@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// CenteringPolicy describes title centering behavior of a adw.HeaderBar widget.
+// CenteringPolicy describes title centering behavior of a headerbar widget.
 type CenteringPolicy C.gint
 
 const (
@@ -53,42 +53,53 @@ func (c CenteringPolicy) String() string {
 
 // HeaderBar: title bar widget.
 //
+// <picture> <source srcset="header-bar-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="header-bar.png" alt="header-bar"> </picture>
+//
 // AdwHeaderBar is similar to gtk.HeaderBar, but provides additional features
 // compared to it. Refer to GtkHeaderBar for details.
 //
-// adw.HeaderBar:centering-policy allows to enforce strict centering of the
-// title widget, this is useful for adw.ViewSwitcherTitle.
+// [property.HeaderBar:centering-policy] allows to enforce strict centering of
+// the title widget, this is useful for viewswitchertitle.
 //
-// adw.HeaderBar:show-start-title-buttons and
-// adw.HeaderBar:show-end-title-buttons allow to easily create split header bar
-// layouts using adw.Leaflet, as follows:
+// headerbar:show-start-title-buttons and headerbar:show-end-title-buttons allow
+// to easily create split header bar layouts using leaflet, as follows:
 //
 //    <object class="AdwLeaflet" id="leaflet">
 //      <child>
 //        <object class="GtkBox">
 //          <property name="orientation">vertical</property>
-//          <object class="AdwHeaderBar">
-//            <binding name="show-end-title-buttons">
-//              <lookup name="folded">leaflet</lookup>
-//            </binding>
-//          </object>
-//          ...
+//          <child>
+//            <object class="AdwHeaderBar">
+//              <binding name="show-end-title-buttons">
+//                <lookup name="folded">leaflet</lookup>
+//              </binding>
+//            </object>
+//          </child>
+//          <!-- ... -->
 //        </object>
 //      </child>
-//      ...
+//      <!-- ... -->
 //      <child>
 //        <object class="GtkBox">
 //          <property name="orientation">vertical</property>
-//          <object class="AdwHeaderBar">
-//            <binding name="show-start-title-buttons">
-//              <lookup name="folded">leaflet</lookup>
-//            </binding>
-//          </object>
-//          ...
+//          <property name="hexpand">True</property>
+//          <child>
+//            <object class="AdwHeaderBar">
+//              <binding name="show-start-title-buttons">
+//                <lookup name="folded">leaflet</lookup>
+//              </binding>
+//            </object>
+//          </child>
+//          <!-- ... -->
 //        </object>
 //      </child>
 //    </object>
 //
+//
+// <picture> <source srcset="header-bar-split-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="header-bar-split.png"
+// alt="header-bar-split"> </picture>
 //
 // CSS nodes
 //
@@ -305,8 +316,8 @@ func (self *HeaderBar) PackStart(child gtk.Widgetter) {
 
 // Remove removes a child from self.
 //
-// The child must have been added with adw.HeaderBar.PackStart(),
-// adw.HeaderBar.PackEnd() or adw.HeaderBar:title-widget.
+// The child must have been added with headerbar.PackStart, headerbar.PackEnd or
+// headerbar:title-widget.
 //
 // The function takes the following parameters:
 //

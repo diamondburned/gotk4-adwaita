@@ -8,8 +8,6 @@ import (
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
@@ -28,17 +26,20 @@ func init() {
 
 // Avatar: widget displaying an image, with a generated fallback.
 //
+// <picture> <source srcset="avatar-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="avatar.png" alt="avatar"> </picture>
+//
 // AdwAvatar is a widget that shows a round avatar.
 //
-// AdwAvatar generates an avatar with the initials of the adw.Avatar:text on top
-// of a colored background.
+// AdwAvatar generates an avatar with the initials of the avatar:text on top of
+// a colored background.
 //
-// The color is picked based on the hash of the adw.Avatar:text.
+// The color is picked based on the hash of the avatar:text.
 //
-// If adw.Avatar:show-initials is set to FALSE, adw.Avatar:icon-name or
+// If avatar:show-initials is set to FALSE, avatar:icon-name or
 // avatar-default-symbolic is shown instead of the initials.
 //
-// Use adw.Avatar:custom-image to set a custom image.
+// Use avatar:custom-image to set a custom image.
 //
 //
 // CSS nodes
@@ -111,45 +112,43 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	return _avatar
 }
 
-// DrawToPixbuf renders self into a gdkpixbuf.Pixbuf at size and scale_factor.
+// DrawToTexture renders self into a gdk.Texture at scale_factor.
 //
 // This can be used to export the fallback avatar.
 //
 // The function takes the following parameters:
 //
-//    - size of the pixbuf.
 //    - scaleFactor: scale factor.
 //
-func (self *Avatar) DrawToPixbuf(size, scaleFactor int) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.AdwAvatar // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-	var _cret *C.GdkPixbuf // in
+func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
+	var _arg0 *C.AdwAvatar  // out
+	var _arg1 C.int         // out
+	var _cret *C.GdkTexture // in
 
 	_arg0 = (*C.AdwAvatar)(unsafe.Pointer(self.Native()))
-	_arg1 = C.int(size)
-	_arg2 = C.int(scaleFactor)
+	_arg1 = C.int(scaleFactor)
 
-	_cret = C.adw_avatar_draw_to_pixbuf(_arg0, _arg1, _arg2)
+	_cret = C.adw_avatar_draw_to_texture(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(size)
 	runtime.KeepAlive(scaleFactor)
 
-	var _pixbuf *gdkpixbuf.Pixbuf // out
+	var _texture gdk.Texturer // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
-				},
-			},
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
 		}
+
+		object := externglib.AssumeOwnership(objptr)
+		rv, ok := (externglib.CastObject(object)).(gdk.Texturer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+		}
+		_texture = rv
 	}
 
-	return _pixbuf
+	return _texture
 }
 
 // CustomImage gets the custom image paintable.

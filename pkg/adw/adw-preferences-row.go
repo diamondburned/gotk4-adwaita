@@ -25,11 +25,11 @@ func init() {
 
 // PreferencesRow: gtk.ListBoxRow used to present preferences.
 //
-// The AdwPreferencesRow widget has a title that adw.PreferencesWindow will use
-// to let the user look for a preference. It doesn't present the title in any
-// way and lets you present the preference as you please.
+// The AdwPreferencesRow widget has a title that preferenceswindow will use to
+// let the user look for a preference. It doesn't present the title in any way
+// and lets you present the preference as you please.
 //
-// adw.ActionRow and its derivatives are convenient to use as preference rows as
+// actionrow and its derivatives are convenient to use as preference rows as
 // they take care of presenting the preference's title while letting you compose
 // the inputs of the preference around it.
 type PreferencesRow struct {

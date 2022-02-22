@@ -9,7 +9,6 @@ import (
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: libadwaita-1
@@ -26,14 +25,12 @@ func init() {
 	})
 }
 
-// ViewSwitcherPolicy describes the adaptive modes of adw.ViewSwitcher.
+// ViewSwitcherPolicy describes the adaptive modes of viewswitcher.
 type ViewSwitcherPolicy C.gint
 
 const (
-	// ViewSwitcherPolicyAuto: automatically adapt to the best fitting mode.
-	ViewSwitcherPolicyAuto ViewSwitcherPolicy = iota
 	// ViewSwitcherPolicyNarrow: force the narrow mode.
-	ViewSwitcherPolicyNarrow
+	ViewSwitcherPolicyNarrow ViewSwitcherPolicy = iota
 	// ViewSwitcherPolicyWide: force the wide mode.
 	ViewSwitcherPolicyWide
 )
@@ -45,8 +42,6 @@ func marshalViewSwitcherPolicy(p uintptr) (interface{}, error) {
 // String returns the name in string for ViewSwitcherPolicy.
 func (v ViewSwitcherPolicy) String() string {
 	switch v {
-	case ViewSwitcherPolicyAuto:
-		return "Auto"
 	case ViewSwitcherPolicyNarrow:
 		return "Narrow"
 	case ViewSwitcherPolicyWide:
@@ -58,18 +53,24 @@ func (v ViewSwitcherPolicy) String() string {
 
 // ViewSwitcher: adaptive view switcher.
 //
-// An adaptive view switcher designed to switch between multiple views contained
-// in a adw.ViewStack in a similar fashion to gtk.StackSwitcher.
+// <picture> <source srcset="view-switcher-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="view-switcher.png"
+// alt="view-switcher"> </picture>
 //
-// Depending on the available width, the view switcher can adapt from a wide
-// mode showing the view's icon and title side by side, to a narrow mode showing
-// the view's icon and title one on top of the other, in a more compact way.
-// This can be controlled via the adw.ViewSwitcher:policy property.
+// An adaptive view switcher designed to switch between multiple views contained
+// in a viewstack in a similar fashion to gtk.StackSwitcher.
+//
+// AdwViewSwitcher buttons always have an icon and a label. They can be
+// displayed side by side, or icon on top of the label. This can be controlled
+// via the viewswitcher:policy property.
+//
+// Most applications should be using viewswitcherbar and viewswitchertitle.
 //
 //
 // CSS nodes
 //
-// AdwViewSwitcher has a single CSS node with name viewswitcher.
+// AdwViewSwitcher has a single CSS node with name viewswitcher. It can have the
+// style classes .wide and .narrow, matching its policy.
 //
 //
 // Accessibility
@@ -121,23 +122,6 @@ func NewViewSwitcher() *ViewSwitcher {
 	return _viewSwitcher
 }
 
-// NarrowEllipsize gets the ellipsizing position for the titles.
-func (self *ViewSwitcher) NarrowEllipsize() pango.EllipsizeMode {
-	var _arg0 *C.AdwViewSwitcher   // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_get_narrow_ellipsize(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
 // Policy gets the policy of self.
 func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	var _arg0 *C.AdwViewSwitcher      // out
@@ -172,24 +156,6 @@ func (self *ViewSwitcher) Stack() *ViewStack {
 	}
 
 	return _viewStack
-}
-
-// SetNarrowEllipsize sets the ellipsizing position for the titles.
-//
-// The function takes the following parameters:
-//
-//    - mode: new value.
-//
-func (self *ViewSwitcher) SetNarrowEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.AdwViewSwitcher   // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
-	_arg1 = C.PangoEllipsizeMode(mode)
-
-	C.adw_view_switcher_set_narrow_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(mode)
 }
 
 // SetPolicy sets the policy of self.

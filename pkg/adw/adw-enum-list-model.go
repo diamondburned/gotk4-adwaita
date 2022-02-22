@@ -19,13 +19,84 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.adw_enum_list_item_get_type()), F: marshalEnumListItemmer},
 		{T: externglib.Type(C.adw_enum_list_model_get_type()), F: marshalEnumListModeller},
 	})
 }
 
-// EnumListModel: GListModel representing values of a given enum.
+// EnumListItem: AdwEnumListItem is the type of items in a enumlistmodel.
+type EnumListItem struct {
+	*externglib.Object
+}
+
+var (
+	_ externglib.Objector = (*EnumListItem)(nil)
+)
+
+func wrapEnumListItem(obj *externglib.Object) *EnumListItem {
+	return &EnumListItem{
+		Object: obj,
+	}
+}
+
+func marshalEnumListItemmer(p uintptr) (interface{}, error) {
+	return wrapEnumListItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Name gets the enum value name.
+func (self *EnumListItem) Name() string {
+	var _arg0 *C.AdwEnumListItem // out
+	var _cret *C.char            // in
+
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_enum_list_item_get_name(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Nick gets the enum value nick.
+func (self *EnumListItem) Nick() string {
+	var _arg0 *C.AdwEnumListItem // out
+	var _cret *C.char            // in
+
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_enum_list_item_get_nick(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Value gets the enum value.
+func (self *EnumListItem) Value() int {
+	var _arg0 *C.AdwEnumListItem // out
+	var _cret C.int              // in
+
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_enum_list_item_get_value(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// EnumListModel: gio.ListModel representing values of a given enum.
 //
-// AdwEnumListModel contains objects of type adwenumvalueobject.
+// AdwEnumListModel contains objects of type enumlistitem.
 type EnumListModel struct {
 	*externglib.Object
 

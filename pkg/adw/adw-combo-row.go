@@ -26,6 +26,9 @@ func init() {
 
 // ComboRow: gtk.ListBoxRow used to choose from a list of items.
 //
+// <picture> <source srcset="combo-row-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="combo-row.png" alt="combo-row"> </picture>
+//
 // The AdwComboRow widget allows the user to choose from a list of valid
 // choices. The row displays the selected choice. When activated, the row
 // displays a popover which allows the user to make a new choice.
@@ -37,9 +40,9 @@ func init() {
 //
 // CSS nodes
 //
-// AdwComboRow has a main CSS node with name row.
+// AdwComboRow has a main CSS node with name row and the .combo style class.
 //
-// Its popover has the node named popover with the .combo style class, it
+// Its popover has the node named popover with the .menu style class, it
 // contains a gtk.ScrolledWindow, which in turn contains a gtk.ListView, both
 // are accessible via their regular nodes.
 //
@@ -338,7 +341,7 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	runtime.KeepAlive(factory)
 }
 
-// SetModel sets the GListModel to use.
+// SetModel sets the gio.ListModel to use.
 //
 // The function takes the following parameters:
 //
@@ -362,7 +365,7 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 //
 // The function takes the following parameters:
 //
-//    - position of the item to select, or GTK_INVALID_LIST_POSITION.
+//    - position of the item to select, or gtk.INVALIDLISTPOSITION.
 //
 func (self *ComboRow) SetSelected(position uint) {
 	var _arg0 *C.AdwComboRow // out

@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// FoldThresholdPolicy determines when adw.Flap and adw.Leaflet will fold.
+// FoldThresholdPolicy determines when flap and leaflet will fold.
 type FoldThresholdPolicy C.gint
 
 const (

@@ -25,8 +25,12 @@ func init() {
 
 // WindowTitle: helper widget for setting a window's title and subtitle.
 //
+// <picture> <source srcset="window-title-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="window-title.png"
+// alt="window-title"> </picture>
+//
 // AdwWindowTitle shows a title and subtitle. It's intended to be used as the
-// title child of gtk.HeaderBar or adw.HeaderBar.
+// title child of gtk.HeaderBar or headerbar.
 //
 //
 // CSS nodes

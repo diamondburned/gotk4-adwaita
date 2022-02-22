@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
@@ -26,7 +27,7 @@ func init() {
 	})
 }
 
-// FlapFoldPolicy describes the possible folding behavior of a adw.Flap widget.
+// FlapFoldPolicy describes the possible folding behavior of a flap widget.
 type FlapFoldPolicy C.gint
 
 const (
@@ -56,11 +57,11 @@ func (f FlapFoldPolicy) String() string {
 	}
 }
 
-// FlapTransitionType describes transitions types of a adw.Flap widget.
+// FlapTransitionType describes transitions types of a flap widget.
 //
 // It determines the type of animation when transitioning between children in a
-// adw.Flap widget, as well as which areas can be swiped via
-// adw.Flap:swipe-to-open and adw.Flap:swipe-to-close.
+// flap widget, as well as which areas can be swiped via flap:swipe-to-open and
+// flap:swipe-to-close.
 //
 // New values may be added to this enum over time.
 type FlapTransitionType C.gint
@@ -97,31 +98,36 @@ func (f FlapTransitionType) String() string {
 
 // Flap: adaptive container acting like a box or an overlay.
 //
-// The AdwFlap widget can display its children like a gtk.Box does or like a
-// gtk.Overlay does, according to the adw.Flap:fold-policy value.
+// <picture> <source srcset="flap-wide-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="flap-wide.png" alt="flap-wide"> </picture> <picture>
+// <source srcset="flap-narrow-dark.png" media="(prefers-color-scheme: dark)">
+// <img src="flap-narrow.png" alt="flap-narrow"> </picture>
 //
-// AdwFlap has at most three children: adw.Flap:content, adw.Flap:flap and
-// adw.Flap:separator. Content is the primary child, flap is displayed next to
-// it when unfolded, or overlays it when folded. Flap can be shown or hidden by
-// changing th adw.Flap:reveal-flap value, as well as via swipe gestures if
-// adw.Flap:swipe-to-open and/or adw.Flap:swipe-to-close are set to TRUE.
+// The AdwFlap widget can display its children like a gtk.Box does or like a
+// gtk.Overlay does, according to the flap:fold-policy value.
+//
+// AdwFlap has at most three children: flap:content, flap:flap and
+// flap:separator. Content is the primary child, flap is displayed next to it
+// when unfolded, or overlays it when folded. Flap can be shown or hidden by
+// changing the flap:reveal-flap value, as well as via swipe gestures if
+// flap:swipe-to-open and/or flap:swipe-to-close are set to TRUE.
 //
 // Optionally, a separator can be provided, which would be displayed between the
 // content and the flap when there's no shadow to separate them, depending on
 // the transition type.
 //
-// adw.Flap:flap is transparent by default; add the .background style class to
-// it if this is unwanted.
+// flap:flap is transparent by default; add the .background
+// (style-classes.html#background) style class to it if this is unwanted.
 //
-// If adw.Flap:modal is set to TRUE, content becomes completely inaccessible
-// when the flap is revealed while folded.
+// If flap:modal is set to TRUE, content becomes completely inaccessible when
+// the flap is revealed while folded.
 //
 // The position of the flap and separator children relative to the content is
-// determined by orientation, as well as the adw.Flap:flap-position value.
+// determined by orientation, as well as the flap:flap-position value.
 //
 // Folding the flap will automatically hide the flap widget, and unfolding it
 // will automatically reveal it. If this behavior is not desired, the
-// adw.Flap:locked property can be used to override it.
+// flap:locked property can be used to override it.
 //
 // Common use cases include sidebars, header bars that need to be able to
 // overlap the window content (for example, in fullscreen mode) and bottom
@@ -392,24 +398,6 @@ func (self *Flap) Modal() bool {
 	return _ok
 }
 
-// RevealDuration returns the duration that reveal transitions in self will
-// take.
-func (self *Flap) RevealDuration() uint {
-	var _arg0 *C.AdwFlap // out
-	var _cret C.guint    // in
-
-	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_flap_get_reveal_duration(_arg0)
-	runtime.KeepAlive(self)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
 // RevealFlap gets whether the flap widget is revealed for self.
 func (self *Flap) RevealFlap() bool {
 	var _arg0 *C.AdwFlap // out
@@ -427,6 +415,29 @@ func (self *Flap) RevealFlap() bool {
 	}
 
 	return _ok
+}
+
+// RevealParams gets the reveal animation spring parameters for self.
+func (self *Flap) RevealParams() *SpringParams {
+	var _arg0 *C.AdwFlap         // out
+	var _cret *C.AdwSpringParams // in
+
+	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
+
+	_cret = C.adw_flap_get_reveal_params(_arg0)
+	runtime.KeepAlive(self)
+
+	var _springParams *SpringParams // out
+
+	_springParams = (*SpringParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_springParams)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.adw_spring_params_unref((*C.AdwSpringParams)(intern.C))
+		},
+	)
+
+	return _springParams
 }
 
 // RevealProgress gets the current reveal progress for self.
@@ -682,25 +693,6 @@ func (self *Flap) SetModal(modal bool) {
 	runtime.KeepAlive(modal)
 }
 
-// SetRevealDuration sets the duration that reveal transitions in self will
-// take.
-//
-// The function takes the following parameters:
-//
-//    - duration: new duration, in milliseconds.
-//
-func (self *Flap) SetRevealDuration(duration uint) {
-	var _arg0 *C.AdwFlap // out
-	var _arg1 C.guint    // out
-
-	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
-	_arg1 = C.guint(duration)
-
-	C.adw_flap_set_reveal_duration(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(duration)
-}
-
 // SetRevealFlap sets whether the flap widget is revealed for self.
 //
 // The function takes the following parameters:
@@ -719,6 +711,24 @@ func (self *Flap) SetRevealFlap(revealFlap bool) {
 	C.adw_flap_set_reveal_flap(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(revealFlap)
+}
+
+// SetRevealParams sets the reveal animation spring parameters for self.
+//
+// The function takes the following parameters:
+//
+//    - params: new parameters.
+//
+func (self *Flap) SetRevealParams(params *SpringParams) {
+	var _arg0 *C.AdwFlap         // out
+	var _arg1 *C.AdwSpringParams // out
+
+	_arg0 = (*C.AdwFlap)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(params)))
+
+	C.adw_flap_set_reveal_params(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(params)
 }
 
 // SetSeparator sets the separator widget for self.

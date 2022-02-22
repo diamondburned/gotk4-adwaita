@@ -25,11 +25,14 @@ func init() {
 
 // Window: freeform window.
 //
+// <picture> <source srcset="window-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="window.png" alt="window"> </picture>
+//
 // The AdwWindow widget is a subclass of gtk.Window which has no titlebar area.
 // It means gtk.HeaderBar can be used as follows:
 //
-//    <object class="AdwWindow"/>
-//      <child>
+//    <object class="AdwWindow">
+//      <property name="content">
 //        <object class="GtkBox">
 //          <property name="orientation">vertical</property>
 //          <child>
@@ -39,7 +42,7 @@ func init() {
 //            ...
 //          </child>
 //        </object>
-//      </child>
+//      </property>
 //    </object>
 //
 //
@@ -116,16 +119,16 @@ func NewWindow() *Window {
 	return _window
 }
 
-// Child gets the child widget of self.
+// Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
-func (self *Window) Child() gtk.Widgetter {
+func (self *Window) Content() gtk.Widgetter {
 	var _arg0 *C.AdwWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_window_get_child(_arg0)
+	_cret = C.adw_window_get_content(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
@@ -146,24 +149,24 @@ func (self *Window) Child() gtk.Widgetter {
 	return _widget
 }
 
-// SetChild sets the child widget of self.
+// SetContent sets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - content widget.
 //
-func (self *Window) SetChild(child gtk.Widgetter) {
+func (self *Window) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
-	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if content != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
 	}
 
-	C.adw_window_set_child(_arg0, _arg1)
+	C.adw_window_set_content(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
+	runtime.KeepAlive(content)
 }

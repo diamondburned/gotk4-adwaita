@@ -26,10 +26,14 @@ func init() {
 
 // ApplicationWindow: freeform application window.
 //
-// AdwApplicationWindow is a gtk.ApplicationWindow subclass providing the same
-// features as adw.Window.
+// <picture> <source srcset="application-window-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="application-window.png"
+// alt="application-window"> </picture>
 //
-// See adw.Window for details.
+// AdwApplicationWindow is a gtk.ApplicationWindow subclass providing the same
+// features as window.
+//
+// See window for details.
 //
 // Using gtk.Application:menubar is not supported and may result in visual
 // glitches.
@@ -122,16 +126,16 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	return _applicationWindow
 }
 
-// Child gets the child widget of self.
+// Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
-func (self *ApplicationWindow) Child() gtk.Widgetter {
+func (self *ApplicationWindow) Content() gtk.Widgetter {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _cret *C.GtkWidget            // in
 
 	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_application_window_get_child(_arg0)
+	_cret = C.adw_application_window_get_content(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget gtk.Widgetter // out
@@ -152,24 +156,24 @@ func (self *ApplicationWindow) Child() gtk.Widgetter {
 	return _widget
 }
 
-// SetChild sets the child widget of self.
+// SetContent sets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.SetChild().
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - content widget.
 //
-func (self *ApplicationWindow) SetChild(child gtk.Widgetter) {
+func (self *ApplicationWindow) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _arg1 *C.GtkWidget            // out
 
 	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
-	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if content != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
 	}
 
-	C.adw_application_window_set_child(_arg0, _arg1)
+	C.adw_application_window_set_content(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
+	runtime.KeepAlive(content)
 }

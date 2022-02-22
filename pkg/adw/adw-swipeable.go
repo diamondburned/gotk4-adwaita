@@ -60,7 +60,7 @@ type SwipeableOverrider interface {
 //
 // The AdwSwipeable interface is implemented by all swipeable widgets.
 //
-// See adw.SwipeTracker for details about implementing it.
+// See swipetracker for details about implementing it.
 type Swipeable struct {
 	gtk.Widget
 }

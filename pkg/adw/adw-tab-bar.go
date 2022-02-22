@@ -24,7 +24,10 @@ func init() {
 	})
 }
 
-// TabBar: tab bar for adw.TabView.
+// TabBar: tab bar for tabview.
+//
+// <picture> <source srcset="tab-bar-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="tab-bar.png" alt="tab-bar"> </picture>
 //
 // The AdwTabBar widget is a tab bar that can be used with conjunction with
 // AdwTabView.
@@ -385,7 +388,7 @@ func (self *TabBar) SetView(view *TabView) {
 // If a tab is hovered for a certain period of time while dragging the content,
 // it will be automatically selected.
 //
-// The adw.TabBar::extra-drag-drop signal can be used to handle the drop.
+// The tabbar::extra-drag-drop signal can be used to handle the drop.
 //
 // The function takes the following parameters:
 //
@@ -420,7 +423,7 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 // tab.
 //
 // The content must be of one of the types set up via
-// adw.TabBar.SetupExtraDropTarget().
+// tabbar.SetupExtraDropTarget.
 //
 // See gtk.DropTarget::drop.
 func (self *TabBar) ConnectExtraDragDrop(f func(page TabPage, value externglib.Value) bool) externglib.SignalHandle {

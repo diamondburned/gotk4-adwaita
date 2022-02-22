@@ -24,34 +24,32 @@ func init() {
 	})
 }
 
-// ViewStack: view container for adw.ViewSwitcher.
+// ViewStack: view container for viewswitcher.
 //
 // AdwViewStack is a container which only shows one page at a time. It is
 // typically used to hold an application's main views.
 //
 // It doesn't provide a way to transition between pages. Instead, a separate
-// widget such as adw.ViewSwitcher can be used with AdwViewStack to provide this
+// widget such as viewswitcher can be used with AdwViewStack to provide this
 // functionality.
 //
 // AdwViewStack pages can have a title, an icon, an attention request, and a
-// numbered badge that adw.ViewSwitcher will use to let users identify which
-// page is which. Set them using the adw.ViewStackPage:title,
-// adw.ViewStackPage:icon-name, adw.ViewStackPage:needs-attention, and
-// adw.ViewStackPage:badge-number properties.
+// numbered badge that viewswitcher will use to let users identify which page is
+// which. Set them using the viewstackpage:title, viewstackpage:icon-name,
+// viewstackpage:needs-attention, and viewstackpage:badge-number properties.
 //
-// Transitions between views are animated by crossfading. These animations
-// respect the gtk.Settings:gtk-enable-animations setting.
+// Unlike gtk.Stack, transitions between views are not animated.
 //
-// AdwViewStack maintains a adw.ViewStackPage object for each added child, which
-// holds additional per-child properties. You obtain the adw.ViewStackPage for a
-// child with adw.ViewStack.GetPage() and you can obtain a gtk.SelectionModel
-// containing all the pages with adw.ViewStack.GetPages().
+// AdwViewStack maintains a viewstackpage object for each added child, which
+// holds additional per-child properties. You obtain the viewstackpage for a
+// child with viewstack.GetPage and you can obtain a gtk.SelectionModel
+// containing all the pages with viewstack.GetPages.
 //
 //
 // AdwViewStack as GtkBuildable
 //
-// To set child-specific properties in a .ui file, create adw.ViewStackPage
-// objects explicitly, and set the child widget as a property on it:
+// To set child-specific properties in a .ui file, create viewstackpage objects
+// explicitly, and set the child widget as a property on it:
 //
 //      <object class="AdwViewStack" id="stack">
 //        <child>
@@ -177,8 +175,8 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 
 // AddTitled adds a child to self.
 //
-// The child is identified by the name. The title will be used by
-// adw.ViewSwitcher to represent child, so it should be short.
+// The child is identified by the name. The title will be used by viewswitcher
+// to represent child, so it should be short.
 //
 // The function takes the following parameters:
 //
@@ -271,27 +269,7 @@ func (self *ViewStack) Hhomogeneous() bool {
 	return _ok
 }
 
-// InterpolateSize gets whether self will interpolate its size when changing the
-// visible child.
-func (self *ViewStack) InterpolateSize() bool {
-	var _arg0 *C.AdwViewStack // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_stack_get_interpolate_size(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Page gets the adw.ViewStackPage object for child.
+// Page gets the viewstackpage object for child.
 //
 // The function takes the following parameters:
 //
@@ -316,7 +294,7 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	return _viewStackPage
 }
 
-// Pages returns a GListModel that contains the pages of the stack.
+// Pages returns a gio.ListModel that contains the pages of the stack.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
@@ -346,26 +324,6 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 	}
 
 	return _selectionModel
-}
-
-// TransitionRunning gets whether the self is currently in a transition from one
-// page to another.
-func (self *ViewStack) TransitionRunning() bool {
-	var _arg0 *C.AdwViewStack // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_stack_get_transition_running(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Vhomogeneous gets whether self is vertically homogeneous.
@@ -472,27 +430,6 @@ func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 	runtime.KeepAlive(hhomogeneous)
 }
 
-// SetInterpolateSize sets whether self will interpolate its size when changing
-// the visible child.
-//
-// The function takes the following parameters:
-//
-//    - interpolateSize: new value.
-//
-func (self *ViewStack) SetInterpolateSize(interpolateSize bool) {
-	var _arg0 *C.AdwViewStack // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	if interpolateSize {
-		_arg1 = C.TRUE
-	}
-
-	C.adw_view_stack_set_interpolate_size(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(interpolateSize)
-}
-
 // SetVhomogeneous sets self to be vertically homogeneous or not.
 //
 // The function takes the following parameters:
@@ -550,7 +487,7 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 	runtime.KeepAlive(name)
 }
 
-// ViewStackPage: auxiliary class used by adw.ViewStack.
+// ViewStackPage: auxiliary class used by viewstack.
 type ViewStackPage struct {
 	*externglib.Object
 }

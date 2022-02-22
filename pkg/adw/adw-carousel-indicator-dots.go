@@ -23,14 +23,18 @@ func init() {
 	})
 }
 
-// CarouselIndicatorDots dots indicator for adw.Carousel.
+// CarouselIndicatorDots dots indicator for carousel.
+//
+// <picture> <source srcset="carousel-indicator-dots-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="carousel-indicator-dots.png"
+// alt="carousel-indicator-dots"> </picture>
 //
 // The AdwCarouselIndicatorDots widget shows a set of dots for each page of a
-// given adw.Carousel. The dot representing the carousel's active page is larger
-// and more opaque than the others, the transition to the active and inactive
-// state is gradual to match the carousel's position.
+// given carousel. The dot representing the carousel's active page is larger and
+// more opaque than the others, the transition to the active and inactive state
+// is gradual to match the carousel's position.
 //
-// See also adw.CarouselIndicatorLines.
+// See also carouselindicatorlines.
 //
 //
 // CSS nodes

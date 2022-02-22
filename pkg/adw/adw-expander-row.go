@@ -25,6 +25,10 @@ func init() {
 
 // ExpanderRow: gtk.ListBoxRow used to reveal widgets.
 //
+// <picture> <source srcset="expander-row-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="expander-row.png"
+// alt="expander-row"> </picture>
+//
 // The AdwExpanderRow widget allows the user to reveal or hide widgets below it.
 // It also allows the user to enable the expansion of the row, allowing to
 // disable all that the row contains.
@@ -47,10 +51,6 @@ func init() {
 //
 // It contains the subnodes row.header for its main embedded row, list.nested
 // for the list it can expand, and image.expander-row-arrow for its arrow.
-//
-// When expanded, AdwExpanderRow will add the
-// .checked-expander-row-previous-sibling style class to its previous sibling,
-// and remove it when retracted.
 type ExpanderRow struct {
 	PreferencesRow
 }
@@ -119,26 +119,6 @@ func NewExpanderRow() *ExpanderRow {
 	return _expanderRow
 }
 
-// Add adds a widget to self.
-//
-// The widget will appear in the expanding list below self.
-//
-// The function takes the following parameters:
-//
-//    - child: widget.
-//
-func (self *ExpanderRow) Add(child gtk.Widgetter) {
-	var _arg0 *C.AdwExpanderRow // out
-	var _arg1 *C.GtkWidget      // out
-
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	C.adw_expander_row_add(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-}
-
 // AddAction adds an action widget to self.
 //
 // The function takes the following parameters:
@@ -173,6 +153,26 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	C.adw_expander_row_add_prefix(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
+}
+
+// AddRow adds a widget to self.
+//
+// The widget will appear in the expanding list below self.
+//
+// The function takes the following parameters:
+//
+//    - child: widget.
+//
+func (self *ExpanderRow) AddRow(child gtk.Widgetter) {
+	var _arg0 *C.AdwExpanderRow // out
+	var _arg1 *C.GtkWidget      // out
+
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.adw_expander_row_add_row(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // EnableExpansion gets whether the expansion of self is enabled.
@@ -267,26 +267,6 @@ func (self *ExpanderRow) Subtitle() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// UseUnderline gets whether underlines in title or subtitle are interpreted as
-// mnemonics.
-func (self *ExpanderRow) UseUnderline() bool {
-	var _arg0 *C.AdwExpanderRow // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_expander_row_get_use_underline(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 //
@@ -405,25 +385,4 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	C.adw_expander_row_set_subtitle(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(subtitle)
-}
-
-// SetUseUnderline sets whether underlines in title or subtitle are interpreted
-// as mnemonics.
-//
-// The function takes the following parameters:
-//
-//    - useUnderline: whether underlines are interpreted as mnemonics.
-//
-func (self *ExpanderRow) SetUseUnderline(useUnderline bool) {
-	var _arg0 *C.AdwExpanderRow // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	if useUnderline {
-		_arg1 = C.TRUE
-	}
-
-	C.adw_expander_row_set_use_underline(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(useUnderline)
 }

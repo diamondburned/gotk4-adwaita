@@ -25,20 +25,27 @@ func init() {
 
 // ViewSwitcherTitle: view switcher title.
 //
-// A widget letting you switch between multiple views contained by a
-// adw.ViewStack via an adw.ViewSwitcher.
+// <picture> <source srcset="view-switcher-title-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="view-switcher-title.png"
+// alt="view-switcher-title"> </picture>
 //
-// It is designed to be used as the title widget of a adw.HeaderBar, and will
+// A widget letting you switch between multiple views contained by a viewstack
+// via an viewswitcher.
+//
+// It is designed to be used as the title widget of a headerbar, and will
 // display the window's title when the window is too narrow to fit the view
 // switcher e.g. on mobile phones, or if there are less than two views.
 //
-// You can conveniently bind the adw.ViewSwitcherBar:reveal property to
-// adw.ViewSwitcherTitle:title-visible to automatically reveal the view switcher
-// bar when the title label is displayed in place of the view switcher.
+// In order to center the title in narrow windows, the header bar should have
+// headerbar:centering-policy set to ADW_CENTERING_POLICY_STRICT.
 //
-// An example of the UI definition for a common use case:
+// AdwViewSwitcherTitle is intended to be used together with viewswitcherbar.
 //
-//    <object class="GtkWindow"/>
+// A common use case is to bind the viewswitcherbar:reveal property to
+// viewswitchertitle:title-visible to automatically reveal the view switcher bar
+// when the title label is displayed in place of the view switcher, as follows:
+//
+//    <object class="GtkWindow">
 //      <child type="titlebar">
 //        <object class="AdwHeaderBar">
 //          <property name="centering-policy">strict</property>
@@ -114,23 +121,6 @@ func NewViewSwitcherTitle() *ViewSwitcherTitle {
 	_viewSwitcherTitle = wrapViewSwitcherTitle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewSwitcherTitle
-}
-
-// Policy gets the policy of self.
-func (self *ViewSwitcherTitle) Policy() ViewSwitcherPolicy {
-	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _cret C.AdwViewSwitcherPolicy // in
-
-	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-
-	_cret = C.adw_view_switcher_title_get_policy(_arg0)
-	runtime.KeepAlive(self)
-
-	var _viewSwitcherPolicy ViewSwitcherPolicy // out
-
-	_viewSwitcherPolicy = ViewSwitcherPolicy(_cret)
-
-	return _viewSwitcherPolicy
 }
 
 // Stack gets the stack controlled by self.
@@ -222,24 +212,6 @@ func (self *ViewSwitcherTitle) ViewSwitcherEnabled() bool {
 	}
 
 	return _ok
-}
-
-// SetPolicy sets the policy of self.
-//
-// The function takes the following parameters:
-//
-//    - policy: new policy.
-//
-func (self *ViewSwitcherTitle) SetPolicy(policy ViewSwitcherPolicy) {
-	var _arg0 *C.AdwViewSwitcherTitle // out
-	var _arg1 C.AdwViewSwitcherPolicy // out
-
-	_arg0 = (*C.AdwViewSwitcherTitle)(unsafe.Pointer(self.Native()))
-	_arg1 = C.AdwViewSwitcherPolicy(policy)
-
-	C.adw_view_switcher_title_set_policy(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(policy)
 }
 
 // SetStack sets the stack controlled by self.

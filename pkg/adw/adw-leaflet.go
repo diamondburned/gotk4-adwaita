@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
@@ -26,8 +27,7 @@ func init() {
 	})
 }
 
-// LeafletTransitionType describes the possible transitions in a adw.Leaflet
-// widget.
+// LeafletTransitionType describes the possible transitions in a leaflet widget.
 //
 // New values may be added to this enumeration over time.
 type LeafletTransitionType C.gint
@@ -65,6 +65,12 @@ func (l LeafletTransitionType) String() string {
 }
 
 // Leaflet: adaptive container acting like a box or a stack.
+//
+// <picture> <source srcset="leaflet-wide-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="leaflet-wide.png"
+// alt="leaflet-wide"> </picture> <picture> <source
+// srcset="leaflet-narrow-dark.png" media="(prefers-color-scheme: dark)"> <img
+// src="leaflet-narrow.png" alt="leaflet-narrow"> </picture>
 //
 // The AdwLeaflet widget can display its children like a gtk.Box does or like a
 // gtk.Stack does, adapting to size changes by switching between the two modes.
@@ -184,12 +190,12 @@ func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 
 // AdjacentChild finds the previous or next navigatable child.
 //
-// This will be the same child adw.Leaflet.Navigate() or swipe gestures will
-// navigate to.
+// This will be the same child leaflet.Navigate or swipe gestures will navigate
+// to.
 //
 // If there's no child to navigate to, NULL will be returned instead.
 //
-// See adw.LeafletPage:navigatable.
+// See leafletpage:navigatable.
 //
 // The function takes the following parameters:
 //
@@ -225,15 +231,15 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 	return _widget
 }
 
-// CanSwipeBack gets whether a swipe gesture can be used to navigate to the
-// previous child.
-func (self *Leaflet) CanSwipeBack() bool {
+// CanNavigateBack gets whether gestures and shortcuts for navigating backward
+// are enabled.
+func (self *Leaflet) CanNavigateBack() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_leaflet_get_can_swipe_back(_arg0)
+	_cret = C.adw_leaflet_get_can_navigate_back(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -245,15 +251,15 @@ func (self *Leaflet) CanSwipeBack() bool {
 	return _ok
 }
 
-// CanSwipeForward gets whether a swipe gesture can be used to navigate to the
-// next child.
-func (self *Leaflet) CanSwipeForward() bool {
+// CanNavigateForward gets whether gestures and shortcuts for navigating forward
+// are enabled.
+func (self *Leaflet) CanNavigateForward() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_leaflet_get_can_swipe_forward(_arg0)
+	_cret = C.adw_leaflet_get_can_navigate_forward(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -288,7 +294,7 @@ func (self *Leaflet) CanUnfold() bool {
 //
 // Returns NULL if there is no child with this name.
 //
-// See adw.LeafletPage:name.
+// See leafletpage:name.
 //
 // The function takes the following parameters:
 //
@@ -325,22 +331,27 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	return _widget
 }
 
-// ChildTransitionDuration gets the child transition animation duration for
-// self.
-func (self *Leaflet) ChildTransitionDuration() uint {
-	var _arg0 *C.AdwLeaflet // out
-	var _cret C.guint       // in
+// ChildTransitionParams gets the child transition spring parameters for self.
+func (self *Leaflet) ChildTransitionParams() *SpringParams {
+	var _arg0 *C.AdwLeaflet      // out
+	var _cret *C.AdwSpringParams // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_leaflet_get_child_transition_duration(_arg0)
+	_cret = C.adw_leaflet_get_child_transition_params(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _springParams *SpringParams // out
 
-	_guint = uint(_cret)
+	_springParams = (*SpringParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_springParams)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.adw_spring_params_unref((*C.AdwSpringParams)(intern.C))
+		},
+	)
 
-	return _guint
+	return _springParams
 }
 
 // ChildTransitionRunning gets whether a child transition is currently running
@@ -399,52 +410,14 @@ func (self *Leaflet) Folded() bool {
 	return _ok
 }
 
-// Homogeneous gets whether self is homogeneous for the given fold and
-// orientation.
-//
-// See adw.Leaflet:hhomogeneous-folded, adw.Leaflet:vhomogeneous-folded,
-// adw.Leaflet:hhomogeneous-unfolded, adw.Leaflet:vhomogeneous-unfolded.
-//
-// The function takes the following parameters:
-//
-//    - folded: fold.
-//    - orientation: orientation.
-//
-func (self *Leaflet) Homogeneous(folded bool, orientation gtk.Orientation) bool {
-	var _arg0 *C.AdwLeaflet    // out
-	var _arg1 C.gboolean       // out
-	var _arg2 C.GtkOrientation // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if folded {
-		_arg1 = C.TRUE
-	}
-	_arg2 = C.GtkOrientation(orientation)
-
-	_cret = C.adw_leaflet_get_homogeneous(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(folded)
-	runtime.KeepAlive(orientation)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// InterpolateSize gets whether the leaflet interpolates its size when changing
-// the visible child.
-func (self *Leaflet) InterpolateSize() bool {
+// Homogeneous gets whether self is homogeneous.
+func (self *Leaflet) Homogeneous() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
 
-	_cret = C.adw_leaflet_get_interpolate_size(_arg0)
+	_cret = C.adw_leaflet_get_homogeneous(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -473,7 +446,7 @@ func (self *Leaflet) ModeTransitionDuration() uint {
 	return _guint
 }
 
-// Page returns the adw.LeafletPage object for child.
+// Page returns the leafletpage object for child.
 //
 // The function takes the following parameters:
 //
@@ -498,7 +471,7 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	return _leafletPage
 }
 
-// Pages returns a GListModel that contains the pages of the leaflet.
+// Pages returns a gio.ListModel that contains the pages of the leaflet.
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
@@ -631,10 +604,10 @@ func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage
 
 // Navigate navigates to the previous or next child.
 //
-// The child must have the adw.LeafletPage:navigatable property set to TRUE,
+// The child must have the leafletpage:navigatable property set to TRUE,
 // otherwise it will be skipped.
 //
-// This will be the same child as returned by adw.Leaflet.GetAdjacentChild() or
+// This will be the same child as returned by leaflet.GetAdjacentChild or
 // navigated to via swipe gestures.
 //
 // The function takes the following parameters:
@@ -732,46 +705,46 @@ func (self *Leaflet) ReorderChildAfter(child, sibling gtk.Widgetter) {
 	runtime.KeepAlive(sibling)
 }
 
-// SetCanSwipeBack sets whether a swipe gesture can be used to navigate to the
-// previous child.
+// SetCanNavigateBack sets whether gestures and shortcuts for navigating
+// backward are enabled.
 //
 // The function takes the following parameters:
 //
-//    - canSwipeBack: new value.
+//    - canNavigateBack: new value.
 //
-func (self *Leaflet) SetCanSwipeBack(canSwipeBack bool) {
+func (self *Leaflet) SetCanNavigateBack(canNavigateBack bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if canSwipeBack {
+	if canNavigateBack {
 		_arg1 = C.TRUE
 	}
 
-	C.adw_leaflet_set_can_swipe_back(_arg0, _arg1)
+	C.adw_leaflet_set_can_navigate_back(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(canSwipeBack)
+	runtime.KeepAlive(canNavigateBack)
 }
 
-// SetCanSwipeForward sets whether a swipe gesture can be used to navigate to
-// the next child.
+// SetCanNavigateForward sets whether gestures and shortcuts for navigating
+// forward are enabled.
 //
 // The function takes the following parameters:
 //
-//    - canSwipeForward: new value.
+//    - canNavigateForward: new value.
 //
-func (self *Leaflet) SetCanSwipeForward(canSwipeForward bool) {
+func (self *Leaflet) SetCanNavigateForward(canNavigateForward bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if canSwipeForward {
+	if canNavigateForward {
 		_arg1 = C.TRUE
 	}
 
-	C.adw_leaflet_set_can_swipe_forward(_arg0, _arg1)
+	C.adw_leaflet_set_can_navigate_forward(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(canSwipeForward)
+	runtime.KeepAlive(canNavigateForward)
 }
 
 // SetCanUnfold sets whether self can unfold.
@@ -794,23 +767,23 @@ func (self *Leaflet) SetCanUnfold(canUnfold bool) {
 	runtime.KeepAlive(canUnfold)
 }
 
-// SetChildTransitionDuration sets the child transition animation duration for
+// SetChildTransitionParams sets the child transition spring parameters for
 // self.
 //
 // The function takes the following parameters:
 //
-//    - duration: new duration, in milliseconds.
+//    - params: new parameters.
 //
-func (self *Leaflet) SetChildTransitionDuration(duration uint) {
-	var _arg0 *C.AdwLeaflet // out
-	var _arg1 C.guint       // out
+func (self *Leaflet) SetChildTransitionParams(params *SpringParams) {
+	var _arg0 *C.AdwLeaflet      // out
+	var _arg1 *C.AdwSpringParams // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = C.guint(duration)
+	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(params)))
 
-	C.adw_leaflet_set_child_transition_duration(_arg0, _arg1)
+	C.adw_leaflet_set_child_transition_params(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(duration)
+	runtime.KeepAlive(params)
 }
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
@@ -831,63 +804,27 @@ func (self *Leaflet) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	runtime.KeepAlive(policy)
 }
 
-// SetHomogeneous sets self to be homogeneous or not for the given fold and
-// orientation.
+// SetHomogeneous sets self to be homogeneous or not.
 //
-// If it is homogeneous, self will request the same width or height for all its
-// children depending on the orientation. If it isn't and it is folded, the
-// leaflet may change width or height when a different child becomes visible.
-//
-// See adw.Leaflet:hhomogeneous-folded, adw.Leaflet:vhomogeneous-folded,
-// adw.Leaflet:hhomogeneous-unfolded, adw.Leaflet:vhomogeneous-unfolded.
+// If set to FALSE, different children can have different size along the
+// opposite orientation.
 //
 // The function takes the following parameters:
 //
-//    - folded: fold.
-//    - orientation: orientation.
-//    - homogeneous: TRUE to make self homogeneous.
+//    - homogeneous: whether to make self homogeneous.
 //
-func (self *Leaflet) SetHomogeneous(folded bool, orientation gtk.Orientation, homogeneous bool) {
-	var _arg0 *C.AdwLeaflet    // out
-	var _arg1 C.gboolean       // out
-	var _arg2 C.GtkOrientation // out
-	var _arg3 C.gboolean       // out
-
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if folded {
-		_arg1 = C.TRUE
-	}
-	_arg2 = C.GtkOrientation(orientation)
-	if homogeneous {
-		_arg3 = C.TRUE
-	}
-
-	C.adw_leaflet_set_homogeneous(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(folded)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(homogeneous)
-}
-
-// SetInterpolateSize sets whether the leaflet interpolates its size when
-// changing the visible child.
-//
-// The function takes the following parameters:
-//
-//    - interpolateSize: new value.
-//
-func (self *Leaflet) SetInterpolateSize(interpolateSize bool) {
+func (self *Leaflet) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	if interpolateSize {
+	if homogeneous {
 		_arg1 = C.TRUE
 	}
 
-	C.adw_leaflet_set_interpolate_size(_arg0, _arg1)
+	C.adw_leaflet_set_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(interpolateSize)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetModeTransitionDuration sets the mode transition animation duration for
@@ -967,7 +904,7 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 	runtime.KeepAlive(name)
 }
 
-// LeafletPage: auxiliary class used by adw.Leaflet.
+// LeafletPage: auxiliary class used by leaflet.
 type LeafletPage struct {
 	*externglib.Object
 }
