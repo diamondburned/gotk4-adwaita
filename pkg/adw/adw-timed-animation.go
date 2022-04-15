@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-timed-animation.go.
+var GTypeTimedAnimation = externglib.Type(C.adw_timed_animation_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_timed_animation_get_type()), F: marshalTimedAnimationer},
+		{T: GTypeTimedAnimation, F: marshalTimedAnimation},
 	})
+}
+
+// TimedAnimationOverrider contains methods that are overridable.
+type TimedAnimationOverrider interface {
 }
 
 // TimedAnimation: time-based animation.
@@ -38,12 +43,21 @@ func init() {
 // on the timedanimation:repeat-count value. If timedanimation:alternate is set
 // to TRUE, it will also change the direction every other iteration.
 type TimedAnimation struct {
+	_ [0]func() // equal guard
 	Animation
 }
 
 var (
 	_ Animationer = (*TimedAnimation)(nil)
 )
+
+func classInitTimedAnimationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTimedAnimation(obj *externglib.Object) *TimedAnimation {
 	return &TimedAnimation{
@@ -53,7 +67,7 @@ func wrapTimedAnimation(obj *externglib.Object) *TimedAnimation {
 	}
 }
 
-func marshalTimedAnimationer(p uintptr) (interface{}, error) {
+func marshalTimedAnimation(p uintptr) (interface{}, error) {
 	return wrapTimedAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -68,6 +82,10 @@ func marshalTimedAnimationer(p uintptr) (interface{}, error) {
 //    - duration for the animation.
 //    - target value to animate.
 //
+// The function returns the following values:
+//
+//    - timedAnimation: newly created animation.
+//
 func NewTimedAnimation(widget gtk.Widgetter, from, to float64, duration uint, target AnimationTargetter) *TimedAnimation {
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 C.double              // out
@@ -76,12 +94,12 @@ func NewTimedAnimation(widget gtk.Widgetter, from, to float64, duration uint, ta
 	var _arg5 *C.AdwAnimationTarget // out
 	var _cret *C.AdwAnimation       // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.double(from)
 	_arg3 = C.double(to)
 	_arg4 = C.guint(duration)
-	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(target.Native()))
-	C.g_object_ref(C.gpointer(target.Native()))
+	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(externglib.InternObject(target).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(target).Native()))
 
 	_cret = C.adw_timed_animation_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(widget)
@@ -98,11 +116,16 @@ func NewTimedAnimation(widget gtk.Widgetter, from, to float64, duration uint, ta
 }
 
 // Alternate gets whether self changes direction on every iteration.
+//
+// The function returns the following values:
+//
+//    - ok: whether self alternates.
+//
 func (self *TimedAnimation) Alternate() bool {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_alternate(_arg0)
 	runtime.KeepAlive(self)
@@ -117,11 +140,16 @@ func (self *TimedAnimation) Alternate() bool {
 }
 
 // Duration gets the duration of self in milliseconds.
+//
+// The function returns the following values:
+//
+//    - guint: duration of self.
+//
 func (self *TimedAnimation) Duration() uint {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_duration(_arg0)
 	runtime.KeepAlive(self)
@@ -134,11 +162,16 @@ func (self *TimedAnimation) Duration() uint {
 }
 
 // Easing gets the easing function self uses.
+//
+// The function returns the following values:
+//
+//    - easing function self uses.
+//
 func (self *TimedAnimation) Easing() Easing {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.AdwEasing          // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_easing(_arg0)
 	runtime.KeepAlive(self)
@@ -151,11 +184,16 @@ func (self *TimedAnimation) Easing() Easing {
 }
 
 // RepeatCount gets the number of times self will play.
+//
+// The function returns the following values:
+//
+//    - guint: number of times self will play.
+//
 func (self *TimedAnimation) RepeatCount() uint {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_repeat_count(_arg0)
 	runtime.KeepAlive(self)
@@ -168,11 +206,16 @@ func (self *TimedAnimation) RepeatCount() uint {
 }
 
 // Reverse gets whether self plays backwards.
+//
+// The function returns the following values:
+//
+//    - ok: whether self plays backwards.
+//
 func (self *TimedAnimation) Reverse() bool {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_reverse(_arg0)
 	runtime.KeepAlive(self)
@@ -187,11 +230,16 @@ func (self *TimedAnimation) Reverse() bool {
 }
 
 // ValueFrom gets the value self will animate from.
+//
+// The function returns the following values:
+//
+//    - gdouble: value to animate from.
+//
 func (self *TimedAnimation) ValueFrom() float64 {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.double             // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_value_from(_arg0)
 	runtime.KeepAlive(self)
@@ -204,11 +252,16 @@ func (self *TimedAnimation) ValueFrom() float64 {
 }
 
 // ValueTo gets the value self will animate to.
+//
+// The function returns the following values:
+//
+//    - gdouble: value to animate to.
+//
 func (self *TimedAnimation) ValueTo() float64 {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _cret C.double             // in
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_timed_animation_get_value_to(_arg0)
 	runtime.KeepAlive(self)
@@ -230,7 +283,7 @@ func (self *TimedAnimation) SetAlternate(alternate bool) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if alternate {
 		_arg1 = C.TRUE
 	}
@@ -252,7 +305,7 @@ func (self *TimedAnimation) SetDuration(duration uint) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(duration)
 
 	C.adw_timed_animation_set_duration(_arg0, _arg1)
@@ -272,7 +325,7 @@ func (self *TimedAnimation) SetEasing(easing Easing) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.AdwEasing          // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwEasing(easing)
 
 	C.adw_timed_animation_set_easing(_arg0, _arg1)
@@ -292,7 +345,7 @@ func (self *TimedAnimation) SetRepeatCount(repeatCount uint) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(repeatCount)
 
 	C.adw_timed_animation_set_repeat_count(_arg0, _arg1)
@@ -310,7 +363,7 @@ func (self *TimedAnimation) SetReverse(reverse bool) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if reverse {
 		_arg1 = C.TRUE
 	}
@@ -330,7 +383,7 @@ func (self *TimedAnimation) SetValueFrom(value float64) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.double             // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(value)
 
 	C.adw_timed_animation_set_value_from(_arg0, _arg1)
@@ -348,7 +401,7 @@ func (self *TimedAnimation) SetValueTo(value float64) {
 	var _arg0 *C.AdwTimedAnimation // out
 	var _arg1 C.double             // out
 
-	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTimedAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(value)
 
 	C.adw_timed_animation_set_value_to(_arg0, _arg1)

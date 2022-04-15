@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-combo-row.go.
+var GTypeComboRow = externglib.Type(C.adw_combo_row_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_combo_row_get_type()), F: marshalComboRower},
+		{T: GTypeComboRow, F: marshalComboRow},
 	})
+}
+
+// ComboRowOverrider contains methods that are overridable.
+type ComboRowOverrider interface {
 }
 
 // ComboRow: gtk.ListBoxRow used to choose from a list of items.
@@ -51,6 +56,7 @@ func init() {
 //
 // AdwComboRow uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboRow struct {
+	_ [0]func() // equal guard
 	ActionRow
 }
 
@@ -58,6 +64,14 @@ var (
 	_ gtk.Widgetter       = (*ComboRow)(nil)
 	_ externglib.Objector = (*ComboRow)(nil)
 )
+
+func classInitComboRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapComboRow(obj *externglib.Object) *ComboRow {
 	return &ComboRow{
@@ -68,6 +82,7 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -77,13 +92,14 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
+					Object: obj,
 					Actionable: gtk.Actionable{
 						Widget: gtk.Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: gtk.Accessible{
 								Object: obj,
 							},
@@ -93,21 +109,24 @@ func wrapComboRow(obj *externglib.Object) *ComboRow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
-					Object: obj,
 				},
 			},
 		},
 	}
 }
 
-func marshalComboRower(p uintptr) (interface{}, error) {
+func marshalComboRow(p uintptr) (interface{}, error) {
 	return wrapComboRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewComboRow creates a new AdwComboRow.
+//
+// The function returns the following values:
+//
+//    - comboRow: newly created AdwComboRow.
+//
 func NewComboRow() *ComboRow {
 	var _cret *C.GtkWidget // in
 
@@ -121,11 +140,16 @@ func NewComboRow() *ComboRow {
 }
 
 // Expression gets the expression used to obtain strings from items.
+//
+// The function returns the following values:
+//
+//    - expression (optional) used to obtain strings from items.
+//
 func (self *ComboRow) Expression() gtk.Expressioner {
 	var _arg0 *C.AdwComboRow   // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_expression(_arg0)
 	runtime.KeepAlive(self)
@@ -137,9 +161,13 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Expressioner)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Expressioner)
+				return ok
+			})
+			rv, ok := casted.(gtk.Expressioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Expressioner")
 			}
 			_expression = rv
 		}
@@ -149,11 +177,16 @@ func (self *ComboRow) Expression() gtk.Expressioner {
 }
 
 // Factory gets the factory that's currently used to populate list items.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *ComboRow) Factory() *gtk.ListItemFactory {
 	var _arg0 *C.AdwComboRow        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_factory(_arg0)
 	runtime.KeepAlive(self)
@@ -174,11 +207,16 @@ func (self *ComboRow) Factory() *gtk.ListItemFactory {
 
 // ListFactory gets the factory that's currently used to populate list items in
 // the popup.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 	var _arg0 *C.AdwComboRow        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_list_factory(_arg0)
 	runtime.KeepAlive(self)
@@ -198,11 +236,16 @@ func (self *ComboRow) ListFactory() *gtk.ListItemFactory {
 }
 
 // Model gets the model that provides the displayed items.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model in use.
+//
 func (self *ComboRow) Model() gio.ListModeller {
 	var _arg0 *C.AdwComboRow // out
 	var _cret *C.GListModel  // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -214,9 +257,13 @@ func (self *ComboRow) Model() gio.ListModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.ListModeller)
+				return ok
+			})
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
 			_listModel = rv
 		}
@@ -226,11 +273,17 @@ func (self *ComboRow) Model() gio.ListModeller {
 }
 
 // Selected gets the position of the selected item.
+//
+// The function returns the following values:
+//
+//    - guint: position of the selected item, or gtk.INVALIDLISTPOSITION if no
+//      item is selected.
+//
 func (self *ComboRow) Selected() uint {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_selected(_arg0)
 	runtime.KeepAlive(self)
@@ -243,11 +296,16 @@ func (self *ComboRow) Selected() uint {
 }
 
 // SelectedItem gets the selected item.
+//
+// The function returns the following values:
+//
+//    - object (optional): selected item.
+//
 func (self *ComboRow) SelectedItem() *externglib.Object {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_selected_item(_arg0)
 	runtime.KeepAlive(self)
@@ -260,11 +318,16 @@ func (self *ComboRow) SelectedItem() *externglib.Object {
 }
 
 // UseSubtitle gets whether to use the current value as the subtitle.
+//
+// The function returns the following values:
+//
+//    - ok: whether to use the current value as the subtitle.
+//
 func (self *ComboRow) UseSubtitle() bool {
 	var _arg0 *C.AdwComboRow // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_combo_row_get_use_subtitle(_arg0)
 	runtime.KeepAlive(self)
@@ -284,15 +347,15 @@ func (self *ComboRow) UseSubtitle() bool {
 //
 // The function takes the following parameters:
 //
-//    - expression: expression.
+//    - expression (optional): expression.
 //
 func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 	var _arg0 *C.AdwComboRow   // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 	}
 
 	C.adw_combo_row_set_expression(_arg0, _arg1)
@@ -304,15 +367,15 @@ func (self *ComboRow) SetExpression(expression gtk.Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use.
+//    - factory (optional) to use.
 //
 func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	}
 
 	C.adw_combo_row_set_factory(_arg0, _arg1)
@@ -325,15 +388,15 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use.
+//    - factory (optional) to use.
 //
 func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 	var _arg0 *C.AdwComboRow        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	}
 
 	C.adw_combo_row_set_list_factory(_arg0, _arg1)
@@ -345,15 +408,15 @@ func (self *ComboRow) SetListFactory(factory *gtk.ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model to use.
+//    - model (optional) to use.
 //
 func (self *ComboRow) SetModel(model gio.ListModeller) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 *C.GListModel  // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.adw_combo_row_set_model(_arg0, _arg1)
@@ -371,7 +434,7 @@ func (self *ComboRow) SetSelected(position uint) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	C.adw_combo_row_set_selected(_arg0, _arg1)
@@ -389,7 +452,7 @@ func (self *ComboRow) SetUseSubtitle(useSubtitle bool) {
 	var _arg0 *C.AdwComboRow // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useSubtitle {
 		_arg1 = C.TRUE
 	}

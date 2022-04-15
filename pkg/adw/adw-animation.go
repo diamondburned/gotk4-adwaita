@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_Animation_ConnectDone(gpointer, guintptr);
 import "C"
+
+// glib.Type values for adw-animation.go.
+var (
+	GTypeAnimationState = externglib.Type(C.adw_animation_state_get_type())
+	GTypeAnimation      = externglib.Type(C.adw_animation_get_type())
+)
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_animation_state_get_type()), F: marshalAnimationState},
-		{T: externglib.Type(C.adw_animation_get_type()), F: marshalAnimationer},
+		{T: GTypeAnimationState, F: marshalAnimationState},
+		{T: GTypeAnimation, F: marshalAnimation},
 	})
 }
 
@@ -65,6 +70,10 @@ func (a AnimationState) String() string {
 	default:
 		return fmt.Sprintf("AnimationState(%d)", a)
 	}
+}
+
+// AnimationOverrider contains methods that are overridable.
+type AnimationOverrider interface {
 }
 
 // Animation: base class for animations.
@@ -111,6 +120,7 @@ func (a AnimationState) String() string {
 // finished, the previous animation should be stopped first, or the existing
 // AdwAnimation object can be reused.
 type Animation struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -119,7 +129,7 @@ var (
 )
 
 // Animationer describes types inherited from class Animation.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Animationer interface {
@@ -129,25 +139,69 @@ type Animationer interface {
 
 var _ Animationer = (*Animation)(nil)
 
+func classInitAnimationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapAnimation(obj *externglib.Object) *Animation {
 	return &Animation{
 		Object: obj,
 	}
 }
 
-func marshalAnimationer(p uintptr) (interface{}, error) {
+func marshalAnimation(p uintptr) (interface{}, error) {
 	return wrapAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (self *Animation) baseAnimation() *Animation {
+	return self
+}
+
+// BaseAnimation returns the underlying base object.
+func BaseAnimation(obj Animationer) *Animation {
+	return obj.baseAnimation()
+}
+
+//export _gotk4_adw1_Animation_ConnectDone
+func _gotk4_adw1_Animation_ConnectDone(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectDone: this signal is emitted when the animation has been completed,
+// either on its own or via calling animation.Skip.
+func (self *Animation) ConnectDone(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "done", false, unsafe.Pointer(C._gotk4_adw1_Animation_ConnectDone), f)
 }
 
 // State gets the current value of self.
 //
 // The state indicates whether self is currently playing, paused, finished or
 // hasn't been started yet.
+//
+// The function returns the following values:
+//
+//    - animationState: animation value.
+//
 func (self *Animation) State() AnimationState {
 	var _arg0 *C.AdwAnimation     // out
 	var _cret C.AdwAnimationState // in
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_animation_get_state(_arg0)
 	runtime.KeepAlive(self)
@@ -160,11 +214,16 @@ func (self *Animation) State() AnimationState {
 }
 
 // Target gets the target self animates.
+//
+// The function returns the following values:
+//
+//    - animationTarget: animation target.
+//
 func (self *Animation) Target() AnimationTargetter {
 	var _arg0 *C.AdwAnimation       // out
 	var _cret *C.AdwAnimationTarget // in
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_animation_get_target(_arg0)
 	runtime.KeepAlive(self)
@@ -178,9 +237,13 @@ func (self *Animation) Target() AnimationTargetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(AnimationTargetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AnimationTargetter)
+			return ok
+		})
+		rv, ok := casted.(AnimationTargetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not adw.AnimationTargetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching adw.AnimationTargetter")
 		}
 		_animationTarget = rv
 	}
@@ -189,11 +252,16 @@ func (self *Animation) Target() AnimationTargetter {
 }
 
 // Value gets the current value of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: current value.
+//
 func (self *Animation) Value() float64 {
 	var _arg0 *C.AdwAnimation // out
 	var _cret C.double        // in
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_animation_get_value(_arg0)
 	runtime.KeepAlive(self)
@@ -206,11 +274,16 @@ func (self *Animation) Value() float64 {
 }
 
 // Widget gets the widget self was created for.
+//
+// The function returns the following values:
+//
+//    - widget: animation widget.
+//
 func (self *Animation) Widget() gtk.Widgetter {
 	var _arg0 *C.AdwAnimation // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_animation_get_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -224,9 +297,13 @@ func (self *Animation) Widget() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -242,7 +319,7 @@ func (self *Animation) Widget() gtk.Widgetter {
 func (self *Animation) Pause() {
 	var _arg0 *C.AdwAnimation // out
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_animation_pause(_arg0)
 	runtime.KeepAlive(self)
@@ -266,7 +343,7 @@ func (self *Animation) Pause() {
 func (self *Animation) Play() {
 	var _arg0 *C.AdwAnimation // out
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_animation_play(_arg0)
 	runtime.KeepAlive(self)
@@ -278,7 +355,7 @@ func (self *Animation) Play() {
 func (self *Animation) Reset() {
 	var _arg0 *C.AdwAnimation // out
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_animation_reset(_arg0)
 	runtime.KeepAlive(self)
@@ -293,7 +370,7 @@ func (self *Animation) Reset() {
 func (self *Animation) Resume() {
 	var _arg0 *C.AdwAnimation // out
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_animation_resume(_arg0)
 	runtime.KeepAlive(self)
@@ -308,23 +385,8 @@ func (self *Animation) Resume() {
 func (self *Animation) Skip() {
 	var _arg0 *C.AdwAnimation // out
 
-	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_animation_skip(_arg0)
 	runtime.KeepAlive(self)
-}
-
-func (self *Animation) baseAnimation() *Animation {
-	return self
-}
-
-// BaseAnimation returns the underlying base object.
-func BaseAnimation(obj Animationer) *Animation {
-	return obj.baseAnimation()
-}
-
-// ConnectDone: this signal is emitted when the animation has been completed,
-// either on its own or via calling animation.Skip.
-func (self *Animation) ConnectDone(f func()) externglib.SignalHandle {
-	return self.Connect("done", f)
 }

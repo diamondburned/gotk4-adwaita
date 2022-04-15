@@ -11,17 +11,21 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-view-switcher.go.
+var (
+	GTypeViewSwitcherPolicy = externglib.Type(C.adw_view_switcher_policy_get_type())
+	GTypeViewSwitcher       = externglib.Type(C.adw_view_switcher_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_view_switcher_policy_get_type()), F: marshalViewSwitcherPolicy},
-		{T: externglib.Type(C.adw_view_switcher_get_type()), F: marshalViewSwitcherer},
+		{T: GTypeViewSwitcherPolicy, F: marshalViewSwitcherPolicy},
+		{T: GTypeViewSwitcher, F: marshalViewSwitcher},
 	})
 }
 
@@ -51,6 +55,10 @@ func (v ViewSwitcherPolicy) String() string {
 	}
 }
 
+// ViewSwitcherOverrider contains methods that are overridable.
+type ViewSwitcherOverrider interface {
+}
+
 // ViewSwitcher: adaptive view switcher.
 //
 // <picture> <source srcset="view-switcher-dark.png"
@@ -78,6 +86,7 @@ func (v ViewSwitcherPolicy) String() string {
 // AdwViewSwitcher uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
 type ViewSwitcher struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -85,12 +94,21 @@ var (
 	_ gtk.Widgetter = (*ViewSwitcher)(nil)
 )
 
+func classInitViewSwitcherer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 	return &ViewSwitcher{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -100,16 +118,20 @@ func wrapViewSwitcher(obj *externglib.Object) *ViewSwitcher {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalViewSwitcherer(p uintptr) (interface{}, error) {
+func marshalViewSwitcher(p uintptr) (interface{}, error) {
 	return wrapViewSwitcher(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewSwitcher creates a new AdwViewSwitcher.
+//
+// The function returns the following values:
+//
+//    - viewSwitcher: newly created AdwViewSwitcher.
+//
 func NewViewSwitcher() *ViewSwitcher {
 	var _cret *C.GtkWidget // in
 
@@ -123,11 +145,16 @@ func NewViewSwitcher() *ViewSwitcher {
 }
 
 // Policy gets the policy of self.
+//
+// The function returns the following values:
+//
+//    - viewSwitcherPolicy: policy of self.
+//
 func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	var _arg0 *C.AdwViewSwitcher      // out
 	var _cret C.AdwViewSwitcherPolicy // in
 
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_switcher_get_policy(_arg0)
 	runtime.KeepAlive(self)
@@ -140,11 +167,16 @@ func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 }
 
 // Stack gets the stack controlled by self.
+//
+// The function returns the following values:
+//
+//    - viewStack (optional): stack.
+//
 func (self *ViewSwitcher) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcher // out
 	var _cret *C.AdwViewStack    // in
 
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_switcher_get_stack(_arg0)
 	runtime.KeepAlive(self)
@@ -168,7 +200,7 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 	var _arg0 *C.AdwViewSwitcher      // out
 	var _arg1 C.AdwViewSwitcherPolicy // out
 
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwViewSwitcherPolicy(policy)
 
 	C.adw_view_switcher_set_policy(_arg0, _arg1)
@@ -180,15 +212,15 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 //
 // The function takes the following parameters:
 //
-//    - stack: stack.
+//    - stack (optional): stack.
 //
 func (self *ViewSwitcher) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcher // out
 	var _arg1 *C.AdwViewStack    // out
 
-	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewSwitcher)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if stack != nil {
-		_arg1 = (*C.AdwViewStack)(unsafe.Pointer(stack.Native()))
+		_arg1 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(stack).Native()))
 	}
 
 	C.adw_view_switcher_set_stack(_arg0, _arg1)

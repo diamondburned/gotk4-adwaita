@@ -6,11 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -24,11 +23,15 @@ import "C"
 //
 //    - widget: GtkWidget.
 //
+// The function returns the following values:
+//
+//    - ok: whether animations are enabled for widget.
+//
 func GetEnableAnimations(widget gtk.Widgetter) bool {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.adw_get_enable_animations(_arg1)
 	runtime.KeepAlive(widget)
@@ -49,6 +52,10 @@ func GetEnableAnimations(widget gtk.Widgetter) bool {
 //    - a: start.
 //    - b: end.
 //    - t: interpolation rate.
+//
+// The function returns the following values:
+//
+//    - gdouble: computed value.
 //
 func Lerp(a, b, t float64) float64 {
 	var _arg1 C.double // out

@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-carousel-indicator-lines.go.
+var GTypeCarouselIndicatorLines = externglib.Type(C.adw_carousel_indicator_lines_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_carousel_indicator_lines_get_type()), F: marshalCarouselIndicatorLinesser},
+		{T: GTypeCarouselIndicatorLines, F: marshalCarouselIndicatorLines},
 	})
+}
+
+// CarouselIndicatorLinesOverrider contains methods that are overridable.
+type CarouselIndicatorLinesOverrider interface {
 }
 
 // CarouselIndicatorLines lines indicator for carousel.
@@ -41,10 +46,11 @@ func init() {
 // AdwCarouselIndicatorLines has a single CSS node with name
 // carouselindicatorlines.
 type CarouselIndicatorLines struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -52,12 +58,21 @@ var (
 	_ externglib.Objector = (*CarouselIndicatorLines)(nil)
 )
 
+func classInitCarouselIndicatorLinesser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapCarouselIndicatorLines(obj *externglib.Object) *CarouselIndicatorLines {
 	return &CarouselIndicatorLines{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -67,20 +82,24 @@ func wrapCarouselIndicatorLines(obj *externglib.Object) *CarouselIndicatorLines 
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalCarouselIndicatorLinesser(p uintptr) (interface{}, error) {
+func marshalCarouselIndicatorLines(p uintptr) (interface{}, error) {
 	return wrapCarouselIndicatorLines(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCarouselIndicatorLines creates a new AdwCarouselIndicatorLines.
+//
+// The function returns the following values:
+//
+//    - carouselIndicatorLines: newly created AdwCarouselIndicatorLines.
+//
 func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 	var _cret *C.GtkWidget // in
 
@@ -94,11 +113,16 @@ func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 }
 
 // Carousel gets the displayed carousel.
+//
+// The function returns the following values:
+//
+//    - carousel (optional): displayed carousel.
+//
 func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
 	var _cret *C.AdwCarousel               // in
 
-	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_indicator_lines_get_carousel(_arg0)
 	runtime.KeepAlive(self)
@@ -116,15 +140,15 @@ func (self *CarouselIndicatorLines) Carousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - carousel: carousel.
+//    - carousel (optional): carousel.
 //
 func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
 	var _arg1 *C.AdwCarousel               // out
 
-	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if carousel != nil {
-		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(carousel.Native()))
+		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(carousel).Native()))
 	}
 
 	C.adw_carousel_indicator_lines_set_carousel(_arg0, _arg1)

@@ -11,17 +11,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_Carousel_ConnectPageChanged(gpointer, guint, guintptr);
 import "C"
+
+// glib.Type values for adw-carousel.go.
+var GTypeCarousel = externglib.Type(C.adw_carousel_get_type())
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_carousel_get_type()), F: marshalCarouseller},
+		{T: GTypeCarousel, F: marshalCarousel},
 	})
+}
+
+// CarouselOverrider contains methods that are overridable.
+type CarouselOverrider interface {
 }
 
 // Carousel: paginated scrolling widget.
@@ -40,11 +46,12 @@ func init() {
 //
 // AdwCarousel has a single CSS node with name carousel.
 type Carousel struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
+	*externglib.Object
 	Swipeable
 	gtk.Orientable
-	*externglib.Object
 }
 
 var (
@@ -52,12 +59,21 @@ var (
 	_ externglib.Objector = (*Carousel)(nil)
 )
 
+func classInitCarouseller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapCarousel(obj *externglib.Object) *Carousel {
 	return &Carousel{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -67,13 +83,14 @@ func wrapCarousel(obj *externglib.Object) *Carousel {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -83,21 +100,52 @@ func wrapCarousel(obj *externglib.Object) *Carousel {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalCarouseller(p uintptr) (interface{}, error) {
+func marshalCarousel(p uintptr) (interface{}, error) {
 	return wrapCarousel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_adw1_Carousel_ConnectPageChanged
+func _gotk4_adw1_Carousel_ConnectPageChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
+	var f func(index uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(index uint))
+	}
+
+	var _index uint // out
+
+	_index = uint(arg1)
+
+	f(_index)
+}
+
+// ConnectPageChanged: this signal is emitted after a page has been changed.
+//
+// It can be used to implement "infinite scrolling" by amending the pages after
+// every scroll.
+func (self *Carousel) ConnectPageChanged(f func(index uint)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "page-changed", false, unsafe.Pointer(C._gotk4_adw1_Carousel_ConnectPageChanged), f)
+}
+
 // NewCarousel creates a new AdwCarousel.
+//
+// The function returns the following values:
+//
+//    - carousel: newly created AdwCarousel.
+//
 func NewCarousel() *Carousel {
 	var _cret *C.GtkWidget // in
 
@@ -120,8 +168,8 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_carousel_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -130,11 +178,16 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 
 // AllowLongSwipes gets whether to allow swiping for more than one page at a
 // time.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if long swipes are allowed.
+//
 func (self *Carousel) AllowLongSwipes() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_allow_long_swipes(_arg0)
 	runtime.KeepAlive(self)
@@ -149,11 +202,16 @@ func (self *Carousel) AllowLongSwipes() bool {
 }
 
 // AllowMouseDrag sets whether self can be dragged with mouse pointer.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be dragged with mouse pointer.
+//
 func (self *Carousel) AllowMouseDrag() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_allow_mouse_drag(_arg0)
 	runtime.KeepAlive(self)
@@ -168,11 +226,16 @@ func (self *Carousel) AllowMouseDrag() bool {
 }
 
 // AllowScrollWheel gets whether self will respond to scroll wheel events.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self will respond to scroll wheel events.
+//
 func (self *Carousel) AllowScrollWheel() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_allow_scroll_wheel(_arg0)
 	runtime.KeepAlive(self)
@@ -187,11 +250,16 @@ func (self *Carousel) AllowScrollWheel() bool {
 }
 
 // Interactive gets whether self can be navigated.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be navigated.
+//
 func (self *Carousel) Interactive() bool {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_interactive(_arg0)
 	runtime.KeepAlive(self)
@@ -206,11 +274,16 @@ func (self *Carousel) Interactive() bool {
 }
 
 // NPages gets the number of pages in self.
+//
+// The function returns the following values:
+//
+//    - guint: number of pages in self.
+//
 func (self *Carousel) NPages() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_n_pages(_arg0)
 	runtime.KeepAlive(self)
@@ -228,12 +301,16 @@ func (self *Carousel) NPages() uint {
 //
 //    - n: index of the page.
 //
+// The function returns the following values:
+//
+//    - widget: page.
+//
 func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(n)
 
 	_cret = C.adw_carousel_get_nth_page(_arg0, _arg1)
@@ -249,9 +326,13 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -262,11 +343,16 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 // Position gets current scroll position in self.
 //
 // It's unitless, 1 matches 1 page.
+//
+// The function returns the following values:
+//
+//    - gdouble: scroll position.
+//
 func (self *Carousel) Position() float64 {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_position(_arg0)
 	runtime.KeepAlive(self)
@@ -280,11 +366,16 @@ func (self *Carousel) Position() float64 {
 
 // RevealDuration gets duration of the animation used when adding or removing
 // pages.
+//
+// The function returns the following values:
+//
+//    - guint: duration.
+//
 func (self *Carousel) RevealDuration() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_reveal_duration(_arg0)
 	runtime.KeepAlive(self)
@@ -297,11 +388,16 @@ func (self *Carousel) RevealDuration() uint {
 }
 
 // ScrollParams gets the scroll animation spring parameters for self.
+//
+// The function returns the following values:
+//
+//    - springParams: animation parameters.
+//
 func (self *Carousel) ScrollParams() *SpringParams {
 	var _arg0 *C.AdwCarousel     // out
 	var _cret *C.AdwSpringParams // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_scroll_params(_arg0)
 	runtime.KeepAlive(self)
@@ -320,11 +416,16 @@ func (self *Carousel) ScrollParams() *SpringParams {
 }
 
 // Spacing gets spacing between pages in pixels.
+//
+// The function returns the following values:
+//
+//    - guint: spacing between pages.
+//
 func (self *Carousel) Spacing() uint {
 	var _arg0 *C.AdwCarousel // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_get_spacing(_arg0)
 	runtime.KeepAlive(self)
@@ -351,8 +452,8 @@ func (self *Carousel) Insert(child gtk.Widgetter, position int) {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	_arg2 = C.int(position)
 
 	C.adw_carousel_insert(_arg0, _arg1, _arg2)
@@ -371,8 +472,8 @@ func (self *Carousel) Prepend(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_carousel_prepend(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -389,8 +490,8 @@ func (self *Carousel) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_carousel_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -412,8 +513,8 @@ func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	_arg2 = C.int(position)
 
 	C.adw_carousel_reorder(_arg0, _arg1, _arg2)
@@ -436,8 +537,8 @@ func (self *Carousel) ScrollTo(widget gtk.Widgetter, animate bool) {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gboolean     // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if animate {
 		_arg2 = C.TRUE
 	}
@@ -459,7 +560,7 @@ func (self *Carousel) SetAllowLongSwipes(allowLongSwipes bool) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if allowLongSwipes {
 		_arg1 = C.TRUE
 	}
@@ -479,7 +580,7 @@ func (self *Carousel) SetAllowMouseDrag(allowMouseDrag bool) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if allowMouseDrag {
 		_arg1 = C.TRUE
 	}
@@ -499,7 +600,7 @@ func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if allowScrollWheel {
 		_arg1 = C.TRUE
 	}
@@ -519,7 +620,7 @@ func (self *Carousel) SetInteractive(interactive bool) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if interactive {
 		_arg1 = C.TRUE
 	}
@@ -540,7 +641,7 @@ func (self *Carousel) SetRevealDuration(revealDuration uint) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(revealDuration)
 
 	C.adw_carousel_set_reveal_duration(_arg0, _arg1)
@@ -558,7 +659,7 @@ func (self *Carousel) SetScrollParams(params *SpringParams) {
 	var _arg0 *C.AdwCarousel     // out
 	var _arg1 *C.AdwSpringParams // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(params)))
 
 	C.adw_carousel_set_scroll_params(_arg0, _arg1)
@@ -576,18 +677,10 @@ func (self *Carousel) SetSpacing(spacing uint) {
 	var _arg0 *C.AdwCarousel // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.adw_carousel_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(spacing)
-}
-
-// ConnectPageChanged: this signal is emitted after a page has been changed.
-//
-// It can be used to implement "infinite scrolling" by amending the pages after
-// every scroll.
-func (self *Carousel) ConnectPageChanged(f func(index uint)) externglib.SignalHandle {
-	return self.Connect("page-changed", f)
 }

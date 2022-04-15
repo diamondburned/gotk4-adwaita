@@ -10,19 +10,23 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_AnimationTargetFunc(double, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_adw1_AnimationTargetFunc(double, gpointer);
 import "C"
+
+// glib.Type values for adw-animation-target.go.
+var (
+	GTypeAnimationTarget         = externglib.Type(C.adw_animation_target_get_type())
+	GTypeCallbackAnimationTarget = externglib.Type(C.adw_callback_animation_target_get_type())
+)
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_animation_target_get_type()), F: marshalAnimationTargetter},
-		{T: externglib.Type(C.adw_callback_animation_target_get_type()), F: marshalCallbackAnimationTargetter},
+		{T: GTypeAnimationTarget, F: marshalAnimationTarget},
+		{T: GTypeCallbackAnimationTarget, F: marshalCallbackAnimationTarget},
 	})
 }
 
@@ -30,24 +34,32 @@ func init() {
 type AnimationTargetFunc func(value float64)
 
 //export _gotk4_adw1_AnimationTargetFunc
-func _gotk4_adw1_AnimationTargetFunc(arg0 C.double, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_adw1_AnimationTargetFunc(arg1 C.double, arg2 C.gpointer) {
+	var fn AnimationTargetFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AnimationTargetFunc)
 	}
 
-	var value float64 // out
+	var _value float64 // out
 
-	value = float64(arg0)
+	_value = float64(arg1)
 
-	fn := v.(AnimationTargetFunc)
-	fn(value)
+	fn(_value)
+}
+
+// AnimationTargetOverrider contains methods that are overridable.
+type AnimationTargetOverrider interface {
 }
 
 // AnimationTarget represents a value animation can animate.
 //
 // Currently the only implementation is callbackanimationtarget.
 type AnimationTarget struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -56,7 +68,7 @@ var (
 )
 
 // AnimationTargetter describes types inherited from class AnimationTarget.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type AnimationTargetter interface {
@@ -66,13 +78,21 @@ type AnimationTargetter interface {
 
 var _ AnimationTargetter = (*AnimationTarget)(nil)
 
+func classInitAnimationTargetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapAnimationTarget(obj *externglib.Object) *AnimationTarget {
 	return &AnimationTarget{
 		Object: obj,
 	}
 }
 
-func marshalAnimationTargetter(p uintptr) (interface{}, error) {
+func marshalAnimationTarget(p uintptr) (interface{}, error) {
 	return wrapAnimationTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -85,15 +105,28 @@ func BaseAnimationTarget(obj AnimationTargetter) *AnimationTarget {
 	return obj.baseAnimationTarget()
 }
 
+// CallbackAnimationTargetOverrider contains methods that are overridable.
+type CallbackAnimationTargetOverrider interface {
+}
+
 // CallbackAnimationTarget: animationtarget that calls a given callback during
 // the animation.
 type CallbackAnimationTarget struct {
+	_ [0]func() // equal guard
 	AnimationTarget
 }
 
 var (
 	_ AnimationTargetter = (*CallbackAnimationTarget)(nil)
 )
+
+func classInitCallbackAnimationTargetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCallbackAnimationTarget(obj *externglib.Object) *CallbackAnimationTarget {
 	return &CallbackAnimationTarget{
@@ -103,7 +136,7 @@ func wrapCallbackAnimationTarget(obj *externglib.Object) *CallbackAnimationTarge
 	}
 }
 
-func marshalCallbackAnimationTargetter(p uintptr) (interface{}, error) {
+func marshalCallbackAnimationTarget(p uintptr) (interface{}, error) {
 	return wrapCallbackAnimationTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -112,7 +145,11 @@ func marshalCallbackAnimationTargetter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - callback to call.
+//    - callback (optional) to call.
+//
+// The function returns the following values:
+//
+//    - callbackAnimationTarget: newly created callback target.
 //
 func NewCallbackAnimationTarget(callback AnimationTargetFunc) *CallbackAnimationTarget {
 	var _arg1 C.AdwAnimationTargetFunc // out

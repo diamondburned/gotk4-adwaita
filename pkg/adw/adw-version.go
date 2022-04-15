@@ -2,8 +2,6 @@
 
 package adw
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -32,6 +30,11 @@ const VERSION_S = "1.0.1"
 // code is running against. Contrast with the major_version constant, which
 // represents the major version of the libadwaita headers you have included when
 // compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: major version number of the Adwaita library.
+//
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
@@ -52,6 +55,11 @@ func GetMajorVersion() uint {
 // code is running against. Contrast with the major_version constant, which
 // represents the micro version of the libadwaita headers you have included when
 // compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: micro version number of the Adwaita library.
+//
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
@@ -72,6 +80,11 @@ func GetMicroVersion() uint {
 // code is running against. Contrast with the major_version constant, which
 // represents the minor version of the libadwaita headers you have included when
 // compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: minor version number of the Adwaita library.
+//
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 

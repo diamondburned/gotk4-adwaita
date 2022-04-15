@@ -12,18 +12,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-leaflet.go.
+var (
+	GTypeLeafletTransitionType = externglib.Type(C.adw_leaflet_transition_type_get_type())
+	GTypeLeaflet               = externglib.Type(C.adw_leaflet_get_type())
+	GTypeLeafletPage           = externglib.Type(C.adw_leaflet_page_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_leaflet_transition_type_get_type()), F: marshalLeafletTransitionType},
-		{T: externglib.Type(C.adw_leaflet_get_type()), F: marshalLeafletter},
-		{T: externglib.Type(C.adw_leaflet_page_get_type()), F: marshalLeafletPager},
+		{T: GTypeLeafletTransitionType, F: marshalLeafletTransitionType},
+		{T: GTypeLeaflet, F: marshalLeaflet},
+		{T: GTypeLeafletPage, F: marshalLeafletPage},
 	})
 }
 
@@ -64,6 +69,10 @@ func (l LeafletTransitionType) String() string {
 	}
 }
 
+// LeafletOverrider contains methods that are overridable.
+type LeafletOverrider interface {
+}
+
 // Leaflet: adaptive container acting like a box or a stack.
 //
 // <picture> <source srcset="leaflet-wide-dark.png"
@@ -93,11 +102,12 @@ func (l LeafletTransitionType) String() string {
 // style classes .folded when it is folded, .unfolded when it's not, or none if
 // it hasn't computed its fold yet.
 type Leaflet struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
+	*externglib.Object
 	Swipeable
 	gtk.Orientable
-	*externglib.Object
 }
 
 var (
@@ -105,12 +115,21 @@ var (
 	_ externglib.Objector = (*Leaflet)(nil)
 )
 
+func classInitLeafletter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapLeaflet(obj *externglib.Object) *Leaflet {
 	return &Leaflet{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -120,13 +139,14 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Swipeable: Swipeable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -136,21 +156,24 @@ func wrapLeaflet(obj *externglib.Object) *Leaflet {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalLeafletter(p uintptr) (interface{}, error) {
+func marshalLeaflet(p uintptr) (interface{}, error) {
 	return wrapLeaflet(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLeaflet creates a new AdwLeaflet.
+//
+// The function returns the following values:
+//
+//    - leaflet: new created AdwLeaflet.
+//
 func NewLeaflet() *Leaflet {
 	var _cret *C.GtkWidget // in
 
@@ -169,13 +192,17 @@ func NewLeaflet() *Leaflet {
 //
 //    - child: widget to add.
 //
+// The function returns the following values:
+//
+//    - leafletPage: leafletpage for child.
+//
 func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
 	var _arg1 *C.GtkWidget      // out
 	var _cret *C.AdwLeafletPage // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.adw_leaflet_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -201,12 +228,16 @@ func (self *Leaflet) Append(child gtk.Widgetter) *LeafletPage {
 //
 //    - direction: direction.
 //
+// The function returns the following values:
+//
+//    - widget (optional) previous or next child.
+//
 func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet            // out
 	var _arg1 C.AdwNavigationDirection // out
 	var _cret *C.GtkWidget             // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwNavigationDirection(direction)
 
 	_cret = C.adw_leaflet_get_adjacent_child(_arg0, _arg1)
@@ -220,9 +251,13 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -233,11 +268,16 @@ func (self *Leaflet) AdjacentChild(direction NavigationDirection) gtk.Widgetter 
 
 // CanNavigateBack gets whether gestures and shortcuts for navigating backward
 // are enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether gestures and shortcuts are enabled.
+//
 func (self *Leaflet) CanNavigateBack() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_can_navigate_back(_arg0)
 	runtime.KeepAlive(self)
@@ -253,11 +293,16 @@ func (self *Leaflet) CanNavigateBack() bool {
 
 // CanNavigateForward gets whether gestures and shortcuts for navigating forward
 // are enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether gestures and shortcuts are enabled.
+//
 func (self *Leaflet) CanNavigateForward() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_can_navigate_forward(_arg0)
 	runtime.KeepAlive(self)
@@ -272,11 +317,16 @@ func (self *Leaflet) CanNavigateForward() bool {
 }
 
 // CanUnfold gets whether self can unfold.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can unfold.
+//
 func (self *Leaflet) CanUnfold() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_can_unfold(_arg0)
 	runtime.KeepAlive(self)
@@ -300,12 +350,16 @@ func (self *Leaflet) CanUnfold() bool {
 //
 //    - name of the child to find.
 //
+// The function returns the following values:
+//
+//    - widget (optional): requested child of self.
+//
 func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.char       // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -320,9 +374,13 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -332,11 +390,16 @@ func (self *Leaflet) ChildByName(name string) gtk.Widgetter {
 }
 
 // ChildTransitionParams gets the child transition spring parameters for self.
+//
+// The function returns the following values:
+//
+//    - springParams: child transition parameters.
+//
 func (self *Leaflet) ChildTransitionParams() *SpringParams {
 	var _arg0 *C.AdwLeaflet      // out
 	var _cret *C.AdwSpringParams // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_child_transition_params(_arg0)
 	runtime.KeepAlive(self)
@@ -356,11 +419,16 @@ func (self *Leaflet) ChildTransitionParams() *SpringParams {
 
 // ChildTransitionRunning gets whether a child transition is currently running
 // for self.
+//
+// The function returns the following values:
+//
+//    - ok: whether a transition is currently running.
+//
 func (self *Leaflet) ChildTransitionRunning() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_child_transition_running(_arg0)
 	runtime.KeepAlive(self)
@@ -375,11 +443,14 @@ func (self *Leaflet) ChildTransitionRunning() bool {
 }
 
 // FoldThresholdPolicy gets the fold threshold policy for self.
+//
+// The function returns the following values:
+//
 func (self *Leaflet) FoldThresholdPolicy() FoldThresholdPolicy {
 	var _arg0 *C.AdwLeaflet            // out
 	var _cret C.AdwFoldThresholdPolicy // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_fold_threshold_policy(_arg0)
 	runtime.KeepAlive(self)
@@ -392,11 +463,16 @@ func (self *Leaflet) FoldThresholdPolicy() FoldThresholdPolicy {
 }
 
 // Folded gets whether self is folded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is folded.
+//
 func (self *Leaflet) Folded() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_folded(_arg0)
 	runtime.KeepAlive(self)
@@ -411,11 +487,14 @@ func (self *Leaflet) Folded() bool {
 }
 
 // Homogeneous gets whether self is homogeneous.
+//
+// The function returns the following values:
+//
 func (self *Leaflet) Homogeneous() bool {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_homogeneous(_arg0)
 	runtime.KeepAlive(self)
@@ -430,11 +509,16 @@ func (self *Leaflet) Homogeneous() bool {
 }
 
 // ModeTransitionDuration gets the mode transition animation duration for self.
+//
+// The function returns the following values:
+//
+//    - guint: mode transition duration, in milliseconds.
+//
 func (self *Leaflet) ModeTransitionDuration() uint {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret C.guint       // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_mode_transition_duration(_arg0)
 	runtime.KeepAlive(self)
@@ -452,13 +536,17 @@ func (self *Leaflet) ModeTransitionDuration() uint {
 //
 //    - child of self.
 //
+// The function returns the following values:
+//
+//    - leafletPage: page object for child.
+//
 func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
 	var _arg1 *C.GtkWidget      // out
 	var _cret *C.AdwLeafletPage // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.adw_leaflet_get_page(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -475,11 +563,16 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the leaflet's children.
+//
 func (self *Leaflet) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwLeaflet        // out
 	var _cret *C.GtkSelectionModel // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_pages(_arg0)
 	runtime.KeepAlive(self)
@@ -493,9 +586,13 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -505,11 +602,16 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 
 // TransitionType gets the type of animation used for transitions between modes
 // and children.
+//
+// The function returns the following values:
+//
+//    - leafletTransitionType: current transition type of self.
+//
 func (self *Leaflet) TransitionType() LeafletTransitionType {
 	var _arg0 *C.AdwLeaflet              // out
 	var _cret C.AdwLeafletTransitionType // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_transition_type(_arg0)
 	runtime.KeepAlive(self)
@@ -522,11 +624,16 @@ func (self *Leaflet) TransitionType() LeafletTransitionType {
 }
 
 // VisibleChild gets the widget currently visible when the leaflet is folded.
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child.
+//
 func (self *Leaflet) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_visible_child(_arg0)
 	runtime.KeepAlive(self)
@@ -538,9 +645,13 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -550,11 +661,16 @@ func (self *Leaflet) VisibleChild() gtk.Widgetter {
 }
 
 // VisibleChildName gets the name of the currently visible child widget.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible child.
+//
 func (self *Leaflet) VisibleChildName() string {
 	var _arg0 *C.AdwLeaflet // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_get_visible_child_name(_arg0)
 	runtime.KeepAlive(self)
@@ -576,7 +692,11 @@ func (self *Leaflet) VisibleChildName() string {
 // The function takes the following parameters:
 //
 //    - child: widget to insert.
-//    - sibling after which to insert child.
+//    - sibling (optional) after which to insert child.
+//
+// The function returns the following values:
+//
+//    - leafletPage: leafletpage for child.
 //
 func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
@@ -584,10 +704,10 @@ func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage
 	var _arg2 *C.GtkWidget      // out
 	var _cret *C.AdwLeafletPage // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if sibling != nil {
-		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(sibling).Native()))
 	}
 
 	_cret = C.adw_leaflet_insert_child_after(_arg0, _arg1, _arg2)
@@ -614,12 +734,16 @@ func (self *Leaflet) InsertChildAfter(child, sibling gtk.Widgetter) *LeafletPage
 //
 //    - direction: direction.
 //
+// The function returns the following values:
+//
+//    - ok: whether the visible child was changed.
+//
 func (self *Leaflet) Navigate(direction NavigationDirection) bool {
 	var _arg0 *C.AdwLeaflet            // out
 	var _arg1 C.AdwNavigationDirection // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwNavigationDirection(direction)
 
 	_cret = C.adw_leaflet_navigate(_arg0, _arg1)
@@ -641,13 +765,17 @@ func (self *Leaflet) Navigate(direction NavigationDirection) bool {
 //
 //    - child: widget to prepend.
 //
+// The function returns the following values:
+//
+//    - leafletPage: leafletpage for child.
+//
 func (self *Leaflet) Prepend(child gtk.Widgetter) *LeafletPage {
 	var _arg0 *C.AdwLeaflet     // out
 	var _arg1 *C.GtkWidget      // out
 	var _cret *C.AdwLeafletPage // in
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.adw_leaflet_prepend(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -670,8 +798,8 @@ func (self *Leaflet) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_leaflet_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -686,17 +814,17 @@ func (self *Leaflet) Remove(child gtk.Widgetter) {
 // The function takes the following parameters:
 //
 //    - child: widget to move, must be a child of self.
-//    - sibling to move child after.
+//    - sibling (optional) to move child after.
 //
 func (self *Leaflet) ReorderChildAfter(child, sibling gtk.Widgetter) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 *C.GtkWidget  // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if sibling != nil {
-		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(sibling).Native()))
 	}
 
 	C.adw_leaflet_reorder_child_after(_arg0, _arg1, _arg2)
@@ -716,7 +844,7 @@ func (self *Leaflet) SetCanNavigateBack(canNavigateBack bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canNavigateBack {
 		_arg1 = C.TRUE
 	}
@@ -737,7 +865,7 @@ func (self *Leaflet) SetCanNavigateForward(canNavigateForward bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canNavigateForward {
 		_arg1 = C.TRUE
 	}
@@ -757,7 +885,7 @@ func (self *Leaflet) SetCanUnfold(canUnfold bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canUnfold {
 		_arg1 = C.TRUE
 	}
@@ -778,7 +906,7 @@ func (self *Leaflet) SetChildTransitionParams(params *SpringParams) {
 	var _arg0 *C.AdwLeaflet      // out
 	var _arg1 *C.AdwSpringParams // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(params)))
 
 	C.adw_leaflet_set_child_transition_params(_arg0, _arg1)
@@ -796,7 +924,7 @@ func (self *Leaflet) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	var _arg0 *C.AdwLeaflet            // out
 	var _arg1 C.AdwFoldThresholdPolicy // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwFoldThresholdPolicy(policy)
 
 	C.adw_leaflet_set_fold_threshold_policy(_arg0, _arg1)
@@ -817,7 +945,7 @@ func (self *Leaflet) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -838,7 +966,7 @@ func (self *Leaflet) SetModeTransitionDuration(duration uint) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(duration)
 
 	C.adw_leaflet_set_mode_transition_duration(_arg0, _arg1)
@@ -857,7 +985,7 @@ func (self *Leaflet) SetTransitionType(transition LeafletTransitionType) {
 	var _arg0 *C.AdwLeaflet              // out
 	var _arg1 C.AdwLeafletTransitionType // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwLeafletTransitionType(transition)
 
 	C.adw_leaflet_set_transition_type(_arg0, _arg1)
@@ -875,8 +1003,8 @@ func (self *Leaflet) SetVisibleChild(visibleChild gtk.Widgetter) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(visibleChild.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(visibleChild).Native()))
 
 	C.adw_leaflet_set_visible_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -895,7 +1023,7 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 	var _arg0 *C.AdwLeaflet // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeaflet)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -904,8 +1032,13 @@ func (self *Leaflet) SetVisibleChildName(name string) {
 	runtime.KeepAlive(name)
 }
 
+// LeafletPageOverrider contains methods that are overridable.
+type LeafletPageOverrider interface {
+}
+
 // LeafletPage: auxiliary class used by leaflet.
 type LeafletPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -913,22 +1046,35 @@ var (
 	_ externglib.Objector = (*LeafletPage)(nil)
 )
 
+func classInitLeafletPager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapLeafletPage(obj *externglib.Object) *LeafletPage {
 	return &LeafletPage{
 		Object: obj,
 	}
 }
 
-func marshalLeafletPager(p uintptr) (interface{}, error) {
+func marshalLeafletPage(p uintptr) (interface{}, error) {
 	return wrapLeafletPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child gets the leaflet child th which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
 func (self *LeafletPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_page_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -942,9 +1088,13 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -953,11 +1103,16 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 }
 
 // Name gets the name of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of self.
+//
 func (self *LeafletPage) Name() string {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_page_get_name(_arg0)
 	runtime.KeepAlive(self)
@@ -972,11 +1127,16 @@ func (self *LeafletPage) Name() string {
 }
 
 // Navigatable gets whether the child can be navigated to when folded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self can be navigated to when folded.
+//
 func (self *LeafletPage) Navigatable() bool {
 	var _arg0 *C.AdwLeafletPage // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_leaflet_page_get_navigatable(_arg0)
 	runtime.KeepAlive(self)
@@ -994,13 +1154,13 @@ func (self *LeafletPage) Navigatable() bool {
 //
 // The function takes the following parameters:
 //
-//    - name: new value to set.
+//    - name (optional): new value to set.
 //
 func (self *LeafletPage) SetName(name string) {
 	var _arg0 *C.AdwLeafletPage // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1021,7 +1181,7 @@ func (self *LeafletPage) SetNavigatable(navigatable bool) {
 	var _arg0 *C.AdwLeafletPage // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if navigatable {
 		_arg1 = C.TRUE
 	}

@@ -9,16 +9,17 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-navigation-direction.go.
+var GTypeNavigationDirection = externglib.Type(C.adw_navigation_direction_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_navigation_direction_get_type()), F: marshalNavigationDirection},
+		{T: GTypeNavigationDirection, F: marshalNavigationDirection},
 	})
 }
 

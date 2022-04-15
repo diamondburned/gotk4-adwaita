@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-status-page.go.
+var GTypeStatusPage = externglib.Type(C.adw_status_page_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_status_page_get_type()), F: marshalStatusPager},
+		{T: GTypeStatusPage, F: marshalStatusPage},
 	})
+}
+
+// StatusPageOverrider contains methods that are overridable.
+type StatusPageOverrider interface {
 }
 
 // StatusPage: page used for empty/error states and similar use-cases.
@@ -41,6 +46,7 @@ func init() {
 // style class for when it needs to fit into a small space such a sidebar or a
 // popover.
 type StatusPage struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -48,12 +54,21 @@ var (
 	_ gtk.Widgetter = (*StatusPage)(nil)
 )
 
+func classInitStatusPager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapStatusPage(obj *externglib.Object) *StatusPage {
 	return &StatusPage{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -63,16 +78,20 @@ func wrapStatusPage(obj *externglib.Object) *StatusPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalStatusPager(p uintptr) (interface{}, error) {
+func marshalStatusPage(p uintptr) (interface{}, error) {
 	return wrapStatusPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStatusPage creates a new AdwStatusPage.
+//
+// The function returns the following values:
+//
+//    - statusPage: newly created AdwStatusPage.
+//
 func NewStatusPage() *StatusPage {
 	var _cret *C.GtkWidget // in
 
@@ -86,11 +105,16 @@ func NewStatusPage() *StatusPage {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *StatusPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_status_page_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -102,9 +126,13 @@ func (self *StatusPage) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -114,11 +142,16 @@ func (self *StatusPage) Child() gtk.Widgetter {
 }
 
 // Description gets the description for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description.
+//
 func (self *StatusPage) Description() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_status_page_get_description(_arg0)
 	runtime.KeepAlive(self)
@@ -133,11 +166,16 @@ func (self *StatusPage) Description() string {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name.
+//
 func (self *StatusPage) IconName() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_status_page_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -152,11 +190,16 @@ func (self *StatusPage) IconName() string {
 }
 
 // Paintable gets the paintable for self.
+//
+// The function returns the following values:
+//
+//    - paintable (optional): paintable.
+//
 func (self *StatusPage) Paintable() gdk.Paintabler {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.GdkPaintable  // in
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_status_page_get_paintable(_arg0)
 	runtime.KeepAlive(self)
@@ -168,9 +211,13 @@ func (self *StatusPage) Paintable() gdk.Paintabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Paintabler)
+				return ok
+			})
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
 			_paintable = rv
 		}
@@ -180,11 +227,16 @@ func (self *StatusPage) Paintable() gdk.Paintabler {
 }
 
 // Title gets the title for self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *StatusPage) Title() string {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_status_page_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -200,15 +252,15 @@ func (self *StatusPage) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.adw_status_page_set_child(_arg0, _arg1)
@@ -220,13 +272,13 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - description: description.
+//    - description (optional): description.
 //
 func (self *StatusPage) SetDescription(description string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if description != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -241,13 +293,13 @@ func (self *StatusPage) SetDescription(description string) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *StatusPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -262,15 +314,15 @@ func (self *StatusPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - paintable: paintable.
+//    - paintable (optional): paintable.
 //
 func (self *StatusPage) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.GdkPaintable  // out
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if paintable != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	}
 
 	C.adw_status_page_set_paintable(_arg0, _arg1)
@@ -288,7 +340,7 @@ func (self *StatusPage) SetTitle(title string) {
 	var _arg0 *C.AdwStatusPage // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStatusPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 

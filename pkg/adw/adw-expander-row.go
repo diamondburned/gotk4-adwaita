@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-expander-row.go.
+var GTypeExpanderRow = externglib.Type(C.adw_expander_row_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_expander_row_get_type()), F: marshalExpanderRower},
+		{T: GTypeExpanderRow, F: marshalExpanderRow},
 	})
+}
+
+// ExpanderRowOverrider contains methods that are overridable.
+type ExpanderRowOverrider interface {
 }
 
 // ExpanderRow: gtk.ListBoxRow used to reveal widgets.
@@ -52,6 +57,7 @@ func init() {
 // It contains the subnodes row.header for its main embedded row, list.nested
 // for the list it can expand, and image.expander-row-arrow for its arrow.
 type ExpanderRow struct {
+	_ [0]func() // equal guard
 	PreferencesRow
 }
 
@@ -59,6 +65,14 @@ var (
 	_ gtk.Widgetter       = (*ExpanderRow)(nil)
 	_ externglib.Objector = (*ExpanderRow)(nil)
 )
+
+func classInitExpanderRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 	return &ExpanderRow{
@@ -68,6 +82,7 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -77,13 +92,14 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -93,20 +109,23 @@ func wrapExpanderRow(obj *externglib.Object) *ExpanderRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
-				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalExpanderRower(p uintptr) (interface{}, error) {
+func marshalExpanderRow(p uintptr) (interface{}, error) {
 	return wrapExpanderRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewExpanderRow creates a new AdwExpanderRow.
+//
+// The function returns the following values:
+//
+//    - expanderRow: newly created AdwExpanderRow.
+//
 func NewExpanderRow() *ExpanderRow {
 	var _cret *C.GtkWidget // in
 
@@ -129,8 +148,8 @@ func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.adw_expander_row_add_action(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -147,8 +166,8 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.adw_expander_row_add_prefix(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -167,8 +186,8 @@ func (self *ExpanderRow) AddRow(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_expander_row_add_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -176,11 +195,16 @@ func (self *ExpanderRow) AddRow(child gtk.Widgetter) {
 }
 
 // EnableExpansion gets whether the expansion of self is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether the expansion of self is enabled.
+//
 func (self *ExpanderRow) EnableExpansion() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_expander_row_get_enable_expansion(_arg0)
 	runtime.KeepAlive(self)
@@ -195,11 +219,16 @@ func (self *ExpanderRow) EnableExpansion() bool {
 }
 
 // Expanded gets whether self is expanded.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is expanded.
+//
 func (self *ExpanderRow) Expanded() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_expander_row_get_expanded(_arg0)
 	runtime.KeepAlive(self)
@@ -214,11 +243,16 @@ func (self *ExpanderRow) Expanded() bool {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name for self.
+//
 func (self *ExpanderRow) IconName() string {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_expander_row_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -234,11 +268,16 @@ func (self *ExpanderRow) IconName() string {
 
 // ShowEnableSwitch gets whether the switch enabling the expansion of self is
 // visible.
+//
+// The function returns the following values:
+//
+//    - ok: whether the switch enabling the expansion is visible.
+//
 func (self *ExpanderRow) ShowEnableSwitch() bool {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_expander_row_get_show_enable_switch(_arg0)
 	runtime.KeepAlive(self)
@@ -253,11 +292,16 @@ func (self *ExpanderRow) ShowEnableSwitch() bool {
 }
 
 // Subtitle gets the subtitle for self.
+//
+// The function returns the following values:
+//
+//    - utf8: subtitle for self.
+//
 func (self *ExpanderRow) Subtitle() string {
 	var _arg0 *C.AdwExpanderRow // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_expander_row_get_subtitle(_arg0)
 	runtime.KeepAlive(self)
@@ -269,17 +313,14 @@ func (self *ExpanderRow) Subtitle() string {
 	return _utf8
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_expander_row_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -296,7 +337,7 @@ func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if enableExpansion {
 		_arg1 = C.TRUE
 	}
@@ -316,7 +357,7 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}
@@ -330,13 +371,13 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *ExpanderRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -358,7 +399,7 @@ func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if showEnableSwitch {
 		_arg1 = C.TRUE
 	}
@@ -378,7 +419,7 @@ func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwExpanderRow // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwExpanderRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
 	defer C.free(unsafe.Pointer(_arg1))
 

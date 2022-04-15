@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-clamp-layout.go.
+var GTypeClampLayout = externglib.Type(C.adw_clamp_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_clamp_layout_get_type()), F: marshalClampLayouter},
+		{T: GTypeClampLayout, F: marshalClampLayout},
 	})
+}
+
+// ClampLayoutOverrider contains methods that are overridable.
+type ClampLayoutOverrider interface {
 }
 
 // ClampLayout: layout manager constraining its children to a given size.
@@ -42,10 +47,11 @@ func init() {
 // size, .small when it's allocated the full size, .medium in-between, or none
 // if it hasn't been allocated yet.
 type ClampLayout struct {
+	_ [0]func() // equal guard
 	gtk.LayoutManager
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -53,23 +59,36 @@ var (
 	_ externglib.Objector = (*ClampLayout)(nil)
 )
 
+func classInitClampLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapClampLayout(obj *externglib.Object) *ClampLayout {
 	return &ClampLayout{
 		LayoutManager: gtk.LayoutManager{
 			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalClampLayouter(p uintptr) (interface{}, error) {
+func marshalClampLayout(p uintptr) (interface{}, error) {
 	return wrapClampLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClampLayout creates a new AdwClampLayout.
+//
+// The function returns the following values:
+//
+//    - clampLayout: newly created AdwClampLayout.
+//
 func NewClampLayout() *ClampLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -83,11 +102,16 @@ func NewClampLayout() *ClampLayout {
 }
 
 // MaximumSize gets the maximum size allocated to the children.
+//
+// The function returns the following values:
+//
+//    - gint: maximum size to allocate to the children.
+//
 func (self *ClampLayout) MaximumSize() int {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_layout_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
@@ -100,11 +124,16 @@ func (self *ClampLayout) MaximumSize() int {
 }
 
 // TighteningThreshold gets the size above which the children are clamped.
+//
+// The function returns the following values:
+//
+//    - gint: size above which the children are clamped.
+//
 func (self *ClampLayout) TighteningThreshold() int {
 	var _arg0 *C.AdwClampLayout // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_layout_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
@@ -126,7 +155,7 @@ func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(maximumSize)
 
 	C.adw_clamp_layout_set_maximum_size(_arg0, _arg1)
@@ -144,7 +173,7 @@ func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampLayout // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(tighteningThreshold)
 
 	C.adw_clamp_layout_set_tightening_threshold(_arg0, _arg1)

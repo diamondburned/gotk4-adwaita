@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-preferences-group.go.
+var GTypePreferencesGroup = externglib.Type(C.adw_preferences_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_preferences_group_get_type()), F: marshalPreferencesGrouper},
+		{T: GTypePreferencesGroup, F: marshalPreferencesGroup},
 	})
+}
+
+// PreferencesGroupOverrider contains methods that are overridable.
+type PreferencesGroupOverrider interface {
 }
 
 // PreferencesGroup: group of preference rows.
@@ -53,6 +58,7 @@ func init() {
 //
 // AdwPreferencesGroup uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesGroup struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -60,12 +66,21 @@ var (
 	_ gtk.Widgetter = (*PreferencesGroup)(nil)
 )
 
+func classInitPreferencesGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 	return &PreferencesGroup{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -75,16 +90,20 @@ func wrapPreferencesGroup(obj *externglib.Object) *PreferencesGroup {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalPreferencesGrouper(p uintptr) (interface{}, error) {
+func marshalPreferencesGroup(p uintptr) (interface{}, error) {
 	return wrapPreferencesGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesGroup creates a new AdwPreferencesGroup.
+//
+// The function returns the following values:
+//
+//    - preferencesGroup: newly created AdwPreferencesGroup.
+//
 func NewPreferencesGroup() *PreferencesGroup {
 	var _cret *C.GtkWidget // in
 
@@ -107,8 +126,8 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_preferences_group_add(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -116,11 +135,16 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 }
 
 // Description gets the description of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description of self.
+//
 func (self *PreferencesGroup) Description() string {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_group_get_description(_arg0)
 	runtime.KeepAlive(self)
@@ -135,11 +159,16 @@ func (self *PreferencesGroup) Description() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title of self.
+//
 func (self *PreferencesGroup) Title() string {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_group_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -161,8 +190,8 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.GtkWidget           // out
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_preferences_group_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -173,13 +202,13 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - description: description.
+//    - description (optional): description.
 //
 func (self *PreferencesGroup) SetDescription(description string) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if description != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -200,7 +229,7 @@ func (self *PreferencesGroup) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesGroup // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 

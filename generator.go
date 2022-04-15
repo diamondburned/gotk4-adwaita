@@ -11,27 +11,20 @@ import (
 	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/gendata"
 	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genutil"
 	"github.com/diamondburned/gotk4/gir/girgen"
-	"github.com/diamondburned/gotk4/gir/girgen/logger"
 )
 
 var (
 	output  string
-	verbose bool
 	listPkg bool
 )
 
 func init() {
 	flag.StringVar(&output, "o", "", "output directory to mkdir in")
-	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
 	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
 	flag.Parse()
 
 	if !listPkg && output == "" {
 		log.Fatalln("Missing -o output directory.")
-	}
-
-	if !verbose {
-		verbose = os.Getenv("GIR_VERBOSE") == "1"
 	}
 }
 
@@ -58,10 +51,6 @@ func main() {
 	gen.AddFilters(filters)
 	gen.AddPostprocessors(postprocessors)
 	gen.ApplyPreprocessors(gendata.Preprocessors)
-
-	if verbose {
-		gen.LogLevel = logger.Debug
-	}
 
 	if err := genutil.CleanDirectory(output, pkgExceptions); err != nil {
 		log.Fatalln("failed to clean output directory:", err)

@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-preferences-page.go.
+var GTypePreferencesPage = externglib.Type(C.adw_preferences_page_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_preferences_page_get_type()), F: marshalPreferencesPager},
+		{T: GTypePreferencesPage, F: marshalPreferencesPage},
 	})
+}
+
+// PreferencesPageOverrider contains methods that are overridable.
+type PreferencesPageOverrider interface {
 }
 
 // PreferencesPage: page from preferenceswindow.
@@ -42,6 +47,7 @@ func init() {
 //
 // AdwPreferencesPage uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesPage struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -49,12 +55,21 @@ var (
 	_ gtk.Widgetter = (*PreferencesPage)(nil)
 )
 
+func classInitPreferencesPager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 	return &PreferencesPage{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -64,16 +79,20 @@ func wrapPreferencesPage(obj *externglib.Object) *PreferencesPage {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalPreferencesPager(p uintptr) (interface{}, error) {
+func marshalPreferencesPage(p uintptr) (interface{}, error) {
 	return wrapPreferencesPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesPage creates a new AdwPreferencesPage.
+//
+// The function returns the following values:
+//
+//    - preferencesPage: newly created AdwPreferencesPage.
+//
 func NewPreferencesPage() *PreferencesPage {
 	var _cret *C.GtkWidget // in
 
@@ -96,8 +115,8 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	C.adw_preferences_page_add(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -105,11 +124,16 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name for self.
+//
 func (self *PreferencesPage) IconName() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_page_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -124,11 +148,16 @@ func (self *PreferencesPage) IconName() string {
 }
 
 // Name gets the name of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of self.
+//
 func (self *PreferencesPage) Name() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_page_get_name(_arg0)
 	runtime.KeepAlive(self)
@@ -143,11 +172,16 @@ func (self *PreferencesPage) Name() string {
 }
 
 // Title gets the title of self.
+//
+// The function returns the following values:
+//
+//    - utf8: title of self.
+//
 func (self *PreferencesPage) Title() string {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_page_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -161,11 +195,16 @@ func (self *PreferencesPage) Title() string {
 
 // UseUnderline gets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//
 func (self *PreferencesPage) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_page_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -189,8 +228,8 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
 	var _arg1 *C.AdwPreferencesGroup // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	C.adw_preferences_page_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -201,13 +240,13 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *PreferencesPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -222,13 +261,13 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name: name.
+//    - name (optional): name.
 //
 func (self *PreferencesPage) SetName(name string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -249,7 +288,7 @@ func (self *PreferencesPage) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -269,7 +308,7 @@ func (self *PreferencesPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesPage // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

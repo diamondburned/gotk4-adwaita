@@ -11,17 +11,21 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-style-manager.go.
+var (
+	GTypeColorScheme  = externglib.Type(C.adw_color_scheme_get_type())
+	GTypeStyleManager = externglib.Type(C.adw_style_manager_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_color_scheme_get_type()), F: marshalColorScheme},
-		{T: externglib.Type(C.adw_style_manager_get_type()), F: marshalStyleManagerer},
+		{T: GTypeColorScheme, F: marshalColorScheme},
+		{T: GTypeStyleManager, F: marshalStyleManager},
 	})
 }
 
@@ -67,6 +71,10 @@ func (c ColorScheme) String() string {
 	}
 }
 
+// StyleManagerOverrider contains methods that are overridable.
+type StyleManagerOverrider interface {
+}
+
 // StyleManager class for managing application-wide styling.
 //
 // AdwStyleManager provides a way to query and influence the application styles,
@@ -76,6 +84,7 @@ func (c ColorScheme) String() string {
 // and to query the current appearance, as well as whether a system-wide color
 // scheme preference exists.
 type StyleManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -83,22 +92,35 @@ var (
 	_ externglib.Objector = (*StyleManager)(nil)
 )
 
+func classInitStyleManagerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapStyleManager(obj *externglib.Object) *StyleManager {
 	return &StyleManager{
 		Object: obj,
 	}
 }
 
-func marshalStyleManagerer(p uintptr) (interface{}, error) {
+func marshalStyleManager(p uintptr) (interface{}, error) {
 	return wrapStyleManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ColorScheme gets the requested application color scheme.
+//
+// The function returns the following values:
+//
+//    - colorScheme: color scheme.
+//
 func (self *StyleManager) ColorScheme() ColorScheme {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.AdwColorScheme   // in
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_color_scheme(_arg0)
 	runtime.KeepAlive(self)
@@ -111,11 +133,16 @@ func (self *StyleManager) ColorScheme() ColorScheme {
 }
 
 // Dark gets whether the application is using dark appearance.
+//
+// The function returns the following values:
+//
+//    - ok: whether the application is using dark appearance.
+//
 func (self *StyleManager) Dark() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_dark(_arg0)
 	runtime.KeepAlive(self)
@@ -133,11 +160,16 @@ func (self *StyleManager) Dark() bool {
 //
 // The display will be NULL for the style manager returned by
 // stylemanager.GetDefault().
+//
+// The function returns the following values:
+//
+//    - display: (nullable): the display.
+//
 func (self *StyleManager) Display() *gdk.Display {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret *C.GdkDisplay      // in
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_display(_arg0)
 	runtime.KeepAlive(self)
@@ -155,11 +187,16 @@ func (self *StyleManager) Display() *gdk.Display {
 }
 
 // HighContrast gets whether the application is using high contrast appearance.
+//
+// The function returns the following values:
+//
+//    - ok: whether the application is using high contrast appearance.
+//
 func (self *StyleManager) HighContrast() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_high_contrast(_arg0)
 	runtime.KeepAlive(self)
@@ -174,11 +211,16 @@ func (self *StyleManager) HighContrast() bool {
 }
 
 // SystemSupportsColorSchemes gets whether the system supports color schemes.
+//
+// The function returns the following values:
+//
+//    - ok: whether the system supports color schemes.
+//
 func (self *StyleManager) SystemSupportsColorSchemes() bool {
 	var _arg0 *C.AdwStyleManager // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_system_supports_color_schemes(_arg0)
 	runtime.KeepAlive(self)
@@ -206,7 +248,7 @@ func (self *StyleManager) SetColorScheme(colorScheme ColorScheme) {
 	var _arg0 *C.AdwStyleManager // out
 	var _arg1 C.AdwColorScheme   // out
 
-	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwColorScheme(colorScheme)
 
 	C.adw_style_manager_set_color_scheme(_arg0, _arg1)
@@ -220,6 +262,11 @@ func (self *StyleManager) SetColorScheme(colorScheme ColorScheme) {
 // display has an override.
 //
 // See stylemanager.GetForDisplay().
+//
+// The function returns the following values:
+//
+//    - styleManager: default style manager.
+//
 func StyleManagerGetDefault() *StyleManager {
 	var _cret *C.AdwStyleManager // in
 
@@ -243,11 +290,15 @@ func StyleManagerGetDefault() *StyleManager {
 //
 //    - display: GdkDisplay.
 //
+// The function returns the following values:
+//
+//    - styleManager: style manager for display.
+//
 func StyleManagerGetForDisplay(display *gdk.Display) *StyleManager {
 	var _arg1 *C.GdkDisplay      // out
 	var _cret *C.AdwStyleManager // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.adw_style_manager_get_for_display(_arg1)
 	runtime.KeepAlive(display)

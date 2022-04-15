@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-clamp-scrollable.go.
+var GTypeClampScrollable = externglib.Type(C.adw_clamp_scrollable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_clamp_scrollable_get_type()), F: marshalClampScrollabler},
+		{T: GTypeClampScrollable, F: marshalClampScrollable},
 	})
+}
+
+// ClampScrollableOverrider contains methods that are overridable.
+type ClampScrollableOverrider interface {
 }
 
 // ClampScrollable: scrollable clamp.
@@ -30,11 +35,12 @@ func init() {
 //
 // The primary use case for AdwClampScrollable is clamping gtk.ListView.
 type ClampScrollable struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
+	*externglib.Object
 	gtk.Orientable
 	gtk.Scrollable
-	*externglib.Object
 }
 
 var (
@@ -42,12 +48,21 @@ var (
 	_ externglib.Objector = (*ClampScrollable)(nil)
 )
 
+func classInitClampScrollabler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 	return &ClampScrollable{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -57,23 +72,27 @@ func wrapClampScrollable(obj *externglib.Object) *ClampScrollable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
 		Scrollable: gtk.Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalClampScrollabler(p uintptr) (interface{}, error) {
+func marshalClampScrollable(p uintptr) (interface{}, error) {
 	return wrapClampScrollable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClampScrollable creates a new AdwClampScrollable.
+//
+// The function returns the following values:
+//
+//    - clampScrollable: newly created AdwClampScrollable.
+//
 func NewClampScrollable() *ClampScrollable {
 	var _cret *C.GtkWidget // in
 
@@ -87,11 +106,16 @@ func NewClampScrollable() *ClampScrollable {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *ClampScrollable) Child() gtk.Widgetter {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_scrollable_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -103,9 +127,13 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -115,11 +143,16 @@ func (self *ClampScrollable) Child() gtk.Widgetter {
 }
 
 // MaximumSize gets the maximum size allocated to the child.
+//
+// The function returns the following values:
+//
+//    - gint: maximum size to allocate to the child.
+//
 func (self *ClampScrollable) MaximumSize() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_scrollable_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
@@ -132,11 +165,16 @@ func (self *ClampScrollable) MaximumSize() int {
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
+//
+// The function returns the following values:
+//
+//    - gint: size above which the child is clamped.
+//
 func (self *ClampScrollable) TighteningThreshold() int {
 	var _arg0 *C.AdwClampScrollable // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_scrollable_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
@@ -152,15 +190,15 @@ func (self *ClampScrollable) TighteningThreshold() int {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *ClampScrollable) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.adw_clamp_scrollable_set_child(_arg0, _arg1)
@@ -178,7 +216,7 @@ func (self *ClampScrollable) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(maximumSize)
 
 	C.adw_clamp_scrollable_set_maximum_size(_arg0, _arg1)
@@ -196,7 +234,7 @@ func (self *ClampScrollable) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampScrollable // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClampScrollable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(tighteningThreshold)
 
 	C.adw_clamp_scrollable_set_tightening_threshold(_arg0, _arg1)

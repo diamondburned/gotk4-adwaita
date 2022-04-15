@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-spring-animation.go.
+var GTypeSpringAnimation = externglib.Type(C.adw_spring_animation_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_spring_animation_get_type()), F: marshalSpringAnimationer},
+		{T: GTypeSpringAnimation, F: marshalSpringAnimation},
 	})
+}
+
+// SpringAnimationOverrider contains methods that are overridable.
+type SpringAnimationOverrider interface {
 }
 
 // SpringAnimation: spring-based animation.
@@ -53,12 +58,21 @@ func init() {
 // If the initial and final values are equal, and the initial velocity is not 0,
 // the animation value will bounce and return to its resting position.
 type SpringAnimation struct {
+	_ [0]func() // equal guard
 	Animation
 }
 
 var (
 	_ Animationer = (*SpringAnimation)(nil)
 )
+
+func classInitSpringAnimationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSpringAnimation(obj *externglib.Object) *SpringAnimation {
 	return &SpringAnimation{
@@ -68,7 +82,7 @@ func wrapSpringAnimation(obj *externglib.Object) *SpringAnimation {
 	}
 }
 
-func marshalSpringAnimationer(p uintptr) (interface{}, error) {
+func marshalSpringAnimation(p uintptr) (interface{}, error) {
 	return wrapSpringAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -85,6 +99,10 @@ func marshalSpringAnimationer(p uintptr) (interface{}, error) {
 //    - springParams: physical parameters of the spring.
 //    - target value to animate.
 //
+// The function returns the following values:
+//
+//    - springAnimation: newly created animation.
+//
 func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *SpringParams, target AnimationTargetter) *SpringAnimation {
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 C.double              // out
@@ -93,12 +111,12 @@ func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *Sp
 	var _arg5 *C.AdwAnimationTarget // out
 	var _cret *C.AdwAnimation       // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.double(from)
 	_arg3 = C.double(to)
 	_arg4 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(springParams)))
-	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(target.Native()))
-	C.g_object_ref(C.gpointer(target.Native()))
+	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(externglib.InternObject(target).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(target).Native()))
 
 	_cret = C.adw_spring_animation_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(widget)
@@ -115,11 +133,16 @@ func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *Sp
 }
 
 // Clamp gets whether self should be clamped.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is clamped.
+//
 func (self *SpringAnimation) Clamp() bool {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_clamp(_arg0)
 	runtime.KeepAlive(self)
@@ -134,11 +157,16 @@ func (self *SpringAnimation) Clamp() bool {
 }
 
 // Epsilon gets the precision used to determine the duration of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: epsilon value.
+//
 func (self *SpringAnimation) Epsilon() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.double              // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_epsilon(_arg0)
 	runtime.KeepAlive(self)
@@ -151,11 +179,16 @@ func (self *SpringAnimation) Epsilon() float64 {
 }
 
 // EstimatedDuration gets the estimated duration of self.
+//
+// The function returns the following values:
+//
+//    - guint: estimated duration.
+//
 func (self *SpringAnimation) EstimatedDuration() uint {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_estimated_duration(_arg0)
 	runtime.KeepAlive(self)
@@ -168,11 +201,16 @@ func (self *SpringAnimation) EstimatedDuration() uint {
 }
 
 // InitialVelocity gets the initial velocity of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: initial velocity.
+//
 func (self *SpringAnimation) InitialVelocity() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.double              // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_initial_velocity(_arg0)
 	runtime.KeepAlive(self)
@@ -185,11 +223,16 @@ func (self *SpringAnimation) InitialVelocity() float64 {
 }
 
 // SpringParams gets the physical parameters of the spring of self.
+//
+// The function returns the following values:
+//
+//    - springParams: spring parameters.
+//
 func (self *SpringAnimation) SpringParams() *SpringParams {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret *C.AdwSpringParams    // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_spring_params(_arg0)
 	runtime.KeepAlive(self)
@@ -209,11 +252,16 @@ func (self *SpringAnimation) SpringParams() *SpringParams {
 }
 
 // ValueFrom gets the value self will animate from.
+//
+// The function returns the following values:
+//
+//    - gdouble: value to animate from.
+//
 func (self *SpringAnimation) ValueFrom() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.double              // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_value_from(_arg0)
 	runtime.KeepAlive(self)
@@ -226,11 +274,16 @@ func (self *SpringAnimation) ValueFrom() float64 {
 }
 
 // ValueTo gets the value self will animate to.
+//
+// The function returns the following values:
+//
+//    - gdouble: value to animate to.
+//
 func (self *SpringAnimation) ValueTo() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.double              // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_value_to(_arg0)
 	runtime.KeepAlive(self)
@@ -243,11 +296,16 @@ func (self *SpringAnimation) ValueTo() float64 {
 }
 
 // Velocity gets the current velocity of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: current velocity.
+//
 func (self *SpringAnimation) Velocity() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _cret C.double              // in
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_spring_animation_get_velocity(_arg0)
 	runtime.KeepAlive(self)
@@ -269,7 +327,7 @@ func (self *SpringAnimation) SetClamp(clamp bool) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if clamp {
 		_arg1 = C.TRUE
 	}
@@ -289,7 +347,7 @@ func (self *SpringAnimation) SetEpsilon(epsilon float64) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 C.double              // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(epsilon)
 
 	C.adw_spring_animation_set_epsilon(_arg0, _arg1)
@@ -307,7 +365,7 @@ func (self *SpringAnimation) SetInitialVelocity(velocity float64) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 C.double              // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(velocity)
 
 	C.adw_spring_animation_set_initial_velocity(_arg0, _arg1)
@@ -325,7 +383,7 @@ func (self *SpringAnimation) SetSpringParams(springParams *SpringParams) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 *C.AdwSpringParams    // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(springParams)))
 
 	C.adw_spring_animation_set_spring_params(_arg0, _arg1)
@@ -343,7 +401,7 @@ func (self *SpringAnimation) SetValueFrom(value float64) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 C.double              // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(value)
 
 	C.adw_spring_animation_set_value_from(_arg0, _arg1)
@@ -361,7 +419,7 @@ func (self *SpringAnimation) SetValueTo(value float64) {
 	var _arg0 *C.AdwSpringAnimation // out
 	var _arg1 C.double              // out
 
-	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSpringAnimation)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(value)
 
 	C.adw_spring_animation_set_value_to(_arg0, _arg1)

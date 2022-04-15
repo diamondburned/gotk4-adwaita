@@ -23,7 +23,7 @@ pkgs.mkShell {
 	name = "gotk4-adwaita-shell";
 
 	buildInputs = with pkgs; [
-		gobjectIntrospection
+		gobject-introspection
 		glib
 		graphene
 		gdk-pixbuf

@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-preferences-row.go.
+var GTypePreferencesRow = externglib.Type(C.adw_preferences_row_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_preferences_row_get_type()), F: marshalPreferencesRower},
+		{T: GTypePreferencesRow, F: marshalPreferencesRow},
 	})
+}
+
+// PreferencesRowOverrider contains methods that are overridable.
+type PreferencesRowOverrider interface {
 }
 
 // PreferencesRow: gtk.ListBoxRow used to present preferences.
@@ -33,6 +38,7 @@ func init() {
 // they take care of presenting the preference's title while letting you compose
 // the inputs of the preference around it.
 type PreferencesRow struct {
+	_ [0]func() // equal guard
 	gtk.ListBoxRow
 }
 
@@ -41,6 +47,14 @@ var (
 	_ externglib.Objector = (*PreferencesRow)(nil)
 )
 
+func classInitPreferencesRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 	return &PreferencesRow{
 		ListBoxRow: gtk.ListBoxRow{
@@ -48,6 +62,7 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -57,13 +72,14 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Actionable: gtk.Actionable{
 				Widget: gtk.Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -73,19 +89,22 @@ func wrapPreferencesRow(obj *externglib.Object) *PreferencesRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalPreferencesRower(p uintptr) (interface{}, error) {
+func marshalPreferencesRow(p uintptr) (interface{}, error) {
 	return wrapPreferencesRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesRow creates a new AdwPreferencesRow.
+//
+// The function returns the following values:
+//
+//    - preferencesRow: newly created AdwPreferencesRow.
+//
 func NewPreferencesRow() *PreferencesRow {
 	var _cret *C.GtkWidget // in
 
@@ -99,11 +118,16 @@ func NewPreferencesRow() *PreferencesRow {
 }
 
 // Title gets the title of the preference represented by self.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *PreferencesRow) Title() string {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_row_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -117,11 +141,16 @@ func (self *PreferencesRow) Title() string {
 
 // UseUnderline gets whether an embedded underline in the title indicates a
 // mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//
 func (self *PreferencesRow) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_row_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -145,7 +174,7 @@ func (self *PreferencesRow) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -165,7 +194,7 @@ func (self *PreferencesRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesRow // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

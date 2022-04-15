@@ -11,17 +11,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_adw1_TabBar_ConnectExtraDragDrop(gpointer, AdwTabPage*, GValue, guintptr);
 import "C"
+
+// glib.Type values for adw-tab-bar.go.
+var GTypeTabBar = externglib.Type(C.adw_tab_bar_get_type())
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_tab_bar_get_type()), F: marshalTabBarrer},
+		{T: GTypeTabBar, F: marshalTabBar},
 	})
+}
+
+// TabBarOverrider contains methods that are overridable.
+type TabBarOverrider interface {
 }
 
 // TabBar: tab bar for tabview.
@@ -44,6 +50,7 @@ func init() {
 //
 // AdwTabBar has a single CSS node with name tabbar.
 type TabBar struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -51,12 +58,21 @@ var (
 	_ gtk.Widgetter = (*TabBar)(nil)
 )
 
+func classInitTabBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapTabBar(obj *externglib.Object) *TabBar {
 	return &TabBar{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -66,16 +82,59 @@ func wrapTabBar(obj *externglib.Object) *TabBar {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalTabBarrer(p uintptr) (interface{}, error) {
+func marshalTabBar(p uintptr) (interface{}, error) {
 	return wrapTabBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_adw1_TabBar_ConnectExtraDragDrop
+func _gotk4_adw1_TabBar_ConnectExtraDragDrop(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.GValue, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(page *TabPage, value externglib.Value) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(page *TabPage, value externglib.Value) (ok bool))
+	}
+
+	var _page *TabPage          // out
+	var _value externglib.Value // out
+
+	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&arg2)))
+
+	ok := f(_page, _value)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectExtraDragDrop: this signal is emitted when content is dropped onto a
+// tab.
+//
+// The content must be of one of the types set up via
+// tabbar.SetupExtraDropTarget.
+//
+// See gtk.DropTarget::drop.
+func (self *TabBar) ConnectExtraDragDrop(f func(page *TabPage, value externglib.Value) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "extra-drag-drop", false, unsafe.Pointer(C._gotk4_adw1_TabBar_ConnectExtraDragDrop), f)
+}
+
 // NewTabBar creates a new AdwTabBar.
+//
+// The function returns the following values:
+//
+//    - tabBar: newly created AdwTabBar.
+//
 func NewTabBar() *TabBar {
 	var _cret *C.AdwTabBar // in
 
@@ -89,11 +148,16 @@ func NewTabBar() *TabBar {
 }
 
 // Autohide gets whether the tabs automatically hide.
+//
+// The function returns the following values:
+//
+//    - ok: whether the tabs automatically hide.
+//
 func (self *TabBar) Autohide() bool {
 	var _arg0 *C.AdwTabBar // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_autohide(_arg0)
 	runtime.KeepAlive(self)
@@ -108,11 +172,16 @@ func (self *TabBar) Autohide() bool {
 }
 
 // EndActionWidget gets the widget shown after the tabs.
+//
+// The function returns the following values:
+//
+//    - widget (optional) shown after the tabs.
+//
 func (self *TabBar) EndActionWidget() gtk.Widgetter {
 	var _arg0 *C.AdwTabBar // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_end_action_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -124,9 +193,13 @@ func (self *TabBar) EndActionWidget() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -136,11 +209,16 @@ func (self *TabBar) EndActionWidget() gtk.Widgetter {
 }
 
 // ExpandTabs gets whether tabs expand to full width.
+//
+// The function returns the following values:
+//
+//    - ok: whether tabs expand to full width.
+//
 func (self *TabBar) ExpandTabs() bool {
 	var _arg0 *C.AdwTabBar // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_expand_tabs(_arg0)
 	runtime.KeepAlive(self)
@@ -155,11 +233,16 @@ func (self *TabBar) ExpandTabs() bool {
 }
 
 // Inverted gets whether tabs use inverted layout.
+//
+// The function returns the following values:
+//
+//    - ok: whether tabs use inverted layout.
+//
 func (self *TabBar) Inverted() bool {
 	var _arg0 *C.AdwTabBar // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_inverted(_arg0)
 	runtime.KeepAlive(self)
@@ -174,11 +257,16 @@ func (self *TabBar) Inverted() bool {
 }
 
 // IsOverflowing gets whether self is overflowing.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is overflowing.
+//
 func (self *TabBar) IsOverflowing() bool {
 	var _arg0 *C.AdwTabBar // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_is_overflowing(_arg0)
 	runtime.KeepAlive(self)
@@ -193,11 +281,16 @@ func (self *TabBar) IsOverflowing() bool {
 }
 
 // StartActionWidget gets the widget shown before the tabs.
+//
+// The function returns the following values:
+//
+//    - widget (optional) shown before the tabs.
+//
 func (self *TabBar) StartActionWidget() gtk.Widgetter {
 	var _arg0 *C.AdwTabBar // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_start_action_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -209,9 +302,13 @@ func (self *TabBar) StartActionWidget() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -221,11 +318,16 @@ func (self *TabBar) StartActionWidget() gtk.Widgetter {
 }
 
 // TabsRevealed gets whether the tabs are currently revealed.
+//
+// The function returns the following values:
+//
+//    - ok: whether the tabs are currently revealed.
+//
 func (self *TabBar) TabsRevealed() bool {
 	var _arg0 *C.AdwTabBar // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_tabs_revealed(_arg0)
 	runtime.KeepAlive(self)
@@ -240,11 +342,16 @@ func (self *TabBar) TabsRevealed() bool {
 }
 
 // View gets the tab view self controls.
+//
+// The function returns the following values:
+//
+//    - tabView (optional): view self controls.
+//
 func (self *TabBar) View() *TabView {
 	var _arg0 *C.AdwTabBar  // out
 	var _cret *C.AdwTabView // in
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_bar_get_view(_arg0)
 	runtime.KeepAlive(self)
@@ -268,7 +375,7 @@ func (self *TabBar) SetAutohide(autohide bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if autohide {
 		_arg1 = C.TRUE
 	}
@@ -282,15 +389,15 @@ func (self *TabBar) SetAutohide(autohide bool) {
 //
 // The function takes the following parameters:
 //
-//    - widget to show after the tabs.
+//    - widget (optional) to show after the tabs.
 //
 func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	}
 
 	C.adw_tab_bar_set_end_action_widget(_arg0, _arg1)
@@ -308,7 +415,7 @@ func (self *TabBar) SetExpandTabs(expandTabs bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expandTabs {
 		_arg1 = C.TRUE
 	}
@@ -328,7 +435,7 @@ func (self *TabBar) SetInverted(inverted bool) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if inverted {
 		_arg1 = C.TRUE
 	}
@@ -342,15 +449,15 @@ func (self *TabBar) SetInverted(inverted bool) {
 //
 // The function takes the following parameters:
 //
-//    - widget to show before the tabs.
+//    - widget (optional) to show before the tabs.
 //
 func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	}
 
 	C.adw_tab_bar_set_start_action_widget(_arg0, _arg1)
@@ -362,15 +469,15 @@ func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - view: tab view.
+//    - view (optional): tab view.
 //
 func (self *TabBar) SetView(view *TabView) {
 	var _arg0 *C.AdwTabBar  // out
 	var _arg1 *C.AdwTabView // out
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if view != nil {
-		_arg1 = (*C.AdwTabView)(unsafe.Pointer(view.Native()))
+		_arg1 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(view).Native()))
 	}
 
 	C.adw_tab_bar_set_view(_arg0, _arg1)
@@ -393,7 +500,7 @@ func (self *TabBar) SetView(view *TabView) {
 // The function takes the following parameters:
 //
 //    - actions: supported actions.
-//    - types: all supported GTypes that can be dropped.
+//    - types (optional): all supported GTypes that can be dropped.
 //
 func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externglib.Type) {
 	var _arg0 *C.AdwTabBar    // out
@@ -401,10 +508,10 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	var _arg2 *C.GType        // out
 	var _arg3 C.gsize
 
-	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwTabBar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GdkDragAction(actions)
 	_arg3 = (C.gsize)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -417,15 +524,4 @@ func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []externg
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(actions)
 	runtime.KeepAlive(types)
-}
-
-// ConnectExtraDragDrop: this signal is emitted when content is dropped onto a
-// tab.
-//
-// The content must be of one of the types set up via
-// tabbar.SetupExtraDropTarget.
-//
-// See gtk.DropTarget::drop.
-func (self *TabBar) ConnectExtraDragDrop(f func(page TabPage, value externglib.Value) bool) externglib.SignalHandle {
-	return self.Connect("extra-drag-drop", f)
 }

@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-preferences-window.go.
+var GTypePreferencesWindow = externglib.Type(C.adw_preferences_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_preferences_window_get_type()), F: marshalPreferencesWindower},
+		{T: GTypePreferencesWindow, F: marshalPreferencesWindow},
 	})
+}
+
+// PreferencesWindowOverrider contains methods that are overridable.
+type PreferencesWindowOverrider interface {
 }
 
 // PreferencesWindow: window to present an application's preferences.
@@ -38,6 +43,7 @@ func init() {
 // AdwPreferencesWindow has a main CSS node with the name window and the style
 // class .preferences.
 type PreferencesWindow struct {
+	_ [0]func() // equal guard
 	Window
 }
 
@@ -45,6 +51,14 @@ var (
 	_ gtk.Widgetter       = (*PreferencesWindow)(nil)
 	_ externglib.Objector = (*PreferencesWindow)(nil)
 )
+
+func classInitPreferencesWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 	return &PreferencesWindow{
@@ -54,6 +68,7 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -63,14 +78,15 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: gtk.Root{
 					NativeSurface: gtk.NativeSurface{
 						Widget: gtk.Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: gtk.Accessible{
 								Object: obj,
 							},
@@ -80,24 +96,27 @@ func wrapPreferencesWindow(obj *externglib.Object) *PreferencesWindow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalPreferencesWindower(p uintptr) (interface{}, error) {
+func marshalPreferencesWindow(p uintptr) (interface{}, error) {
 	return wrapPreferencesWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPreferencesWindow creates a new AdwPreferencesWindow.
+//
+// The function returns the following values:
+//
+//    - preferencesWindow: newly created AdwPreferencesWindow.
+//
 func NewPreferencesWindow() *PreferencesWindow {
 	var _cret *C.GtkWidget // in
 
@@ -120,8 +139,8 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
 
 	C.adw_preferences_window_add(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -140,9 +159,9 @@ func (self *PreferencesWindow) AddToast(toast *Toast) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwToast             // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwToast)(unsafe.Pointer(toast.Native()))
-	C.g_object_ref(C.gpointer(toast.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(toast).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(toast).Native()))
 
 	C.adw_preferences_window_add_toast(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -157,7 +176,7 @@ func (self *PreferencesWindow) AddToast(toast *Toast) {
 func (self *PreferencesWindow) CloseSubpage() {
 	var _arg0 *C.AdwPreferencesWindow // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_preferences_window_close_subpage(_arg0)
 	runtime.KeepAlive(self)
@@ -165,11 +184,16 @@ func (self *PreferencesWindow) CloseSubpage() {
 
 // CanNavigateBack gets whether gestures and shortcuts for closing subpages are
 // enabled.
+//
+// The function returns the following values:
+//
+//    - ok: whether gestures and shortcuts are enabled.
+//
 func (self *PreferencesWindow) CanNavigateBack() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_window_get_can_navigate_back(_arg0)
 	runtime.KeepAlive(self)
@@ -184,11 +208,16 @@ func (self *PreferencesWindow) CanNavigateBack() bool {
 }
 
 // SearchEnabled gets whether search is enabled for self.
+//
+// The function returns the following values:
+//
+//    - ok: whether search is enabled for self.
+//
 func (self *PreferencesWindow) SearchEnabled() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_window_get_search_enabled(_arg0)
 	runtime.KeepAlive(self)
@@ -203,11 +232,16 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 }
 
 // VisiblePage gets the currently visible page of self.
+//
+// The function returns the following values:
+//
+//    - preferencesPage (optional): visible page.
+//
 func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret *C.AdwPreferencesPage   // in
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_window_get_visible_page(_arg0)
 	runtime.KeepAlive(self)
@@ -222,11 +256,16 @@ func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 }
 
 // VisiblePageName gets the name of currently visible page of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible page.
+//
 func (self *PreferencesWindow) VisiblePageName() string {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_preferences_window_get_visible_page_name(_arg0)
 	runtime.KeepAlive(self)
@@ -253,8 +292,8 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.GtkWidget            // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(subpage.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(subpage).Native()))
 
 	C.adw_preferences_window_present_subpage(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -271,8 +310,8 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
 
 	C.adw_preferences_window_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -290,7 +329,7 @@ func (self *PreferencesWindow) SetCanNavigateBack(canNavigateBack bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canNavigateBack {
 		_arg1 = C.TRUE
 	}
@@ -310,7 +349,7 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if searchEnabled {
 		_arg1 = C.TRUE
 	}
@@ -330,8 +369,8 @@ func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.AdwPreferencesPage   // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(page.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
 
 	C.adw_preferences_window_set_visible_page(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -348,7 +387,7 @@ func (self *PreferencesWindow) SetVisiblePageName(name string) {
 	var _arg0 *C.AdwPreferencesWindow // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwPreferencesWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 

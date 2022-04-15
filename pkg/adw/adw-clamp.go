@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-clamp.go.
+var GTypeClamp = externglib.Type(C.adw_clamp_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_clamp_get_type()), F: marshalClamper},
+		{T: GTypeClamp, F: marshalClamp},
 	})
+}
+
+// ClampOverrider contains methods that are overridable.
+type ClampOverrider interface {
 }
 
 // Clamp: widget constraining its child to a given size.
@@ -47,10 +52,11 @@ func init() {
 // maximum size, .small when the clamp allocates its full size to the child,
 // .medium in-between, or none if it hasn't computed its size yet.
 type Clamp struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -58,12 +64,21 @@ var (
 	_ externglib.Objector = (*Clamp)(nil)
 )
 
+func classInitClamper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapClamp(obj *externglib.Object) *Clamp {
 	return &Clamp{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -73,20 +88,24 @@ func wrapClamp(obj *externglib.Object) *Clamp {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalClamper(p uintptr) (interface{}, error) {
+func marshalClamp(p uintptr) (interface{}, error) {
 	return wrapClamp(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClamp creates a new AdwClamp.
+//
+// The function returns the following values:
+//
+//    - clamp: newly created AdwClamp.
+//
 func NewClamp() *Clamp {
 	var _cret *C.GtkWidget // in
 
@@ -100,11 +119,16 @@ func NewClamp() *Clamp {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *Clamp) Child() gtk.Widgetter {
 	var _arg0 *C.AdwClamp  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -116,9 +140,13 @@ func (self *Clamp) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -128,11 +156,16 @@ func (self *Clamp) Child() gtk.Widgetter {
 }
 
 // MaximumSize gets the maximum size allocated to the child.
+//
+// The function returns the following values:
+//
+//    - gint: maximum size to allocate to the child.
+//
 func (self *Clamp) MaximumSize() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_get_maximum_size(_arg0)
 	runtime.KeepAlive(self)
@@ -145,11 +178,16 @@ func (self *Clamp) MaximumSize() int {
 }
 
 // TighteningThreshold gets the size above which the child is clamped.
+//
+// The function returns the following values:
+//
+//    - gint: size above which the child is clamped.
+//
 func (self *Clamp) TighteningThreshold() int {
 	var _arg0 *C.AdwClamp // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_clamp_get_tightening_threshold(_arg0)
 	runtime.KeepAlive(self)
@@ -165,15 +203,15 @@ func (self *Clamp) TighteningThreshold() int {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *Clamp) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwClamp  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.adw_clamp_set_child(_arg0, _arg1)
@@ -191,7 +229,7 @@ func (self *Clamp) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(maximumSize)
 
 	C.adw_clamp_set_maximum_size(_arg0, _arg1)
@@ -209,7 +247,7 @@ func (self *Clamp) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClamp // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.AdwClamp)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwClamp)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(tighteningThreshold)
 
 	C.adw_clamp_set_tightening_threshold(_arg0, _arg1)

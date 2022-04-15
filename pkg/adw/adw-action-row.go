@@ -6,27 +6,28 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_ActionRowClass_activate(AdwActionRow*);
+// extern void _gotk4_adw1_ActionRow_ConnectActivated(gpointer, guintptr);
 import "C"
+
+// glib.Type values for adw-action-row.go.
+var GTypeActionRow = externglib.Type(C.adw_action_row_get_type())
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_action_row_get_type()), F: marshalActionRower},
+		{T: GTypeActionRow, F: marshalActionRow},
 	})
 }
 
 // ActionRowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionRowOverrider interface {
 	// Activate activates self.
 	Activate()
@@ -67,6 +68,7 @@ type ActionRowOverrider interface {
 // It contains subnodes label.title and label.subtitle representing respectively
 // the title label and subtitle label.
 type ActionRow struct {
+	_ [0]func() // equal guard
 	PreferencesRow
 }
 
@@ -74,6 +76,30 @@ var (
 	_ gtk.Widgetter       = (*ActionRow)(nil)
 	_ externglib.Objector = (*ActionRow)(nil)
 )
+
+func classInitActionRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AdwActionRowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AdwActionRowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_adw1_ActionRowClass_activate)
+	}
+}
+
+//export _gotk4_adw1_ActionRowClass_activate
+func _gotk4_adw1_ActionRowClass_activate(arg0 *C.AdwActionRow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
 
 func wrapActionRow(obj *externglib.Object) *ActionRow {
 	return &ActionRow{
@@ -83,6 +109,7 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -92,13 +119,14 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Actionable: gtk.Actionable{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -108,20 +136,44 @@ func wrapActionRow(obj *externglib.Object) *ActionRow {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
-				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalActionRower(p uintptr) (interface{}, error) {
+func marshalActionRow(p uintptr) (interface{}, error) {
 	return wrapActionRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_adw1_ActionRow_ConnectActivated
+func _gotk4_adw1_ActionRow_ConnectActivated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectActivated: this signal is emitted after the row has been activated.
+func (self *ActionRow) ConnectActivated(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "activated", false, unsafe.Pointer(C._gotk4_adw1_ActionRow_ConnectActivated), f)
+}
+
 // NewActionRow creates a new AdwActionRow.
+//
+// The function returns the following values:
+//
+//    - actionRow: newly created AdwActionRow.
+//
 func NewActionRow() *ActionRow {
 	var _cret *C.GtkWidget // in
 
@@ -138,7 +190,7 @@ func NewActionRow() *ActionRow {
 func (self *ActionRow) Activate() {
 	var _arg0 *C.AdwActionRow // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_action_row_activate(_arg0)
 	runtime.KeepAlive(self)
@@ -154,8 +206,8 @@ func (self *ActionRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.adw_action_row_add_prefix(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -172,8 +224,8 @@ func (self *ActionRow) AddSuffix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.adw_action_row_add_suffix(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -181,11 +233,16 @@ func (self *ActionRow) AddSuffix(widget gtk.Widgetter) {
 }
 
 // ActivatableWidget gets the widget activated when self is activated.
+//
+// The function returns the following values:
+//
+//    - widget (optional): activatable widget for self.
+//
 func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 	var _arg0 *C.AdwActionRow // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_action_row_get_activatable_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -197,9 +254,13 @@ func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -209,11 +270,16 @@ func (self *ActionRow) ActivatableWidget() gtk.Widgetter {
 }
 
 // IconName gets the icon name for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name for self.
+//
 func (self *ActionRow) IconName() string {
 	var _arg0 *C.AdwActionRow // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_action_row_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -228,11 +294,16 @@ func (self *ActionRow) IconName() string {
 }
 
 // Subtitle gets the subtitle for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): subtitle for self.
+//
 func (self *ActionRow) Subtitle() string {
 	var _arg0 *C.AdwActionRow // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_action_row_get_subtitle(_arg0)
 	runtime.KeepAlive(self)
@@ -250,11 +321,17 @@ func (self *ActionRow) Subtitle() string {
 // will be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
+//
+// The function returns the following values:
+//
+//    - gint: number of lines at the end of which the subtitle label will be
+//      ellipsized.
+//
 func (self *ActionRow) SubtitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_action_row_get_subtitle_lines(_arg0)
 	runtime.KeepAlive(self)
@@ -270,11 +347,17 @@ func (self *ActionRow) SubtitleLines() int {
 // be ellipsized.
 //
 // If the value is 0, the number of lines won't be limited.
+//
+// The function returns the following values:
+//
+//    - gint: number of lines at the end of which the title label will be
+//      ellipsized.
+//
 func (self *ActionRow) TitleLines() int {
 	var _arg0 *C.AdwActionRow // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_action_row_get_title_lines(_arg0)
 	runtime.KeepAlive(self)
@@ -296,8 +379,8 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.adw_action_row_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -308,15 +391,15 @@ func (self *ActionRow) Remove(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: target widget.
+//    - widget (optional): target widget.
 //
 func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	}
 
 	C.adw_action_row_set_activatable_widget(_arg0, _arg1)
@@ -328,13 +411,13 @@ func (self *ActionRow) SetActivatableWidget(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *ActionRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -355,7 +438,7 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(subtitle)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -372,13 +455,13 @@ func (self *ActionRow) SetSubtitle(subtitle string) {
 // The function takes the following parameters:
 //
 //    - subtitleLines: number of lines at the end of which the subtitle label
-//    will be ellipsized.
+//      will be ellipsized.
 //
 func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(subtitleLines)
 
 	C.adw_action_row_set_subtitle_lines(_arg0, _arg1)
@@ -394,21 +477,16 @@ func (self *ActionRow) SetSubtitleLines(subtitleLines int) {
 // The function takes the following parameters:
 //
 //    - titleLines: number of lines at the end of which the title label will be
-//    ellipsized.
+//      ellipsized.
 //
 func (self *ActionRow) SetTitleLines(titleLines int) {
 	var _arg0 *C.AdwActionRow // out
 	var _arg1 C.int           // out
 
-	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwActionRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(titleLines)
 
 	C.adw_action_row_set_title_lines(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(titleLines)
-}
-
-// ConnectActivated: this signal is emitted after the row has been activated.
-func (self *ActionRow) ConnectActivated(f func()) externglib.SignalHandle {
-	return self.Connect("activated", f)
 }

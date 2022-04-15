@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-application-window.go.
+var GTypeApplicationWindow = externglib.Type(C.adw_application_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_application_window_get_type()), F: marshalApplicationWindower},
+		{T: GTypeApplicationWindow, F: marshalApplicationWindow},
 	})
+}
+
+// ApplicationWindowOverrider contains methods that are overridable.
+type ApplicationWindowOverrider interface {
 }
 
 // ApplicationWindow: freeform application window.
@@ -38,6 +43,7 @@ func init() {
 // Using gtk.Application:menubar is not supported and may result in visual
 // glitches.
 type ApplicationWindow struct {
+	_ [0]func() // equal guard
 	gtk.ApplicationWindow
 }
 
@@ -45,6 +51,14 @@ var (
 	_ externglib.Objector = (*ApplicationWindow)(nil)
 	_ gtk.Widgetter       = (*ApplicationWindow)(nil)
 )
+
+func classInitApplicationWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -54,6 +68,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -63,14 +78,15 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: gtk.Root{
 					NativeSurface: gtk.NativeSurface{
 						Widget: gtk.Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: gtk.Accessible{
 								Object: obj,
 							},
@@ -80,27 +96,25 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 							ConstraintTarget: gtk.ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			ActionGroup: gio.ActionGroup{
 				Object: obj,
 			},
 			ActionMap: gio.ActionMap{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalApplicationWindower(p uintptr) (interface{}, error) {
+func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -110,11 +124,15 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 //
 //    - app: application instance.
 //
+// The function returns the following values:
+//
+//    - applicationWindow: newly created AdwApplicationWindow.
+//
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(app.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(externglib.InternObject(app).Native()))
 
 	_cret = C.adw_application_window_new(_arg1)
 	runtime.KeepAlive(app)
@@ -129,11 +147,16 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 // Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
+//
+// The function returns the following values:
+//
+//    - widget (optional): content widget of self.
+//
 func (self *ApplicationWindow) Content() gtk.Widgetter {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _cret *C.GtkWidget            // in
 
-	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_application_window_get_content(_arg0)
 	runtime.KeepAlive(self)
@@ -145,9 +168,13 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -162,15 +189,15 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - content widget.
+//    - content (optional) widget.
 //
 func (self *ApplicationWindow) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out
 	var _arg1 *C.GtkWidget            // out
 
-	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if content != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(content).Native()))
 	}
 
 	C.adw_application_window_set_content(_arg0, _arg1)

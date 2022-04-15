@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-window.go.
+var GTypeWindow = externglib.Type(C.adw_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_window_get_type()), F: marshalWindower},
+		{T: GTypeWindow, F: marshalWindow},
 	})
+}
+
+// WindowOverrider contains methods that are overridable.
+type WindowOverrider interface {
 }
 
 // Window: freeform window.
@@ -49,6 +54,7 @@ func init() {
 // Using gtk.Window.GetTitlebar() and gtk.Window.SetTitlebar() is not supported
 // and will result in a crash.
 type Window struct {
+	_ [0]func() // equal guard
 	gtk.Window
 }
 
@@ -57,6 +63,14 @@ var (
 	_ externglib.Objector = (*Window)(nil)
 )
 
+func classInitWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Window: gtk.Window{
@@ -64,6 +78,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -73,14 +88,15 @@ func wrapWindow(obj *externglib.Object) *Window {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Root: gtk.Root{
 				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -90,23 +106,26 @@ func wrapWindow(obj *externglib.Object) *Window {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: gtk.ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new AdwWindow.
+//
+// The function returns the following values:
+//
+//    - window: newly created AdwWindow.
+//
 func NewWindow() *Window {
 	var _cret *C.GtkWidget // in
 
@@ -122,11 +141,16 @@ func NewWindow() *Window {
 // Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
+//
+// The function returns the following values:
+//
+//    - widget (optional): content widget of self.
+//
 func (self *Window) Content() gtk.Widgetter {
 	var _arg0 *C.AdwWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_window_get_content(_arg0)
 	runtime.KeepAlive(self)
@@ -138,9 +162,13 @@ func (self *Window) Content() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -155,15 +183,15 @@ func (self *Window) Content() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - content widget.
+//    - content (optional) widget.
 //
 func (self *Window) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.AdwWindow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if content != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(content.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(content).Native()))
 	}
 
 	C.adw_window_set_content(_arg0, _arg1)

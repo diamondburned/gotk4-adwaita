@@ -10,16 +10,17 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-easing.go.
+var GTypeEasing = externglib.Type(C.adw_easing_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_easing_get_type()), F: marshalEasing},
+		{T: GTypeEasing, F: marshalEasing},
 	})
 }
 
@@ -190,6 +191,10 @@ func (e Easing) String() string {
 //
 //    - self: AdwEasing.
 //    - value to ease.
+//
+// The function returns the following values:
+//
+//    - gdouble: easing for value.
 //
 func EasingEase(self Easing, value float64) float64 {
 	var _arg1 C.AdwEasing // out

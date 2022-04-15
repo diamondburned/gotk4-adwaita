@@ -12,17 +12,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_Toast_ConnectDismissed(gpointer, guintptr);
 import "C"
+
+// glib.Type values for adw-toast.go.
+var (
+	GTypeToastPriority = externglib.Type(C.adw_toast_priority_get_type())
+	GTypeToast         = externglib.Type(C.adw_toast_get_type())
+)
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_toast_priority_get_type()), F: marshalToastPriority},
-		{T: externglib.Type(C.adw_toast_get_type()), F: marshalToaster},
+		{T: GTypeToastPriority, F: marshalToastPriority},
+		{T: GTypeToast, F: marshalToast},
 	})
 }
 
@@ -52,6 +57,10 @@ func (t ToastPriority) String() string {
 	default:
 		return fmt.Sprintf("ToastPriority(%d)", t)
 	}
+}
+
+// ToastOverrider contains methods that are overridable.
+type ToastOverrider interface {
 }
 
 // Toast: helper object for toastoverlay.
@@ -162,6 +171,7 @@ func (t ToastPriority) String() string {
 // <picture> <source srcset="toast-undo-dark.png" media="(prefers-color-scheme:
 // dark)"> <img src="toast-undo.png" alt="toast-undo"> </picture>.
 type Toast struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -169,14 +179,43 @@ var (
 	_ externglib.Objector = (*Toast)(nil)
 )
 
+func classInitToaster(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapToast(obj *externglib.Object) *Toast {
 	return &Toast{
 		Object: obj,
 	}
 }
 
-func marshalToaster(p uintptr) (interface{}, error) {
+func marshalToast(p uintptr) (interface{}, error) {
 	return wrapToast(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_adw1_Toast_ConnectDismissed
+func _gotk4_adw1_Toast_ConnectDismissed(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectDismissed is emitted when the toast has been dismissed.
+func (self *Toast) ConnectDismissed(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "dismissed", false, unsafe.Pointer(C._gotk4_adw1_Toast_ConnectDismissed), f)
 }
 
 // NewToast creates a new AdwToast.
@@ -188,6 +227,10 @@ func marshalToaster(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - title to be displayed.
+//
+// The function returns the following values:
+//
+//    - toast: new created AdwToast.
 //
 func NewToast(title string) *Toast {
 	var _arg1 *C.char     // out
@@ -210,18 +253,23 @@ func NewToast(title string) *Toast {
 func (self *Toast) Dismiss() {
 	var _arg0 *C.AdwToast // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_toast_dismiss(_arg0)
 	runtime.KeepAlive(self)
 }
 
 // ActionName gets the name of the associated action.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): action name.
+//
 func (self *Toast) ActionName() string {
 	var _arg0 *C.AdwToast // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_action_name(_arg0)
 	runtime.KeepAlive(self)
@@ -236,11 +284,16 @@ func (self *Toast) ActionName() string {
 }
 
 // ActionTargetValue gets the parameter for action invocations.
+//
+// The function returns the following values:
+//
+//    - variant (optional): action target.
+//
 func (self *Toast) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.AdwToast // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_action_target_value(_arg0)
 	runtime.KeepAlive(self)
@@ -262,11 +315,16 @@ func (self *Toast) ActionTargetValue() *glib.Variant {
 }
 
 // ButtonLabel gets the label to show on the button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): button label.
+//
 func (self *Toast) ButtonLabel() string {
 	var _arg0 *C.AdwToast // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_button_label(_arg0)
 	runtime.KeepAlive(self)
@@ -281,11 +339,16 @@ func (self *Toast) ButtonLabel() string {
 }
 
 // Priority gets priority for self.
+//
+// The function returns the following values:
+//
+//    - toastPriority: priority.
+//
 func (self *Toast) Priority() ToastPriority {
 	var _arg0 *C.AdwToast        // out
 	var _cret C.AdwToastPriority // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_priority(_arg0)
 	runtime.KeepAlive(self)
@@ -298,11 +361,16 @@ func (self *Toast) Priority() ToastPriority {
 }
 
 // Timeout gets timeout for self.
+//
+// The function returns the following values:
+//
+//    - guint: timeout.
+//
 func (self *Toast) Timeout() uint {
 	var _arg0 *C.AdwToast // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_timeout(_arg0)
 	runtime.KeepAlive(self)
@@ -315,11 +383,16 @@ func (self *Toast) Timeout() uint {
 }
 
 // Title gets the title that will be displayed on the toast.
+//
+// The function returns the following values:
+//
+//    - utf8: title.
+//
 func (self *Toast) Title() string {
 	var _arg0 *C.AdwToast // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_toast_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -335,13 +408,13 @@ func (self *Toast) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - actionName: action name.
+//    - actionName (optional): action name.
 //
 func (self *Toast) SetActionName(actionName string) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if actionName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -356,13 +429,13 @@ func (self *Toast) SetActionName(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - actionTarget: action target.
+//    - actionTarget (optional): action target.
 //
 func (self *Toast) SetActionTargetValue(actionTarget *glib.Variant) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if actionTarget != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(actionTarget)))
 	}
@@ -378,13 +451,13 @@ func (self *Toast) SetActionTargetValue(actionTarget *glib.Variant) {
 //
 // The function takes the following parameters:
 //
-//    - buttonLabel: button label.
+//    - buttonLabel (optional): button label.
 //
 func (self *Toast) SetButtonLabel(buttonLabel string) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if buttonLabel != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(buttonLabel)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -402,13 +475,13 @@ func (self *Toast) SetButtonLabel(buttonLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - detailedActionName: detailed action name.
+//    - detailedActionName (optional): detailed action name.
 //
 func (self *Toast) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if detailedActionName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -437,7 +510,7 @@ func (self *Toast) SetPriority(priority ToastPriority) {
 	var _arg0 *C.AdwToast        // out
 	var _arg1 C.AdwToastPriority // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwToastPriority(priority)
 
 	C.adw_toast_set_priority(_arg0, _arg1)
@@ -461,7 +534,7 @@ func (self *Toast) SetTimeout(timeout uint) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(timeout)
 
 	C.adw_toast_set_timeout(_arg0, _arg1)
@@ -479,16 +552,11 @@ func (self *Toast) SetTitle(title string) {
 	var _arg0 *C.AdwToast // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.AdwToast)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.adw_toast_set_title(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
-}
-
-// ConnectDismissed: emitted when the toast has been dismissed.
-func (self *Toast) ConnectDismissed(f func()) externglib.SignalHandle {
-	return self.Connect("dismissed", f)
 }

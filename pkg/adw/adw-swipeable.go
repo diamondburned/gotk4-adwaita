@@ -12,37 +12,60 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern double _gotk4_adw1_SwipeableInterface_get_cancel_progress(AdwSwipeable*);
+// extern double _gotk4_adw1_SwipeableInterface_get_distance(AdwSwipeable*);
+// extern double _gotk4_adw1_SwipeableInterface_get_progress(AdwSwipeable*);
+// extern double* _gotk4_adw1_SwipeableInterface_get_snap_points(AdwSwipeable*, int*);
+// extern void _gotk4_adw1_SwipeableInterface_get_swipe_area(AdwSwipeable*, AdwNavigationDirection, gboolean, GdkRectangle*);
 import "C"
+
+// glib.Type values for adw-swipeable.go.
+var GTypeSwipeable = externglib.Type(C.adw_swipeable_get_type())
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_swipeable_get_type()), F: marshalSwipeabler},
+		{T: GTypeSwipeable, F: marshalSwipeable},
 	})
 }
 
 // SwipeableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SwipeableOverrider interface {
 	// CancelProgress gets the progress self will snap back to after the gesture
 	// is canceled.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: cancel progress, unitless.
+	//
 	CancelProgress() float64
 	// Distance gets the swipe distance of self.
 	//
 	// This corresponds to how many pixels 1 unit represents.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: swipe distance in pixels.
+	//
 	Distance() float64
 	// Progress gets the current progress of self.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: current progress, unitless.
+	//
 	Progress() float64
 	// SnapPoints gets the snap points of self.
 	//
 	// Each snap point represents a progress value that is considered acceptable
 	// to end the swipe on.
+	//
+	// The function returns the following values:
+	//
+	//    - gdoubles: snap points.
+	//
 	SnapPoints() []float64
 	// SwipeArea gets the area self can start a swipe from for the given
 	// direction and gesture type.
@@ -53,6 +76,16 @@ type SwipeableOverrider interface {
 	//
 	// If not implemented, the default implementation returns the allocation of
 	// self, allowing swipes from anywhere.
+	//
+	// The function takes the following parameters:
+	//
+	//    - navigationDirection: direction of the swipe.
+	//    - isDrag: whether the swipe is caused by a dragging gesture.
+	//
+	// The function returns the following values:
+	//
+	//    - rect: pointer to a rectangle to store the swipe area.
+	//
 	SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle
 }
 
@@ -62,6 +95,7 @@ type SwipeableOverrider interface {
 //
 // See swipetracker for details about implementing it.
 type Swipeable struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -89,12 +123,90 @@ type Swipeabler interface {
 
 var _ Swipeabler = (*Swipeable)(nil)
 
+func ifaceInitSwipeabler(gifacePtr, data C.gpointer) {
+	iface := (*C.AdwSwipeableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_cancel_progress = (*[0]byte)(C._gotk4_adw1_SwipeableInterface_get_cancel_progress)
+	iface.get_distance = (*[0]byte)(C._gotk4_adw1_SwipeableInterface_get_distance)
+	iface.get_progress = (*[0]byte)(C._gotk4_adw1_SwipeableInterface_get_progress)
+	iface.get_snap_points = (*[0]byte)(C._gotk4_adw1_SwipeableInterface_get_snap_points)
+	iface.get_swipe_area = (*[0]byte)(C._gotk4_adw1_SwipeableInterface_get_swipe_area)
+}
+
+//export _gotk4_adw1_SwipeableInterface_get_cancel_progress
+func _gotk4_adw1_SwipeableInterface_get_cancel_progress(arg0 *C.AdwSwipeable) (cret C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SwipeableOverrider)
+
+	gdouble := iface.CancelProgress()
+
+	cret = C.double(gdouble)
+
+	return cret
+}
+
+//export _gotk4_adw1_SwipeableInterface_get_distance
+func _gotk4_adw1_SwipeableInterface_get_distance(arg0 *C.AdwSwipeable) (cret C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SwipeableOverrider)
+
+	gdouble := iface.Distance()
+
+	cret = C.double(gdouble)
+
+	return cret
+}
+
+//export _gotk4_adw1_SwipeableInterface_get_progress
+func _gotk4_adw1_SwipeableInterface_get_progress(arg0 *C.AdwSwipeable) (cret C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SwipeableOverrider)
+
+	gdouble := iface.Progress()
+
+	cret = C.double(gdouble)
+
+	return cret
+}
+
+//export _gotk4_adw1_SwipeableInterface_get_snap_points
+func _gotk4_adw1_SwipeableInterface_get_snap_points(arg0 *C.AdwSwipeable, arg1 *C.int) (cret *C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SwipeableOverrider)
+
+	gdoubles := iface.SnapPoints()
+
+	*arg1 = (C.int)(len(gdoubles))
+	cret = (*C.double)(C.calloc(C.size_t(len(gdoubles)), C.size_t(C.sizeof_double)))
+	copy(unsafe.Slice((*float64)(cret), len(gdoubles)), gdoubles)
+
+	return cret
+}
+
+//export _gotk4_adw1_SwipeableInterface_get_swipe_area
+func _gotk4_adw1_SwipeableInterface_get_swipe_area(arg0 *C.AdwSwipeable, arg1 C.AdwNavigationDirection, arg2 C.gboolean, arg3 *C.GdkRectangle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SwipeableOverrider)
+
+	var _navigationDirection NavigationDirection // out
+	var _isDrag bool                             // out
+
+	_navigationDirection = NavigationDirection(arg1)
+	if arg2 != 0 {
+		_isDrag = true
+	}
+
+	rect := iface.SwipeArea(_navigationDirection, _isDrag)
+
+	*arg3 = *(*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+}
+
 func wrapSwipeable(obj *externglib.Object) *Swipeable {
 	return &Swipeable{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -104,22 +216,26 @@ func wrapSwipeable(obj *externglib.Object) *Swipeable {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalSwipeabler(p uintptr) (interface{}, error) {
+func marshalSwipeable(p uintptr) (interface{}, error) {
 	return wrapSwipeable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CancelProgress gets the progress self will snap back to after the gesture is
 // canceled.
+//
+// The function returns the following values:
+//
+//    - gdouble: cancel progress, unitless.
+//
 func (self *Swipeable) CancelProgress() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
 
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_swipeable_get_cancel_progress(_arg0)
 	runtime.KeepAlive(self)
@@ -134,11 +250,16 @@ func (self *Swipeable) CancelProgress() float64 {
 // Distance gets the swipe distance of self.
 //
 // This corresponds to how many pixels 1 unit represents.
+//
+// The function returns the following values:
+//
+//    - gdouble: swipe distance in pixels.
+//
 func (self *Swipeable) Distance() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
 
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_swipeable_get_distance(_arg0)
 	runtime.KeepAlive(self)
@@ -151,11 +272,16 @@ func (self *Swipeable) Distance() float64 {
 }
 
 // Progress gets the current progress of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: current progress, unitless.
+//
 func (self *Swipeable) Progress() float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret C.double        // in
 
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_swipeable_get_progress(_arg0)
 	runtime.KeepAlive(self)
@@ -171,12 +297,17 @@ func (self *Swipeable) Progress() float64 {
 //
 // Each snap point represents a progress value that is considered acceptable to
 // end the swipe on.
+//
+// The function returns the following values:
+//
+//    - gdoubles: snap points.
+//
 func (self *Swipeable) SnapPoints() []float64 {
 	var _arg0 *C.AdwSwipeable // out
 	var _cret *C.double       // in
 	var _arg1 C.int           // in
 
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_swipeable_get_snap_points(_arg0, &_arg1)
 	runtime.KeepAlive(self)
@@ -205,13 +336,17 @@ func (self *Swipeable) SnapPoints() []float64 {
 //    - navigationDirection: direction of the swipe.
 //    - isDrag: whether the swipe is caused by a dragging gesture.
 //
+// The function returns the following values:
+//
+//    - rect: pointer to a rectangle to store the swipe area.
+//
 func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle {
 	var _arg0 *C.AdwSwipeable          // out
 	var _arg1 C.AdwNavigationDirection // out
 	var _arg2 C.gboolean               // out
 	var _arg3 C.GdkRectangle           // in
 
-	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSwipeable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.AdwNavigationDirection(navigationDirection)
 	if isDrag {
 		_arg2 = C.TRUE

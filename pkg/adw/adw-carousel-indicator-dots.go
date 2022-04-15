@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-carousel-indicator-dots.go.
+var GTypeCarouselIndicatorDots = externglib.Type(C.adw_carousel_indicator_dots_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_carousel_indicator_dots_get_type()), F: marshalCarouselIndicatorDotser},
+		{T: GTypeCarouselIndicatorDots, F: marshalCarouselIndicatorDots},
 	})
+}
+
+// CarouselIndicatorDotsOverrider contains methods that are overridable.
+type CarouselIndicatorDotsOverrider interface {
 }
 
 // CarouselIndicatorDots dots indicator for carousel.
@@ -42,10 +47,11 @@ func init() {
 // AdwCarouselIndicatorDots has a single CSS node with name
 // carouselindicatordots.
 type CarouselIndicatorDots struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
-	gtk.Orientable
 	*externglib.Object
+	gtk.Orientable
 }
 
 var (
@@ -53,12 +59,21 @@ var (
 	_ externglib.Objector = (*CarouselIndicatorDots)(nil)
 )
 
+func classInitCarouselIndicatorDotser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 	return &CarouselIndicatorDots{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -68,20 +83,24 @@ func wrapCarouselIndicatorDots(obj *externglib.Object) *CarouselIndicatorDots {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: gtk.Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
-func marshalCarouselIndicatorDotser(p uintptr) (interface{}, error) {
+func marshalCarouselIndicatorDots(p uintptr) (interface{}, error) {
 	return wrapCarouselIndicatorDots(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCarouselIndicatorDots creates a new AdwCarouselIndicatorDots.
+//
+// The function returns the following values:
+//
+//    - carouselIndicatorDots: newly created AdwCarouselIndicatorDots.
+//
 func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 	var _cret *C.GtkWidget // in
 
@@ -95,11 +114,16 @@ func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 }
 
 // Carousel gets the displayed carousel.
+//
+// The function returns the following values:
+//
+//    - carousel (optional): displayed carousel.
+//
 func (self *CarouselIndicatorDots) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _cret *C.AdwCarousel              // in
 
-	_arg0 = (*C.AdwCarouselIndicatorDots)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarouselIndicatorDots)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_carousel_indicator_dots_get_carousel(_arg0)
 	runtime.KeepAlive(self)
@@ -117,15 +141,15 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - carousel: carousel.
+//    - carousel (optional): carousel.
 //
 func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
 	var _arg1 *C.AdwCarousel              // out
 
-	_arg0 = (*C.AdwCarouselIndicatorDots)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwCarouselIndicatorDots)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if carousel != nil {
-		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(carousel.Native()))
+		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(carousel).Native()))
 	}
 
 	C.adw_carousel_indicator_dots_set_carousel(_arg0, _arg1)

@@ -11,17 +11,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-application.go.
+var GTypeApplication = externglib.Type(C.adw_application_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_application_get_type()), F: marshalApplicationer},
+		{T: GTypeApplication, F: marshalApplication},
 	})
+}
+
+// ApplicationOverrider contains methods that are overridable.
+type ApplicationOverrider interface {
 }
 
 // Application: base class for Adwaita applications.
@@ -50,12 +55,21 @@ func init() {
 // - style-hc-dark.css contains styles used when the system high contrast
 // preference is enabled and stylemanager:dark is TRUE.
 type Application struct {
+	_ [0]func() // equal guard
 	gtk.Application
 }
 
 var (
 	_ externglib.Objector = (*Application)(nil)
 )
+
+func classInitApplicationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
@@ -73,7 +87,7 @@ func wrapApplication(obj *externglib.Object) *Application {
 	}
 }
 
-func marshalApplicationer(p uintptr) (interface{}, error) {
+func marshalApplication(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -87,8 +101,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId: application ID.
+//    - applicationId (optional): application ID.
 //    - flags: application flags.
+//
+// The function returns the following values:
+//
+//    - application: newly created AdwApplication.
 //
 func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
 	var _arg1 *C.char             // out
@@ -113,11 +131,16 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 }
 
 // StyleManager gets the style manager for self.
+//
+// The function returns the following values:
+//
+//    - styleManager: style manager.
+//
 func (self *Application) StyleManager() *StyleManager {
 	var _arg0 *C.AdwApplication  // out
 	var _cret *C.AdwStyleManager // in
 
-	_arg0 = (*C.AdwApplication)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwApplication)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_application_get_style_manager(_arg0)
 	runtime.KeepAlive(self)

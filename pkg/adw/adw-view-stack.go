@@ -10,18 +10,26 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-view-stack.go.
+var (
+	GTypeViewStack     = externglib.Type(C.adw_view_stack_get_type())
+	GTypeViewStackPage = externglib.Type(C.adw_view_stack_page_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_view_stack_get_type()), F: marshalViewStacker},
-		{T: externglib.Type(C.adw_view_stack_page_get_type()), F: marshalViewStackPager},
+		{T: GTypeViewStack, F: marshalViewStack},
+		{T: GTypeViewStackPage, F: marshalViewStackPage},
 	})
+}
+
+// ViewStackOverrider contains methods that are overridable.
+type ViewStackOverrider interface {
 }
 
 // ViewStack: view container for viewswitcher.
@@ -70,6 +78,7 @@ func init() {
 //
 // AdwViewStack has a single CSS node named stack.
 type ViewStack struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -77,12 +86,21 @@ var (
 	_ gtk.Widgetter = (*ViewStack)(nil)
 )
 
+func classInitViewStacker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapViewStack(obj *externglib.Object) *ViewStack {
 	return &ViewStack{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -92,16 +110,20 @@ func wrapViewStack(obj *externglib.Object) *ViewStack {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalViewStacker(p uintptr) (interface{}, error) {
+func marshalViewStack(p uintptr) (interface{}, error) {
 	return wrapViewStack(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewStack creates a new AdwViewStack.
+//
+// The function returns the following values:
+//
+//    - viewStack: newly created AdwViewStack.
+//
 func NewViewStack() *ViewStack {
 	var _cret *C.GtkWidget // in
 
@@ -120,13 +142,17 @@ func NewViewStack() *ViewStack {
 //
 //    - child: widget to add.
 //
+// The function returns the following values:
+//
+//    - viewStackPage: viewstackpage for child.
+//
 func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.AdwViewStackPage // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.adw_view_stack_add(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -146,7 +172,11 @@ func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - name for child.
+//    - name (optional) for child.
+//
+// The function returns the following values:
+//
+//    - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -154,8 +184,8 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 	var _arg2 *C.char             // out
 	var _cret *C.AdwViewStackPage // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if name != "" {
 		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -181,8 +211,12 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - name for child.
+//    - name (optional) for child.
 //    - title: human-readable title for child.
+//
+// The function returns the following values:
+//
+//    - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -191,8 +225,8 @@ func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewS
 	var _arg3 *C.char             // out
 	var _cret *C.AdwViewStackPage // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if name != "" {
 		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -219,12 +253,16 @@ func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewS
 //
 //    - name of the child to find.
 //
+// The function returns the following values:
+//
+//    - widget (optional): requested child.
+//
 func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 *C.char         // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -239,9 +277,13 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -251,11 +293,16 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 }
 
 // Hhomogeneous gets whether self is horizontally homogeneous.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is horizontally homogeneous.
+//
 func (self *ViewStack) Hhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_get_hhomogeneous(_arg0)
 	runtime.KeepAlive(self)
@@ -275,13 +322,17 @@ func (self *ViewStack) Hhomogeneous() bool {
 //
 //    - child of self.
 //
+// The function returns the following values:
+//
+//    - viewStackPage: page object for child.
+//
 func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.AdwViewStackPage // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.adw_view_stack_get_page(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -298,11 +349,16 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and change the visible page.
+//
+// The function returns the following values:
+//
+//    - selectionModel: GtkSelectionModel for the stack's children.
+//
 func (self *ViewStack) Pages() gtk.SelectionModeller {
 	var _arg0 *C.AdwViewStack      // out
 	var _cret *C.GtkSelectionModel // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_get_pages(_arg0)
 	runtime.KeepAlive(self)
@@ -316,9 +372,13 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.SelectionModeller)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.SelectionModeller)
+			return ok
+		})
+		rv, ok := casted.(gtk.SelectionModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 		}
 		_selectionModel = rv
 	}
@@ -327,11 +387,16 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 }
 
 // Vhomogeneous gets whether self is vertically homogeneous.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is vertically homogeneous.
+//
 func (self *ViewStack) Vhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_get_vhomogeneous(_arg0)
 	runtime.KeepAlive(self)
@@ -346,11 +411,16 @@ func (self *ViewStack) Vhomogeneous() bool {
 }
 
 // VisibleChild gets the currently visible child of self, .
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child.
+//
 func (self *ViewStack) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_get_visible_child(_arg0)
 	runtime.KeepAlive(self)
@@ -362,9 +432,13 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -374,11 +448,16 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 }
 
 // VisibleChildName returns the name of the currently visible child of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible child.
+//
 func (self *ViewStack) VisibleChildName() string {
 	var _arg0 *C.AdwViewStack // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_get_visible_child_name(_arg0)
 	runtime.KeepAlive(self)
@@ -402,8 +481,8 @@ func (self *ViewStack) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_view_stack_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -420,7 +499,7 @@ func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if hhomogeneous {
 		_arg1 = C.TRUE
 	}
@@ -440,7 +519,7 @@ func (self *ViewStack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if vhomogeneous {
 		_arg1 = C.TRUE
 	}
@@ -460,8 +539,8 @@ func (self *ViewStack) SetVisibleChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.adw_view_stack_set_visible_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -478,7 +557,7 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 	var _arg0 *C.AdwViewStack // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -487,8 +566,13 @@ func (self *ViewStack) SetVisibleChildName(name string) {
 	runtime.KeepAlive(name)
 }
 
+// ViewStackPageOverrider contains methods that are overridable.
+type ViewStackPageOverrider interface {
+}
+
 // ViewStackPage: auxiliary class used by viewstack.
 type ViewStackPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -496,22 +580,35 @@ var (
 	_ externglib.Objector = (*ViewStackPage)(nil)
 )
 
+func classInitViewStackPager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapViewStackPage(obj *externglib.Object) *ViewStackPage {
 	return &ViewStackPage{
 		Object: obj,
 	}
 }
 
-func marshalViewStackPager(p uintptr) (interface{}, error) {
+func marshalViewStackPage(p uintptr) (interface{}, error) {
 	return wrapViewStackPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BadgeNumber gets the badge number for this page.
+//
+// The function returns the following values:
+//
+//    - guint: badge number for this page.
+//
 func (self *ViewStackPage) BadgeNumber() uint {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_badge_number(_arg0)
 	runtime.KeepAlive(self)
@@ -524,11 +621,16 @@ func (self *ViewStackPage) BadgeNumber() uint {
 }
 
 // Child gets the stack child to which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
 func (self *ViewStackPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -542,9 +644,13 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -553,11 +659,16 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 }
 
 // IconName gets the icon name of the page.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name of the page.
+//
 func (self *ViewStackPage) IconName() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -572,11 +683,16 @@ func (self *ViewStackPage) IconName() string {
 }
 
 // Name gets the name of the page.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the page.
+//
 func (self *ViewStackPage) Name() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_name(_arg0)
 	runtime.KeepAlive(self)
@@ -591,11 +707,16 @@ func (self *ViewStackPage) Name() string {
 }
 
 // NeedsAttention gets whether the page is marked as “needs attention”.
+//
+// The function returns the following values:
+//
+//    - ok: whether the page needs attention.
+//
 func (self *ViewStackPage) NeedsAttention() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_needs_attention(_arg0)
 	runtime.KeepAlive(self)
@@ -610,11 +731,16 @@ func (self *ViewStackPage) NeedsAttention() bool {
 }
 
 // Title gets the page title.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): page title.
+//
 func (self *ViewStackPage) Title() string {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -629,11 +755,16 @@ func (self *ViewStackPage) Title() string {
 }
 
 // UseUnderline gets whether underlines in the page title indicate mnemonics.
+//
+// The function returns the following values:
+//
+//    - ok: whether underlines in the page title indicate mnemonics.
+//
 func (self *ViewStackPage) UseUnderline() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -650,11 +781,16 @@ func (self *ViewStackPage) UseUnderline() bool {
 // Visible gets whether self is visible in its AdwViewStack.
 //
 // This is independent from the gtk.Widget:visible property of its widget.
+//
+// The function returns the following values:
+//
+//    - ok: whether self is visible.
+//
 func (self *ViewStackPage) Visible() bool {
 	var _arg0 *C.AdwViewStackPage // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_view_stack_page_get_visible(_arg0)
 	runtime.KeepAlive(self)
@@ -678,7 +814,7 @@ func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.guint             // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(badgeNumber)
 
 	C.adw_view_stack_page_set_badge_number(_arg0, _arg1)
@@ -690,13 +826,13 @@ func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//    - iconName (optional): icon name.
 //
 func (self *ViewStackPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -711,13 +847,13 @@ func (self *ViewStackPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name: page name.
+//    - name (optional): page name.
 //
 func (self *ViewStackPage) SetName(name string) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -738,7 +874,7 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if needsAttention {
 		_arg1 = C.TRUE
 	}
@@ -752,13 +888,13 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: page title.
+//    - title (optional): page title.
 //
 func (self *ViewStackPage) SetTitle(title string) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if title != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -779,7 +915,7 @@ func (self *ViewStackPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}
@@ -799,7 +935,7 @@ func (self *ViewStackPage) SetVisible(visible bool) {
 	var _arg0 *C.AdwViewStackPage // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

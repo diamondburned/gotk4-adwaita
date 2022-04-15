@@ -2,8 +2,6 @@
 
 package adw
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -25,6 +23,11 @@ func Init() {
 
 // IsInitialized: use this function to check if libadwaita has been initialized
 // with init.
+//
+// The function returns the following values:
+//
+//    - ok: initialization status.
+//
 func IsInitialized() bool {
 	var _cret C.gboolean // in
 

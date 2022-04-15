@@ -10,17 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-button-content.go.
+var GTypeButtonContent = externglib.Type(C.adw_button_content_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_button_content_get_type()), F: marshalButtonContenter},
+		{T: GTypeButtonContent, F: marshalButtonContent},
 	})
+}
+
+// ButtonContentOverrider contains methods that are overridable.
+type ButtonContentOverrider interface {
 }
 
 // ButtonContent: helper widget for creating buttons.
@@ -67,6 +72,7 @@ func init() {
 //
 // AdwSplitButton uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ButtonContent struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 }
 
@@ -74,12 +80,21 @@ var (
 	_ gtk.Widgetter = (*ButtonContent)(nil)
 )
 
+func classInitButtonContenter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 	return &ButtonContent{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -89,16 +104,20 @@ func wrapButtonContent(obj *externglib.Object) *ButtonContent {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
 
-func marshalButtonContenter(p uintptr) (interface{}, error) {
+func marshalButtonContent(p uintptr) (interface{}, error) {
 	return wrapButtonContent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewButtonContent creates a new AdwButtonContent.
+//
+// The function returns the following values:
+//
+//    - buttonContent: new created AdwButtonContent.
+//
 func NewButtonContent() *ButtonContent {
 	var _cret *C.GtkWidget // in
 
@@ -112,11 +131,16 @@ func NewButtonContent() *ButtonContent {
 }
 
 // IconName gets the name of the displayed icon.
+//
+// The function returns the following values:
+//
+//    - utf8: icon name.
+//
 func (self *ButtonContent) IconName() string {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_button_content_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -129,11 +153,16 @@ func (self *ButtonContent) IconName() string {
 }
 
 // Label gets the displayed label.
+//
+// The function returns the following values:
+//
+//    - utf8: label.
+//
 func (self *ButtonContent) Label() string {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_button_content_get_label(_arg0)
 	runtime.KeepAlive(self)
@@ -146,11 +175,16 @@ func (self *ButtonContent) Label() string {
 }
 
 // UseUnderline gets whether an underline in the text indicates a mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an underline in the text indicates a mnemonic.
+//
 func (self *ButtonContent) UseUnderline() bool {
 	var _arg0 *C.AdwButtonContent // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_button_content_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -174,7 +208,7 @@ func (self *ButtonContent) SetIconName(iconName string) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -193,7 +227,7 @@ func (self *ButtonContent) SetLabel(label string) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -212,7 +246,7 @@ func (self *ButtonContent) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwButtonContent // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwButtonContent)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

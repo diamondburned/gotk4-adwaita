@@ -11,17 +11,24 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_adw1_SplitButton_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_adw1_SplitButton_ConnectClicked(gpointer, guintptr);
 import "C"
+
+// glib.Type values for adw-split-button.go.
+var GTypeSplitButton = externglib.Type(C.adw_split_button_get_type())
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_split_button_get_type()), F: marshalSplitButtonner},
+		{T: GTypeSplitButton, F: marshalSplitButton},
 	})
+}
+
+// SplitButtonOverrider contains methods that are overridable.
+type SplitButtonOverrider interface {
 }
 
 // SplitButton: combined button and dropdown widget.
@@ -60,10 +67,11 @@ func init() {
 //
 // AdwSplitButton uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type SplitButton struct {
+	_ [0]func() // equal guard
 	gtk.Widget
 
-	gtk.Actionable
 	*externglib.Object
+	gtk.Actionable
 }
 
 var (
@@ -71,12 +79,21 @@ var (
 	_ externglib.Objector = (*SplitButton)(nil)
 )
 
+func classInitSplitButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapSplitButton(obj *externglib.Object) *SplitButton {
 	return &SplitButton{
 		Widget: gtk.Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: gtk.Accessible{
 				Object: obj,
 			},
@@ -86,13 +103,14 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: gtk.Actionable{
 			Widget: gtk.Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: gtk.Accessible{
 					Object: obj,
 				},
@@ -102,18 +120,67 @@ func wrapSplitButton(obj *externglib.Object) *SplitButton {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 
-func marshalSplitButtonner(p uintptr) (interface{}, error) {
+func marshalSplitButton(p uintptr) (interface{}, error) {
 	return wrapSplitButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_adw1_SplitButton_ConnectActivate
+func _gotk4_adw1_SplitButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectActivate is emitted to animate press then release.
+//
+// This is an action signal. Applications should never connect to this signal,
+// but use the splitbutton::clicked signal.
+func (self *SplitButton) ConnectActivate(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_adw1_SplitButton_ConnectActivate), f)
+}
+
+//export _gotk4_adw1_SplitButton_ConnectClicked
+func _gotk4_adw1_SplitButton_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectClicked is emitted when the button has been activated (pressed and
+// released).
+func (self *SplitButton) ConnectClicked(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "clicked", false, unsafe.Pointer(C._gotk4_adw1_SplitButton_ConnectClicked), f)
+}
+
 // NewSplitButton creates a new AdwSplitButton.
+//
+// The function returns the following values:
+//
+//    - splitButton: newly created AdwSplitButton.
+//
 func NewSplitButton() *SplitButton {
 	var _cret *C.GtkWidget // in
 
@@ -127,11 +194,16 @@ func NewSplitButton() *SplitButton {
 }
 
 // Child gets the child widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget.
+//
 func (self *SplitButton) Child() gtk.Widgetter {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -143,9 +215,13 @@ func (self *SplitButton) Child() gtk.Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gtk.Widgetter)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -155,11 +231,16 @@ func (self *SplitButton) Child() gtk.Widgetter {
 }
 
 // Direction gets the direction in which the popup will be popped up.
+//
+// The function returns the following values:
+//
+//    - arrowType: direction.
+//
 func (self *SplitButton) Direction() gtk.ArrowType {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret C.GtkArrowType    // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_direction(_arg0)
 	runtime.KeepAlive(self)
@@ -175,11 +256,16 @@ func (self *SplitButton) Direction() gtk.ArrowType {
 //
 // If the icon name has not been set with splitbutton.SetIconName the return
 // value will be NULL.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name.
+//
 func (self *SplitButton) IconName() string {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -194,11 +280,16 @@ func (self *SplitButton) IconName() string {
 }
 
 // Label gets the label for self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): label for self.
+//
 func (self *SplitButton) Label() string {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_label(_arg0)
 	runtime.KeepAlive(self)
@@ -213,11 +304,16 @@ func (self *SplitButton) Label() string {
 }
 
 // MenuModel gets the menu model from which the popup will be created.
+//
+// The function returns the following values:
+//
+//    - menuModel (optional): menu model.
+//
 func (self *SplitButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_menu_model(_arg0)
 	runtime.KeepAlive(self)
@@ -229,9 +325,13 @@ func (self *SplitButton) MenuModel() gio.MenuModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.MenuModeller)
+				return ok
+			})
+			rv, ok := casted.(gio.MenuModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
 			}
 			_menuModel = rv
 		}
@@ -241,11 +341,16 @@ func (self *SplitButton) MenuModel() gio.MenuModeller {
 }
 
 // Popover gets the popover that will be popped up when the dropdown is clicked.
+//
+// The function returns the following values:
+//
+//    - popover (optional): popover.
+//
 func (self *SplitButton) Popover() *gtk.Popover {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret *C.GtkPopover     // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_popover(_arg0)
 	runtime.KeepAlive(self)
@@ -260,6 +365,7 @@ func (self *SplitButton) Popover() *gtk.Popover {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: gtk.Accessible{
 						Object: obj,
 					},
@@ -269,13 +375,14 @@ func (self *SplitButton) Popover() *gtk.Popover {
 					ConstraintTarget: gtk.ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: gtk.Accessible{
 							Object: obj,
 						},
@@ -285,13 +392,11 @@ func (self *SplitButton) Popover() *gtk.Popover {
 						ConstraintTarget: gtk.ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 				ShortcutManager: gtk.ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			}
 		}
 	}
@@ -300,11 +405,16 @@ func (self *SplitButton) Popover() *gtk.Popover {
 }
 
 // UseUnderline gets whether an underline in the text indicates a mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: whether an underline in the text indicates a mnemonic.
+//
 func (self *SplitButton) UseUnderline() bool {
 	var _arg0 *C.AdwSplitButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_split_button_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -322,7 +432,7 @@ func (self *SplitButton) UseUnderline() bool {
 func (self *SplitButton) Popdown() {
 	var _arg0 *C.AdwSplitButton // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_split_button_popdown(_arg0)
 	runtime.KeepAlive(self)
@@ -332,7 +442,7 @@ func (self *SplitButton) Popdown() {
 func (self *SplitButton) Popup() {
 	var _arg0 *C.AdwSplitButton // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.adw_split_button_popup(_arg0)
 	runtime.KeepAlive(self)
@@ -342,15 +452,15 @@ func (self *SplitButton) Popup() {
 //
 // The function takes the following parameters:
 //
-//    - child: new child widget.
+//    - child (optional): new child widget.
 //
 func (self *SplitButton) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.adw_split_button_set_child(_arg0, _arg1)
@@ -368,7 +478,7 @@ func (self *SplitButton) SetDirection(direction gtk.ArrowType) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 C.GtkArrowType    // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkArrowType(direction)
 
 	C.adw_split_button_set_direction(_arg0, _arg1)
@@ -387,7 +497,7 @@ func (self *SplitButton) SetIconName(iconName string) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -406,7 +516,7 @@ func (self *SplitButton) SetLabel(label string) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -419,15 +529,15 @@ func (self *SplitButton) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - menuModel: menu model.
+//    - menuModel (optional): menu model.
 //
 func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if menuModel != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(menuModel).Native()))
 	}
 
 	C.adw_split_button_set_menu_model(_arg0, _arg1)
@@ -440,15 +550,15 @@ func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - popover: popover.
+//    - popover (optional): popover.
 //
 func (self *SplitButton) SetPopover(popover *gtk.Popover) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 *C.GtkPopover     // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if popover != nil {
-		_arg1 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
+		_arg1 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
 	}
 
 	C.adw_split_button_set_popover(_arg0, _arg1)
@@ -466,7 +576,7 @@ func (self *SplitButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwSplitButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}
@@ -474,18 +584,4 @@ func (self *SplitButton) SetUseUnderline(useUnderline bool) {
 	C.adw_split_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(useUnderline)
-}
-
-// ConnectActivate: emitted to animate press then release.
-//
-// This is an action signal. Applications should never connect to this signal,
-// but use the splitbutton::clicked signal.
-func (self *SplitButton) ConnectActivate(f func()) externglib.SignalHandle {
-	return self.Connect("activate", f)
-}
-
-// ConnectClicked: emitted when the button has been activated (pressed and
-// released).
-func (self *SplitButton) ConnectClicked(f func()) externglib.SignalHandle {
-	return self.Connect("clicked", f)
 }

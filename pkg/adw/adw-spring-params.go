@@ -10,16 +10,17 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-spring-params.go.
+var GTypeSpringParams = externglib.Type(C.adw_spring_params_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_spring_params_get_type()), F: marshalSpringParams},
+		{T: GTypeSpringParams, F: marshalSpringParams},
 	})
 }
 
@@ -127,6 +128,11 @@ func NewSpringParamsFull(damping float64, mass float64, stiffness float64) *Spri
 }
 
 // Damping gets the damping of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: damping.
+//
 func (self *SpringParams) Damping() float64 {
 	var _arg0 *C.AdwSpringParams // out
 	var _cret C.double           // in
@@ -144,6 +150,11 @@ func (self *SpringParams) Damping() float64 {
 }
 
 // DampingRatio gets the damping ratio of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: damping ratio.
+//
 func (self *SpringParams) DampingRatio() float64 {
 	var _arg0 *C.AdwSpringParams // out
 	var _cret C.double           // in
@@ -161,6 +172,11 @@ func (self *SpringParams) DampingRatio() float64 {
 }
 
 // Mass gets the mass of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: mass.
+//
 func (self *SpringParams) Mass() float64 {
 	var _arg0 *C.AdwSpringParams // out
 	var _cret C.double           // in
@@ -178,6 +194,11 @@ func (self *SpringParams) Mass() float64 {
 }
 
 // Stiffness gets the stiffness of self.
+//
+// The function returns the following values:
+//
+//    - gdouble: stiffness.
+//
 func (self *SpringParams) Stiffness() float64 {
 	var _arg0 *C.AdwSpringParams // out
 	var _cret C.double           // in

@@ -10,22 +10,31 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: libadwaita-1
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for adw-enum-list-model.go.
+var (
+	GTypeEnumListItem  = externglib.Type(C.adw_enum_list_item_get_type())
+	GTypeEnumListModel = externglib.Type(C.adw_enum_list_model_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.adw_enum_list_item_get_type()), F: marshalEnumListItemmer},
-		{T: externglib.Type(C.adw_enum_list_model_get_type()), F: marshalEnumListModeller},
+		{T: GTypeEnumListItem, F: marshalEnumListItem},
+		{T: GTypeEnumListModel, F: marshalEnumListModel},
 	})
+}
+
+// EnumListItemOverrider contains methods that are overridable.
+type EnumListItemOverrider interface {
 }
 
 // EnumListItem: AdwEnumListItem is the type of items in a enumlistmodel.
 type EnumListItem struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 }
 
@@ -33,22 +42,35 @@ var (
 	_ externglib.Objector = (*EnumListItem)(nil)
 )
 
+func classInitEnumListItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapEnumListItem(obj *externglib.Object) *EnumListItem {
 	return &EnumListItem{
 		Object: obj,
 	}
 }
 
-func marshalEnumListItemmer(p uintptr) (interface{}, error) {
+func marshalEnumListItem(p uintptr) (interface{}, error) {
 	return wrapEnumListItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Name gets the enum value name.
+//
+// The function returns the following values:
+//
+//    - utf8: enum value name.
+//
 func (self *EnumListItem) Name() string {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_enum_list_item_get_name(_arg0)
 	runtime.KeepAlive(self)
@@ -61,11 +83,16 @@ func (self *EnumListItem) Name() string {
 }
 
 // Nick gets the enum value nick.
+//
+// The function returns the following values:
+//
+//    - utf8: enum value nick.
+//
 func (self *EnumListItem) Nick() string {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_enum_list_item_get_nick(_arg0)
 	runtime.KeepAlive(self)
@@ -78,11 +105,16 @@ func (self *EnumListItem) Nick() string {
 }
 
 // Value gets the enum value.
+//
+// The function returns the following values:
+//
+//    - gint: enum value.
+//
 func (self *EnumListItem) Value() int {
 	var _arg0 *C.AdwEnumListItem // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwEnumListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_enum_list_item_get_value(_arg0)
 	runtime.KeepAlive(self)
@@ -94,10 +126,15 @@ func (self *EnumListItem) Value() int {
 	return _gint
 }
 
+// EnumListModelOverrider contains methods that are overridable.
+type EnumListModelOverrider interface {
+}
+
 // EnumListModel: gio.ListModel representing values of a given enum.
 //
 // AdwEnumListModel contains objects of type enumlistitem.
 type EnumListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
@@ -106,6 +143,14 @@ type EnumListModel struct {
 var (
 	_ externglib.Objector = (*EnumListModel)(nil)
 )
+
+func classInitEnumListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEnumListModel(obj *externglib.Object) *EnumListModel {
 	return &EnumListModel{
@@ -116,7 +161,7 @@ func wrapEnumListModel(obj *externglib.Object) *EnumListModel {
 	}
 }
 
-func marshalEnumListModeller(p uintptr) (interface{}, error) {
+func marshalEnumListModel(p uintptr) (interface{}, error) {
 	return wrapEnumListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -125,6 +170,10 @@ func marshalEnumListModeller(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - enumType: type of the enum to construct the model from.
+//
+// The function returns the following values:
+//
+//    - enumListModel: newly created AdwEnumListModel.
 //
 func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 	var _arg1 C.GType             // out
@@ -148,12 +197,14 @@ func NewEnumListModel(enumType externglib.Type) *EnumListModel {
 //
 //    - value: enum value.
 //
+// The function returns the following values:
+//
 func (self *EnumListModel) FindPosition(value int) uint {
 	var _arg0 *C.AdwEnumListModel // out
 	var _arg1 C.int               // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.AdwEnumListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwEnumListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(value)
 
 	_cret = C.adw_enum_list_model_find_position(_arg0, _arg1)
@@ -168,11 +219,16 @@ func (self *EnumListModel) FindPosition(value int) uint {
 }
 
 // EnumType gets the type of the enum represented by self.
+//
+// The function returns the following values:
+//
+//    - gType: enum type.
+//
 func (self *EnumListModel) EnumType() externglib.Type {
 	var _arg0 *C.AdwEnumListModel // out
 	var _cret C.GType             // in
 
-	_arg0 = (*C.AdwEnumListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.AdwEnumListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.adw_enum_list_model_get_enum_type(_arg0)
 	runtime.KeepAlive(self)
