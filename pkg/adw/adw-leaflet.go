@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
@@ -568,7 +569,7 @@ func (self *Leaflet) Page(child gtk.Widgetter) *LeafletPage {
 //
 //    - selectionModel: GtkSelectionModel for the leaflet's children.
 //
-func (self *Leaflet) Pages() gtk.SelectionModeller {
+func (self *Leaflet) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwLeaflet        // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -577,24 +578,15 @@ func (self *Leaflet) Pages() gtk.SelectionModeller {
 	_cret = C.adw_leaflet_get_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel gtk.SelectionModeller // out
+	var _selectionModel *gtk.SelectionModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.SelectionModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_selectionModel = &gtk.SelectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gtk.SelectionModeller)
-			return ok
-		})
-		rv, ok := casted.(gtk.SelectionModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
-		}
-		_selectionModel = rv
 	}
 
 	return _selectionModel

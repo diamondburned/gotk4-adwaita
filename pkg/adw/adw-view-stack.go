@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
@@ -354,7 +355,7 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 //
 //    - selectionModel: GtkSelectionModel for the stack's children.
 //
-func (self *ViewStack) Pages() gtk.SelectionModeller {
+func (self *ViewStack) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwViewStack      // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -363,24 +364,15 @@ func (self *ViewStack) Pages() gtk.SelectionModeller {
 	_cret = C.adw_view_stack_get_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel gtk.SelectionModeller // out
+	var _selectionModel *gtk.SelectionModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.SelectionModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_selectionModel = &gtk.SelectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gtk.SelectionModeller)
-			return ok
-		})
-		rv, ok := casted.(gtk.SelectionModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
-		}
-		_selectionModel = rv
 	}
 
 	return _selectionModel

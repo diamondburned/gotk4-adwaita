@@ -94,6 +94,9 @@ type SwipeableOverrider interface {
 // The AdwSwipeable interface is implemented by all swipeable widgets.
 //
 // See swipetracker for details about implementing it.
+//
+// Swipeable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Swipeable struct {
 	_ [0]func() // equal guard
 	gtk.Widget

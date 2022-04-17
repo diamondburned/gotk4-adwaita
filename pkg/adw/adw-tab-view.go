@@ -112,7 +112,7 @@ func (self *TabPage) Child() gtk.Widgetter {
 //
 //    - icon (optional) of self.
 //
-func (self *TabPage) Icon() gio.Iconner {
+func (self *TabPage) Icon() *gio.Icon {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.GIcon      // in
 
@@ -121,22 +121,14 @@ func (self *TabPage) Icon() gio.Iconner {
 	_cret = C.adw_tab_page_get_icon(_arg0)
 	runtime.KeepAlive(self)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 
@@ -173,7 +165,7 @@ func (self *TabPage) IndicatorActivatable() bool {
 //
 //    - icon (optional): indicator icon of self.
 //
-func (self *TabPage) IndicatorIcon() gio.Iconner {
+func (self *TabPage) IndicatorIcon() *gio.Icon {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.GIcon      // in
 
@@ -182,22 +174,14 @@ func (self *TabPage) IndicatorIcon() gio.Iconner {
 	_cret = C.adw_tab_page_get_indicator_icon(_arg0)
 	runtime.KeepAlive(self)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 
@@ -1073,7 +1057,7 @@ func (self *TabView) ClosePagesBefore(page *TabPage) {
 //
 //    - icon: default icon of self.
 //
-func (self *TabView) DefaultIcon() gio.Iconner {
+func (self *TabView) DefaultIcon() *gio.Icon {
 	var _arg0 *C.AdwTabView // out
 	var _cret *C.GIcon      // in
 
@@ -1082,24 +1066,13 @@ func (self *TabView) DefaultIcon() gio.Iconner {
 	_cret = C.adw_tab_view_get_default_icon(_arg0)
 	runtime.KeepAlive(self)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
-			return ok
-		})
-		rv, ok := casted.(gio.Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
 	}
 
 	return _icon
@@ -1306,7 +1279,7 @@ func (self *TabView) PagePosition(page *TabPage) int {
 //
 //    - selectionModel: GtkSelectionModel for the pages of self.
 //
-func (self *TabView) Pages() gtk.SelectionModeller {
+func (self *TabView) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwTabView        // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -1315,24 +1288,15 @@ func (self *TabView) Pages() gtk.SelectionModeller {
 	_cret = C.adw_tab_view_get_pages(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel gtk.SelectionModeller // out
+	var _selectionModel *gtk.SelectionModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.SelectionModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_selectionModel = &gtk.SelectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gtk.SelectionModeller)
-			return ok
-		})
-		rv, ok := casted.(gtk.SelectionModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
-		}
-		_selectionModel = rv
 	}
 
 	return _selectionModel

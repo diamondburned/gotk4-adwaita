@@ -195,7 +195,7 @@ func (self *StatusPage) IconName() string {
 //
 //    - paintable (optional): paintable.
 //
-func (self *StatusPage) Paintable() gdk.Paintabler {
+func (self *StatusPage) Paintable() *gdk.Paintable {
 	var _arg0 *C.AdwStatusPage // out
 	var _cret *C.GdkPaintable  // in
 
@@ -204,22 +204,14 @@ func (self *StatusPage) Paintable() gdk.Paintabler {
 	_cret = C.adw_status_page_get_paintable(_arg0)
 	runtime.KeepAlive(self)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.Paintabler)
-				return ok
-			})
-			rv, ok := casted.(gdk.Paintabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_paintable = &gdk.Paintable{
+				Object: obj,
 			}
-			_paintable = rv
 		}
 	}
 

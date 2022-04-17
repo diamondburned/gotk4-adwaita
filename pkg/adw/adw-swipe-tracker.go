@@ -309,7 +309,7 @@ func (self *SwipeTracker) Reversed() bool {
 //
 //    - swipeable widget.
 //
-func (self *SwipeTracker) Swipeable() Swipeabler {
+func (self *SwipeTracker) Swipeable() *Swipeable {
 	var _arg0 *C.AdwSwipeTracker // out
 	var _cret *C.AdwSwipeable    // in
 
@@ -318,25 +318,9 @@ func (self *SwipeTracker) Swipeable() Swipeabler {
 	_cret = C.adw_swipe_tracker_get_swipeable(_arg0)
 	runtime.KeepAlive(self)
 
-	var _swipeable Swipeabler // out
+	var _swipeable *Swipeable // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type adw.Swipeabler is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Swipeabler)
-			return ok
-		})
-		rv, ok := casted.(Swipeabler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching adw.Swipeabler")
-		}
-		_swipeable = rv
-	}
+	_swipeable = wrapSwipeable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _swipeable
 }
