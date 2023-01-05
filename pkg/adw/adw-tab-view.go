@@ -6,133 +6,68 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
-// extern AdwTabView* _gotk4_adw1_TabView_ConnectCreateWindow(gpointer, guintptr);
-// extern gboolean _gotk4_adw1_TabView_ConnectClosePage(gpointer, AdwTabPage*, guintptr);
-// extern void _gotk4_adw1_TabView_ConnectIndicatorActivated(gpointer, AdwTabPage*, guintptr);
-// extern void _gotk4_adw1_TabView_ConnectPageAttached(gpointer, AdwTabPage*, gint, guintptr);
-// extern void _gotk4_adw1_TabView_ConnectPageDetached(gpointer, AdwTabPage*, gint, guintptr);
-// extern void _gotk4_adw1_TabView_ConnectPageReordered(gpointer, AdwTabPage*, gint, guintptr);
-// extern void _gotk4_adw1_TabView_ConnectSetupMenu(gpointer, AdwTabPage*, guintptr);
 import "C"
 
-// glib.Type values for adw-tab-view.go.
+// GType values.
 var (
-	GTypeTabPage = externglib.Type(C.adw_tab_page_get_type())
-	GTypeTabView = externglib.Type(C.adw_tab_view_get_type())
+	GTypeTabPage = coreglib.Type(C.adw_tab_page_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: GTypeTabPage, F: marshalTabPage},
-		{T: GTypeTabView, F: marshalTabView},
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTabPage, F: marshalTabPage},
 	})
 }
 
-// TabPageOverrider contains methods that are overridable.
-type TabPageOverrider interface {
+// TabPageOverrides contains methods that are overridable.
+type TabPageOverrides struct {
+}
+
+func defaultTabPageOverrides(v *TabPage) TabPageOverrides {
+	return TabPageOverrides{}
 }
 
 // TabPage: auxiliary class used by tabview.
 type TabPage struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*TabPage)(nil)
+	_ coreglib.Objector = (*TabPage)(nil)
 )
 
-func classInitTabPager(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func init() {
+	coreglib.RegisterClassInfo[*TabPage, *TabPageClass, TabPageOverrides](
+		GTypeTabPage,
+		initTabPageClass,
+		wrapTabPage,
+		defaultTabPageOverrides,
+	)
 }
 
-func wrapTabPage(obj *externglib.Object) *TabPage {
+func initTabPageClass(gclass unsafe.Pointer, overrides TabPageOverrides, classInitFunc func(*TabPageClass)) {
+	if classInitFunc != nil {
+		class := (*TabPageClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapTabPage(obj *coreglib.Object) *TabPage {
 	return &TabPage{
 		Object: obj,
 	}
 }
 
 func marshalTabPage(p uintptr) (interface{}, error) {
-	return wrapTabPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Child gets the child of self.
-//
-// The function returns the following values:
-//
-//    - widget: child of self.
-//
-func (self *TabPage) Child() gtk.Widgetter {
-	var _arg0 *C.AdwTabPage // out
-	var _cret *C.GtkWidget  // in
-
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_page_get_child(_arg0)
-	runtime.KeepAlive(self)
-
-	var _widget gtk.Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gtk.Widgetter)
-			return ok
-		})
-		rv, ok := casted.(gtk.Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	return _widget
-}
-
-// Icon gets the icon of self.
-//
-// The function returns the following values:
-//
-//    - icon (optional) of self.
-//
-func (self *TabPage) Icon() *gio.Icon {
-	var _arg0 *C.AdwTabPage // out
-	var _cret *C.GIcon      // in
-
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_page_get_icon(_arg0)
-	runtime.KeepAlive(self)
-
-	var _icon *gio.Icon // out
-
-	if _cret != nil {
-		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
-			_icon = &gio.Icon{
-				Object: obj,
-			}
-		}
-	}
-
-	return _icon
+	return wrapTabPage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // IndicatorActivatable gets whether the indicator of self is activatable.
@@ -145,7 +80,7 @@ func (self *TabPage) IndicatorActivatable() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_indicator_activatable(_arg0)
 	runtime.KeepAlive(self)
@@ -159,35 +94,6 @@ func (self *TabPage) IndicatorActivatable() bool {
 	return _ok
 }
 
-// IndicatorIcon gets the indicator icon of self.
-//
-// The function returns the following values:
-//
-//    - icon (optional): indicator icon of self.
-//
-func (self *TabPage) IndicatorIcon() *gio.Icon {
-	var _arg0 *C.AdwTabPage // out
-	var _cret *C.GIcon      // in
-
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_page_get_indicator_icon(_arg0)
-	runtime.KeepAlive(self)
-
-	var _icon *gio.Icon // out
-
-	if _cret != nil {
-		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
-			_icon = &gio.Icon{
-				Object: obj,
-			}
-		}
-	}
-
-	return _icon
-}
-
 // Loading gets whether self is loading.
 //
 // The function returns the following values:
@@ -198,7 +104,7 @@ func (self *TabPage) Loading() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_loading(_arg0)
 	runtime.KeepAlive(self)
@@ -222,7 +128,7 @@ func (self *TabPage) NeedsAttention() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_needs_attention(_arg0)
 	runtime.KeepAlive(self)
@@ -246,7 +152,7 @@ func (self *TabPage) Parent() *TabPage {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.AdwTabPage // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_parent(_arg0)
 	runtime.KeepAlive(self)
@@ -254,7 +160,7 @@ func (self *TabPage) Parent() *TabPage {
 	var _tabPage *TabPage // out
 
 	if _cret != nil {
-		_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
+		_tabPage = wrapTabPage(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _tabPage
@@ -270,7 +176,7 @@ func (self *TabPage) Pinned() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_pinned(_arg0)
 	runtime.KeepAlive(self)
@@ -294,7 +200,7 @@ func (self *TabPage) Selected() bool {
 	var _arg0 *C.AdwTabPage // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_selected(_arg0)
 	runtime.KeepAlive(self)
@@ -318,7 +224,7 @@ func (self *TabPage) Title() string {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -340,7 +246,7 @@ func (self *TabPage) Tooltip() string {
 	var _arg0 *C.AdwTabPage // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_tab_page_get_tooltip(_arg0)
 	runtime.KeepAlive(self)
@@ -354,26 +260,6 @@ func (self *TabPage) Tooltip() string {
 	return _utf8
 }
 
-// SetIcon sets the icon of self.
-//
-// The function takes the following parameters:
-//
-//    - icon (optional) of self.
-//
-func (self *TabPage) SetIcon(icon gio.Iconner) {
-	var _arg0 *C.AdwTabPage // out
-	var _arg1 *C.GIcon      // out
-
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	if icon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
-	}
-
-	C.adw_tab_page_set_icon(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(icon)
-}
-
 // SetIndicatorActivatable sets whether the indicator of self is activatable.
 //
 // The function takes the following parameters:
@@ -384,7 +270,7 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if activatable {
 		_arg1 = C.TRUE
 	}
@@ -392,26 +278,6 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	C.adw_tab_page_set_indicator_activatable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activatable)
-}
-
-// SetIndicatorIcon sets the indicator icon of self.
-//
-// The function takes the following parameters:
-//
-//    - indicatorIcon (optional): indicator icon of self.
-//
-func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
-	var _arg0 *C.AdwTabPage // out
-	var _arg1 *C.GIcon      // out
-
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	if indicatorIcon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(indicatorIcon).Native()))
-	}
-
-	C.adw_tab_page_set_indicator_icon(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(indicatorIcon)
 }
 
 // SetLoading sets wether self is loading.
@@ -424,7 +290,7 @@ func (self *TabPage) SetLoading(loading bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if loading {
 		_arg1 = C.TRUE
 	}
@@ -444,7 +310,7 @@ func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if needsAttention {
 		_arg1 = C.TRUE
 	}
@@ -464,7 +330,7 @@ func (self *TabPage) SetTitle(title string) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -483,7 +349,7 @@ func (self *TabPage) SetTooltip(tooltip string) {
 	var _arg0 *C.AdwTabPage // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -492,1313 +358,22 @@ func (self *TabPage) SetTooltip(tooltip string) {
 	runtime.KeepAlive(tooltip)
 }
 
-// TabViewOverrider contains methods that are overridable.
-type TabViewOverrider interface {
+// TabPageClass: instance of this type is always passed by reference.
+type TabPageClass struct {
+	*tabPageClass
 }
 
-// TabView: dynamic tabbed container.
-//
-// AdwTabView is a container which shows one child at a time. While it provides
-// keyboard shortcuts for switching between pages, it does not provide a visible
-// tab bar and relies on external widgets for that, such as tabbar.
-//
-// AdwTabView maintains a tabpage object for each page, which holds additional
-// per-page properties. You can obtain the AdwTabPage for a page with
-// tabview.GetPage, and as the return value for tabview.Append and other
-// functions for adding children.
-//
-// AdwTabView only aims to be useful for dynamic tabs in multi-window
-// document-based applications, such as web browsers, file managers, text
-// editors or terminals. It does not aim to replace gtk.Notebook for use cases
-// such as tabbed dialogs.
-//
-// As such, it does not support disabling page reordering or detaching.
-//
-// AdwTabView adds the following shortcuts in the managed scope:
-//
-// * Ctrl+Page Up - switch to the previous page * Ctrl+Page Down - switch to the
-// next page * Ctrl+Home - switch to the first page * Ctrl+End - switch to the
-// last page * Ctrl+Shift+Page Up - move the current page backward *
-// Ctrl+Shift+Page Down - move the current page forward * Ctrl+Shift+Home - move
-// the current page at the start * Ctrl+Shift+End - move the current page at the
-// end * Ctrl+Tab - switch to the next page, with looping * Ctrl+Shift+Tab -
-// switch to the previous page, with looping * Alt+1-9 - switch to pages 1-9 *
-// Alt+0 - switch to page 10
-//
-//
-// CSS nodes
-//
-// AdwTabView has a main CSS node with the name tabview.
-type TabView struct {
-	_ [0]func() // equal guard
-	gtk.Widget
+// tabPageClass is the struct that's finalized.
+type tabPageClass struct {
+	native *C.AdwTabPageClass
 }
 
-var (
-	_ gtk.Widgetter = (*TabView)(nil)
-)
-
-func classInitTabViewer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+// TabViewClass: instance of this type is always passed by reference.
+type TabViewClass struct {
+	*tabViewClass
 }
 
-func wrapTabView(obj *externglib.Object) *TabView {
-	return &TabView{
-		Widget: gtk.Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
-				Object: obj,
-			},
-			Object: obj,
-			Accessible: gtk.Accessible{
-				Object: obj,
-			},
-			Buildable: gtk.Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: gtk.ConstraintTarget{
-				Object: obj,
-			},
-		},
-	}
-}
-
-func marshalTabView(p uintptr) (interface{}, error) {
-	return wrapTabView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_adw1_TabView_ConnectClosePage
-func _gotk4_adw1_TabView_ConnectClosePage(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(page *TabPage) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage) (ok bool))
-	}
-
-	var _page *TabPage // out
-
-	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-
-	ok := f(_page)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ConnectClosePage is emitted after tabview.ClosePage has been called for page.
-//
-// The handler is expected to call tabview.ClosePageFinish to confirm or reject
-// the closing.
-//
-// The default handler will immediately confirm closing for non-pinned pages, or
-// reject it for pinned pages, equivalent to the following example:
-//
-//    static gboolean
-//    close_page_cb (AdwTabView *view,
-//                   AdwTabPage *page,
-//                   gpointer    user_data)
-//    {
-//      adw_tab_view_close_page_finish (view, page, !adw_tab_page_get_pinned (page));
-//
-//      return GDK_EVENT_STOP;
-//    }
-//
-//
-// The tabview.ClosePageFinish call doesn't have to happen inside the handler,
-// so can be used to do asynchronous checks before confirming the closing.
-//
-// A typical reason to connect to this signal is to show a confirmation dialog
-// for closing a tab.
-func (self *TabView) ConnectClosePage(f func(page *TabPage) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "close-page", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectClosePage), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectCreateWindow
-func _gotk4_adw1_TabView_ConnectCreateWindow(arg0 C.gpointer, arg1 C.guintptr) (cret *C.AdwTabView) {
-	var f func() (tabView *TabView)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (tabView *TabView))
-	}
-
-	tabView := f()
-
-	if tabView != nil {
-		cret = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(tabView).Native()))
-	}
-
-	return cret
-}
-
-// ConnectCreateWindow is emitted when a tab should be transferred into a new
-// window.
-//
-// This can happen after a tab has been dropped on desktop.
-//
-// The signal handler is expected to create a new window, position it as needed
-// and return its AdwTabView that the page will be transferred into.
-func (self *TabView) ConnectCreateWindow(f func() (tabView *TabView)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "create-window", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectCreateWindow), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectIndicatorActivated
-func _gotk4_adw1_TabView_ConnectIndicatorActivated(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.guintptr) {
-	var f func(page *TabPage)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage))
-	}
-
-	var _page *TabPage // out
-
-	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-
-	f(_page)
-}
-
-// ConnectIndicatorActivated is emitted after the indicator icon on page has
-// been activated.
-//
-// See tabpage:indicator-icon and tabpage:indicator-activatable.
-func (self *TabView) ConnectIndicatorActivated(f func(page *TabPage)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "indicator-activated", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectIndicatorActivated), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectPageAttached
-func _gotk4_adw1_TabView_ConnectPageAttached(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.gint, arg3 C.guintptr) {
-	var f func(page *TabPage, position int)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage, position int))
-	}
-
-	var _page *TabPage // out
-	var _position int  // out
-
-	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-	_position = int(arg2)
-
-	f(_page, _position)
-}
-
-// ConnectPageAttached is emitted when a page has been created or transferred to
-// self.
-//
-// A typical reason to connect to this signal would be to connect to page
-// signals for things such as updating window title.
-func (self *TabView) ConnectPageAttached(f func(page *TabPage, position int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "page-attached", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectPageAttached), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectPageDetached
-func _gotk4_adw1_TabView_ConnectPageDetached(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.gint, arg3 C.guintptr) {
-	var f func(page *TabPage, position int)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage, position int))
-	}
-
-	var _page *TabPage // out
-	var _position int  // out
-
-	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-	_position = int(arg2)
-
-	f(_page, _position)
-}
-
-// ConnectPageDetached is emitted when a page has been removed or transferred to
-// another view.
-//
-// A typical reason to connect to this signal would be to disconnect signal
-// handlers connected in the tabview::page-attached handler.
-//
-// It is important not to try and destroy the page child in the handler of this
-// function as the child might merely be moved to another window; use child
-// dispose handler for that or do it in sync with your tabview.ClosePageFinish
-// calls.
-func (self *TabView) ConnectPageDetached(f func(page *TabPage, position int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "page-detached", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectPageDetached), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectPageReordered
-func _gotk4_adw1_TabView_ConnectPageReordered(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.gint, arg3 C.guintptr) {
-	var f func(page *TabPage, position int)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage, position int))
-	}
-
-	var _page *TabPage // out
-	var _position int  // out
-
-	_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-	_position = int(arg2)
-
-	f(_page, _position)
-}
-
-// ConnectPageReordered is emitted after page has been reordered to position.
-func (self *TabView) ConnectPageReordered(f func(page *TabPage, position int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "page-reordered", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectPageReordered), f)
-}
-
-//export _gotk4_adw1_TabView_ConnectSetupMenu
-func _gotk4_adw1_TabView_ConnectSetupMenu(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.guintptr) {
-	var f func(page *TabPage)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page *TabPage))
-	}
-
-	var _page *TabPage // out
-
-	if arg1 != nil {
-		_page = wrapTabPage(externglib.Take(unsafe.Pointer(arg1)))
-	}
-
-	f(_page)
-}
-
-// ConnectSetupMenu is emitted when a context menu is opened or closed for page.
-//
-// If the menu has been closed, page will be set to NULL.
-//
-// It can be used to set up menu actions before showing the menu, for example
-// disable actions not applicable to page.
-func (self *TabView) ConnectSetupMenu(f func(page *TabPage)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "setup-menu", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectSetupMenu), f)
-}
-
-// NewTabView creates a new AdwTabView.
-//
-// The function returns the following values:
-//
-//    - tabView: newly created AdwTabView.
-//
-func NewTabView() *TabView {
-	var _cret *C.AdwTabView // in
-
-	_cret = C.adw_tab_view_new()
-
-	var _tabView *TabView // out
-
-	_tabView = wrapTabView(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabView
-}
-
-// AddPage adds child to self with parent as the parent.
-//
-// This function can be used to automatically position new pages, and to select
-// the correct page when this page is closed while being selected (see
-// tabview.ClosePage).
-//
-// If parent is NULL, this function is equivalent to tabview.Append.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//    - parent (optional) page for child.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 *C.AdwTabPage // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-	if parent != nil {
-		_arg2 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(parent).Native()))
-	}
-
-	_cret = C.adw_tab_view_add_page(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(parent)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// Append inserts child as the last non-pinned page.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) Append(child gtk.Widgetter) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	_cret = C.adw_tab_view_append(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// AppendPinned inserts child as the last pinned page.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	_cret = C.adw_tab_view_append_pinned(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// CloseOtherPages requests to close all pages other than page.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-func (self *TabView) CloseOtherPages(page *TabPage) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	C.adw_tab_view_close_other_pages(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-}
-
-// ClosePage requests to close page.
-//
-// Calling this function will result in the tabview::close-page signal being
-// emitted for page. Closing the page can then be confirmed or denied via
-// tabview.ClosePageFinish.
-//
-// If the page is waiting for a tabview.ClosePageFinish call, this function will
-// do nothing.
-//
-// The default handler for tabview::close-page will immediately confirm closing
-// the page if it's non-pinned, or reject it if it's pinned. This behavior can
-// be changed by registering your own handler for that signal.
-//
-// If page was selected, another page will be selected instead:
-//
-// If the tabpage:parent value is NULL, the next page will be selected when
-// possible, or if the page was already last, the previous page will be selected
-// instead.
-//
-// If it's not NULL, the previous page will be selected if it's a descendant
-// (possibly indirect) of the parent. If both the previous page and the parent
-// are pinned, the parent will be selected instead.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-func (self *TabView) ClosePage(page *TabPage) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	C.adw_tab_view_close_page(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-}
-
-// ClosePageFinish completes a tabview.ClosePage call for page.
-//
-// If confirm is TRUE, page will be closed. If it's FALSE, it will be reverted
-// to its previous state and tabview.ClosePage can be called for it again.
-//
-// This function should not be called unless a custom handler for
-// tabview::close-page is used.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//    - confirm: whether to confirm or deny closing page.
-//
-func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _arg2 C.gboolean    // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-	if confirm {
-		_arg2 = C.TRUE
-	}
-
-	C.adw_tab_view_close_page_finish(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-	runtime.KeepAlive(confirm)
-}
-
-// ClosePagesAfter requests to close all pages after page.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-func (self *TabView) ClosePagesAfter(page *TabPage) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	C.adw_tab_view_close_pages_after(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-}
-
-// ClosePagesBefore requests to close all pages before page.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-func (self *TabView) ClosePagesBefore(page *TabPage) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	C.adw_tab_view_close_pages_before(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-}
-
-// DefaultIcon gets the default icon of self.
-//
-// The function returns the following values:
-//
-//    - icon: default icon of self.
-//
-func (self *TabView) DefaultIcon() *gio.Icon {
-	var _arg0 *C.AdwTabView // out
-	var _cret *C.GIcon      // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_default_icon(_arg0)
-	runtime.KeepAlive(self)
-
-	var _icon *gio.Icon // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
-
-	return _icon
-}
-
-// IsTransferringPage: whether a page is being transferred.
-//
-// The function returns the following values:
-//
-//    - ok: whether a page is being transferred.
-//
-func (self *TabView) IsTransferringPage() bool {
-	var _arg0 *C.AdwTabView // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_is_transferring_page(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// MenuModel gets the tab context menu model for self.
-//
-// The function returns the following values:
-//
-//    - menuModel (optional): tab context menu model for self.
-//
-func (self *TabView) MenuModel() gio.MenuModeller {
-	var _arg0 *C.AdwTabView // out
-	var _cret *C.GMenuModel // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_menu_model(_arg0)
-	runtime.KeepAlive(self)
-
-	var _menuModel gio.MenuModeller // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.MenuModeller)
-				return ok
-			})
-			rv, ok := casted.(gio.MenuModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
-			}
-			_menuModel = rv
-		}
-	}
-
-	return _menuModel
-}
-
-// NPages gets the number of pages in self.
-//
-// The function returns the following values:
-//
-//    - gint: number of pages in self.
-//
-func (self *TabView) NPages() int {
-	var _arg0 *C.AdwTabView // out
-	var _cret C.int         // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_n_pages(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// NPinnedPages gets the number of pinned pages in self.
-//
-// The function returns the following values:
-//
-//    - gint: number of pinned pages in self.
-//
-func (self *TabView) NPinnedPages() int {
-	var _arg0 *C.AdwTabView // out
-	var _cret C.int         // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_n_pinned_pages(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// NthPage gets the tabpage representing the child at position.
-//
-// The function takes the following parameters:
-//
-//    - position: index of the page in self, starting from 0.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object at position.
-//
-func (self *TabView) NthPage(position int) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 C.int         // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.int(position)
-
-	_cret = C.adw_tab_view_get_nth_page(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(position)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// Page gets the tabpage object representing child.
-//
-// The function takes the following parameters:
-//
-//    - child in self.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object for child.
-//
-func (self *TabView) Page(child gtk.Widgetter) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	_cret = C.adw_tab_view_get_page(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// PagePosition finds the position of page in self, starting from 0.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-// The function returns the following values:
-//
-//    - gint: position of page in self.
-//
-func (self *TabView) PagePosition(page *TabPage) int {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _cret C.int         // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	_cret = C.adw_tab_view_get_page_position(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Pages returns a gio.ListModel that contains the pages of self.
-//
-// This can be used to keep an up-to-date view. The model also implements
-// gtk.SelectionModel and can be used to track and change the selected page.
-//
-// The function returns the following values:
-//
-//    - selectionModel: GtkSelectionModel for the pages of self.
-//
-func (self *TabView) Pages() *gtk.SelectionModel {
-	var _arg0 *C.AdwTabView        // out
-	var _cret *C.GtkSelectionModel // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_pages(_arg0)
-	runtime.KeepAlive(self)
-
-	var _selectionModel *gtk.SelectionModel // out
-
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_selectionModel = &gtk.SelectionModel{
-			ListModel: gio.ListModel{
-				Object: obj,
-			},
-		}
-	}
-
-	return _selectionModel
-}
-
-// SelectedPage gets the currently selected page in self.
-//
-// The function returns the following values:
-//
-//    - tabPage (optional): selected page.
-//
-func (self *TabView) SelectedPage() *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_get_selected_page(_arg0)
-	runtime.KeepAlive(self)
-
-	var _tabPage *TabPage // out
-
-	if _cret != nil {
-		_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _tabPage
-}
-
-// Insert inserts a non-pinned page at position.
-//
-// It's an error to try to insert a page before a pinned page, in that case
-// tabview.InsertPinned should be used instead.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//    - position to add child at, starting from 0.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.int         // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-	_arg2 = C.int(position)
-
-	_cret = C.adw_tab_view_insert(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(position)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// InsertPinned inserts a pinned page at position.
-//
-// It's an error to try to insert a pinned page after a non-pinned page, in that
-// case tabview.Insert should be used instead.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//    - position to add child at, starting from 0.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.int         // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-	_arg2 = C.int(position)
-
-	_cret = C.adw_tab_view_insert_pinned(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(position)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// Prepend inserts child as the first non-pinned page.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	_cret = C.adw_tab_view_prepend(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// PrependPinned inserts child as the first pinned page.
-//
-// The function takes the following parameters:
-//
-//    - child: widget to add.
-//
-// The function returns the following values:
-//
-//    - tabPage: page object representing child.
-//
-func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.AdwTabPage // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	_cret = C.adw_tab_view_prepend_pinned(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-
-	var _tabPage *TabPage // out
-
-	_tabPage = wrapTabPage(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _tabPage
-}
-
-// ReorderBackward reorders page to before its previous page if possible.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-// The function returns the following values:
-//
-//    - ok: whether page was moved.
-//
-func (self *TabView) ReorderBackward(page *TabPage) bool {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	_cret = C.adw_tab_view_reorder_backward(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ReorderFirst reorders page to the first possible position.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-// The function returns the following values:
-//
-//    - ok: whether page was moved.
-//
-func (self *TabView) ReorderFirst(page *TabPage) bool {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	_cret = C.adw_tab_view_reorder_first(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ReorderForward reorders page to after its next page if possible.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-// The function returns the following values:
-//
-//    - ok: whether page was moved.
-//
-func (self *TabView) ReorderForward(page *TabPage) bool {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	_cret = C.adw_tab_view_reorder_forward(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ReorderLast reorders page to the last possible position.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//
-// The function returns the following values:
-//
-//    - ok: whether page was moved.
-//
-func (self *TabView) ReorderLast(page *TabPage) bool {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-
-	_cret = C.adw_tab_view_reorder_last(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ReorderPage reorders page to position.
-//
-// It's a programmer error to try to reorder a pinned page after a non-pinned
-// one, or a non-pinned page before a pinned one.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//    - position to insert the page at, starting at 0.
-//
-// The function returns the following values:
-//
-//    - ok: whether page was moved.
-//
-func (self *TabView) ReorderPage(page *TabPage, position int) bool {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _arg2 C.int         // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-	_arg2 = C.int(position)
-
-	_cret = C.adw_tab_view_reorder_page(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-	runtime.KeepAlive(position)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SelectNextPage selects the page after the currently selected page.
-//
-// If the last page was already selected, this function does nothing.
-//
-// The function returns the following values:
-//
-//    - ok: whether the selected page was changed.
-//
-func (self *TabView) SelectNextPage() bool {
-	var _arg0 *C.AdwTabView // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_select_next_page(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SelectPreviousPage selects the page before the currently selected page.
-//
-// If the first page was already selected, this function does nothing.
-//
-// The function returns the following values:
-//
-//    - ok: whether the selected page was changed.
-//
-func (self *TabView) SelectPreviousPage() bool {
-	var _arg0 *C.AdwTabView // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_tab_view_select_previous_page(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetDefaultIcon sets the default page icon for self.
-//
-// The function takes the following parameters:
-//
-//    - defaultIcon: default icon.
-//
-func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GIcon      // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(defaultIcon).Native()))
-
-	C.adw_tab_view_set_default_icon(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(defaultIcon)
-}
-
-// SetMenuModel sets the tab context menu model for self.
-//
-// The function takes the following parameters:
-//
-//    - menuModel (optional): menu model.
-//
-func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.GMenuModel // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	if menuModel != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(menuModel).Native()))
-	}
-
-	C.adw_tab_view_set_menu_model(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(menuModel)
-}
-
-// SetPagePinned pins or unpins page.
-//
-// Pinned pages are guaranteed to be placed before all non-pinned pages; at any
-// given moment the first tabview:n-pinned-pages pages in self are guaranteed to
-// be pinned.
-//
-// When a page is pinned or unpinned, it's automatically reordered: pinning a
-// page moves it after other pinned pages; unpinning a page moves it before
-// other non-pinned pages.
-//
-// Pinned pages can still be reordered between each other.
-//
-// tabbar will display pinned pages in a compact form, never showing the title
-// or close button, and only showing a single icon, selected in the following
-// order:
-//
-// 1. tabpage:indicator-icon 2. A spinner if tabpage:loading is TRUE 3.
-// tabpage:icon 4. tabview:default-icon
-//
-// Pinned pages cannot be closed by default, see tabview::close-page for how to
-// override that behavior.
-//
-// Changes the value of the tabpage:pinned property.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//    - pinned: whether page should be pinned.
-//
-func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _arg2 C.gboolean    // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-	if pinned {
-		_arg2 = C.TRUE
-	}
-
-	C.adw_tab_view_set_page_pinned(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-	runtime.KeepAlive(pinned)
-}
-
-// SetSelectedPage sets the currently selected page in self.
-//
-// The function takes the following parameters:
-//
-//    - selectedPage: page in self.
-//
-func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(selectedPage).Native()))
-
-	C.adw_tab_view_set_selected_page(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(selectedPage)
-}
-
-// TransferPage transfers page from self to other_view.
-//
-// The page object will be reused.
-//
-// It's a programmer error to try to insert a pinned page after a non-pinned
-// one, or a non-pinned page before a pinned one.
-//
-// The function takes the following parameters:
-//
-//    - page of self.
-//    - otherView: tab view to transfer the page to.
-//    - position to insert the page at, starting at 0.
-//
-func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int) {
-	var _arg0 *C.AdwTabView // out
-	var _arg1 *C.AdwTabPage // out
-	var _arg2 *C.AdwTabView // out
-	var _arg3 C.int         // out
-
-	_arg0 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.AdwTabPage)(unsafe.Pointer(externglib.InternObject(page).Native()))
-	_arg2 = (*C.AdwTabView)(unsafe.Pointer(externglib.InternObject(otherView).Native()))
-	_arg3 = C.int(position)
-
-	C.adw_tab_view_transfer_page(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(page)
-	runtime.KeepAlive(otherView)
-	runtime.KeepAlive(position)
+// tabViewClass is the struct that's finalized.
+type tabViewClass struct {
+	native *C.AdwTabViewClass
 }

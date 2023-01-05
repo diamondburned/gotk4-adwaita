@@ -2,156 +2,17 @@
 
 package adw
 
-import (
-	"runtime"
-	"unsafe"
-
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-)
-
 // #include <stdlib.h>
 // #include <adwaita.h>
-// #include <glib-object.h>
 import "C"
 
-// glib.Type values for adw-carousel-indicator-lines.go.
-var GTypeCarouselIndicatorLines = externglib.Type(C.adw_carousel_indicator_lines_get_type())
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: GTypeCarouselIndicatorLines, F: marshalCarouselIndicatorLines},
-	})
+// CarouselIndicatorLinesClass: instance of this type is always passed by
+// reference.
+type CarouselIndicatorLinesClass struct {
+	*carouselIndicatorLinesClass
 }
 
-// CarouselIndicatorLinesOverrider contains methods that are overridable.
-type CarouselIndicatorLinesOverrider interface {
-}
-
-// CarouselIndicatorLines lines indicator for carousel.
-//
-// <picture> <source srcset="carousel-indicator-dots-lines.png"
-// media="(prefers-color-scheme: dark)"> <img src="carousel-indicator-lines.png"
-// alt="carousel-indicator-lines"> </picture>
-//
-// The AdwCarouselIndicatorLines widget shows a set of lines for each page of a
-// given carousel. The carousel's active page is shown as another line that
-// moves between them to match the carousel's position.
-//
-// See also carouselindicatordots.
-//
-//
-// CSS nodes
-//
-// AdwCarouselIndicatorLines has a single CSS node with name
-// carouselindicatorlines.
-type CarouselIndicatorLines struct {
-	_ [0]func() // equal guard
-	gtk.Widget
-
-	*externglib.Object
-	gtk.Orientable
-}
-
-var (
-	_ gtk.Widgetter       = (*CarouselIndicatorLines)(nil)
-	_ externglib.Objector = (*CarouselIndicatorLines)(nil)
-)
-
-func classInitCarouselIndicatorLinesser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
-
-func wrapCarouselIndicatorLines(obj *externglib.Object) *CarouselIndicatorLines {
-	return &CarouselIndicatorLines{
-		Widget: gtk.Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
-				Object: obj,
-			},
-			Object: obj,
-			Accessible: gtk.Accessible{
-				Object: obj,
-			},
-			Buildable: gtk.Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: gtk.ConstraintTarget{
-				Object: obj,
-			},
-		},
-		Object: obj,
-		Orientable: gtk.Orientable{
-			Object: obj,
-		},
-	}
-}
-
-func marshalCarouselIndicatorLines(p uintptr) (interface{}, error) {
-	return wrapCarouselIndicatorLines(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewCarouselIndicatorLines creates a new AdwCarouselIndicatorLines.
-//
-// The function returns the following values:
-//
-//    - carouselIndicatorLines: newly created AdwCarouselIndicatorLines.
-//
-func NewCarouselIndicatorLines() *CarouselIndicatorLines {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.adw_carousel_indicator_lines_new()
-
-	var _carouselIndicatorLines *CarouselIndicatorLines // out
-
-	_carouselIndicatorLines = wrapCarouselIndicatorLines(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _carouselIndicatorLines
-}
-
-// Carousel gets the displayed carousel.
-//
-// The function returns the following values:
-//
-//    - carousel (optional): displayed carousel.
-//
-func (self *CarouselIndicatorLines) Carousel() *Carousel {
-	var _arg0 *C.AdwCarouselIndicatorLines // out
-	var _cret *C.AdwCarousel               // in
-
-	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.adw_carousel_indicator_lines_get_carousel(_arg0)
-	runtime.KeepAlive(self)
-
-	var _carousel *Carousel // out
-
-	if _cret != nil {
-		_carousel = wrapCarousel(externglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _carousel
-}
-
-// SetCarousel sets the displayed carousel.
-//
-// The function takes the following parameters:
-//
-//    - carousel (optional): carousel.
-//
-func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
-	var _arg0 *C.AdwCarouselIndicatorLines // out
-	var _arg1 *C.AdwCarousel               // out
-
-	_arg0 = (*C.AdwCarouselIndicatorLines)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	if carousel != nil {
-		_arg1 = (*C.AdwCarousel)(unsafe.Pointer(externglib.InternObject(carousel).Native()))
-	}
-
-	C.adw_carousel_indicator_lines_set_carousel(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(carousel)
+// carouselIndicatorLinesClass is the struct that's finalized.
+type carouselIndicatorLinesClass struct {
+	native *C.AdwCarouselIndicatorLinesClass
 }

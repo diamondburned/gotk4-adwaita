@@ -3,67 +3,63 @@ package main
 //go:generate go run . -o ./pkg/
 
 import (
-	"flag"
-	"log"
-	"os"
+	"path"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/gendata"
-	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genutil"
+	"github.com/diamondburned/gotk4/gir/cmd/gir-generate/gendata"
+	"github.com/diamondburned/gotk4/gir/cmd/gir-generate/genmain"
 	"github.com/diamondburned/gotk4/gir/girgen"
 )
 
-var (
-	output  string
-	listPkg bool
-)
-
-func init() {
-	flag.StringVar(&output, "o", "", "output directory to mkdir in")
-	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
-	flag.Parse()
-
-	if !listPkg && output == "" {
-		log.Fatalln("Missing -o output directory.")
-	}
+func main() {
+	genmain.Run(Data)
 }
 
-func main() {
-	var repos gir.Repositories
+const (
+	gotk4Module   = "github.com/diamondburned/gotk4/pkg"
+	adwaitaModule = "github.com/diamondburned/gotk4-adwaita/pkg"
+)
 
-	// Load all of gotk4's packages first.
-	genutil.MustAddPackages(&repos, gendata.Packages)
-	// Get a map of exteral imports for packages that gotk4 already generates.
-	overrides := genutil.LoadExternOverrides(gotk4Module, repos)
+var Data = genmain.Data{
+	Module: adwaitaModule,
+	ExternOverrides: map[string]gir.Repositories{
+		gotk4Module: genmain.MustLoadPackages(gendata.Packages),
+	},
+	Packages: []genmain.Package{
+		{Name: "libadwaita-1"},
+	},
+	PkgGenerated: []string{"adw"},
+	PkgExceptions: []string{
+		"go.mod",
+		"go.sum",
+		"LICENSE",
+		"_examples",
+	},
+	Postprocessors: map[string][]girgen.Postprocessor{
+		"Adw-1": {AdwInitPreserveTheme},
+	},
+}
 
-	// Add our own packages in.
-	genutil.MustAddPackages(&repos, packages)
-	// Dump the added packages down.
-	genutil.PrintAddedPkgs(repos)
+func AdwInitPreserveTheme(nsgen *girgen.NamespaceGenerator) error {
+	fg := nsgen.MakeFile("adw-init.go")
 
-	if listPkg {
-		return
-	}
+	h := fg.Header()
+	h.Import(path.Join(gotk4Module, "gtk", "v4"))
 
-	gen := girgen.NewGenerator(repos, genutil.ModulePath(adwaitaModule, overrides))
-	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
-	gen.AddFilters(gendata.Filters)
-	gen.AddFilters(filters)
-	gen.AddPostprocessors(postprocessors)
-	gen.ApplyPreprocessors(gendata.Preprocessors)
-
-	if err := genutil.CleanDirectory(output, pkgExceptions); err != nil {
-		log.Fatalln("failed to clean output directory:", err)
-	}
-
-	if errors := genutil.GeneratePackages(gen, output, packages); len(errors) > 0 {
-		for _, err := range errors {
-			log.Println("generation error:", err)
+	p := fg.Pen()
+	p.Line(`
+		// Init calls adw.Init then restores the user's theme preference. This
+		// function prevents adw.Init from overriding the user's theme to
+		// Adwaita.
+		//
+		// For more information, see
+		// https://gitlab.gnome.org/GNOME/libadwaita/-/issues/215.
+		func InitPreserveTheme() {
+			Init()
+			settings := gtk.SettingsGetDefault()
+			settings.ResetProperty("gtk-theme-name")
 		}
-		os.Exit(1)
-	}
+	`)
 
-	if err := genutil.EnsureDirectory(output, pkgExceptions, pkgGenerated); err != nil {
-		log.Fatalln("error verifying generation:", err)
-	}
+	return nil
 }

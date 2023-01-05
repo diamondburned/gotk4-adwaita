@@ -6,21 +6,6 @@ package adw
 // #include <adwaita.h>
 import "C"
 
-// Init initializes Libadwaita.
-//
-// This function can be used instead of gtk.Init() as it initializes GTK
-// implicitly.
-//
-// There's no need to call this function if you're using application.
-//
-// If Libadwaita has already been initialized, the function will simply return.
-//
-// This makes sure translations, types, themes, and icons for the Adwaita
-// library are set up properly.
-func Init() {
-	C.adw_init()
-}
-
 // IsInitialized: use this function to check if libadwaita has been initialized
 // with init.
 //
