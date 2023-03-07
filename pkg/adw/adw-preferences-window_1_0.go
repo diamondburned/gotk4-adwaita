@@ -96,7 +96,7 @@ func wrapPreferencesWindow(obj *coreglib.Object) *PreferencesWindow {
 				},
 				Object: obj,
 				Root: gtk.Root{
-					Native: gtk.Native{
+					NativeSurface: gtk.NativeSurface{
 						Widget: gtk.Widget{
 							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,

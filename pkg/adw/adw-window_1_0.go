@@ -106,7 +106,7 @@ func wrapWindow(obj *coreglib.Object) *Window {
 			},
 			Object: obj,
 			Root: gtk.Root{
-				Native: gtk.Native{
+				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,

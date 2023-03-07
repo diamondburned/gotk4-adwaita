@@ -360,7 +360,7 @@ func (self *SplitButton) Popover() *gtk.Popover {
 					},
 				},
 				Object: obj,
-				Native: gtk.Native{
+				NativeSurface: gtk.NativeSurface{
 					Widget: gtk.Widget{
 						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
