@@ -2,9 +2,7 @@ module github.com/diamondburned/gotk4-adwaita
 
 go 1.18
 
-replace github.com/diamondburned/gotk4 => ../gotk4
-
-require github.com/diamondburned/gotk4 v0.0.5-0.20230307013122-e86c9b44a4bf
+require github.com/diamondburned/gotk4 v0.0.5-0.20230307032110-f039f7d27450
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
