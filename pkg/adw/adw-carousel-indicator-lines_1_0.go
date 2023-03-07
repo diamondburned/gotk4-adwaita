@@ -41,14 +41,13 @@ func defaultCarouselIndicatorLinesOverrides(v *CarouselIndicatorLines) CarouselI
 // media="(prefers-color-scheme: dark)"> <img src="carousel-indicator-lines.png"
 // alt="carousel-indicator-lines"> </picture>
 //
-// The AdwCarouselIndicatorLines widget shows a set of lines for each page of a
-// given carousel. The carousel's active page is shown as another line that
+// The AdwCarouselIndicatorLines widget shows a set of lines for each page of
+// a given carousel. The carousel's active page is shown as another line that
 // moves between them to match the carousel's position.
 //
 // See also carouselindicatordots.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwCarouselIndicatorLines has a single CSS node with name
 // carouselindicatorlines.
@@ -113,7 +112,7 @@ func marshalCarouselIndicatorLines(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - carouselIndicatorLines: newly created AdwCarouselIndicatorLines.
+//   - carouselIndicatorLines: newly created AdwCarouselIndicatorLines.
 //
 func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 	var _cret *C.GtkWidget // in
@@ -131,7 +130,7 @@ func NewCarouselIndicatorLines() *CarouselIndicatorLines {
 //
 // The function returns the following values:
 //
-//    - carousel (optional): displayed carousel.
+//   - carousel (optional): displayed carousel.
 //
 func (self *CarouselIndicatorLines) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorLines // out
@@ -155,7 +154,7 @@ func (self *CarouselIndicatorLines) Carousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - carousel (optional): carousel.
+//   - carousel (optional): carousel.
 //
 func (self *CarouselIndicatorLines) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorLines // out

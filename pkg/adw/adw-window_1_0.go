@@ -57,9 +57,8 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 //      </property>
 //    </object>
 //
-//
-// Using gtk.Window.GetTitlebar() and gtk.Window.SetTitlebar() is not supported
-// and will result in a crash.
+// Using gtk.Window:titlebar or gtk.Window:child is not supported and will
+// result in a crash. Use window:content instead.
 type Window struct {
 	_ [0]func() // equal guard
 	gtk.Window
@@ -139,7 +138,7 @@ func marshalWindow(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - window: newly created AdwWindow.
+//   - window: newly created AdwWindow.
 //
 func NewWindow() *Window {
 	var _cret *C.GtkWidget // in
@@ -159,7 +158,7 @@ func NewWindow() *Window {
 //
 // The function returns the following values:
 //
-//    - widget (optional): content widget of self.
+//   - widget (optional): content widget of self.
 //
 func (self *Window) Content() gtk.Widgetter {
 	var _arg0 *C.AdwWindow // out
@@ -198,7 +197,7 @@ func (self *Window) Content() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - content (optional) widget.
+//   - content (optional) widget.
 //
 func (self *Window) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwWindow // out

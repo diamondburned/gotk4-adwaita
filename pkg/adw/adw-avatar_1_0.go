@@ -53,8 +53,7 @@ func defaultAvatarOverrides(v *Avatar) AvatarOverrides {
 //
 // Use avatar:custom-image to set a custom image.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwAvatar has a single CSS node with name avatar.
 type Avatar struct {
@@ -110,13 +109,13 @@ func marshalAvatar(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - size of the avatar.
-//    - text (optional) used to get the initials and color.
-//    - showInitials: whether to use initials instead of an icon as fallback.
+//   - size of the avatar.
+//   - text (optional) used to get the initials and color.
+//   - showInitials: whether to use initials instead of an icon as fallback.
 //
 // The function returns the following values:
 //
-//    - avatar: newly created AdwAvatar.
+//   - avatar: newly created AdwAvatar.
 //
 func NewAvatar(size int, text string, showInitials bool) *Avatar {
 	var _arg1 C.int        // out
@@ -151,11 +150,11 @@ func NewAvatar(size int, text string, showInitials bool) *Avatar {
 //
 // The function takes the following parameters:
 //
-//    - scaleFactor: scale factor.
+//   - scaleFactor: scale factor.
 //
 // The function returns the following values:
 //
-//    - texture: texture.
+//   - texture: texture.
 //
 func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
 	var _arg0 *C.AdwAvatar  // out
@@ -196,7 +195,7 @@ func (self *Avatar) DrawToTexture(scaleFactor int) gdk.Texturer {
 //
 // The function returns the following values:
 //
-//    - paintable (optional): custom image.
+//   - paintable (optional): custom image.
 //
 func (self *Avatar) CustomImage() *gdk.Paintable {
 	var _arg0 *C.AdwAvatar    // out
@@ -225,7 +224,7 @@ func (self *Avatar) CustomImage() *gdk.Paintable {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name.
+//   - utf8 (optional): icon name.
 //
 func (self *Avatar) IconName() string {
 	var _arg0 *C.AdwAvatar // out
@@ -250,7 +249,7 @@ func (self *Avatar) IconName() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether initials are used instead of an icon as fallback.
+//   - ok: whether initials are used instead of an icon as fallback.
 //
 func (self *Avatar) ShowInitials() bool {
 	var _arg0 *C.AdwAvatar // out
@@ -274,7 +273,7 @@ func (self *Avatar) ShowInitials() bool {
 //
 // The function returns the following values:
 //
-//    - gint: size of the avatar.
+//   - gint: size of the avatar.
 //
 func (self *Avatar) Size() int {
 	var _arg0 *C.AdwAvatar // out
@@ -296,7 +295,7 @@ func (self *Avatar) Size() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text used to generate the fallback initials and color.
+//   - utf8 (optional): text used to generate the fallback initials and color.
 //
 func (self *Avatar) Text() string {
 	var _arg0 *C.AdwAvatar // out
@@ -318,9 +317,11 @@ func (self *Avatar) Text() string {
 
 // SetCustomImage sets the custom image paintable.
 //
+// Custom image is displayed instead of initials or icon.
+//
 // The function takes the following parameters:
 //
-//    - customImage (optional): custom image.
+//   - customImage (optional): custom image.
 //
 func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 	var _arg0 *C.AdwAvatar    // out
@@ -342,7 +343,7 @@ func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (self *Avatar) SetIconName(iconName string) {
 	var _arg0 *C.AdwAvatar // out
@@ -362,9 +363,11 @@ func (self *Avatar) SetIconName(iconName string) {
 // SetShowInitials sets whether to use initials instead of an icon on the
 // fallback avatar.
 //
+// See avatar:icon-name for how to change the fallback icon.
+//
 // The function takes the following parameters:
 //
-//    - showInitials: whether to use initials instead of an icon as fallback.
+//   - showInitials: whether to use initials instead of an icon as fallback.
 //
 func (self *Avatar) SetShowInitials(showInitials bool) {
 	var _arg0 *C.AdwAvatar // out
@@ -384,7 +387,7 @@ func (self *Avatar) SetShowInitials(showInitials bool) {
 //
 // The function takes the following parameters:
 //
-//    - size of the avatar.
+//   - size of the avatar.
 //
 func (self *Avatar) SetSize(size int) {
 	var _arg0 *C.AdwAvatar // out
@@ -400,9 +403,11 @@ func (self *Avatar) SetSize(size int) {
 
 // SetText sets the text used to generate the fallback initials and color.
 //
+// It's only used to generate the color if avatar:show-initials is FALSE.
+//
 // The function takes the following parameters:
 //
-//    - text (optional) used to get the initials and color.
+//   - text (optional) used to get the initials and color.
 //
 func (self *Avatar) SetText(text string) {
 	var _arg0 *C.AdwAvatar // out

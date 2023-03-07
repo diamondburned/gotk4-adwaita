@@ -61,24 +61,19 @@ func defaultTabViewOverrides(v *TabView) TabViewOverrides {
 //
 // As such, it does not support disabling page reordering or detaching.
 //
-// AdwTabView adds the following shortcuts in the managed scope:
+// AdwTabView adds a number of global page switching and reordering shortcuts.
+// The tabview:shortcuts property can be used to manage them.
 //
-// * <kbd>Ctrl</kbd>+<kbd>Page Up</kbd> - switch to the previous page *
-// <kbd>Ctrl</kbd>+<kbd>Page Down</kbd> - switch to the next page *
-// <kbd>Ctrl</kbd>+<kbd>Home</kbd> - switch to the first page *
-// <kbd>Ctrl</kbd>+<kbd>End</kbd> - switch to the last page *
-// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Page Up</kbd> - move the current page
-// backward * <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Page Down</kbd> - move the
-// current page forward * <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Home</kbd> -
-// move the current page at the start *
-// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>End</kbd> - move the current page at
-// the end * <kbd>Ctrl</kbd>+<kbd>Tab</kbd> - switch to the next page, with
-// looping * <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd> - switch to the
-// previous page, with looping * <kbd>Alt</kbd>+<kbd>1</kbd>⋯<kbd>9</kbd> -
-// switch to pages 1-9 * <kbd>Alt</kbd>+<kbd>0</kbd> - switch to page 10
+// See tabviewshortcuts for the list of the available shortcuts. All of the
+// shortcuts are enabled by default.
 //
+// tabview.AddShortcuts and tabview.RemoveShortcuts can be used to manage
+// shortcuts in a convenient way, for example:
 //
-// CSS nodes
+//    adw_tab_view_remove_shortcuts (view, ADW_TAB_VIEW_SHORTCUT_CONTROL_HOME |
+//                                         ADW_TAB_VIEW_SHORTCUT_CONTROL_END);
+//
+// # CSS nodes
 //
 // AdwTabView has a main CSS node with the name tabview.
 type TabView struct {
@@ -135,8 +130,8 @@ func marshalTabView(p uintptr) (interface{}, error) {
 // The handler is expected to call tabview.ClosePageFinish to confirm or reject
 // the closing.
 //
-// The default handler will immediately confirm closing for non-pinned pages, or
-// reject it for pinned pages, equivalent to the following example:
+// The default handler will immediately confirm closing for non-pinned pages,
+// or reject it for pinned pages, equivalent to the following example:
 //
 //    static gboolean
 //    close_page_cb (AdwTabView *view,
@@ -147,7 +142,6 @@ func marshalTabView(p uintptr) (interface{}, error) {
 //
 //      return GDK_EVENT_STOP;
 //    }
-//
 //
 // The tabview.ClosePageFinish call doesn't have to happen inside the handler,
 // so can be used to do asynchronous checks before confirming the closing.
@@ -219,7 +213,7 @@ func (self *TabView) ConnectSetupMenu(f func(page *TabPage)) coreglib.SignalHand
 //
 // The function returns the following values:
 //
-//    - tabView: newly created AdwTabView.
+//   - tabView: newly created AdwTabView.
 //
 func NewTabView() *TabView {
 	var _cret *C.AdwTabView // in
@@ -235,20 +229,20 @@ func NewTabView() *TabView {
 
 // AddPage adds child to self with parent as the parent.
 //
-// This function can be used to automatically position new pages, and to select
-// the correct page when this page is closed while being selected (see
+// This function can be used to automatically position new pages, and to
+// select the correct page when this page is closed while being selected (see
 // tabview.ClosePage).
 //
 // If parent is NULL, this function is equivalent to tabview.Append.
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - parent (optional) page for child.
+//   - child: widget to add.
+//   - parent (optional) page for child.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -274,15 +268,35 @@ func (self *TabView) AddPage(child gtk.Widgetter, parent *TabPage) *TabPage {
 	return _tabPage
 }
 
+// AddShortcuts adds shortcuts for self.
+//
+// See tabview:shortcuts for details.
+//
+// The function takes the following parameters:
+//
+//   - shortcuts to add.
+//
+func (self *TabView) AddShortcuts(shortcuts TabViewShortcuts) {
+	var _arg0 *C.AdwTabView         // out
+	var _arg1 C.AdwTabViewShortcuts // out
+
+	_arg0 = (*C.AdwTabView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.AdwTabViewShortcuts(shortcuts)
+
+	C.adw_tab_view_add_shortcuts(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(shortcuts)
+}
+
 // Append inserts child as the last non-pinned page.
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -307,11 +321,11 @@ func (self *TabView) Append(child gtk.Widgetter) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -336,7 +350,7 @@ func (self *TabView) AppendPinned(child gtk.Widgetter) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 func (self *TabView) CloseOtherPages(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
@@ -375,7 +389,7 @@ func (self *TabView) CloseOtherPages(page *TabPage) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 func (self *TabView) ClosePage(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
@@ -399,8 +413,8 @@ func (self *TabView) ClosePage(page *TabPage) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
-//    - confirm: whether to confirm or deny closing page.
+//   - page of self.
+//   - confirm: whether to confirm or deny closing page.
 //
 func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
 	var _arg0 *C.AdwTabView // out
@@ -423,7 +437,7 @@ func (self *TabView) ClosePageFinish(page *TabPage, confirm bool) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 func (self *TabView) ClosePagesAfter(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
@@ -441,7 +455,7 @@ func (self *TabView) ClosePagesAfter(page *TabPage) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 func (self *TabView) ClosePagesBefore(page *TabPage) {
 	var _arg0 *C.AdwTabView // out
@@ -459,7 +473,7 @@ func (self *TabView) ClosePagesBefore(page *TabPage) {
 //
 // The function returns the following values:
 //
-//    - icon: default icon of self.
+//   - icon: default icon of self.
 //
 func (self *TabView) DefaultIcon() *gio.Icon {
 	var _arg0 *C.AdwTabView // out
@@ -484,9 +498,15 @@ func (self *TabView) DefaultIcon() *gio.Icon {
 
 // IsTransferringPage: whether a page is being transferred.
 //
+// The corresponding property will be set to TRUE when a drag-n-drop tab
+// transfer starts on any AdwTabView, and to FALSE after it ends.
+//
+// During the transfer, children cannot receive pointer input and a tab can be
+// safely dropped on the tab view.
+//
 // The function returns the following values:
 //
-//    - ok: whether a page is being transferred.
+//   - ok: whether a page is being transferred.
 //
 func (self *TabView) IsTransferringPage() bool {
 	var _arg0 *C.AdwTabView // out
@@ -510,7 +530,7 @@ func (self *TabView) IsTransferringPage() bool {
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): tab context menu model for self.
+//   - menuModel (optional): tab context menu model for self.
 //
 func (self *TabView) MenuModel() gio.MenuModeller {
 	var _arg0 *C.AdwTabView // out
@@ -547,7 +567,7 @@ func (self *TabView) MenuModel() gio.MenuModeller {
 //
 // The function returns the following values:
 //
-//    - gint: number of pages in self.
+//   - gint: number of pages in self.
 //
 func (self *TabView) NPages() int {
 	var _arg0 *C.AdwTabView // out
@@ -567,9 +587,11 @@ func (self *TabView) NPages() int {
 
 // NPinnedPages gets the number of pinned pages in self.
 //
+// See tabview.SetPagePinned.
+//
 // The function returns the following values:
 //
-//    - gint: number of pinned pages in self.
+//   - gint: number of pinned pages in self.
 //
 func (self *TabView) NPinnedPages() int {
 	var _arg0 *C.AdwTabView // out
@@ -591,11 +613,11 @@ func (self *TabView) NPinnedPages() int {
 //
 // The function takes the following parameters:
 //
-//    - position: index of the page in self, starting from 0.
+//   - position: index of the page in self, starting from 0.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object at position.
+//   - tabPage: page object at position.
 //
 func (self *TabView) NthPage(position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -620,11 +642,11 @@ func (self *TabView) NthPage(position int) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child in self.
+//   - child in self.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object for child.
+//   - tabPage: page object for child.
 //
 func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -649,11 +671,11 @@ func (self *TabView) Page(child gtk.Widgetter) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 // The function returns the following values:
 //
-//    - gint: position of page in self.
+//   - gint: position of page in self.
 //
 func (self *TabView) PagePosition(page *TabPage) int {
 	var _arg0 *C.AdwTabView // out
@@ -681,7 +703,7 @@ func (self *TabView) PagePosition(page *TabPage) int {
 //
 // The function returns the following values:
 //
-//    - selectionModel: GtkSelectionModel for the pages of self.
+//   - selectionModel: GtkSelectionModel for the pages of self.
 //
 func (self *TabView) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwTabView        // out
@@ -710,7 +732,7 @@ func (self *TabView) Pages() *gtk.SelectionModel {
 //
 // The function returns the following values:
 //
-//    - tabPage (optional): selected page.
+//   - tabPage (optional): selected page.
 //
 func (self *TabView) SelectedPage() *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -730,6 +752,28 @@ func (self *TabView) SelectedPage() *TabPage {
 	return _tabPage
 }
 
+// Shortcuts gets the enabled shortcuts for self.
+//
+// The function returns the following values:
+//
+//   - tabViewShortcuts: shortcut mask.
+//
+func (self *TabView) Shortcuts() TabViewShortcuts {
+	var _arg0 *C.AdwTabView         // out
+	var _cret C.AdwTabViewShortcuts // in
+
+	_arg0 = (*C.AdwTabView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_tab_view_get_shortcuts(_arg0)
+	runtime.KeepAlive(self)
+
+	var _tabViewShortcuts TabViewShortcuts // out
+
+	_tabViewShortcuts = TabViewShortcuts(_cret)
+
+	return _tabViewShortcuts
+}
+
 // Insert inserts a non-pinned page at position.
 //
 // It's an error to try to insert a page before a pinned page, in that case
@@ -737,12 +781,12 @@ func (self *TabView) SelectedPage() *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - position to add child at, starting from 0.
+//   - child: widget to add.
+//   - position to add child at, starting from 0.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -773,12 +817,12 @@ func (self *TabView) Insert(child gtk.Widgetter, position int) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - position to add child at, starting from 0.
+//   - child: widget to add.
+//   - position to add child at, starting from 0.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -806,11 +850,11 @@ func (self *TabView) InsertPinned(child gtk.Widgetter, position int) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -835,11 +879,11 @@ func (self *TabView) Prepend(child gtk.Widgetter) *TabPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - tabPage: page object representing child.
+//   - tabPage: page object representing child.
 //
 func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 	var _arg0 *C.AdwTabView // out
@@ -860,15 +904,35 @@ func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 	return _tabPage
 }
 
+// RemoveShortcuts removes shortcuts from self.
+//
+// See tabview:shortcuts for details.
+//
+// The function takes the following parameters:
+//
+//   - shortcuts to reomve.
+//
+func (self *TabView) RemoveShortcuts(shortcuts TabViewShortcuts) {
+	var _arg0 *C.AdwTabView         // out
+	var _arg1 C.AdwTabViewShortcuts // out
+
+	_arg0 = (*C.AdwTabView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.AdwTabViewShortcuts(shortcuts)
+
+	C.adw_tab_view_remove_shortcuts(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(shortcuts)
+}
+
 // ReorderBackward reorders page to before its previous page if possible.
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 // The function returns the following values:
 //
-//    - ok: whether page was moved.
+//   - ok: whether page was moved.
 //
 func (self *TabView) ReorderBackward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -895,11 +959,11 @@ func (self *TabView) ReorderBackward(page *TabPage) bool {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 // The function returns the following values:
 //
-//    - ok: whether page was moved.
+//   - ok: whether page was moved.
 //
 func (self *TabView) ReorderFirst(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -926,11 +990,11 @@ func (self *TabView) ReorderFirst(page *TabPage) bool {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 // The function returns the following values:
 //
-//    - ok: whether page was moved.
+//   - ok: whether page was moved.
 //
 func (self *TabView) ReorderForward(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -957,11 +1021,11 @@ func (self *TabView) ReorderForward(page *TabPage) bool {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 // The function returns the following values:
 //
-//    - ok: whether page was moved.
+//   - ok: whether page was moved.
 //
 func (self *TabView) ReorderLast(page *TabPage) bool {
 	var _arg0 *C.AdwTabView // out
@@ -991,12 +1055,12 @@ func (self *TabView) ReorderLast(page *TabPage) bool {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
-//    - position to insert the page at, starting at 0.
+//   - page of self.
+//   - position to insert the page at, starting at 0.
 //
 // The function returns the following values:
 //
-//    - ok: whether page was moved.
+//   - ok: whether page was moved.
 //
 func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 	var _arg0 *C.AdwTabView // out
@@ -1028,7 +1092,7 @@ func (self *TabView) ReorderPage(page *TabPage, position int) bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected page was changed.
+//   - ok: whether the selected page was changed.
 //
 func (self *TabView) SelectNextPage() bool {
 	var _arg0 *C.AdwTabView // out
@@ -1054,7 +1118,7 @@ func (self *TabView) SelectNextPage() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected page was changed.
+//   - ok: whether the selected page was changed.
 //
 func (self *TabView) SelectPreviousPage() bool {
 	var _arg0 *C.AdwTabView // out
@@ -1076,9 +1140,18 @@ func (self *TabView) SelectPreviousPage() bool {
 
 // SetDefaultIcon sets the default page icon for self.
 //
+// If a page doesn't provide its own icon via tabpage:icon, a default icon may
+// be used instead for contexts where having an icon is necessary.
+//
+// tabbar will use default icon for pinned tabs in case the page is not loading,
+// doesn't have an icon and an indicator. Default icon is never used for tabs
+// that aren't pinned.
+//
+// By default, the adw-tab-icon-missing-symbolic icon is used.
+//
 // The function takes the following parameters:
 //
-//    - defaultIcon: default icon.
+//   - defaultIcon: default icon.
 //
 func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 	var _arg0 *C.AdwTabView // out
@@ -1094,9 +1167,13 @@ func (self *TabView) SetDefaultIcon(defaultIcon gio.Iconner) {
 
 // SetMenuModel sets the tab context menu model for self.
 //
+// When a context menu is shown for a tab, it will be constructed from the
+// provided menu model. Use the tabview::setup-menu signal to set up the menu
+// actions for the particular tab.
+//
 // The function takes the following parameters:
 //
-//    - menuModel (optional): menu model.
+//   - menuModel (optional): menu model.
 //
 func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwTabView // out
@@ -1138,8 +1215,8 @@ func (self *TabView) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
-//    - pinned: whether page should be pinned.
+//   - page of self.
+//   - pinned: whether page should be pinned.
 //
 func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
 	var _arg0 *C.AdwTabView // out
@@ -1162,7 +1239,7 @@ func (self *TabView) SetPagePinned(page *TabPage, pinned bool) {
 //
 // The function takes the following parameters:
 //
-//    - selectedPage: page in self.
+//   - selectedPage: page in self.
 //
 func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 	var _arg0 *C.AdwTabView // out
@@ -1176,6 +1253,30 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 	runtime.KeepAlive(selectedPage)
 }
 
+// SetShortcuts sets the enabled shortcuts for self.
+//
+// See tabviewshortcuts for the list of the available shortcuts. All of the
+// shortcuts are enabled by default.
+//
+// tabview.AddShortcuts and tabview.RemoveShortcuts provide a convenient way to
+// manage individual shortcuts.
+//
+// The function takes the following parameters:
+//
+//   - shortcuts: new shortcuts.
+//
+func (self *TabView) SetShortcuts(shortcuts TabViewShortcuts) {
+	var _arg0 *C.AdwTabView         // out
+	var _arg1 C.AdwTabViewShortcuts // out
+
+	_arg0 = (*C.AdwTabView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.AdwTabViewShortcuts(shortcuts)
+
+	C.adw_tab_view_set_shortcuts(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(shortcuts)
+}
+
 // TransferPage transfers page from self to other_view.
 //
 // The page object will be reused.
@@ -1185,9 +1286,9 @@ func (self *TabView) SetSelectedPage(selectedPage *TabPage) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
-//    - otherView: tab view to transfer the page to.
-//    - position to insert the page at, starting at 0.
+//   - page of self.
+//   - otherView: tab view to transfer the page to.
+//   - position to insert the page at, starting at 0.
 //
 func (self *TabView) TransferPage(page *TabPage, otherView *TabView, position int) {
 	var _arg0 *C.AdwTabView // out

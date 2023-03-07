@@ -22,3 +22,18 @@ func _gotk4_adw1_ActionRowClass_activate(arg0 *C.AdwActionRow) {
 
 	overrides.Activate()
 }
+
+//export _gotk4_adw1_MessageDialogClass_response
+func _gotk4_adw1_MessageDialogClass_response(arg0 *C.AdwMessageDialog, arg1 *C.char) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[MessageDialogOverrides](instance0)
+	if overrides.Response == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MessageDialogOverrides.Response, got none")
+	}
+
+	var _response string // out
+
+	_response = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.Response(_response)
+}

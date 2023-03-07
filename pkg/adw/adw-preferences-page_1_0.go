@@ -44,13 +44,11 @@ func defaultPreferencesPageOverrides(v *PreferencesPage) PreferencesPageOverride
 // The AdwPreferencesPage widget gathers preferences groups into a single page
 // of a preferences window.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwPreferencesPage has a single CSS node with name preferencespage.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // AdwPreferencesPage uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesPage struct {
@@ -106,7 +104,7 @@ func marshalPreferencesPage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - preferencesPage: newly created AdwPreferencesPage.
+//   - preferencesPage: newly created AdwPreferencesPage.
 //
 func NewPreferencesPage() *PreferencesPage {
 	var _cret *C.GtkWidget // in
@@ -124,7 +122,7 @@ func NewPreferencesPage() *PreferencesPage {
 //
 // The function takes the following parameters:
 //
-//    - group to add.
+//   - group to add.
 //
 func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
@@ -142,7 +140,7 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name for self.
+//   - utf8 (optional): icon name for self.
 //
 func (self *PreferencesPage) IconName() string {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -166,7 +164,7 @@ func (self *PreferencesPage) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of self.
+//   - utf8 (optional): name of self.
 //
 func (self *PreferencesPage) Name() string {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -190,7 +188,7 @@ func (self *PreferencesPage) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8: title of self.
+//   - utf8: title of self.
 //
 func (self *PreferencesPage) Title() string {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -213,7 +211,7 @@ func (self *PreferencesPage) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//   - ok: whether an embedded underline in the title indicates a mnemonic.
 //
 func (self *PreferencesPage) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -237,7 +235,7 @@ func (self *PreferencesPage) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - group to remove.
+//   - group to remove.
 //
 func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 	var _arg0 *C.AdwPreferencesPage  // out
@@ -255,7 +253,7 @@ func (self *PreferencesPage) Remove(group *PreferencesGroup) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (self *PreferencesPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -276,7 +274,7 @@ func (self *PreferencesPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): name.
+//   - name (optional): name.
 //
 func (self *PreferencesPage) SetName(name string) {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -297,7 +295,7 @@ func (self *PreferencesPage) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *PreferencesPage) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesPage // out
@@ -317,7 +315,7 @@ func (self *PreferencesPage) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (self *PreferencesPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesPage // out

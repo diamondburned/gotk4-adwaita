@@ -71,11 +71,11 @@ func marshalLeafletPage(p uintptr) (interface{}, error) {
 	return wrapLeafletPage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// Child gets the leaflet child th which self belongs.
+// Child gets the leaflet child to which self belongs.
 //
 // The function returns the following values:
 //
-//    - widget: child to which self belongs.
+//   - widget: child to which self belongs.
 //
 func (self *LeafletPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwLeafletPage // out
@@ -113,7 +113,7 @@ func (self *LeafletPage) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of self.
+//   - utf8 (optional): name of self.
 //
 func (self *LeafletPage) Name() string {
 	var _arg0 *C.AdwLeafletPage // out
@@ -137,7 +137,7 @@ func (self *LeafletPage) Name() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether self can be navigated to when folded.
+//   - ok: whether self can be navigated to when folded.
 //
 func (self *LeafletPage) Navigatable() bool {
 	var _arg0 *C.AdwLeafletPage // out
@@ -161,7 +161,7 @@ func (self *LeafletPage) Navigatable() bool {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): new value to set.
+//   - name (optional): new value to set.
 //
 func (self *LeafletPage) SetName(name string) {
 	var _arg0 *C.AdwLeafletPage // out
@@ -180,9 +180,14 @@ func (self *LeafletPage) SetName(name string) {
 
 // SetNavigatable sets whether self can be navigated to when folded.
 //
+// If FALSE, the child will be ignored by leaflet.GetAdjacentChild,
+// leaflet.Navigate, and swipe gestures.
+//
+// This can be used used to prevent switching to widgets like separators.
+//
 // The function takes the following parameters:
 //
-//    - navigatable: whether self can be navigated to when folded.
+//   - navigatable: whether self can be navigated to when folded.
 //
 func (self *LeafletPage) SetNavigatable(navigatable bool) {
 	var _arg0 *C.AdwLeafletPage // out

@@ -56,7 +56,6 @@ func defaultButtonContentOverrides(v *ButtonContent) ButtonContentOverrides {
 //      </property>
 //    </object>
 //
-//
 // AdwButtonContent handles style classes and connecting the mnemonic to the
 // button automatically.
 //
@@ -66,7 +65,6 @@ func defaultButtonContentOverrides(v *ButtonContent) ButtonContentOverrides {
 //    ├── image
 //    ╰── label
 //
-//
 // AdwButtonContent's CSS node is called buttoncontent. It contains the subnodes
 // image and label.
 //
@@ -74,8 +72,7 @@ func defaultButtonContentOverrides(v *ButtonContent) ButtonContentOverrides {
 // .image-text-button style class. When inside a GtkMenuButton, the internal
 // GtkButton will receive it instead.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // AdwButtonContent uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ButtonContent struct {
@@ -131,7 +128,7 @@ func marshalButtonContent(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - buttonContent: new created AdwButtonContent.
+//   - buttonContent: new created AdwButtonContent.
 //
 func NewButtonContent() *ButtonContent {
 	var _cret *C.GtkWidget // in
@@ -149,7 +146,7 @@ func NewButtonContent() *ButtonContent {
 //
 // The function returns the following values:
 //
-//    - utf8: icon name.
+//   - utf8: icon name.
 //
 func (self *ButtonContent) IconName() string {
 	var _arg0 *C.AdwButtonContent // out
@@ -171,7 +168,7 @@ func (self *ButtonContent) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: label.
+//   - utf8: label.
 //
 func (self *ButtonContent) Label() string {
 	var _arg0 *C.AdwButtonContent // out
@@ -193,7 +190,7 @@ func (self *ButtonContent) Label() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether an underline in the text indicates a mnemonic.
+//   - ok: whether an underline in the text indicates a mnemonic.
 //
 func (self *ButtonContent) UseUnderline() bool {
 	var _arg0 *C.AdwButtonContent // out
@@ -215,9 +212,11 @@ func (self *ButtonContent) UseUnderline() bool {
 
 // SetIconName sets the name of the displayed icon.
 //
+// If empty, the icon is not shown.
+//
 // The function takes the following parameters:
 //
-//    - iconName: new icon name.
+//   - iconName: new icon name.
 //
 func (self *ButtonContent) SetIconName(iconName string) {
 	var _arg0 *C.AdwButtonContent // out
@@ -236,7 +235,7 @@ func (self *ButtonContent) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - label: new label.
+//   - label: new label.
 //
 func (self *ButtonContent) SetLabel(label string) {
 	var _arg0 *C.AdwButtonContent // out
@@ -253,9 +252,13 @@ func (self *ButtonContent) SetLabel(label string) {
 
 // SetUseUnderline sets whether an underline in the text indicates a mnemonic.
 //
+// The mnemonic can be used to activate the parent button.
+//
+// See buttoncontent:label.
+//
 // The function takes the following parameters:
 //
-//    - useUnderline: whether an underline in the text indicates a mnemonic.
+//   - useUnderline: whether an underline in the text indicates a mnemonic.
 //
 func (self *ButtonContent) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwButtonContent // out

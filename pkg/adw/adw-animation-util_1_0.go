@@ -21,11 +21,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget.
+//   - widget: GtkWidget.
 //
 // The function returns the following values:
 //
-//    - ok: whether animations are enabled for widget.
+//   - ok: whether animations are enabled for widget.
 //
 func GetEnableAnimations(widget gtk.Widgetter) bool {
 	var _arg1 *C.GtkWidget // out
@@ -49,13 +49,13 @@ func GetEnableAnimations(widget gtk.Widgetter) bool {
 //
 // The function takes the following parameters:
 //
-//    - a: start.
-//    - b: end.
-//    - t: interpolation rate.
+//   - a: start.
+//   - b: end.
+//   - t: interpolation rate.
 //
 // The function returns the following values:
 //
-//    - gdouble: computed value.
+//   - gdouble: computed value.
 //
 func Lerp(a, b, t float64) float64 {
 	var _arg1 C.double // out

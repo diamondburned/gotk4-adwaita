@@ -75,7 +75,7 @@ func marshalSqueezerPage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - widget: child to which self belongs.
+//   - widget: child to which self belongs.
 //
 func (self *SqueezerPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwSqueezerPage // out
@@ -113,7 +113,7 @@ func (self *SqueezerPage) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is enabled.
+//   - ok: whether self is enabled.
 //
 func (self *SqueezerPage) Enabled() bool {
 	var _arg0 *C.AdwSqueezerPage // out
@@ -135,9 +135,18 @@ func (self *SqueezerPage) Enabled() bool {
 
 // SetEnabled sets whether self is enabled.
 //
+// If a child is disabled, it will be ignored when looking for the child fitting
+// the available size best.
+//
+// This allows to programmatically and prematurely hide a child even if it fits
+// in the available space.
+//
+// This can be used e.g. to ensure a certain child is hidden below a certain
+// window width, or any other constraint you find suitable.
+//
 // The function takes the following parameters:
 //
-//    - enabled: whether self is enabled.
+//   - enabled: whether self is enabled.
 //
 func (self *SqueezerPage) SetEnabled(enabled bool) {
 	var _arg0 *C.AdwSqueezerPage // out

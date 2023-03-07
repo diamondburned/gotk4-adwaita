@@ -44,8 +44,7 @@ func defaultPreferencesWindowOverrides(v *PreferencesWindow) PreferencesWindowOv
 // The AdwPreferencesWindow widget presents an application's preferences
 // gathered into pages and groups. The preferences are searchable by the user.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwPreferencesWindow has a main CSS node with the name window and the style
 // class .preferences.
@@ -130,7 +129,7 @@ func marshalPreferencesWindow(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - preferencesWindow: newly created AdwPreferencesWindow.
+//   - preferencesWindow: newly created AdwPreferencesWindow.
 //
 func NewPreferencesWindow() *PreferencesWindow {
 	var _cret *C.GtkWidget // in
@@ -148,7 +147,7 @@ func NewPreferencesWindow() *PreferencesWindow {
 //
 // The function takes the following parameters:
 //
-//    - page to add.
+//   - page to add.
 //
 func (self *PreferencesWindow) Add(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -168,7 +167,7 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 //
 // The function takes the following parameters:
 //
-//    - toast: toast.
+//   - toast: toast.
 //
 func (self *PreferencesWindow) AddToast(toast *Toast) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -200,7 +199,7 @@ func (self *PreferencesWindow) CloseSubpage() {
 //
 // The function returns the following values:
 //
-//    - ok: whether gestures and shortcuts are enabled.
+//   - ok: whether gestures and shortcuts are enabled.
 //
 func (self *PreferencesWindow) CanNavigateBack() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -224,7 +223,7 @@ func (self *PreferencesWindow) CanNavigateBack() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether search is enabled for self.
+//   - ok: whether search is enabled for self.
 //
 func (self *PreferencesWindow) SearchEnabled() bool {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -248,7 +247,7 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 //
 // The function returns the following values:
 //
-//    - preferencesPage (optional): visible page.
+//   - preferencesPage (optional): visible page.
 //
 func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -272,7 +271,7 @@ func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the visible page.
+//   - utf8 (optional): name of the visible page.
 //
 func (self *PreferencesWindow) VisiblePageName() string {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -299,7 +298,7 @@ func (self *PreferencesWindow) VisiblePageName() string {
 //
 // The function takes the following parameters:
 //
-//    - subpage: subpage.
+//   - subpage: subpage.
 //
 func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -317,7 +316,7 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - page to remove.
+//   - page to remove.
 //
 func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -334,9 +333,22 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 // SetCanNavigateBack sets whether gestures and shortcuts for closing subpages
 // are enabled.
 //
+// The supported gestures are:
+//
+// - One-finger swipe on touchscreens
+//
+// - Horizontal scrolling on touchpads (usually two-finger swipe)
+//
+// - Back mouse button
+//
+// The keyboard back key is also supported, as well as the
+// <kbd>Alt</kbd>+<kbd>←</kbd> shortcut.
+//
+// For right-to-left locales, gestures and shortcuts are reversed.
+//
 // The function takes the following parameters:
 //
-//    - canNavigateBack: new value.
+//   - canNavigateBack: new value.
 //
 func (self *PreferencesWindow) SetCanNavigateBack(canNavigateBack bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -356,7 +368,7 @@ func (self *PreferencesWindow) SetCanNavigateBack(canNavigateBack bool) {
 //
 // The function takes the following parameters:
 //
-//    - searchEnabled: whether search is enabled.
+//   - searchEnabled: whether search is enabled.
 //
 func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -376,7 +388,7 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - page of self.
+//   - page of self.
 //
 func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 	var _arg0 *C.AdwPreferencesWindow // out
@@ -392,9 +404,11 @@ func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 
 // SetVisiblePageName makes the page with the given name visible.
 //
+// See viewstack:visible-child.
+//
 // The function takes the following parameters:
 //
-//    - name of the page to make visible.
+//   - name of the page to make visible.
 //
 func (self *PreferencesWindow) SetVisiblePageName(name string) {
 	var _arg0 *C.AdwPreferencesWindow // out

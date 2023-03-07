@@ -79,13 +79,13 @@ func (a AnimationState) String() string {
 // AdwAnimation will automatically skip the animation if animation:widget is
 // unmapped, or if gtk.Settings:gtk-enable-animations is FALSE.
 //
-// The animation::done signal can be used to perform an action after the
-// animation ends, for example hiding a widget after animating its
+// The animation::done signal can be used to perform an action after
+// the animation ends, for example hiding a widget after animating its
 // gtk.Widget:opacity to 0.
 //
-// AdwAnimation will be kept alive while the animation is playing. As such, it's
-// safe to create an animation, start it and immediately unref it: A
-// fire-and-forget animation:
+// AdwAnimation will be kept alive while the animation is playing. As such,
+// it's safe to create an animation, start it and immediately unref it:
+// A fire-and-forget animation:
 //
 //    static void
 //    animation_cb (double    value,
@@ -105,7 +105,6 @@ func (a AnimationState) String() string {
 //
 //      adw_animation_play (animation);
 //    }
-//
 //
 // If there's a chance the previous animation for the same target hasn't yet
 // finished, the previous animation should be stopped first, or the existing
@@ -162,7 +161,7 @@ func (self *Animation) ConnectDone(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - animationState: animation value.
+//   - animationState: animation value.
 //
 func (self *Animation) State() AnimationState {
 	var _arg0 *C.AdwAnimation     // out
@@ -184,7 +183,7 @@ func (self *Animation) State() AnimationState {
 //
 // The function returns the following values:
 //
-//    - animationTarget: animation target.
+//   - animationTarget: animation target.
 //
 func (self *Animation) Target() AnimationTargetter {
 	var _arg0 *C.AdwAnimation       // out
@@ -222,7 +221,7 @@ func (self *Animation) Target() AnimationTargetter {
 //
 // The function returns the following values:
 //
-//    - gdouble: current value.
+//   - gdouble: current value.
 //
 func (self *Animation) Value() float64 {
 	var _arg0 *C.AdwAnimation // out
@@ -242,9 +241,16 @@ func (self *Animation) Value() float64 {
 
 // Widget gets the widget self was created for.
 //
+// It provides the frame clock for the animation. It's not strictly necessary
+// for this widget to be same as the one being animated.
+//
+// The widget must be mapped in order for the animation to work. If it's not
+// mapped, or if it gets unmapped during an ongoing animation, the animation
+// will be automatically skipped.
+//
 // The function returns the following values:
 //
-//    - widget: animation widget.
+//   - widget: animation widget.
 //
 func (self *Animation) Widget() gtk.Widgetter {
 	var _arg0 *C.AdwAnimation // out
@@ -303,8 +309,8 @@ func (self *Animation) Pause() {
 // The animation will be automatically skipped if animation:widget is unmapped,
 // or if gtk.Settings:gtk-enable-animations is FALSE.
 //
-// As such, it's not guaranteed that the animation will actually run. For
-// example, when using glib.IdleAdd() and starting an animation immediately
+// As such, it's not guaranteed that the animation will actually run.
+// For example, when using glib.IdleAdd() and starting an animation immediately
 // afterwards, it's entirely possible that the idle callback will run after the
 // animation has already finished, and not while it's playing.
 func (self *Animation) Play() {
@@ -341,6 +347,24 @@ func (self *Animation) Resume() {
 
 	C.adw_animation_resume(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// SetTarget sets the target self animates to target.
+//
+// The function takes the following parameters:
+//
+//   - target: animation target.
+//
+func (self *Animation) SetTarget(target AnimationTargetter) {
+	var _arg0 *C.AdwAnimation       // out
+	var _arg1 *C.AdwAnimationTarget // out
+
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwAnimationTarget)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.adw_animation_set_target(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(target)
 }
 
 // Skip skips the animation for self.

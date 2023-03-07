@@ -42,8 +42,8 @@ func defaultViewSwitcherBarOverrides(v *ViewSwitcherBar) ViewSwitcherBarOverride
 // alt="view-switcher-bar"> </picture>
 //
 // An action bar letting you switch between multiple views contained in a
-// viewstack, via an viewswitcher. It is designed to be put at the bottom of a
-// window and to be revealed only on really narrow windows, e.g. on mobile
+// viewstack, via an viewswitcher. It is designed to be put at the bottom of
+// a window and to be revealed only on really narrow windows, e.g. on mobile
 // phones. It can't be revealed if there are less than two pages.
 //
 // AdwViewSwitcherBar is intended to be used together with viewswitchertitle.
@@ -53,17 +53,17 @@ func defaultViewSwitcherBarOverrides(v *ViewSwitcherBar) ViewSwitcherBarOverride
 // when the title label is displayed in place of the view switcher, as follows:
 //
 //    <object class="GtkWindow">
-//      <child type="titlebar">
+//      <property name="titlebar">
 //        <object class="AdwHeaderBar">
 //          <property name="centering-policy">strict</property>
-//          <child type="title">
+//          <property name="title-widget">
 //            <object class="AdwViewSwitcherTitle" id="title">
 //              <property name="stack">stack</property>
 //            </object>
-//          </child>
+//          </property>
 //        </object>
-//      </child>
-//      <child>
+//      </property>
+//      <property name="child">
 //        <object class="GtkBox">
 //          <property name="orientation">vertical</property>
 //          <child>
@@ -78,12 +78,10 @@ func defaultViewSwitcherBarOverrides(v *ViewSwitcherBar) ViewSwitcherBarOverride
 //            </object>
 //          </child>
 //        </object>
-//      </child>
+//      </property>
 //    </object>
 //
-//
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwViewSwitcherBar has a single CSS node with name viewswitcherbar.
 type ViewSwitcherBar struct {
@@ -139,7 +137,7 @@ func marshalViewSwitcherBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - viewSwitcherBar: newly created AdwViewSwitcherBar.
+//   - viewSwitcherBar: newly created AdwViewSwitcherBar.
 //
 func NewViewSwitcherBar() *ViewSwitcherBar {
 	var _cret *C.GtkWidget // in
@@ -157,7 +155,7 @@ func NewViewSwitcherBar() *ViewSwitcherBar {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is revealed.
+//   - ok: whether self is revealed.
 //
 func (self *ViewSwitcherBar) Reveal() bool {
 	var _arg0 *C.AdwViewSwitcherBar // out
@@ -181,7 +179,7 @@ func (self *ViewSwitcherBar) Reveal() bool {
 //
 // The function returns the following values:
 //
-//    - viewStack (optional): stack.
+//   - viewStack (optional): stack.
 //
 func (self *ViewSwitcherBar) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcherBar // out
@@ -205,7 +203,7 @@ func (self *ViewSwitcherBar) Stack() *ViewStack {
 //
 // The function takes the following parameters:
 //
-//    - reveal: whether to reveal self.
+//   - reveal: whether to reveal self.
 //
 func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 	var _arg0 *C.AdwViewSwitcherBar // out
@@ -225,7 +223,7 @@ func (self *ViewSwitcherBar) SetReveal(reveal bool) {
 //
 // The function takes the following parameters:
 //
-//    - stack (optional): stack.
+//   - stack (optional): stack.
 //
 func (self *ViewSwitcherBar) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcherBar // out

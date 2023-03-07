@@ -10,12 +10,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
 // extern void _gotk4_adw1_Toast_ConnectDismissed(gpointer, guintptr);
+// extern void _gotk4_adw1_Toast_ConnectButtonClicked(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -73,7 +75,6 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 //
 //    adw_toast_overlay_add_toast (overlay, adw_toast_new (_("Simple Toast")));
 //
-//
 // <picture> <source srcset="toast-simple-dark.png"
 // media="(prefers-color-scheme: dark)"> <img src="toast-simple.png"
 // alt="toast-simple"> </picture>
@@ -85,8 +86,10 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 // toast:priority determines how it behaves if another toast is already being
 // displayed.
 //
+// toast:custom-title can be used to replace the title label with a custom
+// widget.
 //
-// Actions
+// # Actions
 //
 // Toasts can have one button on them, with a label and an attached gio.Action.
 //
@@ -97,20 +100,17 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 //
 //    adw_toast_overlay_add_toast (overlay, toast);
 //
-//
 // <picture> <source srcset="toast-action-dark.png"
 // media="(prefers-color-scheme: dark)"> <img src="toast-action.png"
 // alt="toast-action"> </picture>
 //
-//
-// Modifying toasts
+// # Modifying toasts
 //
 // Toasts can be modified after they have been shown. For this, an AdwToast
 // reference must be kept around while the toast is visible.
 //
 // A common use case for this is using toasts as undo prompts that stack with
 // each other, allowing to batch undo the last deleted items:
-//
 //
 //    static void
 //    toast_undo_cb (GtkWidget  *sender,
@@ -139,9 +139,7 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 //      n_items = ... // The number of waiting items
 //
 //      if (!self->undo_toast) {
-//        title = g_strdup_printf (_("‘s’ deleted"), ...);
-//
-//        self->undo_toast = adw_toast_new (title);
+//        self->undo_toast = adw_toast_new_format (_("‘s’ deleted"), ...);
 //
 //        adw_toast_set_priority (self->undo_toast, ADW_TOAST_PRIORITY_HIGH);
 //        adw_toast_set_button_label (self->undo_toast, _("_Undo"));
@@ -161,6 +159,9 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 //                                   n_items), n_items);
 //
 //      adw_toast_set_title (self->undo_toast, title);
+//
+//      // Bump the toast timeout
+//      adw_toast_overlay_add_toast (self->toast_overlay, g_object_ref (self->undo_toast));
 //    }
 //
 //    static void
@@ -170,7 +171,6 @@ func defaultToastOverrides(v *Toast) ToastOverrides {
 //
 //      gtk_widget_class_install_action (widget_class, "toast.undo", NULL, toast_undo_cb);
 //    }
-//
 //
 // <picture> <source srcset="toast-undo-dark.png" media="(prefers-color-scheme:
 // dark)"> <img src="toast-undo.png" alt="toast-undo"> </picture>.
@@ -209,6 +209,13 @@ func marshalToast(p uintptr) (interface{}, error) {
 	return wrapToast(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectButtonClicked is emitted after the button has been clicked.
+//
+// It can be used as an alternative to setting an action.
+func (self *Toast) ConnectButtonClicked(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "button-clicked", false, unsafe.Pointer(C._gotk4_adw1_Toast_ConnectButtonClicked), f)
+}
+
 // ConnectDismissed is emitted when the toast has been dismissed.
 func (self *Toast) ConnectDismissed(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "dismissed", false, unsafe.Pointer(C._gotk4_adw1_Toast_ConnectDismissed), f)
@@ -222,11 +229,11 @@ func (self *Toast) ConnectDismissed(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - title to be displayed.
+//   - title to be displayed.
 //
 // The function returns the following values:
 //
-//    - toast: new created AdwToast.
+//   - toast: new created AdwToast.
 //
 func NewToast(title string) *Toast {
 	var _arg1 *C.char     // out
@@ -246,6 +253,9 @@ func NewToast(title string) *Toast {
 }
 
 // Dismiss dismisses self.
+//
+// Does nothing if self has already been dismissed, or hasn't been added to an
+// toastoverlay.
 func (self *Toast) Dismiss() {
 	var _arg0 *C.AdwToast // out
 
@@ -259,7 +269,7 @@ func (self *Toast) Dismiss() {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): action name.
+//   - utf8 (optional): action name.
 //
 func (self *Toast) ActionName() string {
 	var _arg0 *C.AdwToast // out
@@ -283,7 +293,7 @@ func (self *Toast) ActionName() string {
 //
 // The function returns the following values:
 //
-//    - variant (optional): action target.
+//   - variant (optional): action target.
 //
 func (self *Toast) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.AdwToast // out
@@ -314,7 +324,7 @@ func (self *Toast) ActionTargetValue() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): button label.
+//   - utf8 (optional): button label.
 //
 func (self *Toast) ButtonLabel() string {
 	var _arg0 *C.AdwToast // out
@@ -334,11 +344,48 @@ func (self *Toast) ButtonLabel() string {
 	return _utf8
 }
 
+// CustomTitle gets the custom title widget of self.
+//
+// The function returns the following values:
+//
+//   - widget (optional): custom title widget.
+//
+func (self *Toast) CustomTitle() gtk.Widgetter {
+	var _arg0 *C.AdwToast  // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_toast_get_custom_title(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // Priority gets priority for self.
 //
 // The function returns the following values:
 //
-//    - toastPriority: priority.
+//   - toastPriority: priority.
 //
 func (self *Toast) Priority() ToastPriority {
 	var _arg0 *C.AdwToast        // out
@@ -360,7 +407,7 @@ func (self *Toast) Priority() ToastPriority {
 //
 // The function returns the following values:
 //
-//    - guint: timeout.
+//   - guint: timeout.
 //
 func (self *Toast) Timeout() uint {
 	var _arg0 *C.AdwToast // out
@@ -380,9 +427,12 @@ func (self *Toast) Timeout() uint {
 
 // Title gets the title that will be displayed on the toast.
 //
+// If a custom title has been set with adw.Toast.SetCustomTitle() the return
+// value will be NULL.
+//
 // The function returns the following values:
 //
-//    - utf8: title.
+//   - utf8 (optional): title.
 //
 func (self *Toast) Title() string {
 	var _arg0 *C.AdwToast // out
@@ -395,16 +445,22 @@ func (self *Toast) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // SetActionName sets the name of the associated action.
 //
+// It will be activated when clicking the button.
+//
+// See toast:action-target.
+//
 // The function takes the following parameters:
 //
-//    - actionName (optional): action name.
+//   - actionName (optional): action name.
 //
 func (self *Toast) SetActionName(actionName string) {
 	var _arg0 *C.AdwToast // out
@@ -428,7 +484,7 @@ func (self *Toast) SetActionName(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - actionTarget (optional): action target.
+//   - actionTarget (optional): action target.
 //
 func (self *Toast) SetActionTargetValue(actionTarget *glib.Variant) {
 	var _arg0 *C.AdwToast // out
@@ -446,11 +502,15 @@ func (self *Toast) SetActionTargetValue(actionTarget *glib.Variant) {
 
 // SetButtonLabel sets the label to show on the button.
 //
-// It set to NULL, the button won't be shown.
+// Underlines in the button text can be used to indicate a mnemonic.
+//
+// If set to NULL, the button won't be shown.
+//
+// See toast:action-name.
 //
 // The function takes the following parameters:
 //
-//    - buttonLabel (optional): button label.
+//   - buttonLabel (optional): button label.
 //
 func (self *Toast) SetButtonLabel(buttonLabel string) {
 	var _arg0 *C.AdwToast // out
@@ -467,6 +527,31 @@ func (self *Toast) SetButtonLabel(buttonLabel string) {
 	runtime.KeepAlive(buttonLabel)
 }
 
+// SetCustomTitle sets the custom title widget of self.
+//
+// It will be displayed instead of the title if set. In this case, toast:title
+// is ignored.
+//
+// Setting a custom title will unset toast:title.
+//
+// The function takes the following parameters:
+//
+//   - widget (optional): custom title widget.
+//
+func (self *Toast) SetCustomTitle(widget gtk.Widgetter) {
+	var _arg0 *C.AdwToast  // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	}
+
+	C.adw_toast_set_custom_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
+}
+
 // SetDetailedActionName sets the action name and its parameter.
 //
 // detailed_action_name is a string in the format accepted by
@@ -474,7 +559,7 @@ func (self *Toast) SetButtonLabel(buttonLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - detailedActionName (optional): detailed action name.
+//   - detailedActionName (optional): detailed action name.
 //
 func (self *Toast) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.AdwToast // out
@@ -503,7 +588,7 @@ func (self *Toast) SetDetailedActionName(detailedActionName string) {
 //
 // The function takes the following parameters:
 //
-//    - priority: priority.
+//   - priority: priority.
 //
 func (self *Toast) SetPriority(priority ToastPriority) {
 	var _arg0 *C.AdwToast        // out
@@ -522,12 +607,12 @@ func (self *Toast) SetPriority(priority ToastPriority) {
 // If timeout is 0, the toast is displayed indefinitely until manually
 // dismissed.
 //
-// Toasts cannot disappear while being hovered, pressed (on touchscreen), or
-// have keyboard focus inside them.
+// Toasts cannot disappear while being hovered, pressed (on touchscreen),
+// or have keyboard focus inside them.
 //
 // The function takes the following parameters:
 //
-//    - timeout: timeout.
+//   - timeout: timeout.
 //
 func (self *Toast) SetTimeout(timeout uint) {
 	var _arg0 *C.AdwToast // out
@@ -543,9 +628,15 @@ func (self *Toast) SetTimeout(timeout uint) {
 
 // SetTitle sets the title that will be displayed on the toast.
 //
+// The title can be marked up with the Pango text markup language.
+//
+// Setting a title will unset toast:custom-title.
+//
+// If toast:custom-title is set, it will be used instead.
+//
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *Toast) SetTitle(title string) {
 	var _arg0 *C.AdwToast // out

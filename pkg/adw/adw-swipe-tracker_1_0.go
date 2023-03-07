@@ -121,11 +121,11 @@ func (self *SwipeTracker) ConnectUpdateSwipe(f func(progress float64)) coreglib.
 //
 // The function takes the following parameters:
 //
-//    - swipeable: widget to add the tracker on.
+//   - swipeable: widget to add the tracker on.
 //
 // The function returns the following values:
 //
-//    - swipeTracker: newly created AdwSwipeTracker.
+//   - swipeTracker: newly created AdwSwipeTracker.
 //
 func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 	var _arg1 *C.AdwSwipeable    // out
@@ -148,7 +148,7 @@ func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
 //
 // The function returns the following values:
 //
-//    - ok: whether long swipes are allowed.
+//   - ok: whether long swipes are allowed.
 //
 func (self *SwipeTracker) AllowLongSwipes() bool {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -172,7 +172,7 @@ func (self *SwipeTracker) AllowLongSwipes() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether mouse dragging is allowed.
+//   - ok: whether mouse dragging is allowed.
 //
 func (self *SwipeTracker) AllowMouseDrag() bool {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -196,7 +196,7 @@ func (self *SwipeTracker) AllowMouseDrag() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is enabled.
+//   - ok: whether self is enabled.
 //
 func (self *SwipeTracker) Enabled() bool {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -220,7 +220,7 @@ func (self *SwipeTracker) Enabled() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the direction is reversed.
+//   - ok: whether the direction is reversed.
 //
 func (self *SwipeTracker) Reversed() bool {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -244,7 +244,7 @@ func (self *SwipeTracker) Reversed() bool {
 //
 // The function returns the following values:
 //
-//    - swipeable widget.
+//   - swipeable widget.
 //
 func (self *SwipeTracker) Swipeable() *Swipeable {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -265,9 +265,11 @@ func (self *SwipeTracker) Swipeable() *Swipeable {
 // SetAllowLongSwipes sets whether to allow swiping for more than one snap point
 // at a time.
 //
+// If the value is FALSE, each swipe can only move to the adjacent snap points.
+//
 // The function takes the following parameters:
 //
-//    - allowLongSwipes: whether to allow long swipes.
+//   - allowLongSwipes: whether to allow long swipes.
 //
 func (self *SwipeTracker) SetAllowLongSwipes(allowLongSwipes bool) {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -287,7 +289,7 @@ func (self *SwipeTracker) SetAllowLongSwipes(allowLongSwipes bool) {
 //
 // The function takes the following parameters:
 //
-//    - allowMouseDrag: whether to allow mouse dragging.
+//   - allowMouseDrag: whether to allow mouse dragging.
 //
 func (self *SwipeTracker) SetAllowMouseDrag(allowMouseDrag bool) {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -305,9 +307,12 @@ func (self *SwipeTracker) SetAllowMouseDrag(allowMouseDrag bool) {
 
 // SetEnabled sets whether self is enabled.
 //
+// When it's not enabled, no events will be processed. Usually widgets will want
+// to expose this via a property.
+//
 // The function takes the following parameters:
 //
-//    - enabled: whether self is enabled.
+//   - enabled: whether self is enabled.
 //
 func (self *SwipeTracker) SetEnabled(enabled bool) {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -325,9 +330,12 @@ func (self *SwipeTracker) SetEnabled(enabled bool) {
 
 // SetReversed sets whether to reverse the swipe direction.
 //
+// If the swipe tracker is horizontal, it can be used for supporting RTL text
+// direction.
+//
 // The function takes the following parameters:
 //
-//    - reversed: whether to reverse the swipe direction.
+//   - reversed: whether to reverse the swipe direction.
 //
 func (self *SwipeTracker) SetReversed(reversed bool) {
 	var _arg0 *C.AdwSwipeTracker // out
@@ -350,7 +358,7 @@ func (self *SwipeTracker) SetReversed(reversed bool) {
 //
 // The function takes the following parameters:
 //
-//    - delta: position delta.
+//   - delta: position delta.
 //
 func (self *SwipeTracker) ShiftPosition(delta float64) {
 	var _arg0 *C.AdwSwipeTracker // out

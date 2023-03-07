@@ -47,8 +47,7 @@ func defaultCarouselOverrides(v *Carousel) CarouselOverrides {
 // carouselindicatordots and carouselindicatorlines can be used to provide page
 // indicators for AdwCarousel.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwCarousel has a single CSS node with name carousel.
 type Carousel struct {
@@ -138,7 +137,7 @@ func (self *Carousel) ConnectPageChanged(f func(index uint)) coreglib.SignalHand
 //
 // The function returns the following values:
 //
-//    - carousel: newly created AdwCarousel.
+//   - carousel: newly created AdwCarousel.
 //
 func NewCarousel() *Carousel {
 	var _cret *C.GtkWidget // in
@@ -156,7 +155,7 @@ func NewCarousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 func (self *Carousel) Append(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
@@ -175,7 +174,7 @@ func (self *Carousel) Append(child gtk.Widgetter) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if long swipes are allowed.
+//   - ok: TRUE if long swipes are allowed.
 //
 func (self *Carousel) AllowLongSwipes() bool {
 	var _arg0 *C.AdwCarousel // out
@@ -199,7 +198,7 @@ func (self *Carousel) AllowLongSwipes() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self can be dragged with mouse pointer.
+//   - ok: whether self can be dragged with mouse pointer.
 //
 func (self *Carousel) AllowMouseDrag() bool {
 	var _arg0 *C.AdwCarousel // out
@@ -223,7 +222,7 @@ func (self *Carousel) AllowMouseDrag() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self will respond to scroll wheel events.
+//   - ok: TRUE if self will respond to scroll wheel events.
 //
 func (self *Carousel) AllowScrollWheel() bool {
 	var _arg0 *C.AdwCarousel // out
@@ -247,7 +246,7 @@ func (self *Carousel) AllowScrollWheel() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self can be navigated.
+//   - ok: whether self can be navigated.
 //
 func (self *Carousel) Interactive() bool {
 	var _arg0 *C.AdwCarousel // out
@@ -271,7 +270,7 @@ func (self *Carousel) Interactive() bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of pages in self.
+//   - guint: number of pages in self.
 //
 func (self *Carousel) NPages() uint {
 	var _arg0 *C.AdwCarousel // out
@@ -293,11 +292,11 @@ func (self *Carousel) NPages() uint {
 //
 // The function takes the following parameters:
 //
-//    - n: index of the page.
+//   - n: index of the page.
 //
 // The function returns the following values:
 //
-//    - widget: page.
+//   - widget: page.
 //
 func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 	var _arg0 *C.AdwCarousel // out
@@ -334,13 +333,13 @@ func (self *Carousel) NthPage(n uint) gtk.Widgetter {
 	return _widget
 }
 
-// Position gets current scroll position in self.
+// Position gets current scroll position in self, unitless.
 //
-// It's unitless, 1 matches 1 page.
+// 1 matches 1 page. Use carousel.ScrollTo for changing it.
 //
 // The function returns the following values:
 //
-//    - gdouble: scroll position.
+//   - gdouble: scroll position.
 //
 func (self *Carousel) Position() float64 {
 	var _arg0 *C.AdwCarousel // out
@@ -358,12 +357,11 @@ func (self *Carousel) Position() float64 {
 	return _gdouble
 }
 
-// RevealDuration gets duration of the animation used when adding or removing
-// pages.
+// RevealDuration gets the page reveal duration, in milliseconds.
 //
 // The function returns the following values:
 //
-//    - guint: duration.
+//   - guint: duration.
 //
 func (self *Carousel) RevealDuration() uint {
 	var _arg0 *C.AdwCarousel // out
@@ -385,7 +383,7 @@ func (self *Carousel) RevealDuration() uint {
 //
 // The function returns the following values:
 //
-//    - springParams: animation parameters.
+//   - springParams: animation parameters.
 //
 func (self *Carousel) ScrollParams() *SpringParams {
 	var _arg0 *C.AdwCarousel     // out
@@ -413,7 +411,7 @@ func (self *Carousel) ScrollParams() *SpringParams {
 //
 // The function returns the following values:
 //
-//    - guint: spacing between pages.
+//   - guint: spacing between pages.
 //
 func (self *Carousel) Spacing() uint {
 	var _arg0 *C.AdwCarousel // out
@@ -438,8 +436,8 @@ func (self *Carousel) Spacing() uint {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - position to insert child at.
+//   - child: widget to add.
+//   - position to insert child at.
 //
 func (self *Carousel) Insert(child gtk.Widgetter, position int) {
 	var _arg0 *C.AdwCarousel // out
@@ -460,7 +458,7 @@ func (self *Carousel) Insert(child gtk.Widgetter, position int) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 func (self *Carousel) Prepend(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
@@ -478,7 +476,7 @@ func (self *Carousel) Prepend(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to remove.
+//   - child: widget to remove.
 //
 func (self *Carousel) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwCarousel // out
@@ -499,8 +497,8 @@ func (self *Carousel) Remove(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - position to move child to.
+//   - child: widget to add.
+//   - position to move child to.
 //
 func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 	var _arg0 *C.AdwCarousel // out
@@ -523,8 +521,8 @@ func (self *Carousel) Reorder(child gtk.Widgetter, position int) {
 //
 // The function takes the following parameters:
 //
-//    - widget: child of self.
-//    - animate: whether to animate the transition.
+//   - widget: child of self.
+//   - animate: whether to animate the transition.
 //
 func (self *Carousel) ScrollTo(widget gtk.Widgetter, animate bool) {
 	var _arg0 *C.AdwCarousel // out
@@ -546,9 +544,12 @@ func (self *Carousel) ScrollTo(widget gtk.Widgetter, animate bool) {
 // SetAllowLongSwipes sets whether to allow swiping for more than one page at a
 // time.
 //
+// If allow_long_swipes is FALSE, each swipe can only move to the adjacent
+// pages.
+//
 // The function takes the following parameters:
 //
-//    - allowLongSwipes: whether to allow long swipes.
+//   - allowLongSwipes: whether to allow long swipes.
 //
 func (self *Carousel) SetAllowLongSwipes(allowLongSwipes bool) {
 	var _arg0 *C.AdwCarousel // out
@@ -566,9 +567,11 @@ func (self *Carousel) SetAllowLongSwipes(allowLongSwipes bool) {
 
 // SetAllowMouseDrag sets whether self can be dragged with mouse pointer.
 //
+// If allow_mouse_drag is FALSE, dragging is only available on touch.
+//
 // The function takes the following parameters:
 //
-//    - allowMouseDrag: whether self can be dragged with mouse pointer.
+//   - allowMouseDrag: whether self can be dragged with mouse pointer.
 //
 func (self *Carousel) SetAllowMouseDrag(allowMouseDrag bool) {
 	var _arg0 *C.AdwCarousel // out
@@ -586,9 +589,11 @@ func (self *Carousel) SetAllowMouseDrag(allowMouseDrag bool) {
 
 // SetAllowScrollWheel sets whether self will respond to scroll wheel events.
 //
+// If allow_scroll_wheel is FALSE, wheel events will be ignored.
+//
 // The function takes the following parameters:
 //
-//    - allowScrollWheel: whether self will respond to scroll wheel events.
+//   - allowScrollWheel: whether self will respond to scroll wheel events.
 //
 func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 	var _arg0 *C.AdwCarousel // out
@@ -606,9 +611,12 @@ func (self *Carousel) SetAllowScrollWheel(allowScrollWheel bool) {
 
 // SetInteractive sets whether self can be navigated.
 //
+// This can be used to temporarily disable the carousel to only allow navigating
+// it in a certain state.
+//
 // The function takes the following parameters:
 //
-//    - interactive: whether self can be navigated.
+//   - interactive: whether self can be navigated.
 //
 func (self *Carousel) SetInteractive(interactive bool) {
 	var _arg0 *C.AdwCarousel // out
@@ -624,12 +632,13 @@ func (self *Carousel) SetInteractive(interactive bool) {
 	runtime.KeepAlive(interactive)
 }
 
-// SetRevealDuration sets duration of the animation used when adding or removing
-// pages.
+// SetRevealDuration sets the page reveal duration, in milliseconds.
+//
+// Reveal duration is used when animating adding or removing pages.
 //
 // The function takes the following parameters:
 //
-//    - revealDuration: new reveal duration value.
+//   - revealDuration: new reveal duration value.
 //
 func (self *Carousel) SetRevealDuration(revealDuration uint) {
 	var _arg0 *C.AdwCarousel // out
@@ -645,9 +654,13 @@ func (self *Carousel) SetRevealDuration(revealDuration uint) {
 
 // SetScrollParams sets the scroll animation spring parameters for self.
 //
+// The default value is equivalent to:
+//
+//    adw_spring_params_new (1, 0.5, 500).
+//
 // The function takes the following parameters:
 //
-//    - params: new parameters.
+//   - params: new parameters.
 //
 func (self *Carousel) SetScrollParams(params *SpringParams) {
 	var _arg0 *C.AdwCarousel     // out
@@ -665,7 +678,7 @@ func (self *Carousel) SetScrollParams(params *SpringParams) {
 //
 // The function takes the following parameters:
 //
-//    - spacing: new spacing value.
+//   - spacing: new spacing value.
 //
 func (self *Carousel) SetSpacing(spacing uint) {
 	var _arg0 *C.AdwCarousel // out

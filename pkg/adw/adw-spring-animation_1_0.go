@@ -29,14 +29,14 @@ func init() {
 
 // SpringAnimation: spring-based animation.
 //
-// AdwSpringAnimation implements an animation driven by a physical model of a
-// spring described by springparams, with a resting position in
+// AdwSpringAnimation implements an animation driven by a physical model
+// of a spring described by springparams, with a resting position in
 // springanimation:value-to, stretched to springanimation:value-from.
 //
-// Since the animation is physically simulated, spring animations don't have a
-// fixed duration. The animation will stop when the simulated spring comes to a
-// rest - when the amplitude of the oscillations becomes smaller than
-// springanimation:epsilon, or immediately when it reaches
+// Since the animation is physically simulated, spring animations don't
+// have a fixed duration. The animation will stop when the simulated
+// spring comes to a rest - when the amplitude of the oscillations becomes
+// smaller than springanimation:epsilon, or immediately when it reaches
 // springanimation:value-to if springanimation:clamp is set to TRUE. The
 // estimated duration can be obtained with springanimation:estimated-duration.
 //
@@ -83,15 +83,15 @@ func marshalSpringAnimation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - widget to create animation on.
-//    - from: value to animate from.
-//    - to: value to animate to.
-//    - springParams: physical parameters of the spring.
-//    - target value to animate.
+//   - widget to create animation on.
+//   - from: value to animate from.
+//   - to: value to animate to.
+//   - springParams: physical parameters of the spring.
+//   - target value to animate.
 //
 // The function returns the following values:
 //
-//    - springAnimation: newly created animation.
+//   - springAnimation: newly created animation.
 //
 func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *SpringParams, target AnimationTargetter) *SpringAnimation {
 	var _arg1 *C.GtkWidget          // out
@@ -126,7 +126,7 @@ func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *Sp
 //
 // The function returns the following values:
 //
-//    - ok: whether self is clamped.
+//   - ok: whether self is clamped.
 //
 func (self *SpringAnimation) Clamp() bool {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -146,11 +146,11 @@ func (self *SpringAnimation) Clamp() bool {
 	return _ok
 }
 
-// Epsilon gets the precision used to determine the duration of self.
+// Epsilon gets the precision of the spring.
 //
 // The function returns the following values:
 //
-//    - gdouble: epsilon value.
+//   - gdouble: epsilon value.
 //
 func (self *SpringAnimation) Epsilon() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -170,9 +170,11 @@ func (self *SpringAnimation) Epsilon() float64 {
 
 // EstimatedDuration gets the estimated duration of self.
 //
+// Can be duration_infinite if the spring damping is set to 0.
+//
 // The function returns the following values:
 //
-//    - guint: estimated duration.
+//   - guint: estimated duration.
 //
 func (self *SpringAnimation) EstimatedDuration() uint {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -194,7 +196,7 @@ func (self *SpringAnimation) EstimatedDuration() uint {
 //
 // The function returns the following values:
 //
-//    - gdouble: initial velocity.
+//   - gdouble: initial velocity.
 //
 func (self *SpringAnimation) InitialVelocity() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -216,7 +218,7 @@ func (self *SpringAnimation) InitialVelocity() float64 {
 //
 // The function returns the following values:
 //
-//    - springParams: spring parameters.
+//   - springParams: spring parameters.
 //
 func (self *SpringAnimation) SpringParams() *SpringParams {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -245,7 +247,7 @@ func (self *SpringAnimation) SpringParams() *SpringParams {
 //
 // The function returns the following values:
 //
-//    - gdouble: value to animate from.
+//   - gdouble: value to animate from.
 //
 func (self *SpringAnimation) ValueFrom() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -267,7 +269,7 @@ func (self *SpringAnimation) ValueFrom() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: value to animate to.
+//   - gdouble: value to animate to.
 //
 func (self *SpringAnimation) ValueTo() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -289,7 +291,7 @@ func (self *SpringAnimation) ValueTo() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current velocity.
+//   - gdouble: current velocity.
 //
 func (self *SpringAnimation) Velocity() float64 {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -309,9 +311,15 @@ func (self *SpringAnimation) Velocity() float64 {
 
 // SetClamp sets whether self should be clamped.
 //
+// If set to TRUE, the animation will abruptly end as soon as it reaches the
+// final value, preventing overshooting.
+//
+// It won't prevent overshooting springanimation:value-from if a relative
+// negative springanimation:initial-velocity is set.
+//
 // The function takes the following parameters:
 //
-//    - clamp: new value.
+//   - clamp: new value.
 //
 func (self *SpringAnimation) SetClamp(clamp bool) {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -327,11 +335,22 @@ func (self *SpringAnimation) SetClamp(clamp bool) {
 	runtime.KeepAlive(clamp)
 }
 
-// SetEpsilon sets the precision used to determine the duration of self.
+// SetEpsilon sets the precision of the spring.
+//
+// The level of precision used to determine when the animation has come to a
+// rest, that is, when the amplitude of the oscillations becomes smaller than
+// this value.
+//
+// If the epsilon value is too small, the animation will take a long time to
+// stop after the animated value has stopped visibly changing.
+//
+// If the epsilon value is too large, the animation will end prematurely.
+//
+// The default value is 0.001.
 //
 // The function takes the following parameters:
 //
-//    - epsilon: new value.
+//   - epsilon: new value.
 //
 func (self *SpringAnimation) SetEpsilon(epsilon float64) {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -347,9 +366,11 @@ func (self *SpringAnimation) SetEpsilon(epsilon float64) {
 
 // SetInitialVelocity sets the initial velocity of self.
 //
+// Initial velocity affects only the animation curve, but not its duration.
+//
 // The function takes the following parameters:
 //
-//    - velocity: initial velocity.
+//   - velocity: initial velocity.
 //
 func (self *SpringAnimation) SetInitialVelocity(velocity float64) {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -367,7 +388,7 @@ func (self *SpringAnimation) SetInitialVelocity(velocity float64) {
 //
 // The function takes the following parameters:
 //
-//    - springParams: new spring parameters.
+//   - springParams: new spring parameters.
 //
 func (self *SpringAnimation) SetSpringParams(springParams *SpringParams) {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -383,9 +404,11 @@ func (self *SpringAnimation) SetSpringParams(springParams *SpringParams) {
 
 // SetValueFrom sets the value self will animate from.
 //
+// The animation will start at this value and end at springanimation:value-to.
+//
 // The function takes the following parameters:
 //
-//    - value to animate from.
+//   - value to animate from.
 //
 func (self *SpringAnimation) SetValueFrom(value float64) {
 	var _arg0 *C.AdwSpringAnimation // out
@@ -401,9 +424,11 @@ func (self *SpringAnimation) SetValueFrom(value float64) {
 
 // SetValueTo sets the value self will animate to.
 //
+// The animation will start at springanimation:value-from and end at this value.
+//
 // The function takes the following parameters:
 //
-//    - value to animate to.
+//   - value to animate to.
 //
 func (self *SpringAnimation) SetValueTo(value float64) {
 	var _arg0 *C.AdwSpringAnimation // out

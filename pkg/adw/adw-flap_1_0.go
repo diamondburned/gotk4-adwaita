@@ -120,9 +120,9 @@ func defaultFlapOverrides(v *Flap) FlapOverrides {
 // gtk.Overlay does, according to the flap:fold-policy value.
 //
 // AdwFlap has at most three children: flap:content, flap:flap and
-// flap:separator. Content is the primary child, flap is displayed next to it
-// when unfolded, or overlays it when folded. Flap can be shown or hidden by
-// changing the flap:reveal-flap value, as well as via swipe gestures if
+// flap:separator. Content is the primary child, flap is displayed next to
+// it when unfolded, or overlays it when folded. Flap can be shown or hidden
+// by changing the flap:reveal-flap value, as well as via swipe gestures if
 // flap:swipe-to-open and/or flap:swipe-to-close are set to TRUE.
 //
 // Optionally, a separator can be provided, which would be displayed between the
@@ -138,24 +138,22 @@ func defaultFlapOverrides(v *Flap) FlapOverrides {
 // The position of the flap and separator children relative to the content is
 // determined by orientation, as well as the flap:flap-position value.
 //
-// Folding the flap will automatically hide the flap widget, and unfolding it
-// will automatically reveal it. If this behavior is not desired, the
+// Folding the flap will automatically hide the flap widget, and unfolding
+// it will automatically reveal it. If this behavior is not desired, the
 // flap:locked property can be used to override it.
 //
 // Common use cases include sidebars, header bars that need to be able to
 // overlap the window content (for example, in fullscreen mode) and bottom
 // sheets.
 //
-//
-// AdwFlap as GtkBuildable
+// # AdwFlap as GtkBuildable
 //
 // The AdwFlap implementation of the gtk.Buildable interface supports setting
 // the flap child by specifying “flap” as the “type” attribute of a <child>
 // element, and separator by specifying “separator”. Specifying “content” child
 // type or omitting it results in setting the content child.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwFlap has a single CSS node with name flap. The node will get the style
 // classes .folded when it is folded, and .unfolded when it's not.
@@ -238,7 +236,7 @@ func marshalFlap(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - flap: newly created AdwFlap.
+//   - flap: newly created AdwFlap.
 //
 func NewFlap() *Flap {
 	var _cret *C.GtkWidget // in
@@ -256,7 +254,7 @@ func NewFlap() *Flap {
 //
 // The function returns the following values:
 //
-//    - widget (optional): content widget for self.
+//   - widget (optional): content widget for self.
 //
 func (self *Flap) Content() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
@@ -293,7 +291,7 @@ func (self *Flap) Content() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional): flap widget for self.
+//   - widget (optional): flap widget for self.
 //
 func (self *Flap) Flap() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
@@ -330,7 +328,7 @@ func (self *Flap) Flap() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - packType: flap position for self.
+//   - packType: flap position for self.
 //
 func (self *Flap) FlapPosition() gtk.PackType {
 	var _arg0 *C.AdwFlap    // out
@@ -348,11 +346,12 @@ func (self *Flap) FlapPosition() gtk.PackType {
 	return _packType
 }
 
-// FoldDuration gets the duration that fold transitions in self will take.
+// FoldDuration gets the fold transition animation duration for self,
+// in milliseconds.
 //
 // The function returns the following values:
 //
-//    - guint: fold transition duration.
+//   - guint: fold transition duration.
 //
 func (self *Flap) FoldDuration() uint {
 	var _arg0 *C.AdwFlap // out
@@ -374,7 +373,7 @@ func (self *Flap) FoldDuration() uint {
 //
 // The function returns the following values:
 //
-//    - flapFoldPolicy: fold policy for self.
+//   - flapFoldPolicy: fold policy for self.
 //
 func (self *Flap) FoldPolicy() FlapFoldPolicy {
 	var _arg0 *C.AdwFlap          // out
@@ -414,9 +413,11 @@ func (self *Flap) FoldThresholdPolicy() FoldThresholdPolicy {
 
 // Folded gets whether self is currently folded.
 //
+// See flap:fold-policy.
+//
 // The function returns the following values:
 //
-//    - ok: TRUE if self is currently folded.
+//   - ok: TRUE if self is currently folded.
 //
 func (self *Flap) Folded() bool {
 	var _arg0 *C.AdwFlap // out
@@ -440,7 +441,7 @@ func (self *Flap) Folded() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is locked.
+//   - ok: TRUE if self is locked.
 //
 func (self *Flap) Locked() bool {
 	var _arg0 *C.AdwFlap // out
@@ -464,7 +465,7 @@ func (self *Flap) Locked() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is modal.
+//   - ok: TRUE if self is modal.
 //
 func (self *Flap) Modal() bool {
 	var _arg0 *C.AdwFlap // out
@@ -488,7 +489,7 @@ func (self *Flap) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the flap widget is revealed.
+//   - ok: TRUE if the flap widget is revealed.
 //
 func (self *Flap) RevealFlap() bool {
 	var _arg0 *C.AdwFlap // out
@@ -512,7 +513,7 @@ func (self *Flap) RevealFlap() bool {
 //
 // The function returns the following values:
 //
-//    - springParams: reveal animation parameters.
+//   - springParams: reveal animation parameters.
 //
 func (self *Flap) RevealParams() *SpringParams {
 	var _arg0 *C.AdwFlap         // out
@@ -538,9 +539,13 @@ func (self *Flap) RevealParams() *SpringParams {
 
 // RevealProgress gets the current reveal progress for self.
 //
+// 0 means fully hidden, 1 means fully revealed.
+//
+// See flap:reveal-flap.
+//
 // The function returns the following values:
 //
-//    - gdouble: current reveal progress for self.
+//   - gdouble: current reveal progress for self.
 //
 func (self *Flap) RevealProgress() float64 {
 	var _arg0 *C.AdwFlap // out
@@ -562,7 +567,7 @@ func (self *Flap) RevealProgress() float64 {
 //
 // The function returns the following values:
 //
-//    - widget (optional): separator widget for self.
+//   - widget (optional): separator widget for self.
 //
 func (self *Flap) Separator() gtk.Widgetter {
 	var _arg0 *C.AdwFlap   // out
@@ -599,7 +604,7 @@ func (self *Flap) Separator() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self can be closed with a swipe gesture.
+//   - ok: TRUE if self can be closed with a swipe gesture.
 //
 func (self *Flap) SwipeToClose() bool {
 	var _arg0 *C.AdwFlap // out
@@ -623,7 +628,7 @@ func (self *Flap) SwipeToClose() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self can be opened with a swipe gesture.
+//   - ok: TRUE if self can be opened with a swipe gesture.
 //
 func (self *Flap) SwipeToOpen() bool {
 	var _arg0 *C.AdwFlap // out
@@ -648,7 +653,7 @@ func (self *Flap) SwipeToOpen() bool {
 //
 // The function returns the following values:
 //
-//    - flapTransitionType: current transition type of self.
+//   - flapTransitionType: current transition type of self.
 //
 func (self *Flap) TransitionType() FlapTransitionType {
 	var _arg0 *C.AdwFlap              // out
@@ -668,9 +673,11 @@ func (self *Flap) TransitionType() FlapTransitionType {
 
 // SetContent sets the content widget for self.
 //
+// It's always displayed when unfolded, and partially visible when folded.
+//
 // The function takes the following parameters:
 //
-//    - content (optional) widget.
+//   - content (optional) widget.
 //
 func (self *Flap) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
@@ -688,9 +695,11 @@ func (self *Flap) SetContent(content gtk.Widgetter) {
 
 // SetFlap sets the flap widget for self.
 //
+// It's only visible when flap:reveal-progress is greater than 0.
+//
 // The function takes the following parameters:
 //
-//    - flap (optional) widget.
+//   - flap (optional) widget.
 //
 func (self *Flap) SetFlap(flap gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
@@ -708,9 +717,12 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 
 // SetFlapPosition sets the flap position for self.
 //
+// If it's set to GTK_PACK_START, the flap is displayed before the content,
+// if GTK_PACK_END, it's displayed after the content.
+//
 // The function takes the following parameters:
 //
-//    - position: new value.
+//   - position: new value.
 //
 func (self *Flap) SetFlapPosition(position gtk.PackType) {
 	var _arg0 *C.AdwFlap    // out
@@ -724,11 +736,12 @@ func (self *Flap) SetFlapPosition(position gtk.PackType) {
 	runtime.KeepAlive(position)
 }
 
-// SetFoldDuration sets the duration that fold transitions in self will take.
+// SetFoldDuration sets the fold transition animation duration for self,
+// in milliseconds.
 //
 // The function takes the following parameters:
 //
-//    - duration: new duration, in milliseconds.
+//   - duration: new duration, in milliseconds.
 //
 func (self *Flap) SetFoldDuration(duration uint) {
 	var _arg0 *C.AdwFlap // out
@@ -746,7 +759,7 @@ func (self *Flap) SetFoldDuration(duration uint) {
 //
 // The function takes the following parameters:
 //
-//    - policy: fold policy.
+//   - policy: fold policy.
 //
 func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 	var _arg0 *C.AdwFlap          // out
@@ -762,9 +775,16 @@ func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
 //
+// If set to ADW_FOLD_THRESHOLD_POLICY_MINIMUM, flap will only fold when the
+// children cannot fit anymore. With ADW_FOLD_THRESHOLD_POLICY_NATURAL, it will
+// fold as soon as children don't get their natural size.
+//
+// This can be useful if you have a long ellipsizing label and want to let it
+// ellipsize instead of immediately folding.
+//
 // The function takes the following parameters:
 //
-//    - policy to use.
+//   - policy to use.
 //
 func (self *Flap) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 	var _arg0 *C.AdwFlap               // out
@@ -780,9 +800,13 @@ func (self *Flap) SetFoldThresholdPolicy(policy FoldThresholdPolicy) {
 
 // SetLocked sets whether self is locked.
 //
+// If FALSE, folding when the flap is revealed automatically closes it,
+// and unfolding it when the flap is not revealed opens it. If TRUE,
+// flap:reveal-flap value never changes on its own.
+//
 // The function takes the following parameters:
 //
-//    - locked: new value.
+//   - locked: new value.
 //
 func (self *Flap) SetLocked(locked bool) {
 	var _arg0 *C.AdwFlap // out
@@ -800,9 +824,13 @@ func (self *Flap) SetLocked(locked bool) {
 
 // SetModal sets whether self is modal.
 //
+// If TRUE, clicking the content widget while flap is revealed, as well as
+// pressing the <kbd>Esc</kbd> key, will close the flap. If FALSE, clicks are
+// passed through to the content widget.
+//
 // The function takes the following parameters:
 //
-//    - modal: whether self is modal.
+//   - modal: whether self is modal.
 //
 func (self *Flap) SetModal(modal bool) {
 	var _arg0 *C.AdwFlap // out
@@ -822,7 +850,7 @@ func (self *Flap) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - revealFlap: whether to reveal the flap widget.
+//   - revealFlap: whether to reveal the flap widget.
 //
 func (self *Flap) SetRevealFlap(revealFlap bool) {
 	var _arg0 *C.AdwFlap // out
@@ -840,9 +868,13 @@ func (self *Flap) SetRevealFlap(revealFlap bool) {
 
 // SetRevealParams sets the reveal animation spring parameters for self.
 //
+// The default value is equivalent to:
+//
+//    adw_spring_params_new (1, 0.5, 500).
+//
 // The function takes the following parameters:
 //
-//    - params: new parameters.
+//   - params: new parameters.
 //
 func (self *Flap) SetRevealParams(params *SpringParams) {
 	var _arg0 *C.AdwFlap         // out
@@ -858,9 +890,12 @@ func (self *Flap) SetRevealParams(params *SpringParams) {
 
 // SetSeparator sets the separator widget for self.
 //
+// It's displayed between content and flap when there's no shadow to display.
+// When exactly it's visible depends on the flap:transition-type value.
+//
 // The function takes the following parameters:
 //
-//    - separator (optional) widget.
+//   - separator (optional) widget.
 //
 func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 	var _arg0 *C.AdwFlap   // out
@@ -878,9 +913,11 @@ func (self *Flap) SetSeparator(separator gtk.Widgetter) {
 
 // SetSwipeToClose sets whether self can be closed with a swipe gesture.
 //
+// The area that can be swiped depends on the flap:transition-type value.
+//
 // The function takes the following parameters:
 //
-//    - swipeToClose: whether self can be closed with a swipe gesture.
+//   - swipeToClose: whether self can be closed with a swipe gesture.
 //
 func (self *Flap) SetSwipeToClose(swipeToClose bool) {
 	var _arg0 *C.AdwFlap // out
@@ -898,9 +935,11 @@ func (self *Flap) SetSwipeToClose(swipeToClose bool) {
 
 // SetSwipeToOpen sets whether self can be opened with a swipe gesture.
 //
+// The area that can be swiped depends on the flap:transition-type value.
+//
 // The function takes the following parameters:
 //
-//    - swipeToOpen: whether self can be opened with a swipe gesture.
+//   - swipeToOpen: whether self can be opened with a swipe gesture.
 //
 func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 	var _arg0 *C.AdwFlap // out
@@ -919,9 +958,14 @@ func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 // SetTransitionType sets the type of animation used for reveal and fold
 // transitions in self.
 //
+// flap:flap is transparent by default, which means the content will be
+// seen through it with ADW_FLAP_TRANSITION_TYPE_OVER transitions; add the
+// .background (style-classes.html#background) style class to it if this is
+// unwanted.
+//
 // The function takes the following parameters:
 //
-//    - transitionType: new transition type.
+//   - transitionType: new transition type.
 //
 func (self *Flap) SetTransitionType(transitionType FlapTransitionType) {
 	var _arg0 *C.AdwFlap              // out
