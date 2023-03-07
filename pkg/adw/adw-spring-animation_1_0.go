@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -73,6 +74,52 @@ func wrapSpringAnimation(obj *coreglib.Object) *SpringAnimation {
 
 func marshalSpringAnimation(p uintptr) (interface{}, error) {
 	return wrapSpringAnimation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSpringAnimation creates a new AdwSpringAnimation on widget.
+//
+// The animation will animate target from from to to with the dynamics of a
+// spring described by spring_params.
+//
+// The function takes the following parameters:
+//
+//    - widget to create animation on.
+//    - from: value to animate from.
+//    - to: value to animate to.
+//    - springParams: physical parameters of the spring.
+//    - target value to animate.
+//
+// The function returns the following values:
+//
+//    - springAnimation: newly created animation.
+//
+func NewSpringAnimation(widget gtk.Widgetter, from, to float64, springParams *SpringParams, target AnimationTargetter) *SpringAnimation {
+	var _arg1 *C.GtkWidget          // out
+	var _arg2 C.double              // out
+	var _arg3 C.double              // out
+	var _arg4 *C.AdwSpringParams    // out
+	var _arg5 *C.AdwAnimationTarget // out
+	var _cret *C.AdwAnimation       // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.double(from)
+	_arg3 = C.double(to)
+	_arg4 = (*C.AdwSpringParams)(gextras.StructNative(unsafe.Pointer(springParams)))
+	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.adw_spring_animation_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(from)
+	runtime.KeepAlive(to)
+	runtime.KeepAlive(springParams)
+	runtime.KeepAlive(target)
+
+	var _springAnimation *SpringAnimation // out
+
+	_springAnimation = wrapSpringAnimation(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _springAnimation
 }
 
 // Clamp gets whether self should be clamped.

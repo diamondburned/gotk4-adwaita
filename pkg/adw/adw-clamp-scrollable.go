@@ -2,6 +2,13 @@
 
 package adw
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -14,4 +21,11 @@ type ClampScrollableClass struct {
 // clampScrollableClass is the struct that's finalized.
 type clampScrollableClass struct {
 	native *C.AdwClampScrollableClass
+}
+
+func (c *ClampScrollableClass) ParentClass() *gtk.WidgetClass {
+	valptr := &c.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

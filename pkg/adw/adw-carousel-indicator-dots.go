@@ -2,6 +2,13 @@
 
 package adw
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -15,4 +22,11 @@ type CarouselIndicatorDotsClass struct {
 // carouselIndicatorDotsClass is the struct that's finalized.
 type carouselIndicatorDotsClass struct {
 	native *C.AdwCarouselIndicatorDotsClass
+}
+
+func (c *CarouselIndicatorDotsClass) ParentClass() *gtk.WidgetClass {
+	valptr := &c.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

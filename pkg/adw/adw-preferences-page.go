@@ -2,6 +2,13 @@
 
 package adw
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -14,4 +21,12 @@ type PreferencesPageClass struct {
 // preferencesPageClass is the struct that's finalized.
 type preferencesPageClass struct {
 	native *C.AdwPreferencesPageClass
+}
+
+// ParentClass: parent class.
+func (p *PreferencesPageClass) ParentClass() *gtk.WidgetClass {
+	valptr := &p.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -2,6 +2,13 @@
 
 package adw
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -14,4 +21,12 @@ type ApplicationClass struct {
 // applicationClass is the struct that's finalized.
 type applicationClass struct {
 	native *C.AdwApplicationClass
+}
+
+// ParentClass: parent class.
+func (a *ApplicationClass) ParentClass() *gtk.ApplicationClass {
+	valptr := &a.native.parent_class
+	var _v *gtk.ApplicationClass // out
+	_v = (*gtk.ApplicationClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

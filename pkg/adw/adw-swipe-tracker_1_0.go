@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -50,6 +51,8 @@ func defaultSwipeTrackerOverrides(v *SwipeTracker) SwipeTrackerOverrides {
 type SwipeTracker struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
+
+	gtk.Orientable
 }
 
 var (
@@ -75,6 +78,9 @@ func initSwipeTrackerClass(gclass unsafe.Pointer, overrides SwipeTrackerOverride
 func wrapSwipeTracker(obj *coreglib.Object) *SwipeTracker {
 	return &SwipeTracker{
 		Object: obj,
+		Orientable: gtk.Orientable{
+			Object: obj,
+		},
 	}
 }
 
@@ -109,6 +115,32 @@ func (self *SwipeTracker) ConnectPrepare(f func(direction NavigationDirection)) 
 // changes.
 func (self *SwipeTracker) ConnectUpdateSwipe(f func(progress float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "update-swipe", false, unsafe.Pointer(C._gotk4_adw1_SwipeTracker_ConnectUpdateSwipe), f)
+}
+
+// NewSwipeTracker creates a new AdwSwipeTracker for widget.
+//
+// The function takes the following parameters:
+//
+//    - swipeable: widget to add the tracker on.
+//
+// The function returns the following values:
+//
+//    - swipeTracker: newly created AdwSwipeTracker.
+//
+func NewSwipeTracker(swipeable Swipeabler) *SwipeTracker {
+	var _arg1 *C.AdwSwipeable    // out
+	var _cret *C.AdwSwipeTracker // in
+
+	_arg1 = (*C.AdwSwipeable)(unsafe.Pointer(coreglib.InternObject(swipeable).Native()))
+
+	_cret = C.adw_swipe_tracker_new(_arg1)
+	runtime.KeepAlive(swipeable)
+
+	var _swipeTracker *SwipeTracker // out
+
+	_swipeTracker = wrapSwipeTracker(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _swipeTracker
 }
 
 // AllowLongSwipes gets whether to allow swiping for more than one snap point at
@@ -206,6 +238,28 @@ func (self *SwipeTracker) Reversed() bool {
 	}
 
 	return _ok
+}
+
+// Swipeable: get the widget self is attached to.
+//
+// The function returns the following values:
+//
+//    - swipeable widget.
+//
+func (self *SwipeTracker) Swipeable() *Swipeable {
+	var _arg0 *C.AdwSwipeTracker // out
+	var _cret *C.AdwSwipeable    // in
+
+	_arg0 = (*C.AdwSwipeTracker)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_swipe_tracker_get_swipeable(_arg0)
+	runtime.KeepAlive(self)
+
+	var _swipeable *Swipeable // out
+
+	_swipeable = wrapSwipeable(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _swipeable
 }
 
 // SetAllowLongSwipes sets whether to allow swiping for more than one snap point

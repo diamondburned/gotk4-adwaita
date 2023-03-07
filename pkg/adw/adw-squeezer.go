@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -70,6 +71,44 @@ func marshalSqueezerPage(p uintptr) (interface{}, error) {
 	return wrapSqueezerPage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Child returns the squeezer child to which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
+func (self *SqueezerPage) Child() gtk.Widgetter {
+	var _arg0 *C.AdwSqueezerPage // out
+	var _cret *C.GtkWidget       // in
+
+	_arg0 = (*C.AdwSqueezerPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_squeezer_page_get_child(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // Enabled gets whether self is enabled.
 //
 // The function returns the following values:
@@ -122,6 +161,13 @@ type SqueezerClass struct {
 // squeezerClass is the struct that's finalized.
 type squeezerClass struct {
 	native *C.AdwSqueezerClass
+}
+
+func (s *SqueezerClass) ParentClass() *gtk.WidgetClass {
+	valptr := &s.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // SqueezerPageClass: instance of this type is always passed by reference.

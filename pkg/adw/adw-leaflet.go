@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -68,6 +69,44 @@ func wrapLeafletPage(obj *coreglib.Object) *LeafletPage {
 
 func marshalLeafletPage(p uintptr) (interface{}, error) {
 	return wrapLeafletPage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Child gets the leaflet child th which self belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which self belongs.
+//
+func (self *LeafletPage) Child() gtk.Widgetter {
+	var _arg0 *C.AdwLeafletPage // out
+	var _cret *C.GtkWidget      // in
+
+	_arg0 = (*C.AdwLeafletPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_leaflet_page_get_child(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // Name gets the name of self.
@@ -167,6 +206,13 @@ type LeafletClass struct {
 // leafletClass is the struct that's finalized.
 type leafletClass struct {
 	native *C.AdwLeafletClass
+}
+
+func (l *LeafletClass) ParentClass() *gtk.WidgetClass {
+	valptr := &l.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // LeafletPageClass: instance of this type is always passed by reference.

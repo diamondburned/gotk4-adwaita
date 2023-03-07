@@ -4,11 +4,46 @@ package adw
 
 import (
 	"runtime"
+	"unsafe"
+
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
+
+// GetEnableAnimations checks whether animations are enabled for widget.
+//
+// This should be used when implementing an animated widget to know whether to
+// animate it or not.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - ok: whether animations are enabled for widget.
+//
+func GetEnableAnimations(widget gtk.Widgetter) bool {
+	var _arg1 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C.adw_get_enable_animations(_arg1)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
 
 // Lerp computes the linear interpolation between a and b for t.
 //

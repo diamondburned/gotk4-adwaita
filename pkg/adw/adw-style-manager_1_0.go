@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
@@ -168,6 +169,36 @@ func (self *StyleManager) Dark() bool {
 	return _ok
 }
 
+// Display gets the display the style manager is associated with.
+//
+// The display will be NULL for the style manager returned by
+// stylemanager.GetDefault().
+//
+// The function returns the following values:
+//
+//    - display: (nullable): the display.
+//
+func (self *StyleManager) Display() *gdk.Display {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret *C.GdkDisplay      // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_display(_arg0)
+	runtime.KeepAlive(self)
+
+	var _display *gdk.Display // out
+
+	{
+		obj := coreglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
+
+	return _display
+}
+
 // HighContrast gets whether the application is using high contrast appearance.
 //
 // The function returns the following values:
@@ -253,6 +284,37 @@ func StyleManagerGetDefault() *StyleManager {
 	var _cret *C.AdwStyleManager // in
 
 	_cret = C.adw_style_manager_get_default()
+
+	var _styleManager *StyleManager // out
+
+	_styleManager = wrapStyleManager(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _styleManager
+}
+
+// StyleManagerGetForDisplay gets the AdwStyleManager instance managing display.
+//
+// It can be used to override styles for that specific display instead of the
+// whole application.
+//
+// Most applications should use stylemanager.GetDefault() instead.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
+// The function returns the following values:
+//
+//    - styleManager: style manager for display.
+//
+func StyleManagerGetForDisplay(display *gdk.Display) *StyleManager {
+	var _arg1 *C.GdkDisplay      // out
+	var _cret *C.AdwStyleManager // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.adw_style_manager_get_for_display(_arg1)
+	runtime.KeepAlive(display)
 
 	var _styleManager *StyleManager // out
 

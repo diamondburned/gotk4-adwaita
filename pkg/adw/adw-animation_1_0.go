@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -237,6 +238,44 @@ func (self *Animation) Value() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
+}
+
+// Widget gets the widget self was created for.
+//
+// The function returns the following values:
+//
+//    - widget: animation widget.
+//
+func (self *Animation) Widget() gtk.Widgetter {
+	var _arg0 *C.AdwAnimation // out
+	var _cret *C.GtkWidget    // in
+
+	_arg0 = (*C.AdwAnimation)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_animation_get_widget(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // Pause pauses a playing animation for self.

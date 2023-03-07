@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -58,6 +59,50 @@ func wrapTimedAnimation(obj *coreglib.Object) *TimedAnimation {
 
 func marshalTimedAnimation(p uintptr) (interface{}, error) {
 	return wrapTimedAnimation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewTimedAnimation creates a new AdwTimedAnimation on widget to animate target
+// from from to to.
+//
+// The function takes the following parameters:
+//
+//    - widget to create animation on.
+//    - from: value to animate from.
+//    - to: value to animate to.
+//    - duration for the animation.
+//    - target value to animate.
+//
+// The function returns the following values:
+//
+//    - timedAnimation: newly created animation.
+//
+func NewTimedAnimation(widget gtk.Widgetter, from, to float64, duration uint, target AnimationTargetter) *TimedAnimation {
+	var _arg1 *C.GtkWidget          // out
+	var _arg2 C.double              // out
+	var _arg3 C.double              // out
+	var _arg4 C.guint               // out
+	var _arg5 *C.AdwAnimationTarget // out
+	var _cret *C.AdwAnimation       // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.double(from)
+	_arg3 = C.double(to)
+	_arg4 = C.guint(duration)
+	_arg5 = (*C.AdwAnimationTarget)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.adw_timed_animation_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(from)
+	runtime.KeepAlive(to)
+	runtime.KeepAlive(duration)
+	runtime.KeepAlive(target)
+
+	var _timedAnimation *TimedAnimation // out
+
+	_timedAnimation = wrapTimedAnimation(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _timedAnimation
 }
 
 // Alternate gets whether self changes direction on every iteration.

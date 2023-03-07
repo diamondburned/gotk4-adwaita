@@ -8,6 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -70,6 +72,73 @@ func marshalTabPage(p uintptr) (interface{}, error) {
 	return wrapTabPage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Child gets the child of self.
+//
+// The function returns the following values:
+//
+//    - widget: child of self.
+//
+func (self *TabPage) Child() gtk.Widgetter {
+	var _arg0 *C.AdwTabPage // out
+	var _cret *C.GtkWidget  // in
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_tab_page_get_child(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gtk.Widgetter)
+			return ok
+		})
+		rv, ok := casted.(gtk.Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// Icon gets the icon of self.
+//
+// The function returns the following values:
+//
+//    - icon (optional) of self.
+//
+func (self *TabPage) Icon() *gio.Icon {
+	var _arg0 *C.AdwTabPage // out
+	var _cret *C.GIcon      // in
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_tab_page_get_icon(_arg0)
+	runtime.KeepAlive(self)
+
+	var _icon *gio.Icon // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
+			}
+		}
+	}
+
+	return _icon
+}
+
 // IndicatorActivatable gets whether the indicator of self is activatable.
 //
 // The function returns the following values:
@@ -92,6 +161,35 @@ func (self *TabPage) IndicatorActivatable() bool {
 	}
 
 	return _ok
+}
+
+// IndicatorIcon gets the indicator icon of self.
+//
+// The function returns the following values:
+//
+//    - icon (optional): indicator icon of self.
+//
+func (self *TabPage) IndicatorIcon() *gio.Icon {
+	var _arg0 *C.AdwTabPage // out
+	var _cret *C.GIcon      // in
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_tab_page_get_indicator_icon(_arg0)
+	runtime.KeepAlive(self)
+
+	var _icon *gio.Icon // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
+			}
+		}
+	}
+
+	return _icon
 }
 
 // Loading gets whether self is loading.
@@ -260,6 +358,26 @@ func (self *TabPage) Tooltip() string {
 	return _utf8
 }
 
+// SetIcon sets the icon of self.
+//
+// The function takes the following parameters:
+//
+//    - icon (optional) of self.
+//
+func (self *TabPage) SetIcon(icon gio.Iconner) {
+	var _arg0 *C.AdwTabPage // out
+	var _arg1 *C.GIcon      // out
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if icon != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	}
+
+	C.adw_tab_page_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(icon)
+}
+
 // SetIndicatorActivatable sets whether the indicator of self is activatable.
 //
 // The function takes the following parameters:
@@ -278,6 +396,26 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	C.adw_tab_page_set_indicator_activatable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activatable)
+}
+
+// SetIndicatorIcon sets the indicator icon of self.
+//
+// The function takes the following parameters:
+//
+//    - indicatorIcon (optional): indicator icon of self.
+//
+func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
+	var _arg0 *C.AdwTabPage // out
+	var _arg1 *C.GIcon      // out
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if indicatorIcon != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(indicatorIcon).Native()))
+	}
+
+	C.adw_tab_page_set_indicator_icon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(indicatorIcon)
 }
 
 // SetLoading sets wether self is loading.
@@ -376,4 +514,11 @@ type TabViewClass struct {
 // tabViewClass is the struct that's finalized.
 type tabViewClass struct {
 	native *C.AdwTabViewClass
+}
+
+func (t *TabViewClass) ParentClass() *gtk.WidgetClass {
+	valptr := &t.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

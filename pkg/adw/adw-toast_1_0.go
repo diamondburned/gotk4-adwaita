@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -278,6 +279,37 @@ func (self *Toast) ActionName() string {
 	return _utf8
 }
 
+// ActionTargetValue gets the parameter for action invocations.
+//
+// The function returns the following values:
+//
+//    - variant (optional): action target.
+//
+func (self *Toast) ActionTargetValue() *glib.Variant {
+	var _arg0 *C.AdwToast // out
+	var _cret *C.GVariant // in
+
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_toast_get_action_target_value(_arg0)
+	runtime.KeepAlive(self)
+
+	var _variant *glib.Variant // out
+
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	return _variant
+}
+
 // ButtonLabel gets the label to show on the button.
 //
 // The function returns the following values:
@@ -387,6 +419,29 @@ func (self *Toast) SetActionName(actionName string) {
 	C.adw_toast_set_action_name(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(actionName)
+}
+
+// SetActionTargetValue sets the parameter for action invocations.
+//
+// If the action_target variant has a floating reference this function will sink
+// it.
+//
+// The function takes the following parameters:
+//
+//    - actionTarget (optional): action target.
+//
+func (self *Toast) SetActionTargetValue(actionTarget *glib.Variant) {
+	var _arg0 *C.AdwToast // out
+	var _arg1 *C.GVariant // out
+
+	_arg0 = (*C.AdwToast)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if actionTarget != nil {
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(actionTarget)))
+	}
+
+	C.adw_toast_set_action_target_value(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(actionTarget)
 }
 
 // SetButtonLabel sets the label to show on the button.

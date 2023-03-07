@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -152,6 +153,8 @@ func defaultEnumListModelOverrides(v *EnumListModel) EnumListModelOverrides {
 type EnumListModel struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
+
+	gio.ListModel
 }
 
 var (
@@ -177,6 +180,9 @@ func initEnumListModelClass(gclass unsafe.Pointer, overrides EnumListModelOverri
 func wrapEnumListModel(obj *coreglib.Object) *EnumListModel {
 	return &EnumListModel{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
 	}
 }
 

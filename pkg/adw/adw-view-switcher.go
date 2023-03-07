@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
@@ -59,4 +61,11 @@ type ViewSwitcherClass struct {
 // viewSwitcherClass is the struct that's finalized.
 type viewSwitcherClass struct {
 	native *C.AdwViewSwitcherClass
+}
+
+func (v *ViewSwitcherClass) ParentClass() *gtk.WidgetClass {
+	valptr := &v.native.parent_class
+	var _v *gtk.WidgetClass // out
+	_v = (*gtk.WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

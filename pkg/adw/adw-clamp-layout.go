@@ -2,6 +2,13 @@
 
 package adw
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 // #include <stdlib.h>
 // #include <adwaita.h>
 import "C"
@@ -14,4 +21,11 @@ type ClampLayoutClass struct {
 // clampLayoutClass is the struct that's finalized.
 type clampLayoutClass struct {
 	native *C.AdwClampLayoutClass
+}
+
+func (c *ClampLayoutClass) ParentClass() *gtk.LayoutManagerClass {
+	valptr := &c.native.parent_class
+	var _v *gtk.LayoutManagerClass // out
+	_v = (*gtk.LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
