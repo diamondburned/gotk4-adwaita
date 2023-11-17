@@ -39,12 +39,11 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // Application: base class for Adwaita applications.
 //
 // AdwApplication handles library initialization by calling init in the default
-// gio.Application::startup signal handler, in turn chaining up as required by
-// gtk.Application. Therefore, any subclass of AdwApplication should always
+// gio.Application::startup signal handler, in turn chaining up as required
+// by gtk.Application. Therefore, any subclass of AdwApplication should always
 // chain up its startup handler before using any Adwaita or GTK API.
 //
-//
-// Automatic Resources
+// # Automatic Resources
 //
 // AdwApplication will automatically load stylesheets located in the
 // application's resource base path (see gio.Application.SetResourceBasePath(),
@@ -116,12 +115,12 @@ func marshalApplication(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId (optional): application ID.
-//    - flags: application flags.
+//   - applicationId (optional): application ID.
+//   - flags: application flags.
 //
 // The function returns the following values:
 //
-//    - application: newly created AdwApplication.
+//   - application: newly created AdwApplication.
 //
 func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
 	var _arg1 *C.char             // out
@@ -147,9 +146,12 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 
 // StyleManager gets the style manager for self.
 //
+// This is a convenience property allowing to access AdwStyleManager through
+// property bindings or expressions.
+//
 // The function returns the following values:
 //
-//    - styleManager: style manager.
+//   - styleManager: style manager.
 //
 func (self *Application) StyleManager() *StyleManager {
 	var _arg0 *C.AdwApplication  // out

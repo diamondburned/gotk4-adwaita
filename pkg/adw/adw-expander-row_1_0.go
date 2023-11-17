@@ -45,8 +45,7 @@ func defaultExpanderRowOverrides(v *ExpanderRow) ExpanderRowOverrides {
 // It also allows the user to enable the expansion of the row, allowing to
 // disable all that the row contains.
 //
-//
-// AdwExpanderRow as GtkBuildable
+// # AdwExpanderRow as GtkBuildable
 //
 // The AdwExpanderRow implementation of the gtk.Buildable interface supports
 // adding a child as an action widget by specifying “action” as the “type”
@@ -55,8 +54,7 @@ func defaultExpanderRowOverrides(v *ExpanderRow) ExpanderRowOverrides {
 // It also supports adding it as a prefix widget by specifying “prefix” as the
 // “type” attribute of a <child> element.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwExpanderRow has a main CSS node with name row and the .expander style
 // class. It has the .empty style class when it contains no children.
@@ -139,7 +137,7 @@ func marshalExpanderRow(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - expanderRow: newly created AdwExpanderRow.
+//   - expanderRow: newly created AdwExpanderRow.
 //
 func NewExpanderRow() *ExpanderRow {
 	var _cret *C.GtkWidget // in
@@ -157,7 +155,7 @@ func NewExpanderRow() *ExpanderRow {
 //
 // The function takes the following parameters:
 //
-//    - widget: widget.
+//   - widget: widget.
 //
 func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -175,7 +173,7 @@ func (self *ExpanderRow) AddAction(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: widget.
+//   - widget: widget.
 //
 func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -195,7 +193,7 @@ func (self *ExpanderRow) AddPrefix(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget.
+//   - child: widget.
 //
 func (self *ExpanderRow) AddRow(child gtk.Widgetter) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -213,7 +211,7 @@ func (self *ExpanderRow) AddRow(child gtk.Widgetter) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the expansion of self is enabled.
+//   - ok: whether the expansion of self is enabled.
 //
 func (self *ExpanderRow) EnableExpansion() bool {
 	var _arg0 *C.AdwExpanderRow // out
@@ -237,7 +235,7 @@ func (self *ExpanderRow) EnableExpansion() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is expanded.
+//   - ok: whether self is expanded.
 //
 func (self *ExpanderRow) Expanded() bool {
 	var _arg0 *C.AdwExpanderRow // out
@@ -261,7 +259,7 @@ func (self *ExpanderRow) Expanded() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name for self.
+//   - utf8 (optional): icon name for self.
 //
 func (self *ExpanderRow) IconName() string {
 	var _arg0 *C.AdwExpanderRow // out
@@ -286,7 +284,7 @@ func (self *ExpanderRow) IconName() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether the switch enabling the expansion is visible.
+//   - ok: whether the switch enabling the expansion is visible.
 //
 func (self *ExpanderRow) ShowEnableSwitch() bool {
 	var _arg0 *C.AdwExpanderRow // out
@@ -310,7 +308,7 @@ func (self *ExpanderRow) ShowEnableSwitch() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: subtitle for self.
+//   - utf8: subtitle for self.
 //
 func (self *ExpanderRow) Subtitle() string {
 	var _arg0 *C.AdwExpanderRow // out
@@ -346,7 +344,7 @@ func (self *ExpanderRow) Remove(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - enableExpansion: whether to enable the expansion.
+//   - enableExpansion: whether to enable the expansion.
 //
 func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -366,7 +364,7 @@ func (self *ExpanderRow) SetEnableExpansion(enableExpansion bool) {
 //
 // The function takes the following parameters:
 //
-//    - expanded: whether to expand the row.
+//   - expanded: whether to expand the row.
 //
 func (self *ExpanderRow) SetExpanded(expanded bool) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -386,7 +384,7 @@ func (self *ExpanderRow) SetExpanded(expanded bool) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (self *ExpanderRow) SetIconName(iconName string) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -408,7 +406,7 @@ func (self *ExpanderRow) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - showEnableSwitch: whether to show the switch enabling the expansion.
+//   - showEnableSwitch: whether to show the switch enabling the expansion.
 //
 func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 	var _arg0 *C.AdwExpanderRow // out
@@ -426,9 +424,12 @@ func (self *ExpanderRow) SetShowEnableSwitch(showEnableSwitch bool) {
 
 // SetSubtitle sets the subtitle for self.
 //
+// The subtitle is interpreted as Pango markup unless preferencesrow:use-markup
+// is set to FALSE.
+//
 // The function takes the following parameters:
 //
-//    - subtitle: subtitle.
+//   - subtitle: subtitle.
 //
 func (self *ExpanderRow) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwExpanderRow // out

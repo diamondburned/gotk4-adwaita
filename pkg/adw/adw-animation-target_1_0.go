@@ -34,8 +34,6 @@ func init() {
 type AnimationTargetFunc func(value float64)
 
 // AnimationTarget represents a value animation can animate.
-//
-// Currently the only implementation is callbackanimationtarget.
 type AnimationTarget struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -103,11 +101,11 @@ func marshalCallbackAnimationTarget(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - callback (optional) to call.
+//   - callback to call.
 //
 // The function returns the following values:
 //
-//    - callbackAnimationTarget: newly created callback target.
+//   - callbackAnimationTarget: newly created callback target.
 //
 func NewCallbackAnimationTarget(callback AnimationTargetFunc) *CallbackAnimationTarget {
 	var _arg1 C.AdwAnimationTargetFunc // out
@@ -115,11 +113,9 @@ func NewCallbackAnimationTarget(callback AnimationTargetFunc) *CallbackAnimation
 	var _arg3 C.GDestroyNotify
 	var _cret *C.AdwAnimationTarget // in
 
-	if callback != nil {
-		_arg1 = (*[0]byte)(C._gotk4_adw1_AnimationTargetFunc)
-		_arg2 = C.gpointer(gbox.Assign(callback))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
+	_arg1 = (*[0]byte)(C._gotk4_adw1_AnimationTargetFunc)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.adw_callback_animation_target_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(callback)

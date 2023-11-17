@@ -44,8 +44,7 @@ func defaultStatusPageOverrides(v *StatusPage) StatusPageOverrides {
 // The AdwStatusPage widget can have an icon, a title, a description and a
 // custom widget which is displayed below them.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwStatusPage has a main CSS node with name statuspage.
 //
@@ -105,7 +104,7 @@ func marshalStatusPage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - statusPage: newly created AdwStatusPage.
+//   - statusPage: newly created AdwStatusPage.
 //
 func NewStatusPage() *StatusPage {
 	var _cret *C.GtkWidget // in
@@ -123,7 +122,7 @@ func NewStatusPage() *StatusPage {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of self.
+//   - widget (optional): child widget of self.
 //
 func (self *StatusPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwStatusPage // out
@@ -160,7 +159,7 @@ func (self *StatusPage) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): description.
+//   - utf8 (optional): description.
 //
 func (self *StatusPage) Description() string {
 	var _arg0 *C.AdwStatusPage // out
@@ -184,7 +183,7 @@ func (self *StatusPage) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name.
+//   - utf8 (optional): icon name.
 //
 func (self *StatusPage) IconName() string {
 	var _arg0 *C.AdwStatusPage // out
@@ -208,7 +207,7 @@ func (self *StatusPage) IconName() string {
 //
 // The function returns the following values:
 //
-//    - paintable (optional): paintable.
+//   - paintable (optional): paintable.
 //
 func (self *StatusPage) Paintable() *gdk.Paintable {
 	var _arg0 *C.AdwStatusPage // out
@@ -237,7 +236,7 @@ func (self *StatusPage) Paintable() *gdk.Paintable {
 //
 // The function returns the following values:
 //
-//    - utf8: title.
+//   - utf8: title.
 //
 func (self *StatusPage) Title() string {
 	var _arg0 *C.AdwStatusPage // out
@@ -259,7 +258,7 @@ func (self *StatusPage) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (self *StatusPage) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwStatusPage // out
@@ -277,9 +276,11 @@ func (self *StatusPage) SetChild(child gtk.Widgetter) {
 
 // SetDescription sets the description for self.
 //
+// The description is displayed below the title.
+//
 // The function takes the following parameters:
 //
-//    - description (optional): description.
+//   - description (optional): description.
 //
 func (self *StatusPage) SetDescription(description string) {
 	var _arg0 *C.AdwStatusPage // out
@@ -298,9 +299,11 @@ func (self *StatusPage) SetDescription(description string) {
 
 // SetIconName sets the icon name for self.
 //
+// Changing this will set statuspage:paintable to NULL.
+//
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (self *StatusPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwStatusPage // out
@@ -319,9 +322,11 @@ func (self *StatusPage) SetIconName(iconName string) {
 
 // SetPaintable sets the paintable for self.
 //
+// Changing this will set statuspage:icon-name to NULL.
+//
 // The function takes the following parameters:
 //
-//    - paintable (optional): paintable.
+//   - paintable (optional): paintable.
 //
 func (self *StatusPage) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.AdwStatusPage // out
@@ -339,9 +344,11 @@ func (self *StatusPage) SetPaintable(paintable gdk.Paintabler) {
 
 // SetTitle sets the title for self.
 //
+// The title is displayed below the icon.
+//
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *StatusPage) SetTitle(title string) {
 	var _arg0 *C.AdwStatusPage // out

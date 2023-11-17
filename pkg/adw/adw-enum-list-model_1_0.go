@@ -77,7 +77,7 @@ func marshalEnumListItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8: enum value name.
+//   - utf8: enum value name.
 //
 func (self *EnumListItem) Name() string {
 	var _arg0 *C.AdwEnumListItem // out
@@ -99,7 +99,7 @@ func (self *EnumListItem) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8: enum value nick.
+//   - utf8: enum value nick.
 //
 func (self *EnumListItem) Nick() string {
 	var _arg0 *C.AdwEnumListItem // out
@@ -121,7 +121,7 @@ func (self *EnumListItem) Nick() string {
 //
 // The function returns the following values:
 //
-//    - gint: enum value.
+//   - gint: enum value.
 //
 func (self *EnumListItem) Value() int {
 	var _arg0 *C.AdwEnumListItem // out
@@ -194,11 +194,11 @@ func marshalEnumListModel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - enumType: type of the enum to construct the model from.
+//   - enumType: type of the enum to construct the model from.
 //
 // The function returns the following values:
 //
-//    - enumListModel: newly created AdwEnumListModel.
+//   - enumListModel: newly created AdwEnumListModel.
 //
 func NewEnumListModel(enumType coreglib.Type) *EnumListModel {
 	var _arg1 C.GType             // out
@@ -220,7 +220,7 @@ func NewEnumListModel(enumType coreglib.Type) *EnumListModel {
 //
 // The function takes the following parameters:
 //
-//    - value: enum value.
+//   - value: enum value.
 //
 // The function returns the following values:
 //
@@ -247,7 +247,7 @@ func (self *EnumListModel) FindPosition(value int) uint {
 //
 // The function returns the following values:
 //
-//    - gType: enum type.
+//   - gType: enum type.
 //
 func (self *EnumListModel) EnumType() coreglib.Type {
 	var _arg0 *C.AdwEnumListModel // out

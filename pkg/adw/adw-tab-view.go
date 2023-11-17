@@ -76,7 +76,7 @@ func marshalTabPage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - widget: child of self.
+//   - widget: child of self.
 //
 func (self *TabPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwTabPage // out
@@ -114,7 +114,7 @@ func (self *TabPage) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - icon (optional) of self.
+//   - icon (optional) of self.
 //
 func (self *TabPage) Icon() *gio.Icon {
 	var _arg0 *C.AdwTabPage // out
@@ -143,7 +143,7 @@ func (self *TabPage) Icon() *gio.Icon {
 //
 // The function returns the following values:
 //
-//    - ok: whether the indicator is activatable.
+//   - ok: whether the indicator is activatable.
 //
 func (self *TabPage) IndicatorActivatable() bool {
 	var _arg0 *C.AdwTabPage // out
@@ -167,7 +167,7 @@ func (self *TabPage) IndicatorActivatable() bool {
 //
 // The function returns the following values:
 //
-//    - icon (optional): indicator icon of self.
+//   - icon (optional): indicator icon of self.
 //
 func (self *TabPage) IndicatorIcon() *gio.Icon {
 	var _arg0 *C.AdwTabPage // out
@@ -192,11 +192,33 @@ func (self *TabPage) IndicatorIcon() *gio.Icon {
 	return _icon
 }
 
+// IndicatorTooltip gets the tooltip of the indicator icon of self.
+//
+// The function returns the following values:
+//
+//   - utf8: indicator tooltip of self.
+//
+func (self *TabPage) IndicatorTooltip() string {
+	var _arg0 *C.AdwTabPage // out
+	var _cret *C.char       // in
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_tab_page_get_indicator_tooltip(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Loading gets whether self is loading.
 //
 // The function returns the following values:
 //
-//    - ok: whether self is loading.
+//   - ok: whether self is loading.
 //
 func (self *TabPage) Loading() bool {
 	var _arg0 *C.AdwTabPage // out
@@ -220,7 +242,7 @@ func (self *TabPage) Loading() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self needs attention.
+//   - ok: whether self needs attention.
 //
 func (self *TabPage) NeedsAttention() bool {
 	var _arg0 *C.AdwTabPage // out
@@ -242,9 +264,11 @@ func (self *TabPage) NeedsAttention() bool {
 
 // Parent gets the parent page of self.
 //
+// See tabview.AddPage and tabview.ClosePage.
+//
 // The function returns the following values:
 //
-//    - tabPage (optional): parent page.
+//   - tabPage (optional): parent page.
 //
 func (self *TabPage) Parent() *TabPage {
 	var _arg0 *C.AdwTabPage // out
@@ -266,9 +290,11 @@ func (self *TabPage) Parent() *TabPage {
 
 // Pinned gets whether self is pinned.
 //
+// See tabview.SetPagePinned.
+//
 // The function returns the following values:
 //
-//    - ok: whether self is pinned.
+//   - ok: whether self is pinned.
 //
 func (self *TabPage) Pinned() bool {
 	var _arg0 *C.AdwTabPage // out
@@ -292,7 +318,7 @@ func (self *TabPage) Pinned() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is selected.
+//   - ok: whether self is selected.
 //
 func (self *TabPage) Selected() bool {
 	var _arg0 *C.AdwTabPage // out
@@ -316,7 +342,7 @@ func (self *TabPage) Selected() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: title of self.
+//   - utf8: title of self.
 //
 func (self *TabPage) Title() string {
 	var _arg0 *C.AdwTabPage // out
@@ -338,7 +364,7 @@ func (self *TabPage) Title() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): tooltip of self.
+//   - utf8 (optional): tooltip of self.
 //
 func (self *TabPage) Tooltip() string {
 	var _arg0 *C.AdwTabPage // out
@@ -360,9 +386,14 @@ func (self *TabPage) Tooltip() string {
 
 // SetIcon sets the icon of self.
 //
+// tabbar displays the icon next to the title.
+//
+// It will not show the icon if tabpage:loading is set to TRUE, or if the page
+// is pinned and [propertyTabPage:indicator-icon] is set.
+//
 // The function takes the following parameters:
 //
-//    - icon (optional) of self.
+//   - icon (optional) of self.
 //
 func (self *TabPage) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
@@ -380,9 +411,14 @@ func (self *TabPage) SetIcon(icon gio.Iconner) {
 
 // SetIndicatorActivatable sets whether the indicator of self is activatable.
 //
+// If set to TRUE, tabview::indicator-activated will be emitted when the
+// indicator icon is clicked.
+//
+// If tabpage:indicator-icon is not set, does nothing.
+//
 // The function takes the following parameters:
 //
-//    - activatable: whether the indicator is activatable.
+//   - activatable: whether the indicator is activatable.
 //
 func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 	var _arg0 *C.AdwTabPage // out
@@ -400,9 +436,23 @@ func (self *TabPage) SetIndicatorActivatable(activatable bool) {
 
 // SetIndicatorIcon sets the indicator icon of self.
 //
+// A common use case is an audio or camera indicator in a web browser.
+//
+// tabbar will show it at the beginning of the tab, alongside icon representing
+// tabpage:icon or loading spinner.
+//
+// If the page is pinned, the indicator will be shown instead of icon or
+// spinner.
+//
+// tabpage:indicator-tooltip can be used to set the tooltip on the indicator
+// icon.
+//
+// If tabpage:indicator-activatable is set to TRUE, the indicator icon can act
+// as a button.
+//
 // The function takes the following parameters:
 //
-//    - indicatorIcon (optional): indicator icon of self.
+//   - indicatorIcon (optional): indicator icon of self.
 //
 func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 	var _arg0 *C.AdwTabPage // out
@@ -418,11 +468,39 @@ func (self *TabPage) SetIndicatorIcon(indicatorIcon gio.Iconner) {
 	runtime.KeepAlive(indicatorIcon)
 }
 
-// SetLoading sets wether self is loading.
+// SetIndicatorTooltip sets the tooltip of the indicator icon of self.
+//
+// The tooltip can be marked up with the Pango text markup language.
+//
+// See tabpage:indicator-icon.
 //
 // The function takes the following parameters:
 //
-//    - loading: whether self is loading.
+//   - tooltip: indicator tooltip of self.
+//
+func (self *TabPage) SetIndicatorTooltip(tooltip string) {
+	var _arg0 *C.AdwTabPage // out
+	var _arg1 *C.char       // out
+
+	_arg0 = (*C.AdwTabPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.adw_tab_page_set_indicator_tooltip(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetLoading sets whether self is loading.
+//
+// If set to TRUE, tabbar will display a spinner in place of icon.
+//
+// If the page is pinned and tabpage:indicator-icon is set, the loading status
+// will not be visible.
+//
+// The function takes the following parameters:
+//
+//   - loading: whether self is loading.
 //
 func (self *TabPage) SetLoading(loading bool) {
 	var _arg0 *C.AdwTabPage // out
@@ -440,9 +518,13 @@ func (self *TabPage) SetLoading(loading bool) {
 
 // SetNeedsAttention sets whether self needs attention.
 //
+// tabbar will display a line under the tab representing the page if set to
+// TRUE. If the tab is not visible, the corresponding edge of the tab bar will
+// be highlighted.
+//
 // The function takes the following parameters:
 //
-//    - needsAttention: whether self needs attention.
+//   - needsAttention: whether self needs attention.
 //
 func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 	var _arg0 *C.AdwTabPage // out
@@ -458,11 +540,14 @@ func (self *TabPage) SetNeedsAttention(needsAttention bool) {
 	runtime.KeepAlive(needsAttention)
 }
 
-// SetTitle sets the title of self.
+// SetTitle: tabbar will display it in the center of the tab unless it's pinned,
+// and will use it as a tooltip unless tabpage:tooltip is set.
+//
+// Sets the title of self.
 //
 // The function takes the following parameters:
 //
-//    - title of self.
+//   - title of self.
 //
 func (self *TabPage) SetTitle(title string) {
 	var _arg0 *C.AdwTabPage // out
@@ -479,9 +564,13 @@ func (self *TabPage) SetTitle(title string) {
 
 // SetTooltip sets the tooltip of self.
 //
+// The tooltip can be marked up with the Pango text markup language.
+//
+// If not set, tabbar will use tabpage:title as a tooltip instead.
+//
 // The function takes the following parameters:
 //
-//    - tooltip of self.
+//   - tooltip of self.
 //
 func (self *TabPage) SetTooltip(tooltip string) {
 	var _arg0 *C.AdwTabPage // out

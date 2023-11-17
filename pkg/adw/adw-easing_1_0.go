@@ -99,14 +99,14 @@ const (
 	// EaseInOutBack: overshooting cubic tweening, with backtracking on both
 	// ends, combining ADW_EASE_IN_BACK and ADW_EASE_OUT_BACK.
 	EaseInOutBack
-	// EaseInBounce: exponentially decaying parabolic (bounce) tweening, on
-	// start.
+	// EaseInBounce: exponentially decaying parabolic (bounce) tweening,
+	// on start.
 	EaseInBounce
-	// EaseOutBounce: exponentially decaying parabolic (bounce) tweening, with
-	// bounce on end, inverse of ADW_EASE_IN_BOUNCE.
+	// EaseOutBounce: exponentially decaying parabolic (bounce) tweening,
+	// with bounce on end, inverse of ADW_EASE_IN_BOUNCE.
 	EaseOutBounce
-	// EaseInOutBounce: exponentially decaying parabolic (bounce) tweening, with
-	// bounce on both ends, combining ADW_EASE_IN_BOUNCE and
+	// EaseInOutBounce: exponentially decaying parabolic (bounce) tweening,
+	// with bounce on both ends, combining ADW_EASE_IN_BOUNCE and
 	// ADW_EASE_OUT_BOUNCE.
 	EaseInOutBounce
 )
@@ -191,12 +191,12 @@ func (e Easing) String() string {
 //
 // The function takes the following parameters:
 //
-//    - self: easing value.
-//    - value to ease.
+//   - self: easing value.
+//   - value to ease.
 //
 // The function returns the following values:
 //
-//    - gdouble: easing for value.
+//   - gdouble: easing for value.
 //
 func EasingEase(self Easing, value float64) float64 {
 	var _arg1 C.AdwEasing // out

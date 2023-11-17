@@ -109,7 +109,7 @@ func marshalSwipeable(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gdouble: cancel progress, unitless.
+//   - gdouble: cancel progress, unitless.
 //
 func (self *Swipeable) CancelProgress() float64 {
 	var _arg0 *C.AdwSwipeable // out
@@ -133,7 +133,7 @@ func (self *Swipeable) CancelProgress() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: swipe distance in pixels.
+//   - gdouble: swipe distance in pixels.
 //
 func (self *Swipeable) Distance() float64 {
 	var _arg0 *C.AdwSwipeable // out
@@ -155,7 +155,7 @@ func (self *Swipeable) Distance() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current progress, unitless.
+//   - gdouble: current progress, unitless.
 //
 func (self *Swipeable) Progress() float64 {
 	var _arg0 *C.AdwSwipeable // out
@@ -180,7 +180,7 @@ func (self *Swipeable) Progress() float64 {
 //
 // The function returns the following values:
 //
-//    - gdoubles: snap points.
+//   - gdoubles: snap points.
 //
 func (self *Swipeable) SnapPoints() []float64 {
 	var _arg0 *C.AdwSwipeable // out
@@ -213,12 +213,12 @@ func (self *Swipeable) SnapPoints() []float64 {
 //
 // The function takes the following parameters:
 //
-//    - navigationDirection: direction of the swipe.
-//    - isDrag: whether the swipe is caused by a dragging gesture.
+//   - navigationDirection: direction of the swipe.
+//   - isDrag: whether the swipe is caused by a dragging gesture.
 //
 // The function returns the following values:
 //
-//    - rect: pointer to a rectangle to store the swipe area.
+//   - rect: pointer to a rectangle to store the swipe area.
 //
 func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle {
 	var _arg0 *C.AdwSwipeable          // out
@@ -249,7 +249,7 @@ func (self *Swipeable) SwipeArea(navigationDirection NavigationDirection, isDrag
 //
 // The function returns the following values:
 //
-//    - gdouble: cancel progress, unitless.
+//   - gdouble: cancel progress, unitless.
 //
 func (self *Swipeable) cancelProgress() float64 {
 	gclass := (*C.AdwSwipeableInterface)(coreglib.PeekParentClass(self))
@@ -276,7 +276,7 @@ func (self *Swipeable) cancelProgress() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: swipe distance in pixels.
+//   - gdouble: swipe distance in pixels.
 //
 func (self *Swipeable) distance() float64 {
 	gclass := (*C.AdwSwipeableInterface)(coreglib.PeekParentClass(self))
@@ -301,7 +301,7 @@ func (self *Swipeable) distance() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current progress, unitless.
+//   - gdouble: current progress, unitless.
 //
 func (self *Swipeable) progress() float64 {
 	gclass := (*C.AdwSwipeableInterface)(coreglib.PeekParentClass(self))
@@ -329,7 +329,7 @@ func (self *Swipeable) progress() float64 {
 //
 // The function returns the following values:
 //
-//    - gdoubles: snap points.
+//   - gdoubles: snap points.
 //
 func (self *Swipeable) snapPoints() []float64 {
 	gclass := (*C.AdwSwipeableInterface)(coreglib.PeekParentClass(self))
@@ -365,12 +365,12 @@ func (self *Swipeable) snapPoints() []float64 {
 //
 // The function takes the following parameters:
 //
-//    - navigationDirection: direction of the swipe.
-//    - isDrag: whether the swipe is caused by a dragging gesture.
+//   - navigationDirection: direction of the swipe.
+//   - isDrag: whether the swipe is caused by a dragging gesture.
 //
 // The function returns the following values:
 //
-//    - rect: pointer to a rectangle to store the swipe area.
+//   - rect: pointer to a rectangle to store the swipe area.
 //
 func (self *Swipeable) swipeArea(navigationDirection NavigationDirection, isDrag bool) *gdk.Rectangle {
 	gclass := (*C.AdwSwipeableInterface)(coreglib.PeekParentClass(self))

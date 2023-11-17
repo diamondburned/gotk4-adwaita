@@ -48,40 +48,37 @@ func defaultViewStackOverrides(v *ViewStack) ViewStackOverrides {
 // functionality.
 //
 // AdwViewStack pages can have a title, an icon, an attention request, and a
-// numbered badge that viewswitcher will use to let users identify which page is
-// which. Set them using the viewstackpage:title, viewstackpage:icon-name,
+// numbered badge that viewswitcher will use to let users identify which page
+// is which. Set them using the viewstackpage:title, viewstackpage:icon-name,
 // viewstackpage:needs-attention, and viewstackpage:badge-number properties.
 //
 // Unlike gtk.Stack, transitions between views are not animated.
 //
-// AdwViewStack maintains a viewstackpage object for each added child, which
-// holds additional per-child properties. You obtain the viewstackpage for a
-// child with viewstack.GetPage and you can obtain a gtk.SelectionModel
+// AdwViewStack maintains a viewstackpage object for each added child,
+// which holds additional per-child properties. You obtain the viewstackpage
+// for a child with viewstack.GetPage and you can obtain a gtk.SelectionModel
 // containing all the pages with viewstack.GetPages.
 //
-//
-// AdwViewStack as GtkBuildable
+// # AdwViewStack as GtkBuildable
 //
 // To set child-specific properties in a .ui file, create viewstackpage objects
 // explicitly, and set the child widget as a property on it:
 //
-//      <object class="AdwViewStack" id="stack">
-//        <child>
-//          <object class="AdwViewStackPage">
-//            <property name="name">overview</property>
-//            <property name="title">Overview</property>
-//            <property name="child">
-//              <object class="AdwStatusPage">
-//                <property name="title">Welcome!</property>
-//              </object>
-//            </property>
-//          </object>
-//        </child>
-//      </object>
+//    <object class="AdwViewStack" id="stack">
+//      <child>
+//        <object class="AdwViewStackPage">
+//          <property name="name">overview</property>
+//          <property name="title">Overview</property>
+//          <property name="child">
+//            <object class="AdwStatusPage">
+//              <property name="title">Welcome!</property>
+//            </object>
+//          </property>
+//        </object>
+//      </child>
+//    </object>
 //
-//
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwViewStack has a single CSS node named stack.
 type ViewStack struct {
@@ -137,7 +134,7 @@ func marshalViewStack(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - viewStack: newly created AdwViewStack.
+//   - viewStack: newly created AdwViewStack.
 //
 func NewViewStack() *ViewStack {
 	var _cret *C.GtkWidget // in
@@ -155,11 +152,11 @@ func NewViewStack() *ViewStack {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - viewStackPage: viewstackpage for child.
+//   - viewStackPage: viewstackpage for child.
 //
 func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -186,12 +183,12 @@ func (self *ViewStack) Add(child gtk.Widgetter) *ViewStackPage {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - name (optional) for child.
+//   - child: widget to add.
+//   - name (optional) for child.
 //
 // The function returns the following values:
 //
-//    - viewStackPage: AdwViewStackPage for child.
+//   - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -225,13 +222,13 @@ func (self *ViewStack) AddNamed(child gtk.Widgetter, name string) *ViewStackPage
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
-//    - name (optional) for child.
-//    - title: human-readable title for child.
+//   - child: widget to add.
+//   - name (optional) for child.
+//   - title: human-readable title for child.
 //
 // The function returns the following values:
 //
-//    - viewStackPage: AdwViewStackPage for child.
+//   - viewStackPage: AdwViewStackPage for child.
 //
 func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -262,15 +259,64 @@ func (self *ViewStack) AddTitled(child gtk.Widgetter, name, title string) *ViewS
 	return _viewStackPage
 }
 
+// AddTitledWithIcon adds a child to self.
+//
+// The child is identified by the name. The title and icon_name will be used by
+// viewswitcher to represent child.
+//
+// The function takes the following parameters:
+//
+//   - child: widget to add.
+//   - name (optional) for child.
+//   - title: human-readable title for child.
+//   - iconName: icon name for child.
+//
+// The function returns the following values:
+//
+//   - viewStackPage: AdwViewStackPage for child.
+//
+func (self *ViewStack) AddTitledWithIcon(child gtk.Widgetter, name, title, iconName string) *ViewStackPage {
+	var _arg0 *C.AdwViewStack     // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 *C.char             // out
+	var _arg3 *C.char             // out
+	var _arg4 *C.char             // out
+	var _cret *C.AdwViewStackPage // in
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	if name != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	_cret = C.adw_view_stack_add_titled_with_icon(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(iconName)
+
+	var _viewStackPage *ViewStackPage // out
+
+	_viewStackPage = wrapViewStackPage(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _viewStackPage
+}
+
 // ChildByName finds the child with name in self.
 //
 // The function takes the following parameters:
 //
-//    - name of the child to find.
+//   - name of the child to find.
 //
 // The function returns the following values:
 //
-//    - widget (optional): requested child.
+//   - widget (optional): requested child.
 //
 func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
@@ -311,7 +357,7 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is horizontally homogeneous.
+//   - ok: whether self is horizontally homogeneous.
 //
 func (self *ViewStack) Hhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
@@ -335,11 +381,11 @@ func (self *ViewStack) Hhomogeneous() bool {
 //
 // The function takes the following parameters:
 //
-//    - child of self.
+//   - child of self.
 //
 // The function returns the following values:
 //
-//    - viewStackPage: page object for child.
+//   - viewStackPage: page object for child.
 //
 func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 	var _arg0 *C.AdwViewStack     // out
@@ -367,7 +413,7 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 //
 // The function returns the following values:
 //
-//    - selectionModel: GtkSelectionModel for the stack's children.
+//   - selectionModel: GtkSelectionModel for the stack's children.
 //
 func (self *ViewStack) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwViewStack      // out
@@ -396,7 +442,7 @@ func (self *ViewStack) Pages() *gtk.SelectionModel {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is vertically homogeneous.
+//   - ok: whether self is vertically homogeneous.
 //
 func (self *ViewStack) Vhomogeneous() bool {
 	var _arg0 *C.AdwViewStack // out
@@ -420,7 +466,7 @@ func (self *ViewStack) Vhomogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): visible child.
+//   - widget (optional): visible child.
 //
 func (self *ViewStack) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwViewStack // out
@@ -457,7 +503,7 @@ func (self *ViewStack) VisibleChild() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the visible child.
+//   - utf8 (optional): name of the visible child.
 //
 func (self *ViewStack) VisibleChildName() string {
 	var _arg0 *C.AdwViewStack // out
@@ -481,7 +527,7 @@ func (self *ViewStack) VisibleChildName() string {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (self *ViewStack) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwViewStack // out
@@ -497,9 +543,15 @@ func (self *ViewStack) Remove(child gtk.Widgetter) {
 
 // SetHhomogeneous sets self to be horizontally homogeneous or not.
 //
+// If the stack is horizontally homogeneous, it allocates the same width for all
+// children.
+//
+// If it's FALSE, the stack may change width when a different child becomes
+// visible.
+//
 // The function takes the following parameters:
 //
-//    - hhomogeneous: whether to make self horizontally homogeneous.
+//   - hhomogeneous: whether to make self horizontally homogeneous.
 //
 func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.AdwViewStack // out
@@ -517,9 +569,15 @@ func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 
 // SetVhomogeneous sets self to be vertically homogeneous or not.
 //
+// If the stack is vertically homogeneous, it allocates the same height for all
+// children.
+//
+// If it's FALSE, the stack may change height when a different child becomes
+// visible.
+//
 // The function takes the following parameters:
 //
-//    - vhomogeneous: whether to make self vertically homogeneous.
+//   - vhomogeneous: whether to make self vertically homogeneous.
 //
 func (self *ViewStack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.AdwViewStack // out
@@ -539,7 +597,7 @@ func (self *ViewStack) SetVhomogeneous(vhomogeneous bool) {
 //
 // The function takes the following parameters:
 //
-//    - child of self.
+//   - child of self.
 //
 func (self *ViewStack) SetVisibleChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwViewStack // out
@@ -555,9 +613,11 @@ func (self *ViewStack) SetVisibleChild(child gtk.Widgetter) {
 
 // SetVisibleChildName makes the child with name visible.
 //
+// See viewstack:visible-child.
+//
 // The function takes the following parameters:
 //
-//    - name of the child.
+//   - name of the child.
 //
 func (self *ViewStack) SetVisibleChildName(name string) {
 	var _arg0 *C.AdwViewStack // out
@@ -620,7 +680,7 @@ func marshalViewStackPage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - guint: badge number for this page.
+//   - guint: badge number for this page.
 //
 func (self *ViewStackPage) BadgeNumber() uint {
 	var _arg0 *C.AdwViewStackPage // out
@@ -642,7 +702,7 @@ func (self *ViewStackPage) BadgeNumber() uint {
 //
 // The function returns the following values:
 //
-//    - widget: child to which self belongs.
+//   - widget: child to which self belongs.
 //
 func (self *ViewStackPage) Child() gtk.Widgetter {
 	var _arg0 *C.AdwViewStackPage // out
@@ -680,7 +740,7 @@ func (self *ViewStackPage) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name of the page.
+//   - utf8 (optional): icon name of the page.
 //
 func (self *ViewStackPage) IconName() string {
 	var _arg0 *C.AdwViewStackPage // out
@@ -704,7 +764,7 @@ func (self *ViewStackPage) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the page.
+//   - utf8 (optional): name of the page.
 //
 func (self *ViewStackPage) Name() string {
 	var _arg0 *C.AdwViewStackPage // out
@@ -724,11 +784,11 @@ func (self *ViewStackPage) Name() string {
 	return _utf8
 }
 
-// NeedsAttention gets whether the page is marked as “needs attention”.
+// NeedsAttention gets whether the page requires the user attention.
 //
 // The function returns the following values:
 //
-//    - ok: whether the page needs attention.
+//   - ok: whether the page needs attention.
 //
 func (self *ViewStackPage) NeedsAttention() bool {
 	var _arg0 *C.AdwViewStackPage // out
@@ -752,7 +812,7 @@ func (self *ViewStackPage) NeedsAttention() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): page title.
+//   - utf8 (optional): page title.
 //
 func (self *ViewStackPage) Title() string {
 	var _arg0 *C.AdwViewStackPage // out
@@ -776,7 +836,7 @@ func (self *ViewStackPage) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether underlines in the page title indicate mnemonics.
+//   - ok: whether underlines in the page title indicate mnemonics.
 //
 func (self *ViewStackPage) UseUnderline() bool {
 	var _arg0 *C.AdwViewStackPage // out
@@ -802,7 +862,7 @@ func (self *ViewStackPage) UseUnderline() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is visible.
+//   - ok: whether self is visible.
 //
 func (self *ViewStackPage) Visible() bool {
 	var _arg0 *C.AdwViewStackPage // out
@@ -824,9 +884,14 @@ func (self *ViewStackPage) Visible() bool {
 
 // SetBadgeNumber sets the badge number for this page.
 //
+// viewswitcher can display it as a badge next to the page icon. It is commonly
+// used to display a number of unread items within the page.
+//
+// It can be used together with viewstack{age}:needs-attention.
+//
 // The function takes the following parameters:
 //
-//    - badgeNumber: new value to set.
+//   - badgeNumber: new value to set.
 //
 func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -844,7 +909,7 @@ func (self *ViewStackPage) SetBadgeNumber(badgeNumber uint) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (self *ViewStackPage) SetIconName(iconName string) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -865,7 +930,7 @@ func (self *ViewStackPage) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): page name.
+//   - name (optional): page name.
 //
 func (self *ViewStackPage) SetName(name string) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -882,11 +947,13 @@ func (self *ViewStackPage) SetName(name string) {
 	runtime.KeepAlive(name)
 }
 
-// SetNeedsAttention sets whether the page is marked as “needs attention”.
+// SetNeedsAttention sets whether the page requires the user attention.
+//
+// viewswitcher will display it as a dot next to the page icon.
 //
 // The function takes the following parameters:
 //
-//    - needsAttention: new value to set.
+//   - needsAttention: new value to set.
 //
 func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -906,7 +973,7 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): page title.
+//   - title (optional): page title.
 //
 func (self *ViewStackPage) SetTitle(title string) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -927,7 +994,7 @@ func (self *ViewStackPage) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: new value to set.
+//   - useUnderline: new value to set.
 //
 func (self *ViewStackPage) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwViewStackPage // out
@@ -945,9 +1012,12 @@ func (self *ViewStackPage) SetUseUnderline(useUnderline bool) {
 
 // SetVisible sets whether page is visible in its AdwViewStack.
 //
+// This is independent from the gtk.Widget:visible property of
+// viewstackpage:child.
+//
 // The function takes the following parameters:
 //
-//    - visible: whether self is visible.
+//   - visible: whether self is visible.
 //
 func (self *ViewStackPage) SetVisible(visible bool) {
 	var _arg0 *C.AdwViewStackPage // out

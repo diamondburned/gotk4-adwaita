@@ -102,7 +102,7 @@ func marshalClampLayout(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - clampLayout: newly created AdwClampLayout.
+//   - clampLayout: newly created AdwClampLayout.
 //
 func NewClampLayout() *ClampLayout {
 	var _cret *C.GtkLayoutManager // in
@@ -120,7 +120,7 @@ func NewClampLayout() *ClampLayout {
 //
 // The function returns the following values:
 //
-//    - gint: maximum size to allocate to the children.
+//   - gint: maximum size to allocate to the children.
 //
 func (self *ClampLayout) MaximumSize() int {
 	var _arg0 *C.AdwClampLayout // out
@@ -142,7 +142,7 @@ func (self *ClampLayout) MaximumSize() int {
 //
 // The function returns the following values:
 //
-//    - gint: size above which the children are clamped.
+//   - gint: size above which the children are clamped.
 //
 func (self *ClampLayout) TighteningThreshold() int {
 	var _arg0 *C.AdwClampLayout // out
@@ -162,9 +162,11 @@ func (self *ClampLayout) TighteningThreshold() int {
 
 // SetMaximumSize sets the maximum size allocated to the children.
 //
+// It is the width if the layout is horizontal, or the height if it is vertical.
+//
 // The function takes the following parameters:
 //
-//    - maximumSize: maximum size.
+//   - maximumSize: maximum size.
 //
 func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 	var _arg0 *C.AdwClampLayout // out
@@ -180,9 +182,22 @@ func (self *ClampLayout) SetMaximumSize(maximumSize int) {
 
 // SetTighteningThreshold sets the size above which the children are clamped.
 //
+// Starting from this size, the layout will tighten its grip on the children,
+// slowly allocating less and less of the available size up to the maximum
+// allocated size. Below that threshold and below the maximum size, the children
+// will be allocated all the available size.
+//
+// If the threshold is greater than the maximum size to allocate to the
+// children, they will be allocated the whole size up to the maximum.
+// If the threshold is lower than the minimum size to allocate to the children,
+// that size will be used as the tightening threshold.
+//
+// Effectively, tightening the grip on a child before it reaches its maximum
+// size makes transitions to and from the maximum size smoother when resizing.
+//
 // The function takes the following parameters:
 //
-//    - tighteningThreshold: tightening threshold.
+//   - tighteningThreshold: tightening threshold.
 //
 func (self *ClampLayout) SetTighteningThreshold(tighteningThreshold int) {
 	var _arg0 *C.AdwClampLayout // out

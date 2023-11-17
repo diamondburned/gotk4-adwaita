@@ -12,28 +12,28 @@ const MAJOR_VERSION = 1
 
 // MICRO_VERSION: adwaita micro version component (e.g. 3 if the version is
 // 1.2.3).
-const MICRO_VERSION = 4
+const MICRO_VERSION = 0
 
 // MINOR_VERSION: adwaita minor version component (e.g. 2 if the version is
 // 1.2.3).
-const MINOR_VERSION = 1
+const MINOR_VERSION = 2
 
 // VERSION_S: adwaita version, encoded as a string, useful for printing and
 // concatenation.
-const VERSION_S = "1.1.4"
+const VERSION_S = "1.2.0"
 
 // GetMajorVersion returns the major version number of the Adwaita library.
 //
 // For example, in libadwaita version 1.2.3 this is 1.
 //
-// This function is in the library, so it represents the libadwaita library your
-// code is running against. Contrast with the major_version constant, which
+// This function is in the library, so it represents the libadwaita library
+// your code is running against. Contrast with the major_version constant, which
 // represents the major version of the libadwaita headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: major version number of the Adwaita library.
+//   - guint: major version number of the Adwaita library.
 //
 func GetMajorVersion() uint {
 	var _cret C.guint // in
@@ -51,14 +51,14 @@ func GetMajorVersion() uint {
 //
 // For example, in libadwaita version 1.2.3 this is 3.
 //
-// This function is in the library, so it represents the libadwaita library your
-// code is running against. Contrast with the major_version constant, which
+// This function is in the library, so it represents the libadwaita library
+// your code is running against. Contrast with the major_version constant, which
 // represents the micro version of the libadwaita headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: micro version number of the Adwaita library.
+//   - guint: micro version number of the Adwaita library.
 //
 func GetMicroVersion() uint {
 	var _cret C.guint // in
@@ -76,14 +76,14 @@ func GetMicroVersion() uint {
 //
 // For example, in libadwaita version 1.2.3 this is 2.
 //
-// This function is in the library, so it represents the libadwaita library your
-// code is running against. Contrast with the major_version constant, which
+// This function is in the library, so it represents the libadwaita library
+// your code is running against. Contrast with the major_version constant, which
 // represents the minor version of the libadwaita headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: minor version number of the Adwaita library.
+//   - guint: minor version number of the Adwaita library.
 //
 func GetMinorVersion() uint {
 	var _cret C.guint // in

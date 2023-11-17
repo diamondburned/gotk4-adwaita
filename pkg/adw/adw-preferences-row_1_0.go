@@ -118,7 +118,7 @@ func marshalPreferencesRow(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - preferencesRow: newly created AdwPreferencesRow.
+//   - preferencesRow: newly created AdwPreferencesRow.
 //
 func NewPreferencesRow() *PreferencesRow {
 	var _cret *C.GtkWidget // in
@@ -136,7 +136,7 @@ func NewPreferencesRow() *PreferencesRow {
 //
 // The function returns the following values:
 //
-//    - utf8: title.
+//   - utf8: title.
 //
 func (self *PreferencesRow) Title() string {
 	var _arg0 *C.AdwPreferencesRow // out
@@ -158,7 +158,7 @@ func (self *PreferencesRow) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether the user can copy the title from the label.
+//   - ok: whether the user can copy the title from the label.
 //
 func (self *PreferencesRow) TitleSelectable() bool {
 	var _arg0 *C.AdwPreferencesRow // out
@@ -178,12 +178,36 @@ func (self *PreferencesRow) TitleSelectable() bool {
 	return _ok
 }
 
+// UseMarkup gets whether to use Pango markup for the title label.
+//
+// The function returns the following values:
+//
+//   - ok: whether to use markup.
+//
+func (self *PreferencesRow) UseMarkup() bool {
+	var _arg0 *C.AdwPreferencesRow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_preferences_row_get_use_markup(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // UseUnderline gets whether an embedded underline in the title indicates a
 // mnemonic.
 //
 // The function returns the following values:
 //
-//    - ok: whether an embedded underline in the title indicates a mnemonic.
+//   - ok: whether an embedded underline in the title indicates a mnemonic.
 //
 func (self *PreferencesRow) UseUnderline() bool {
 	var _arg0 *C.AdwPreferencesRow // out
@@ -205,9 +229,12 @@ func (self *PreferencesRow) UseUnderline() bool {
 
 // SetTitle sets the title of the preference represented by self.
 //
+// The title is interpreted as Pango markup unless preferencesrow:use-markup is
+// set to FALSE.
+//
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *PreferencesRow) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesRow // out
@@ -222,11 +249,13 @@ func (self *PreferencesRow) SetTitle(title string) {
 	runtime.KeepAlive(title)
 }
 
-// SetTitleSelectable sets whether the user can copy the title from the label.
+// SetTitleSelectable sets whether the user can copy the title from the label
+//
+// See also gtk.Label:selectable.
 //
 // The function takes the following parameters:
 //
-//    - titleSelectable: TRUE if the user can copy the title from the label.
+//   - titleSelectable: TRUE if the user can copy the title from the label.
 //
 func (self *PreferencesRow) SetTitleSelectable(titleSelectable bool) {
 	var _arg0 *C.AdwPreferencesRow // out
@@ -242,12 +271,36 @@ func (self *PreferencesRow) SetTitleSelectable(titleSelectable bool) {
 	runtime.KeepAlive(titleSelectable)
 }
 
+// SetUseMarkup sets whether to use Pango markup for the title label.
+//
+// Subclasses may also use it for other labels, such as subtitle.
+//
+// See also pango.ParseMarkup().
+//
+// The function takes the following parameters:
+//
+//   - useMarkup: whether to use markup.
+//
+func (self *PreferencesRow) SetUseMarkup(useMarkup bool) {
+	var _arg0 *C.AdwPreferencesRow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.AdwPreferencesRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if useMarkup {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_preferences_row_set_use_markup(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(useMarkup)
+}
+
 // SetUseUnderline sets whether an embedded underline in the title indicates a
 // mnemonic.
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (self *PreferencesRow) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwPreferencesRow // out

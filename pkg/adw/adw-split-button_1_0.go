@@ -44,8 +44,8 @@ func defaultSplitButtonOverrides(v *SplitButton) SplitButtonOverrides {
 // media="(prefers-color-scheme: dark)"> <img src="split-button.png"
 // alt="split-button"> </picture>
 //
-// AdwSplitButton is typically used to present a set of actions in a menu, but
-// allow access to one of them with a single click.
+// AdwSplitButton is typically used to present a set of actions in a menu,
+// but allow access to one of them with a single click.
 //
 // The API is very similar to gtk.Button and gtk.MenuButton, see their
 // documentation for details.
@@ -60,7 +60,6 @@ func defaultSplitButtonOverrides(v *SplitButton) SplitButtonOverrides {
 //        ╰── button.toggle
 //            ╰── arrow
 //
-//
 // AdwSplitButton's CSS node is called splitbutton. It contains the css nodes:
 // button, separator, menubutton. See gtk.MenuButton documentation for the
 // menubutton contents.
@@ -69,8 +68,7 @@ func defaultSplitButtonOverrides(v *SplitButton) SplitButtonOverrides {
 // classes matching the button contents. The nested button nodes will never
 // contain them.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // AdwSplitButton uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type SplitButton struct {
@@ -162,7 +160,7 @@ func (self *SplitButton) ConnectClicked(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - splitButton: newly created AdwSplitButton.
+//   - splitButton: newly created AdwSplitButton.
 //
 func NewSplitButton() *SplitButton {
 	var _cret *C.GtkWidget // in
@@ -180,7 +178,7 @@ func NewSplitButton() *SplitButton {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget.
+//   - widget (optional): child widget.
 //
 func (self *SplitButton) Child() gtk.Widgetter {
 	var _arg0 *C.AdwSplitButton // out
@@ -217,7 +215,7 @@ func (self *SplitButton) Child() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - arrowType: direction.
+//   - arrowType: direction.
 //
 func (self *SplitButton) Direction() gtk.ArrowType {
 	var _arg0 *C.AdwSplitButton // out
@@ -235,14 +233,33 @@ func (self *SplitButton) Direction() gtk.ArrowType {
 	return _arrowType
 }
 
-// IconName gets the name of the icon used to automatically populate the button.
-//
-// If the icon name has not been set with splitbutton.SetIconName the return
-// value will be NULL.
+// DropdownTooltip gets the tooltip of the dropdown button of self.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name.
+//   - utf8: dropdown tooltip of self.
+//
+func (self *SplitButton) DropdownTooltip() string {
+	var _arg0 *C.AdwSplitButton // out
+	var _cret *C.char           // in
+
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_split_button_get_dropdown_tooltip(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IconName gets the name of the icon used to automatically populate the button.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): icon name.
 //
 func (self *SplitButton) IconName() string {
 	var _arg0 *C.AdwSplitButton // out
@@ -266,7 +283,7 @@ func (self *SplitButton) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): label for self.
+//   - utf8 (optional): label for self.
 //
 func (self *SplitButton) Label() string {
 	var _arg0 *C.AdwSplitButton // out
@@ -290,7 +307,7 @@ func (self *SplitButton) Label() string {
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): menu model.
+//   - menuModel (optional): menu model.
 //
 func (self *SplitButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.AdwSplitButton // out
@@ -327,7 +344,7 @@ func (self *SplitButton) MenuModel() gio.MenuModeller {
 //
 // The function returns the following values:
 //
-//    - popover (optional): popover.
+//   - popover (optional): popover.
 //
 func (self *SplitButton) Popover() *gtk.Popover {
 	var _arg0 *C.AdwSplitButton // out
@@ -391,7 +408,7 @@ func (self *SplitButton) Popover() *gtk.Popover {
 //
 // The function returns the following values:
 //
-//    - ok: whether an underline in the text indicates a mnemonic.
+//   - ok: whether an underline in the text indicates a mnemonic.
 //
 func (self *SplitButton) UseUnderline() bool {
 	var _arg0 *C.AdwSplitButton // out
@@ -433,9 +450,12 @@ func (self *SplitButton) Popup() {
 
 // SetChild sets the child widget.
 //
+// Setting the child widget will set splitbutton:label and splitbutton:icon-name
+// to NULL.
+//
 // The function takes the following parameters:
 //
-//    - child (optional): new child widget.
+//   - child (optional): new child widget.
 //
 func (self *SplitButton) SetChild(child gtk.Widgetter) {
 	var _arg0 *C.AdwSplitButton // out
@@ -453,9 +473,16 @@ func (self *SplitButton) SetChild(child gtk.Widgetter) {
 
 // SetDirection sets the direction in which the popup will be popped up.
 //
+// The dropdown arrow icon will point at the same direction.
+//
+// If the does not fit in the available space in the given direction, GTK will
+// try its best to keep it inside the screen and fully visible.
+//
+// If you pass GTK_ARROW_NONE, it's equivalent to GTK_ARROW_DOWN.
+//
 // The function takes the following parameters:
 //
-//    - direction: direction.
+//   - direction: direction.
 //
 func (self *SplitButton) SetDirection(direction gtk.ArrowType) {
 	var _arg0 *C.AdwSplitButton // out
@@ -469,12 +496,36 @@ func (self *SplitButton) SetDirection(direction gtk.ArrowType) {
 	runtime.KeepAlive(direction)
 }
 
-// SetIconName sets the name of the icon used to automatically populate the
-// button.
+// SetDropdownTooltip sets the tooltip of the dropdown button of self.
+//
+// The tooltip can be marked up with the Pango text markup language.
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name to set.
+//   - tooltip: dropdown tooltip of self.
+//
+func (self *SplitButton) SetDropdownTooltip(tooltip string) {
+	var _arg0 *C.AdwSplitButton // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.AdwSplitButton)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.adw_split_button_set_dropdown_tooltip(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetIconName sets the name of the icon used to automatically populate the
+// button.
+//
+// Setting the icon name will set splitbutton:label and splitbutton:child to
+// NULL.
+//
+// The function takes the following parameters:
+//
+//   - iconName: icon name to set.
 //
 func (self *SplitButton) SetIconName(iconName string) {
 	var _arg0 *C.AdwSplitButton // out
@@ -491,9 +542,12 @@ func (self *SplitButton) SetIconName(iconName string) {
 
 // SetLabel sets the label for self.
 //
+// Setting the label will set splitbutton:icon-name and splitbutton:child to
+// NULL.
+//
 // The function takes the following parameters:
 //
-//    - label to set.
+//   - label to set.
 //
 func (self *SplitButton) SetLabel(label string) {
 	var _arg0 *C.AdwSplitButton // out
@@ -510,9 +564,18 @@ func (self *SplitButton) SetLabel(label string) {
 
 // SetMenuModel sets the menu model from which the popup will be created.
 //
+// If the menu model is NULL, the dropdown is disabled.
+//
+// A gtk.Popover will be created from the menu model with
+// gtk.PopoverMenu.NewFromModel. Actions will be connected as documented for
+// this function.
+//
+// If splitbutton:popover is already set, it will be dissociated from the
+// button, and the property is set to NULL.
+//
 // The function takes the following parameters:
 //
-//    - menuModel (optional): menu model.
+//   - menuModel (optional): menu model.
 //
 func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.AdwSplitButton // out
@@ -531,9 +594,14 @@ func (self *SplitButton) SetMenuModel(menuModel gio.MenuModeller) {
 // SetPopover sets the popover that will be popped up when the dropdown is
 // clicked.
 //
+// If the popover is NULL, the dropdown is disabled.
+//
+// If splitbutton:menu-model is set, the menu model is dissociated from the
+// button, and the property is set to NULL.
+//
 // The function takes the following parameters:
 //
-//    - popover (optional): popover.
+//   - popover (optional): popover.
 //
 func (self *SplitButton) SetPopover(popover *gtk.Popover) {
 	var _arg0 *C.AdwSplitButton // out
@@ -551,9 +619,11 @@ func (self *SplitButton) SetPopover(popover *gtk.Popover) {
 
 // SetUseUnderline sets whether an underline in the text indicates a mnemonic.
 //
+// See splitbutton:label.
+//
 // The function takes the following parameters:
 //
-//    - useUnderline: whether an underline in the text indicates a mnemonic.
+//   - useUnderline: whether an underline in the text indicates a mnemonic.
 //
 func (self *SplitButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.AdwSplitButton // out

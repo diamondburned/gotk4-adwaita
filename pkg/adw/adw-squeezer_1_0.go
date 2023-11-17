@@ -82,8 +82,7 @@ func defaultSqueezerOverrides(v *Squeezer) SqueezerOverrides {
 // Transitions between children can be animated as fades. This can be controlled
 // with squeezer:transition-type.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwSqueezer has a single CSS node with name squeezer.
 type Squeezer struct {
@@ -147,7 +146,7 @@ func marshalSqueezer(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - squeezer: newly created AdwSqueezer.
+//   - squeezer: newly created AdwSqueezer.
 //
 func NewSqueezer() *Squeezer {
 	var _cret *C.GtkWidget // in
@@ -165,11 +164,11 @@ func NewSqueezer() *Squeezer {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 // The function returns the following values:
 //
-//    - squeezerPage: squeezerpage for child.
+//   - squeezerPage: squeezerpage for child.
 //
 func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
@@ -195,7 +194,7 @@ func (self *Squeezer) Add(child gtk.Widgetter) *SqueezerPage {
 //
 // The function returns the following values:
 //
-//    - ok: whether self allows squeezing beyond the last child.
+//   - ok: whether self allows squeezing beyond the last child.
 //
 func (self *Squeezer) AllowNone() bool {
 	var _arg0 *C.AdwSqueezer // out
@@ -220,7 +219,7 @@ func (self *Squeezer) AllowNone() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether self is homogeneous.
+//   - ok: whether self is homogeneous.
 //
 func (self *Squeezer) Homogeneous() bool {
 	var _arg0 *C.AdwSqueezer // out
@@ -245,7 +244,7 @@ func (self *Squeezer) Homogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the size is interpolated.
+//   - ok: whether the size is interpolated.
 //
 func (self *Squeezer) InterpolateSize() bool {
 	var _arg0 *C.AdwSqueezer // out
@@ -269,11 +268,11 @@ func (self *Squeezer) InterpolateSize() bool {
 //
 // The function takes the following parameters:
 //
-//    - child of self.
+//   - child of self.
 //
 // The function returns the following values:
 //
-//    - squeezerPage: page object for child.
+//   - squeezerPage: page object for child.
 //
 func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 	var _arg0 *C.AdwSqueezer     // out
@@ -301,7 +300,7 @@ func (self *Squeezer) Page(child gtk.Widgetter) *SqueezerPage {
 //
 // The function returns the following values:
 //
-//    - selectionModel: GtkSelectionModel for the squeezer's children.
+//   - selectionModel: GtkSelectionModel for the squeezer's children.
 //
 func (self *Squeezer) Pages() *gtk.SelectionModel {
 	var _arg0 *C.AdwSqueezer       // out
@@ -326,7 +325,7 @@ func (self *Squeezer) Pages() *gtk.SelectionModel {
 	return _selectionModel
 }
 
-// SwitchThresholdPolicy gets the fold threshold policy for self.
+// SwitchThresholdPolicy gets the switch threshold policy for self.
 //
 // The function returns the following values:
 //
@@ -350,7 +349,7 @@ func (self *Squeezer) SwitchThresholdPolicy() FoldThresholdPolicy {
 //
 // The function returns the following values:
 //
-//    - guint: transition duration, in milliseconds.
+//   - guint: transition duration, in milliseconds.
 //
 func (self *Squeezer) TransitionDuration() uint {
 	var _arg0 *C.AdwSqueezer // out
@@ -370,9 +369,13 @@ func (self *Squeezer) TransitionDuration() uint {
 
 // TransitionRunning gets whether a transition is currently running for self.
 //
+// If a transition is impossible, the property value will be set to TRUE and
+// then immediately to FALSE, so it's possible to rely on its notifications to
+// know that a transition has happened.
+//
 // The function returns the following values:
 //
-//    - ok: whether a transition is currently running.
+//   - ok: whether a transition is currently running.
 //
 func (self *Squeezer) TransitionRunning() bool {
 	var _arg0 *C.AdwSqueezer // out
@@ -397,7 +400,7 @@ func (self *Squeezer) TransitionRunning() bool {
 //
 // The function returns the following values:
 //
-//    - squeezerTransitionType: current transition type of self.
+//   - squeezerTransitionType: current transition type of self.
 //
 func (self *Squeezer) TransitionType() SqueezerTransitionType {
 	var _arg0 *C.AdwSqueezer              // out
@@ -419,7 +422,7 @@ func (self *Squeezer) TransitionType() SqueezerTransitionType {
 //
 // The function returns the following values:
 //
-//    - widget (optional): visible child.
+//   - widget (optional): visible child.
 //
 func (self *Squeezer) VisibleChild() gtk.Widgetter {
 	var _arg0 *C.AdwSqueezer // out
@@ -456,7 +459,7 @@ func (self *Squeezer) VisibleChild() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - gfloat: alignment value.
+//   - gfloat: alignment value.
 //
 func (self *Squeezer) XAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
@@ -478,7 +481,7 @@ func (self *Squeezer) XAlign() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: alignment value.
+//   - gfloat: alignment value.
 //
 func (self *Squeezer) YAlign() float32 {
 	var _arg0 *C.AdwSqueezer // out
@@ -500,7 +503,7 @@ func (self *Squeezer) YAlign() float32 {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (self *Squeezer) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwSqueezer // out
@@ -517,9 +520,13 @@ func (self *Squeezer) Remove(child gtk.Widgetter) {
 // SetAllowNone sets whether to allow squeezing beyond the last child's minimum
 // size.
 //
+// If set to TRUE, the squeezer can shrink to the point where no child can be
+// shown. This is functionally equivalent to appending a widget with 0×0 minimum
+// size.
+//
 // The function takes the following parameters:
 //
-//    - allowNone: whether self allows squeezing beyond the last child.
+//   - allowNone: whether self allows squeezing beyond the last child.
 //
 func (self *Squeezer) SetAllowNone(allowNone bool) {
 	var _arg0 *C.AdwSqueezer // out
@@ -538,9 +545,13 @@ func (self *Squeezer) SetAllowNone(allowNone bool) {
 // SetHomogeneous sets whether all children have the same size for the opposite
 // orientation.
 //
+// For example, if a squeezer is horizontal and is homogeneous, it will request
+// the same height for all its children. If it isn't, the squeezer may change
+// size when a different child becomes visible.
+//
 // The function takes the following parameters:
 //
-//    - homogeneous: whether self is homogeneous.
+//   - homogeneous: whether self is homogeneous.
 //
 func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.AdwSqueezer // out
@@ -559,9 +570,14 @@ func (self *Squeezer) SetHomogeneous(homogeneous bool) {
 // SetInterpolateSize sets whether self interpolates its size when changing the
 // visible child.
 //
+// If TRUE, the squeezer will interpolate its size between the one of the
+// previous visible child and the one of the new visible child, according to
+// the set transition duration and the orientation, e.g. if the squeezer is
+// horizontal, it will interpolate the its height.
+//
 // The function takes the following parameters:
 //
-//    - interpolateSize: whether to interpolate the size.
+//   - interpolateSize: whether to interpolate the size.
 //
 func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.AdwSqueezer // out
@@ -577,11 +593,20 @@ func (self *Squeezer) SetInterpolateSize(interpolateSize bool) {
 	runtime.KeepAlive(interpolateSize)
 }
 
-// SetSwitchThresholdPolicy sets the fold threshold policy for self.
+// SetSwitchThresholdPolicy sets the switch threshold policy for self.
+//
+// Determines when the squeezer will switch children.
+//
+// If set to ADW_FOLD_THRESHOLD_POLICY_MINIMUM, it will only switch when the
+// visible child cannot fit anymore. With ADW_FOLD_THRESHOLD_POLICY_NATURAL,
+// it will switch as soon as the visible child doesn't get their natural size.
+//
+// This can be useful if you have a long ellipsizing label and want to let it
+// ellipsize instead of immediately switching.
 //
 // The function takes the following parameters:
 //
-//    - policy to use.
+//   - policy to use.
 //
 func (self *Squeezer) SetSwitchThresholdPolicy(policy FoldThresholdPolicy) {
 	var _arg0 *C.AdwSqueezer           // out
@@ -599,7 +624,7 @@ func (self *Squeezer) SetSwitchThresholdPolicy(policy FoldThresholdPolicy) {
 //
 // The function takes the following parameters:
 //
-//    - duration: new duration, in milliseconds.
+//   - duration: new duration, in milliseconds.
 //
 func (self *Squeezer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.AdwSqueezer // out
@@ -618,7 +643,7 @@ func (self *Squeezer) SetTransitionDuration(duration uint) {
 //
 // The function takes the following parameters:
 //
-//    - transition: new transition type.
+//   - transition: new transition type.
 //
 func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 	var _arg0 *C.AdwSqueezer              // out
@@ -634,9 +659,15 @@ func (self *Squeezer) SetTransitionType(transition SqueezerTransitionType) {
 
 // SetXAlign sets the horizontal alignment, from 0 (start) to 1 (end).
 //
+// This affects the children allocation during transitions, when they exceed the
+// size of the squeezer.
+//
+// For example, 0.5 means the child will be centered, 0 means it will keep the
+// start side aligned and overflow the end side, and 1 means the opposite.
+//
 // The function takes the following parameters:
 //
-//    - xalign: new alignment value.
+//   - xalign: new alignment value.
 //
 func (self *Squeezer) SetXAlign(xalign float32) {
 	var _arg0 *C.AdwSqueezer // out
@@ -652,9 +683,15 @@ func (self *Squeezer) SetXAlign(xalign float32) {
 
 // SetYAlign sets the vertical alignment, from 0 (top) to 1 (bottom).
 //
+// This affects the children allocation during transitions, when they exceed the
+// size of the squeezer.
+//
+// For example, 0.5 means the child will be centered, 0 means it will keep the
+// top side aligned and overflow the bottom side, and 1 means the opposite.
+//
 // The function takes the following parameters:
 //
-//    - yalign: new alignment value.
+//   - yalign: new alignment value.
 //
 func (self *Squeezer) SetYAlign(yalign float32) {
 	var _arg0 *C.AdwSqueezer // out

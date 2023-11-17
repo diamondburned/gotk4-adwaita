@@ -43,18 +43,17 @@ func init() {
 //
 // If we the spring can oscillate, it's called an underdamped spring.
 //
-// The value between these two behaviors is called critical damping; a
-// critically damped spring will comes to rest in the minimum possible time
+// The value between these two behaviors is called critical damping;
+// a critically damped spring will comes to rest in the minimum possible time
 // without producing oscillations.
 //
 // The damping can be replaced by damping ratio, which produces the following
 // springs:
 //
-// * 0: an undamped spring. * Between 0 and 1: an underdamped spring. * 1: a
-// critically damped spring. * Larger than 1: an overdamped spring.
+// * 0: an undamped spring. * Between 0 and 1: an underdamped spring. * 1:
+// a critically damped spring. * Larger than 1: an overdamped spring.
 //
-//
-// As such
+// # As such
 //
 // An instance of this type is always passed by reference.
 type SpringParams struct {
@@ -133,7 +132,7 @@ func NewSpringParamsFull(damping float64, mass float64, stiffness float64) *Spri
 //
 // The function returns the following values:
 //
-//    - gdouble: damping.
+//   - gdouble: damping.
 //
 func (self *SpringParams) Damping() float64 {
 	var _arg0 *C.AdwSpringParams // out
@@ -155,7 +154,7 @@ func (self *SpringParams) Damping() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: damping ratio.
+//   - gdouble: damping ratio.
 //
 func (self *SpringParams) DampingRatio() float64 {
 	var _arg0 *C.AdwSpringParams // out
@@ -177,7 +176,7 @@ func (self *SpringParams) DampingRatio() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: mass.
+//   - gdouble: mass.
 //
 func (self *SpringParams) Mass() float64 {
 	var _arg0 *C.AdwSpringParams // out
@@ -199,7 +198,7 @@ func (self *SpringParams) Mass() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: stiffness.
+//   - gdouble: stiffness.
 //
 func (self *SpringParams) Stiffness() float64 {
 	var _arg0 *C.AdwSpringParams // out

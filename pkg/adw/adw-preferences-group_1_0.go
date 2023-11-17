@@ -48,24 +48,21 @@ func defaultPreferencesGroupOverrides(v *PreferencesGroup) PreferencesGroupOverr
 // title and a description. The title will be used by preferenceswindow to let
 // the user look for a preference.
 //
-//
-// AdwPreferencesGroup as GtkBuildable
+// # AdwPreferencesGroup as GtkBuildable
 //
 // The AdwPreferencesGroup implementation of the gtk.Buildable interface
-// supports adding preferencesrows to the list by omitting "type". If "type" is
-// omitted and the widget isn't a preferencesrow the child is added to a box
+// supports adding preferencesrows to the list by omitting "type". If "type"
+// is omitted and the widget isn't a preferencesrow the child is added to a box
 // below the list.
 //
 // When the "type" attribute of a child is header-suffix, the child is set as
 // the suffix on the end of the title and description.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwPreferencesGroup has a single CSS node with name preferencesgroup.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // AdwPreferencesGroup uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type PreferencesGroup struct {
@@ -121,7 +118,7 @@ func marshalPreferencesGroup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - preferencesGroup: newly created AdwPreferencesGroup.
+//   - preferencesGroup: newly created AdwPreferencesGroup.
 //
 func NewPreferencesGroup() *PreferencesGroup {
 	var _cret *C.GtkWidget // in
@@ -139,7 +136,7 @@ func NewPreferencesGroup() *PreferencesGroup {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -157,7 +154,7 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): description of self.
+//   - utf8 (optional): description of self.
 //
 func (self *PreferencesGroup) Description() string {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -181,7 +178,7 @@ func (self *PreferencesGroup) Description() string {
 //
 // The function returns the following values:
 //
-//    - widget (optional): suffix for self's header.
+//   - widget (optional): suffix for self's header.
 //
 func (self *PreferencesGroup) HeaderSuffix() gtk.Widgetter {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -218,7 +215,7 @@ func (self *PreferencesGroup) HeaderSuffix() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8: title of self.
+//   - utf8: title of self.
 //
 func (self *PreferencesGroup) Title() string {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -240,7 +237,7 @@ func (self *PreferencesGroup) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -258,7 +255,7 @@ func (self *PreferencesGroup) Remove(child gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - description (optional): description.
+//   - description (optional): description.
 //
 func (self *PreferencesGroup) SetDescription(description string) {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -277,9 +274,13 @@ func (self *PreferencesGroup) SetDescription(description string) {
 
 // SetHeaderSuffix sets the suffix for self's header.
 //
+// Displayed above the list, next to the title and description.
+//
+// Suffixes are commonly used to show a button or a spinner for the whole group.
+//
 // The function takes the following parameters:
 //
-//    - suffix (optional) to set.
+//   - suffix (optional) to set.
 //
 func (self *PreferencesGroup) SetHeaderSuffix(suffix gtk.Widgetter) {
 	var _arg0 *C.AdwPreferencesGroup // out
@@ -299,7 +300,7 @@ func (self *PreferencesGroup) SetHeaderSuffix(suffix gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *PreferencesGroup) SetTitle(title string) {
 	var _arg0 *C.AdwPreferencesGroup // out

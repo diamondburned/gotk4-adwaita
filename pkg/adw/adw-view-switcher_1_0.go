@@ -50,14 +50,12 @@ func defaultViewSwitcherOverrides(v *ViewSwitcher) ViewSwitcherOverrides {
 //
 // Most applications should be using viewswitcherbar and viewswitchertitle.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwViewSwitcher has a single CSS node with name viewswitcher. It can have the
 // style classes .wide and .narrow, matching its policy.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // AdwViewSwitcher uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
@@ -114,7 +112,7 @@ func marshalViewSwitcher(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - viewSwitcher: newly created AdwViewSwitcher.
+//   - viewSwitcher: newly created AdwViewSwitcher.
 //
 func NewViewSwitcher() *ViewSwitcher {
 	var _cret *C.GtkWidget // in
@@ -132,7 +130,7 @@ func NewViewSwitcher() *ViewSwitcher {
 //
 // The function returns the following values:
 //
-//    - viewSwitcherPolicy: policy of self.
+//   - viewSwitcherPolicy: policy of self.
 //
 func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 	var _arg0 *C.AdwViewSwitcher      // out
@@ -154,7 +152,7 @@ func (self *ViewSwitcher) Policy() ViewSwitcherPolicy {
 //
 // The function returns the following values:
 //
-//    - viewStack (optional): stack.
+//   - viewStack (optional): stack.
 //
 func (self *ViewSwitcher) Stack() *ViewStack {
 	var _arg0 *C.AdwViewSwitcher // out
@@ -178,7 +176,7 @@ func (self *ViewSwitcher) Stack() *ViewStack {
 //
 // The function takes the following parameters:
 //
-//    - policy: new policy.
+//   - policy: new policy.
 //
 func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 	var _arg0 *C.AdwViewSwitcher      // out
@@ -196,7 +194,7 @@ func (self *ViewSwitcher) SetPolicy(policy ViewSwitcherPolicy) {
 //
 // The function takes the following parameters:
 //
-//    - stack (optional): stack.
+//   - stack (optional): stack.
 //
 func (self *ViewSwitcher) SetStack(stack *ViewStack) {
 	var _arg0 *C.AdwViewSwitcher // out

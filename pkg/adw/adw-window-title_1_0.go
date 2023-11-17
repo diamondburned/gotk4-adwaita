@@ -44,8 +44,7 @@ func defaultWindowTitleOverrides(v *WindowTitle) WindowTitleOverrides {
 // AdwWindowTitle shows a title and subtitle. It's intended to be used as the
 // title child of gtk.HeaderBar or headerbar.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwWindowTitle has a single CSS node with name windowtitle.
 type WindowTitle struct {
@@ -101,12 +100,12 @@ func marshalWindowTitle(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title: title.
-//    - subtitle: subtitle.
+//   - title: title.
+//   - subtitle: subtitle.
 //
 // The function returns the following values:
 //
-//    - windowTitle: newly created AdwWindowTitle.
+//   - windowTitle: newly created AdwWindowTitle.
 //
 func NewWindowTitle(title, subtitle string) *WindowTitle {
 	var _arg1 *C.char      // out
@@ -133,7 +132,7 @@ func NewWindowTitle(title, subtitle string) *WindowTitle {
 //
 // The function returns the following values:
 //
-//    - utf8: subtitle.
+//   - utf8: subtitle.
 //
 func (self *WindowTitle) Subtitle() string {
 	var _arg0 *C.AdwWindowTitle // out
@@ -155,7 +154,7 @@ func (self *WindowTitle) Subtitle() string {
 //
 // The function returns the following values:
 //
-//    - utf8: title.
+//   - utf8: title.
 //
 func (self *WindowTitle) Title() string {
 	var _arg0 *C.AdwWindowTitle // out
@@ -175,9 +174,11 @@ func (self *WindowTitle) Title() string {
 
 // SetSubtitle sets the subtitle of self.
 //
+// The subtitle should give the user additional details.
+//
 // The function takes the following parameters:
 //
-//    - subtitle: subtitle.
+//   - subtitle: subtitle.
 //
 func (self *WindowTitle) SetSubtitle(subtitle string) {
 	var _arg0 *C.AdwWindowTitle // out
@@ -194,9 +195,12 @@ func (self *WindowTitle) SetSubtitle(subtitle string) {
 
 // SetTitle sets the title of self.
 //
+// The title typically identifies the current view or content item, and
+// generally does not use the application name.
+//
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (self *WindowTitle) SetTitle(title string) {
 	var _arg0 *C.AdwWindowTitle // out

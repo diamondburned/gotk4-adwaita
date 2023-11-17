@@ -137,11 +137,11 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - app: application instance.
+//   - app: application instance.
 //
 // The function returns the following values:
 //
-//    - applicationWindow: newly created AdwApplicationWindow.
+//   - applicationWindow: newly created AdwApplicationWindow.
 //
 func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
@@ -165,7 +165,7 @@ func NewApplicationWindow(app *gtk.Application) *ApplicationWindow {
 //
 // The function returns the following values:
 //
-//    - widget (optional): content widget of self.
+//   - widget (optional): content widget of self.
 //
 func (self *ApplicationWindow) Content() gtk.Widgetter {
 	var _arg0 *C.AdwApplicationWindow // out
@@ -204,7 +204,7 @@ func (self *ApplicationWindow) Content() gtk.Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - content (optional) widget.
+//   - content (optional) widget.
 //
 func (self *ApplicationWindow) SetContent(content gtk.Widgetter) {
 	var _arg0 *C.AdwApplicationWindow // out

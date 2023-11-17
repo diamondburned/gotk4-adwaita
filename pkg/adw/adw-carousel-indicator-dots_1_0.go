@@ -48,8 +48,7 @@ func defaultCarouselIndicatorDotsOverrides(v *CarouselIndicatorDots) CarouselInd
 //
 // See also carouselindicatorlines.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwCarouselIndicatorDots has a single CSS node with name
 // carouselindicatordots.
@@ -114,7 +113,7 @@ func marshalCarouselIndicatorDots(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - carouselIndicatorDots: newly created AdwCarouselIndicatorDots.
+//   - carouselIndicatorDots: newly created AdwCarouselIndicatorDots.
 //
 func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 	var _cret *C.GtkWidget // in
@@ -132,7 +131,7 @@ func NewCarouselIndicatorDots() *CarouselIndicatorDots {
 //
 // The function returns the following values:
 //
-//    - carousel (optional): displayed carousel.
+//   - carousel (optional): displayed carousel.
 //
 func (self *CarouselIndicatorDots) Carousel() *Carousel {
 	var _arg0 *C.AdwCarouselIndicatorDots // out
@@ -156,7 +155,7 @@ func (self *CarouselIndicatorDots) Carousel() *Carousel {
 //
 // The function takes the following parameters:
 //
-//    - carousel (optional): carousel.
+//   - carousel (optional): carousel.
 //
 func (self *CarouselIndicatorDots) SetCarousel(carousel *Carousel) {
 	var _arg0 *C.AdwCarouselIndicatorDots // out

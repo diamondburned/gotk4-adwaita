@@ -52,8 +52,7 @@ func defaultTabBarOverrides(v *TabBar) TabBarOverrides {
 // them. Pinned tabs always stay visible and aren't a part of the scrollable
 // area.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // AdwTabBar has a single CSS node with name tabbar.
 type TabBar struct {
@@ -120,7 +119,7 @@ func (self *TabBar) ConnectExtraDragDrop(f func(page *TabPage, value coreglib.Va
 //
 // The function returns the following values:
 //
-//    - tabBar: newly created AdwTabBar.
+//   - tabBar: newly created AdwTabBar.
 //
 func NewTabBar() *TabBar {
 	var _cret *C.AdwTabBar // in
@@ -138,7 +137,7 @@ func NewTabBar() *TabBar {
 //
 // The function returns the following values:
 //
-//    - ok: whether the tabs automatically hide.
+//   - ok: whether the tabs automatically hide.
 //
 func (self *TabBar) Autohide() bool {
 	var _arg0 *C.AdwTabBar // out
@@ -162,7 +161,7 @@ func (self *TabBar) Autohide() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional) shown after the tabs.
+//   - widget (optional) shown after the tabs.
 //
 func (self *TabBar) EndActionWidget() gtk.Widgetter {
 	var _arg0 *C.AdwTabBar // out
@@ -199,7 +198,7 @@ func (self *TabBar) EndActionWidget() gtk.Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: whether tabs expand to full width.
+//   - ok: whether tabs expand to full width.
 //
 func (self *TabBar) ExpandTabs() bool {
 	var _arg0 *C.AdwTabBar // out
@@ -223,7 +222,7 @@ func (self *TabBar) ExpandTabs() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether tabs use inverted layout.
+//   - ok: whether tabs use inverted layout.
 //
 func (self *TabBar) Inverted() bool {
 	var _arg0 *C.AdwTabBar // out
@@ -245,9 +244,11 @@ func (self *TabBar) Inverted() bool {
 
 // IsOverflowing gets whether self is overflowing.
 //
+// If TRUE, all tabs cannot be displayed at once and require scrolling.
+//
 // The function returns the following values:
 //
-//    - ok: whether self is overflowing.
+//   - ok: whether self is overflowing.
 //
 func (self *TabBar) IsOverflowing() bool {
 	var _arg0 *C.AdwTabBar // out
@@ -271,7 +272,7 @@ func (self *TabBar) IsOverflowing() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional) shown before the tabs.
+//   - widget (optional) shown before the tabs.
 //
 func (self *TabBar) StartActionWidget() gtk.Widgetter {
 	var _arg0 *C.AdwTabBar // out
@@ -306,9 +307,11 @@ func (self *TabBar) StartActionWidget() gtk.Widgetter {
 
 // TabsRevealed gets whether the tabs are currently revealed.
 //
+// See tabbar:autohide.
+//
 // The function returns the following values:
 //
-//    - ok: whether the tabs are currently revealed.
+//   - ok: whether the tabs are currently revealed.
 //
 func (self *TabBar) TabsRevealed() bool {
 	var _arg0 *C.AdwTabBar // out
@@ -332,7 +335,7 @@ func (self *TabBar) TabsRevealed() bool {
 //
 // The function returns the following values:
 //
-//    - tabView (optional): view self controls.
+//   - tabView (optional): view self controls.
 //
 func (self *TabBar) View() *TabView {
 	var _arg0 *C.AdwTabBar  // out
@@ -354,9 +357,14 @@ func (self *TabBar) View() *TabView {
 
 // SetAutohide sets whether the tabs automatically hide.
 //
+// If set to TRUE, the tab bar disappears when tabbar:view has 0 or 1 tab,
+// no pinned tabs, and no tab is being transferred.
+//
+// See tabbar:tabs-revealed.
+//
 // The function takes the following parameters:
 //
-//    - autohide: whether the tabs automatically hide.
+//   - autohide: whether the tabs automatically hide.
 //
 func (self *TabBar) SetAutohide(autohide bool) {
 	var _arg0 *C.AdwTabBar // out
@@ -376,7 +384,7 @@ func (self *TabBar) SetAutohide(autohide bool) {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional) to show after the tabs.
+//   - widget (optional) to show after the tabs.
 //
 func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
@@ -394,9 +402,12 @@ func (self *TabBar) SetEndActionWidget(widget gtk.Widgetter) {
 
 // SetExpandTabs sets whether tabs expand to full width.
 //
+// If set to TRUE, the tabs will always vary width filling the whole width when
+// possible, otherwise tabs will always have the minimum possible size.
+//
 // The function takes the following parameters:
 //
-//    - expandTabs: whether to expand tabs.
+//   - expandTabs: whether to expand tabs.
 //
 func (self *TabBar) SetExpandTabs(expandTabs bool) {
 	var _arg0 *C.AdwTabBar // out
@@ -414,9 +425,12 @@ func (self *TabBar) SetExpandTabs(expandTabs bool) {
 
 // SetInverted sets whether tabs tabs use inverted layout.
 //
+// If set to TRUE, non-pinned tabs will have the close button at the beginning
+// and the indicator at the end rather than the opposite.
+//
 // The function takes the following parameters:
 //
-//    - inverted: whether tabs use inverted layout.
+//   - inverted: whether tabs use inverted layout.
 //
 func (self *TabBar) SetInverted(inverted bool) {
 	var _arg0 *C.AdwTabBar // out
@@ -436,7 +450,7 @@ func (self *TabBar) SetInverted(inverted bool) {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional) to show before the tabs.
+//   - widget (optional) to show before the tabs.
 //
 func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 	var _arg0 *C.AdwTabBar // out
@@ -456,7 +470,7 @@ func (self *TabBar) SetStartActionWidget(widget gtk.Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - view (optional): tab view.
+//   - view (optional): tab view.
 //
 func (self *TabBar) SetView(view *TabView) {
 	var _arg0 *C.AdwTabBar  // out
@@ -486,8 +500,8 @@ func (self *TabBar) SetView(view *TabView) {
 //
 // The function takes the following parameters:
 //
-//    - actions: supported actions.
-//    - types (optional): all supported GTypes that can be dropped.
+//   - actions: supported actions.
+//   - types (optional): all supported GTypes that can be dropped.
 //
 func (self *TabBar) SetupExtraDropTarget(actions gdk.DragAction, types []coreglib.Type) {
 	var _arg0 *C.AdwTabBar    // out
