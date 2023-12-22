@@ -7,10 +7,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/cmd/gir-generate/genmain"
 )
 
-const (
-	gotk4Module   = "github.com/diamondburned/gotk4/pkg"
-	adwaitaModule = "github.com/diamondburned/gotk4-adwaita/pkg"
-)
+const adwaitaModule = "github.com/diamondburned/gotk4-adwaita/pkg"
 
 var Data = genmain.Overlay(
 	gendata.Main,
