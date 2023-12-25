@@ -37,3 +37,47 @@ func _gotk4_adw1_MessageDialogClass_response(arg0 *C.AdwMessageDialog, arg1 *C.c
 
 	overrides.Response(_response)
 }
+
+//export _gotk4_adw1_NavigationPageClass_hidden
+func _gotk4_adw1_NavigationPageClass_hidden(arg0 *C.AdwNavigationPage) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[NavigationPageOverrides](instance0)
+	if overrides.Hidden == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected NavigationPageOverrides.Hidden, got none")
+	}
+
+	overrides.Hidden()
+}
+
+//export _gotk4_adw1_NavigationPageClass_hiding
+func _gotk4_adw1_NavigationPageClass_hiding(arg0 *C.AdwNavigationPage) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[NavigationPageOverrides](instance0)
+	if overrides.Hiding == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected NavigationPageOverrides.Hiding, got none")
+	}
+
+	overrides.Hiding()
+}
+
+//export _gotk4_adw1_NavigationPageClass_showing
+func _gotk4_adw1_NavigationPageClass_showing(arg0 *C.AdwNavigationPage) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[NavigationPageOverrides](instance0)
+	if overrides.Showing == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected NavigationPageOverrides.Showing, got none")
+	}
+
+	overrides.Showing()
+}
+
+//export _gotk4_adw1_NavigationPageClass_shown
+func _gotk4_adw1_NavigationPageClass_shown(arg0 *C.AdwNavigationPage) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[NavigationPageOverrides](instance0)
+	if overrides.Shown == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected NavigationPageOverrides.Shown, got none")
+	}
+
+	overrides.Shown()
+}

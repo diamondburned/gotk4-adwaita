@@ -38,11 +38,11 @@ const (
 	// TabViewShortcutNone: no shortcuts.
 	TabViewShortcutNone TabViewShortcuts = 0b0
 	// TabViewShortcutControlTab: <kbd>Ctrl</kbd>+<kbd>Tab</kbd> - switch to the
-	// next page, with looping.
+	// next page.
 	TabViewShortcutControlTab TabViewShortcuts = 0b1
 	// TabViewShortcutControlShiftTab:
 	// <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>Tab</kbd> - switch to the previous
-	// page, with looping.
+	// page.
 	TabViewShortcutControlShiftTab TabViewShortcuts = 0b10
 	// TabViewShortcutControlPageUp: <kbd>Ctrl</kbd>+<kbd>Page Up</kbd> - switch
 	// to the previous page.

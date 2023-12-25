@@ -295,6 +295,59 @@ func NewAboutWindow() *AboutWindow {
 	return _aboutWindow
 }
 
+// NewAboutWindowFromAppdata creates a new AdwAboutWindow using AppStream
+// metadata.
+//
+// This automatically sets the following properties with the following AppStream
+// values:
+//
+// * aboutwindow:application-icon is set from the <id> *
+// aboutwindow:application-name is set from the <name> *
+// aboutwindow:developer-name is set from the <developer_name> *
+// aboutwindow:version is set from the version of the latest release
+// * aboutwindow:website is set from the <url type="homepage">
+// * aboutwindow:support-url is set from the <url type="help"> *
+// aboutwindow:issue-url is set from the <url type="bugtracker"> *
+// aboutwindow:license-type is set from the <project_license> If the license
+// type retrieved from AppStream is not listed in gtk.License, it will be set to
+// GTK_LICENCE_CUSTOM.
+//
+// If release_notes_version is not NULL, aboutwindow:release-notes-version is
+// set to match it, while aboutwindow:release-notes is set from the AppStream
+// release description for that version.
+//
+// The function takes the following parameters:
+//
+//   - resourcePath: resource to use.
+//   - releaseNotesVersion (optional): version to retrieve release notes for.
+//
+// The function returns the following values:
+//
+//   - aboutWindow: newly created AdwAboutWindow.
+//
+func NewAboutWindowFromAppdata(resourcePath, releaseNotesVersion string) *AboutWindow {
+	var _arg1 *C.char      // out
+	var _arg2 *C.char      // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if releaseNotesVersion != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(releaseNotesVersion)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	_cret = C.adw_about_window_new_from_appdata(_arg1, _arg2)
+	runtime.KeepAlive(resourcePath)
+	runtime.KeepAlive(releaseNotesVersion)
+
+	var _aboutWindow *AboutWindow // out
+
+	_aboutWindow = wrapAboutWindow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _aboutWindow
+}
+
 // AddAcknowledgementSection adds a section to the Acknowledgements page.
 //
 // This can be used to acknowledge additional people and organizations for

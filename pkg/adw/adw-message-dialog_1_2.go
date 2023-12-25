@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
@@ -139,6 +140,46 @@ func defaultMessageDialogOverrides(v *MessageDialog) MessageDialogOverrides {
 //    g_signal_connect (dialog, "response", G_CALLBACK (response_cb), self);
 //
 //    gtk_window_present (GTK_WINDOW (dialog));
+//
+// # Async API
+//
+// AdwMessageDialog can also be used via the messagedialog.Choose method.
+// This API follows the GIO async pattern, and the result can be obtained by
+// calling messagedialog.ChooseFinish, for example:
+//
+//    static void
+//    dialog_cb (AdwMessageDialog *dialog,
+//               GAsyncResult     *result,
+//               MyWindow         *self)
+//    {
+//      const char *response = adw_message_dialog_choose_finish (dialog, result);
+//
+//      // ...
+//    }
+//
+//    static void
+//    show_dialog (MyWindow *self)
+//    {
+//      GtkWidget *dialog;
+//
+//      dialog = adw_message_dialog_new (GTK_WINDOW (self), _("Replace File?"), NULL);
+//
+//      adw_message_dialog_format_body (ADW_MESSAGE_DIALOG (dialog),
+//                                      _("A file named “s” already exists. Do you want to replace it?"),
+//                                      filename);
+//
+//      adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
+//                                        "cancel",  _("_Cancel"),
+//                                        "replace", _("_Replace"),
+//                                        NULL);
+//
+//      adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog), "replace", ADW_RESPONSE_DESTRUCTIVE);
+//
+//      adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
+//      adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
+//
+//      adw_message_dialog_choose (ADW_MESSAGE_DIALOG (dialog), NULL, (GAsyncReadyCallback) dialog_cb, self);
+//    }
 //
 // # AdwMessageDialog as GtkBuildable
 //
@@ -355,6 +396,37 @@ func (self *MessageDialog) AddResponse(id, label string) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(label)
+}
+
+// ChooseFinish finishes the messagedialog.Choose call and returns the response
+// ID.
+//
+// The function takes the following parameters:
+//
+//   - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//   - utf8: ID of the response that was selected, or
+//     messagedialog:close-response if the call was cancelled.
+//
+func (self *MessageDialog) ChooseFinish(result gio.AsyncResulter) string {
+	var _arg0 *C.AdwMessageDialog // out
+	var _arg1 *C.GAsyncResult     // out
+	var _cret *C.char             // in
+
+	_arg0 = (*C.AdwMessageDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_cret = C.adw_message_dialog_choose_finish(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(result)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // Body gets the body text of self.

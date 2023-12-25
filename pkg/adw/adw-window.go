@@ -3,15 +3,296 @@
 package adw
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
 // #include <adwaita.h>
+// #include <glib-object.h>
 import "C"
+
+// GType values.
+var (
+	GTypeWindow = coreglib.Type(C.adw_window_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeWindow, F: marshalWindow},
+	})
+}
+
+// WindowOverrides contains methods that are overridable.
+type WindowOverrides struct {
+}
+
+func defaultWindowOverrides(v *Window) WindowOverrides {
+	return WindowOverrides{}
+}
+
+// Window: freeform window.
+//
+// <picture> <source srcset="window-dark.png" media="(prefers-color-scheme:
+// dark)"> <img src="window.png" alt="window"> </picture>
+//
+// The AdwWindow widget is a subclass of gtk.Window which has no titlebar area.
+// Instead, toolbarview can be used together with headerbar or gtk.HeaderBar as
+// follows:
+//
+//    <object class="AdwWindow">
+//      <property name="content">
+//        <object class="AdwToolbarView">
+//          <child type="top">
+//            <object class="AdwHeaderBar"/>
+//          </child>
+//          <property name="content">
+//            <!-- ... -->
+//          </property>
+//        </object>
+//      </property>
+//    </object>
+//
+// Using gtk.Window:titlebar or gtk.Window:child is not supported and will
+// result in a crash. Use window:content instead.
+//
+// # Breakpoints
+//
+// AdwWindow can be used with breakpoint the same way as breakpointbin. Refer to
+// that widget's documentation for details.
+//
+// Example:
+//
+//    <object class="AdwWindow">
+//      <property name="width-request">360</property>
+//      <property name="height-request">200</property>
+//      <property name="content">
+//        <object class="AdwToolbarView">
+//          <child type="top">
+//            <object class="AdwHeaderBar"/>
+//          </child>
+//          <property name="content">
+//            <!-- ... -->
+//          </property>
+//          <child type="bottom">
+//            <object class="GtkActionBar" id="bottom_bar">
+//              <property name="revealed">True</property>
+//              <property name="visible">False</property>
+//            </object>
+//          </child>
+//        </object>
+//      </property>
+//      <child>
+//        <object class="AdwBreakpoint">
+//          <condition>max-width: 500px</condition>
+//          <setter object="bottom_bar" property="visible">True</setter>
+//        </object>
+//      </child>
+//    </object>
+//
+// Like AdwBreakpointBin, if breakpoints are used, AdwWindow doesn't have a
+// minimum size, and gtk.Widget:width-request and gtk.Widget:height-request
+// properties must be set manually.
+type Window struct {
+	_ [0]func() // equal guard
+	gtk.Window
+}
+
+var (
+	_ gtk.Widgetter     = (*Window)(nil)
+	_ coreglib.Objector = (*Window)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Window, *WindowClass, WindowOverrides](
+		GTypeWindow,
+		initWindowClass,
+		wrapWindow,
+		defaultWindowOverrides,
+	)
+}
+
+func initWindowClass(gclass unsafe.Pointer, overrides WindowOverrides, classInitFunc func(*WindowClass)) {
+	if classInitFunc != nil {
+		class := (*WindowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapWindow(obj *coreglib.Object) *Window {
+	return &Window{
+		Window: gtk.Window{
+			Widget: gtk.Widget{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
+					Object: obj,
+				},
+				Object: obj,
+				Accessible: gtk.Accessible{
+					Object: obj,
+				},
+				Buildable: gtk.Buildable{
+					Object: obj,
+				},
+				ConstraintTarget: gtk.ConstraintTarget{
+					Object: obj,
+				},
+			},
+			Object: obj,
+			Root: gtk.Root{
+				NativeSurface: gtk.NativeSurface{
+					Widget: gtk.Widget{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
+							Object: obj,
+						},
+						Object: obj,
+						Accessible: gtk.Accessible{
+							Object: obj,
+						},
+						Buildable: gtk.Buildable{
+							Object: obj,
+						},
+						ConstraintTarget: gtk.ConstraintTarget{
+							Object: obj,
+						},
+					},
+				},
+			},
+			ShortcutManager: gtk.ShortcutManager{
+				Object: obj,
+			},
+		},
+	}
+}
+
+func marshalWindow(p uintptr) (interface{}, error) {
+	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewWindow creates a new AdwWindow.
+//
+// The function returns the following values:
+//
+//   - window: newly created AdwWindow.
+//
+func NewWindow() *Window {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.adw_window_new()
+
+	var _window *Window // out
+
+	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _window
+}
+
+// AddBreakpoint adds breakpoint to self.
+//
+// The function takes the following parameters:
+//
+//   - breakpoint to add.
+//
+func (self *Window) AddBreakpoint(breakpoint *Breakpoint) {
+	var _arg0 *C.AdwWindow     // out
+	var _arg1 *C.AdwBreakpoint // out
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwBreakpoint)(unsafe.Pointer(coreglib.InternObject(breakpoint).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(breakpoint).Native()))
+
+	C.adw_window_add_breakpoint(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(breakpoint)
+}
+
+// Content gets the content widget of self.
+//
+// This method should always be used instead of gtk.Window.GetChild().
+//
+// The function returns the following values:
+//
+//   - widget (optional): content widget of self.
+//
+func (self *Window) Content() gtk.Widgetter {
+	var _arg0 *C.AdwWindow // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_window_get_content(_arg0)
+	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// CurrentBreakpoint gets the current breakpoint.
+//
+// The function returns the following values:
+//
+//   - breakpoint (optional): current breakpoint.
+//
+func (self *Window) CurrentBreakpoint() *Breakpoint {
+	var _arg0 *C.AdwWindow     // out
+	var _cret *C.AdwBreakpoint // in
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_window_get_current_breakpoint(_arg0)
+	runtime.KeepAlive(self)
+
+	var _breakpoint *Breakpoint // out
+
+	if _cret != nil {
+		_breakpoint = wrapBreakpoint(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _breakpoint
+}
+
+// SetContent sets the content widget of self.
+//
+// This method should always be used instead of gtk.Window.SetChild().
+//
+// The function takes the following parameters:
+//
+//   - content (optional) widget.
+//
+func (self *Window) SetContent(content gtk.Widgetter) {
+	var _arg0 *C.AdwWindow // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if content != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(content).Native()))
+	}
+
+	C.adw_window_set_content(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(content)
+}
 
 // WindowClass: instance of this type is always passed by reference.
 type WindowClass struct {

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
@@ -39,6 +40,34 @@ func _gotk4_adw1_TabBar_ConnectExtraDragDrop(arg0 C.gpointer, arg1 *C.AdwTabPage
 	if ok {
 		cret = C.TRUE
 	}
+
+	return cret
+}
+
+//export _gotk4_adw1_TabBar_ConnectExtraDragValue
+func _gotk4_adw1_TabBar_ConnectExtraDragValue(arg0 C.gpointer, arg1 *C.AdwTabPage, arg2 C.GValue, arg3 C.guintptr) (cret C.GdkDragAction) {
+	var f func(page *TabPage, value coreglib.Value) (dragAction gdk.DragAction)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(page *TabPage, value coreglib.Value) (dragAction gdk.DragAction))
+	}
+
+	var _page *TabPage        // out
+	var _value coreglib.Value // out
+
+	_page = wrapTabPage(coreglib.Take(unsafe.Pointer(arg1)))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&arg2)))
+
+	dragAction := f(_page, _value)
+
+	var _ gdk.DragAction
+
+	cret = C.GdkDragAction(dragAction)
 
 	return cret
 }

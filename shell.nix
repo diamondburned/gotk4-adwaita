@@ -26,10 +26,10 @@ in import "${gotk4-nix}/shell.nix" {
 	};
 	pkgs = import "${gotk4-nix}/pkgs.nix" {
 		sourceNixpkgs = pkgs.fetchFromGitHub {
-			owner  = "NixOS";
-			repo   = "nixpkgs";
-			rev    = "ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b"; # nixos-22.11
-			sha256 = "sha256-lHrKvEkCPTUO+7tPfjIcb7Trk6k31rz18vkyqmkeJfY=";
+			owner = "NixOS";
+			repo  = "nixpkgs";
+			rev   = "0b3d618173114c64ab666f557504d6982665d328"; # nixos-23.11
+			hash  = "sha256-q5j06XOsy0qHOarsYPfZYJPWbTbc8sryRxianlEPJN0=";
 		};
 		useFetched = true;
 	};

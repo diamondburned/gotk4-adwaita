@@ -374,6 +374,33 @@ func (self *EntryRow) ShowApplyButton() bool {
 	return _ok
 }
 
+// GrabFocusWithoutSelecting causes self to have keyboard focus without
+// selecting the text.
+//
+// See gtk.Text.GrabFocusWithoutSelecting() for more information.
+//
+// The function returns the following values:
+//
+//   - ok: whether the focus is now inside self.
+//
+func (self *EntryRow) GrabFocusWithoutSelecting() bool {
+	var _arg0 *C.AdwEntryRow // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AdwEntryRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_entry_row_grab_focus_without_selecting(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Remove removes a child from self.
 //
 // The function takes the following parameters:
