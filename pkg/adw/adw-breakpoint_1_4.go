@@ -241,7 +241,7 @@ func NewBreakpoint(condition *BreakpointCondition) *Breakpoint {
 	return _breakpoint
 }
 
-// AddSetter adds a setter to self.
+// AddSetterDirect adds a setter to self.
 //
 // The setter will automatically set property on object to value when applying
 // the breakpoint, and set it back to its original value upon unapplying it.
@@ -279,7 +279,7 @@ func NewBreakpoint(condition *BreakpointCondition) *Breakpoint {
 //   - property: target property.
 //   - value to set.
 //
-func (self *Breakpoint) AddSetter(object *coreglib.Object, property string, value *coreglib.Value) {
+func (self *Breakpoint) AddSetterDirect(object *coreglib.Object, property string, value *coreglib.Value) {
 	var _arg0 *C.AdwBreakpoint // out
 	var _arg1 *C.GObject       // out
 	var _arg2 *C.char          // out
