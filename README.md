@@ -29,6 +29,7 @@ To generate the bindings, do the following:
 
 ```sh
 $ flatpak-builder --force-clean build-dir io.github.diamondburned.gotk4_adwaita.yml
+$ flatpak-builder --run build-dir io.github.diamondburned.gotk4_adwaita.yml go generate
 ```
 
 You might need to install the referenced SDKs and runtimes, first.
@@ -53,6 +54,6 @@ Install the missing system-libraries, until the generation succeeds.
 
 [adw]: https://gnome.pages.gitlab.gnome.org/libadwaita/doc/
 [flatpak]: https://docs.flatpak.org/en/latest/building-introduction.html
-[gotk4-contributing]: https://github.com/diamondburned/gotk4/blob/70c1e83a63e4f4c18ad89baedd2e726d2052c26f/CONTRIBUTING.md
+[gotk4-contributing]: https://github.com/diamondburned/gotk4/blob/4/CONTRIBUTING.md
 [nix-overlay]: https://github.com/diamondburned/gotk4-adwaita/issues/3#issuecomment-1304912311
 [toolbox]: https://containertoolbx.org/
