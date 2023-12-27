@@ -1,0 +1,20 @@
+app-id: io.github.diamondburned.gotk4_adwaita
+runtime: org.gnome.Sdk
+runtime-version: "45"
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - "org.freedesktop.Sdk.Extension.golang"
+build-options:
+  append-path: "/usr/lib/sdk/golang/bin"
+  # This instructs the flatpak sandbox to allow network connections.
+  # It can be removed, if flatpak is made aware of where to download the sources.
+  build-args:
+    - "--share=network"
+modules:
+  - name: gotk4_adwaita
+    buildsystem: simple
+    build-commands:
+      - "go generate"
+    sources:
+      - type: dir
+        path: .
