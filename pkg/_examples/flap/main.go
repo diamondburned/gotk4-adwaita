@@ -9,7 +9,7 @@ import (
 
 func main() {
 	app := gtk.NewApplication("com.github.diamondburned.gotk4-examples.gtk4.simple", 0)
-	app.Connect("activate", activate)
+	app.ConnectActivate(func() { activate(app) })
 
 	if code := app.Run(os.Args); code > 0 {
 		os.Exit(code)
@@ -37,7 +37,7 @@ func activate(app *gtk.Application) {
 	flap.SetTransitionType(adw.FlapTransitionTypeOver)
 	flap.SetSeparator(gtk.NewSeparator(gtk.OrientationVertical))
 
-	stack.InitiallyUnowned.Connect("notify::visible-child", func() {
+	stack.InitiallyUnowned.NotifyProperty("visible-child", func() {
 		// Collapse the flap if we're in mobile view and the flap is opened.
 		if flap.Folded() && flap.RevealFlap() {
 			flap.SetRevealFlap(false)
@@ -45,7 +45,7 @@ func activate(app *gtk.Application) {
 	})
 
 	unflap := gtk.NewButtonFromIconName("document-properties-symbolic")
-	unflap.InitiallyUnowned.Connect("clicked", func() {
+	unflap.InitiallyUnowned.ConnectClicked(func() {
 		flap.SetRevealFlap(!flap.RevealFlap())
 	})
 
@@ -75,12 +75,12 @@ func buttonPage() gtk.Widgetter {
 	info.SetShowCloseButton(true)
 	info.SetMessageType(gtk.MessageInfo)
 	info.Hide()
-	info.InitiallyUnowned.Connect("response", (*gtk.InfoBar).Hide)
+	info.ConnectResponse(func() { info.Hide() })
 
 	button := gtk.NewButtonWithLabel("Click me!")
 	button.SetVAlign(gtk.AlignCenter)
 	button.SetHAlign(gtk.AlignCenter)
-	button.InitiallyUnowned.Connect("clicked", func() { info.Show() })
+	button.ConnectClicked(func() { info.Show() })
 
 	overlay := gtk.NewOverlay()
 	overlay.SetHExpand(true)
