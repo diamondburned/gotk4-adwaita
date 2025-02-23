@@ -1,6 +1,6 @@
-package main
+package adwaita
 
-//go:generate go run . -o ./pkg/
+//go:generate go run ./cmd/gir-generate -o ./pkg/
 
 import (
 	"github.com/diamondburned/gotk4/gir/cmd/gir-generate/gendata"
@@ -73,8 +73,4 @@ func betterBreakpointAddSetter(nsgen *girgen.NamespaceGenerator) error {
 	`)
 
 	return nil
-}
-
-func main() {
-	genmain.Run(Data)
 }
