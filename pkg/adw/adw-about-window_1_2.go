@@ -180,7 +180,7 @@ func defaultAboutWindowOverrides(v *AboutWindow) AboutWindowOverrides {
 //	                         "application-icon", "org.example.App",
 //	                         "version", "1.2.3",
 //	                         "copyright", "© 2022 Angela Avery",
-//	                         "issue-url", "https://gitlab.gnome.org/example/example/-/issues/new",
+//	                         "issue-url", "https://gitlab.gnome.org/example/example/-/issues/",
 //	                         "license-type", GTK_LICENSE_GPL_3_0,
 //	                         "developers", developers,
 //	                         "designers", designers,
@@ -192,6 +192,8 @@ func defaultAboutWindowOverrides(v *AboutWindow) AboutWindowOverrides {
 //
 // AdwAboutWindow has a main CSS node with the name window and the style class
 // .about.
+//
+// Deprecated: Use aboutdialog.
 type AboutWindow struct {
 	_ [0]func() // equal guard
 	Window
@@ -279,6 +281,8 @@ func (self *AboutWindow) ConnectActivateLink(f func(uri string) (ok bool)) coreg
 
 // NewAboutWindow creates a new AdwAboutWindow.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - aboutWindow: newly created AdwAboutWindow.
@@ -314,6 +318,8 @@ func NewAboutWindow() *AboutWindow {
 // If release_notes_version is not NULL, aboutwindow:release-notes-version is
 // set to match it, while aboutwindow:release-notes is set from the AppStream
 // release description for that version.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -359,7 +365,9 @@ func NewAboutWindowFromAppdata(resourcePath, releaseNotesVersion string) *AboutW
 //
 // * aboutwindow:developers * aboutwindow:designers * aboutwindow:artists
 // * aboutwindow:documenters * aboutwindow:translator-credits *
-// aboutwindow.AddCreditSection.
+// aboutwindow.AddCreditSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -406,7 +414,9 @@ func (self *AboutWindow) AddAcknowledgementSection(name string, people []string)
 //
 // * aboutwindow:developers * aboutwindow:designers * aboutwindow:artists
 // * aboutwindow:documenters * aboutwindow:translator-credits *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -478,7 +488,9 @@ func (self *AboutWindow) AddCreditSection(name string, people []string) {
 //	                                    _("Custom license only"),
 //	                                    NULL,
 //	                                    GTK_LICENSE_CUSTOM,
-//	                                    "Something completely custom here.");.
+//	                                    "Something completely custom here.");
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -522,6 +534,8 @@ func (self *AboutWindow) AddLegalSection(title, copyright string, licenseType gt
 //
 // See aboutwindow:website.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - title: link title.
@@ -545,6 +559,8 @@ func (self *AboutWindow) AddLink(title, url string) {
 
 // ApplicationIcon gets the name of the application icon for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: application icon name.
@@ -566,6 +582,8 @@ func (self *AboutWindow) ApplicationIcon() string {
 
 // ApplicationName gets the application name for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: application name.
@@ -586,6 +604,8 @@ func (self *AboutWindow) ApplicationName() string {
 }
 
 // Artists gets the list of artists of the application.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -622,6 +642,8 @@ func (self *AboutWindow) Artists() []string {
 
 // Comments gets the comments about the application.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: comments.
@@ -642,6 +664,8 @@ func (self *AboutWindow) Comments() string {
 }
 
 // Copyright gets the copyright information for self.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -664,6 +688,8 @@ func (self *AboutWindow) Copyright() string {
 
 // DebugInfo gets the debug information for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: debug information.
@@ -685,6 +711,8 @@ func (self *AboutWindow) DebugInfo() string {
 
 // DebugInfoFilename gets the debug information filename for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: debug information filename.
@@ -705,6 +733,8 @@ func (self *AboutWindow) DebugInfoFilename() string {
 }
 
 // Designers gets the list of designers of the application.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -741,6 +771,8 @@ func (self *AboutWindow) Designers() []string {
 
 // DeveloperName gets the developer name for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: developer_name.
@@ -761,6 +793,8 @@ func (self *AboutWindow) DeveloperName() string {
 }
 
 // Developers gets the list of developers of the application.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -797,6 +831,8 @@ func (self *AboutWindow) Developers() []string {
 
 // Documenters gets the list of documenters of the application.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8s (optional): list of documenters.
@@ -832,6 +868,8 @@ func (self *AboutWindow) Documenters() []string {
 
 // IssueURL gets the issue tracker URL for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: issue tracker URL.
@@ -852,6 +890,8 @@ func (self *AboutWindow) IssueURL() string {
 }
 
 // License gets the license for self.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -874,6 +914,8 @@ func (self *AboutWindow) License() string {
 
 // LicenseType gets the license type for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - license type.
@@ -894,6 +936,8 @@ func (self *AboutWindow) LicenseType() gtk.License {
 }
 
 // ReleaseNotes gets the release notes for self.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -917,6 +961,8 @@ func (self *AboutWindow) ReleaseNotes() string {
 // ReleaseNotesVersion gets the version described by the application's release
 // notes.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: release notes version.
@@ -937,6 +983,8 @@ func (self *AboutWindow) ReleaseNotesVersion() string {
 }
 
 // SupportURL gets the URL of the support page for self.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -959,6 +1007,8 @@ func (self *AboutWindow) SupportURL() string {
 
 // TranslatorCredits gets the translator credits string.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: translator credits string.
@@ -980,6 +1030,8 @@ func (self *AboutWindow) TranslatorCredits() string {
 
 // Version gets the version for self.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function returns the following values:
 //
 //   - utf8: version.
@@ -1000,6 +1052,8 @@ func (self *AboutWindow) Version() string {
 }
 
 // Website gets the application website URL for self.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function returns the following values:
 //
@@ -1024,6 +1078,8 @@ func (self *AboutWindow) Website() string {
 //
 // The icon is displayed at the top of the main page.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - applicationIcon: application icon name.
@@ -1043,6 +1099,8 @@ func (self *AboutWindow) SetApplicationIcon(applicationIcon string) {
 // SetApplicationName sets the application name for self.
 //
 // The name is displayed at the top of the main page.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1071,7 +1129,9 @@ func (self *AboutWindow) SetApplicationName(applicationName string) {
 //
 // * aboutwindow:developers * aboutwindow:designers * aboutwindow:documenters
 // * aboutwindow:translator-credits * aboutwindow.AddCreditSection *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1107,6 +1167,8 @@ func (self *AboutWindow) SetArtists(artists []string) {
 // Unlike gtk.AboutDialog:comments, this string can be long and detailed.
 // It can also contain links and Pango markup.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - comments: comments.
@@ -1133,6 +1195,8 @@ func (self *AboutWindow) SetComments(comments string) {
 //
 // aboutwindow.AddLegalSection can be used to add copyright information for the
 // application dependencies or other components.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1161,6 +1225,8 @@ func (self *AboutWindow) SetCopyright(copyright string) {
 //
 // Debug information cannot contain markup or links.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - debugInfo: debug information.
@@ -1183,6 +1249,8 @@ func (self *AboutWindow) SetDebugInfo(debugInfo string) {
 // file.
 //
 // See aboutwindow:debug-info.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1211,7 +1279,9 @@ func (self *AboutWindow) SetDebugInfoFilename(filename string) {
 //
 // * aboutwindow:developers * aboutwindow:artists * aboutwindow:documenters
 // * aboutwindow:translator-credits * aboutwindow.AddCreditSection *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1249,6 +1319,8 @@ func (self *AboutWindow) SetDesigners(designers []string) {
 // project", and the individual contributors can be listed on the Credits page,
 // with aboutwindow:developers and related properties.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - developerName: developer name.
@@ -1276,7 +1348,9 @@ func (self *AboutWindow) SetDeveloperName(developerName string) {
 //
 // * aboutwindow:designers * aboutwindow:artists * aboutwindow:documenters
 // * aboutwindow:translator-credits * aboutwindow.AddCreditSection *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1316,7 +1390,9 @@ func (self *AboutWindow) SetDevelopers(developers []string) {
 //
 // * aboutwindow:developers * aboutwindow:designers * aboutwindow:artists
 // * aboutwindow:translator-credits * aboutwindow.AddCreditSection *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1349,6 +1425,8 @@ func (self *AboutWindow) SetDocumenters(documenters []string) {
 //
 // The issue tracker link is displayed on the main page.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - issueUrl: issue tracker URL.
@@ -1379,6 +1457,8 @@ func (self *AboutWindow) SetIssueURL(issueUrl string) {
 //
 // aboutwindow.AddLegalSection can be used to add license information for the
 // application dependencies or other components.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1412,6 +1492,8 @@ func (self *AboutWindow) SetLicense(license string) {
 //
 // aboutwindow.AddLegalSection can be used to add license information for the
 // application dependencies or other components.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1452,6 +1534,8 @@ func (self *AboutWindow) SetLicenseType(licenseType gtk.License) {
 // the aboutwindow:release-notes-version of the property will be used as the
 // version; otherwise, aboutwindow:version is used.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - releaseNotes: release notes.
@@ -1481,6 +1565,8 @@ func (self *AboutWindow) SetReleaseNotes(releaseNotes string) {
 //
 // See aboutwindow:release-notes.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - version: release notes version.
@@ -1500,6 +1586,8 @@ func (self *AboutWindow) SetReleaseNotesVersion(version string) {
 // SetSupportURL sets the URL of the support page for self.
 //
 // The support page link is displayed on the main page.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1531,7 +1619,9 @@ func (self *AboutWindow) SetSupportURL(supportUrl string) {
 //
 // * aboutwindow:developers * aboutwindow:designers * aboutwindow:artists
 // * aboutwindow:documenters * aboutwindow.AddCreditSection *
-// aboutwindow.AddAcknowledgementSection.
+// aboutwindow.AddAcknowledgementSection
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //
@@ -1556,6 +1646,8 @@ func (self *AboutWindow) SetTranslatorCredits(translatorCredits string) {
 // If aboutwindow:release-notes-version is not set, the version will also be
 // displayed above the release notes on the What's New page.
 //
+// Deprecated: Use aboutdialog.
+//
 // The function takes the following parameters:
 //
 //   - version: version.
@@ -1578,6 +1670,8 @@ func (self *AboutWindow) SetVersion(version string) {
 // if the Details page doesn't have any other content.
 //
 // Applications can add other links below, see aboutwindow.AddLink.
+//
+// Deprecated: Use aboutdialog.
 //
 // The function takes the following parameters:
 //

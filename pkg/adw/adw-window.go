@@ -74,8 +74,6 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 // Example:
 //
 //	<object class="AdwWindow">
-//	  <property name="width-request">360</property>
-//	  <property name="height-request">200</property>
 //	  <property name="content">
 //	    <object class="AdwToolbarView">
 //	      <child type="top">
@@ -100,9 +98,10 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 //	  </child>
 //	</object>
 //
-// Like AdwBreakpointBin, if breakpoints are used, AdwWindow doesn't have a
-// minimum size, and gtk.Widget:width-request and gtk.Widget:height-request
-// properties must be set manually.
+// When breakpoints are used, the minimum size must be larger than the smallest
+// UI state. AdwWindow defaults to the minimum size of 360×200 px. If that's
+// too small, set the gtk.Widget:width-request and gtk.Widget:height-request
+// properties manually.
 type Window struct {
 	_ [0]func() // equal guard
 	gtk.Window

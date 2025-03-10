@@ -261,6 +261,35 @@ func (self *ComboRow) Factory() *gtk.ListItemFactory {
 	return _listItemFactory
 }
 
+// HeaderFactory gets the factory that's currently used to create header widgets
+// for the popup.
+//
+// The function returns the following values:
+//
+//   - listItemFactory (optional): factory in use.
+func (self *ComboRow) HeaderFactory() *gtk.ListItemFactory {
+	var _arg0 *C.AdwComboRow        // out
+	var _cret *C.GtkListItemFactory // in
+
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_combo_row_get_header_factory(_arg0)
+	runtime.KeepAlive(self)
+
+	var _listItemFactory *gtk.ListItemFactory // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_listItemFactory = &gtk.ListItemFactory{
+				Object: obj,
+			}
+		}
+	}
+
+	return _listItemFactory
+}
+
 // ListFactory gets the factory for populating list items in the popup.
 //
 // The function returns the following values:
@@ -315,6 +344,27 @@ func (self *ComboRow) Model() *gio.ListModel {
 	}
 
 	return _listModel
+}
+
+// SearchMatchMode returns the match mode that the search filter is using.
+//
+// The function returns the following values:
+//
+//   - stringFilterMatchMode: match mode of the search filter.
+func (self *ComboRow) SearchMatchMode() gtk.StringFilterMatchMode {
+	var _arg0 *C.AdwComboRow             // out
+	var _cret C.GtkStringFilterMatchMode // in
+
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_combo_row_get_search_match_mode(_arg0)
+	runtime.KeepAlive(self)
+
+	var _stringFilterMatchMode gtk.StringFilterMatchMode // out
+
+	_stringFilterMatchMode = gtk.StringFilterMatchMode(_cret)
+
+	return _stringFilterMatchMode
 }
 
 // Selected gets the position of the selected item.
@@ -453,6 +503,26 @@ func (self *ComboRow) SetFactory(factory *gtk.ListItemFactory) {
 	runtime.KeepAlive(factory)
 }
 
+// SetHeaderFactory sets the factory to use for creating header widgets for the
+// popup.
+//
+// The function takes the following parameters:
+//
+//   - factory (optional) to use.
+func (self *ComboRow) SetHeaderFactory(factory *gtk.ListItemFactory) {
+	var _arg0 *C.AdwComboRow        // out
+	var _arg1 *C.GtkListItemFactory // out
+
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if factory != nil {
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	}
+
+	C.adw_combo_row_set_header_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
+}
+
 // SetListFactory sets the factory for populating list items in the popup.
 //
 // If this is not set, comborow:factory is used.
@@ -491,6 +561,23 @@ func (self *ComboRow) SetModel(model gio.ListModeller) {
 	C.adw_combo_row_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// SetSearchMatchMode sets the match mode for the search filter.
+//
+// The function takes the following parameters:
+//
+//   - searchMatchMode: new match mode.
+func (self *ComboRow) SetSearchMatchMode(searchMatchMode gtk.StringFilterMatchMode) {
+	var _arg0 *C.AdwComboRow             // out
+	var _arg1 C.GtkStringFilterMatchMode // out
+
+	_arg0 = (*C.AdwComboRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkStringFilterMatchMode(searchMatchMode)
+
+	C.adw_combo_row_set_search_match_mode(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(searchMatchMode)
 }
 
 // SetSelected selects the item at the given position.

@@ -58,6 +58,10 @@ func defaultSwitchRowOverrides(v *SwitchRow) SwitchRowOverrides {
 //
 // The switchrow:active property should be connected to in order to monitor
 // changes to the active state.
+//
+// # Accessibility
+//
+// AdwSwitchRow uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type SwitchRow struct {
 	_ [0]func() // equal guard
 	ActionRow

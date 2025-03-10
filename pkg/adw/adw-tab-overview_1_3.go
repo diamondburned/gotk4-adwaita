@@ -141,7 +141,7 @@ func marshalTabOverview(p uintptr) (interface{}, error) {
 	return wrapTabOverview(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectCreateTab is emitted when a tab needs to be created;
+// ConnectCreateTab is emitted when a tab needs to be created.
 //
 // This can happen after the new tab button has been pressed, see
 // taboverview:enable-new-tab.

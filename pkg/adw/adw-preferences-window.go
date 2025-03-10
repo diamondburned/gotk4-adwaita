@@ -48,6 +48,8 @@ func defaultPreferencesWindowOverrides(v *PreferencesWindow) PreferencesWindowOv
 //
 // AdwPreferencesWindow has a main CSS node with the name window and the style
 // class .preferences.
+//
+// Deprecated: Use preferencesdialog.
 type PreferencesWindow struct {
 	_ [0]func() // equal guard
 	Window
@@ -127,6 +129,8 @@ func marshalPreferencesWindow(p uintptr) (interface{}, error) {
 
 // NewPreferencesWindow creates a new AdwPreferencesWindow.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function returns the following values:
 //
 //   - preferencesWindow: newly created AdwPreferencesWindow.
@@ -143,6 +147,8 @@ func NewPreferencesWindow() *PreferencesWindow {
 }
 
 // Add adds a preferences page to self.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function takes the following parameters:
 //
@@ -162,6 +168,8 @@ func (self *PreferencesWindow) Add(page *PreferencesPage) {
 // AddToast displays toast.
 //
 // See toastoverlay.AddToast.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function takes the following parameters:
 //
@@ -221,6 +229,8 @@ func (self *PreferencesWindow) CanNavigateBack() bool {
 
 // SearchEnabled gets whether search is enabled for self.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function returns the following values:
 //
 //   - ok: whether search is enabled for self.
@@ -243,6 +253,8 @@ func (self *PreferencesWindow) SearchEnabled() bool {
 }
 
 // VisiblePage gets the currently visible page of self.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function returns the following values:
 //
@@ -267,6 +279,8 @@ func (self *PreferencesWindow) VisiblePage() *PreferencesPage {
 
 // VisiblePageName gets the name of currently visible page of self.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function returns the following values:
 //
 //   - utf8 (optional): name of the visible page.
@@ -289,6 +303,8 @@ func (self *PreferencesWindow) VisiblePageName() string {
 }
 
 // PopSubpage: pop the visible page from the subpage stack of self.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function returns the following values:
 //
@@ -337,6 +353,8 @@ func (self *PreferencesWindow) PresentSubpage(subpage gtk.Widgetter) {
 //
 // The page will be automatically removed when popped.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function takes the following parameters:
 //
 //   - page: subpage.
@@ -353,6 +371,8 @@ func (self *PreferencesWindow) PushSubpage(page *NavigationPage) {
 }
 
 // Remove removes a page from self.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function takes the following parameters:
 //
@@ -385,9 +405,9 @@ func (self *PreferencesWindow) Remove(page *PreferencesPage) {
 //
 // For right-to-left locales, gestures and shortcuts are reversed.
 //
-// Deprecated: Use navigationpage.SetCanPop instead.
-//
 // Has no effect for subpages added with preferenceswindow.PushSubpage.
+//
+// Deprecated: Use navigationpage.SetCanPop instead.
 //
 // The function takes the following parameters:
 //
@@ -408,6 +428,8 @@ func (self *PreferencesWindow) SetCanNavigateBack(canNavigateBack bool) {
 
 // SetSearchEnabled sets whether search is enabled for self.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function takes the following parameters:
 //
 //   - searchEnabled: whether search is enabled.
@@ -427,6 +449,8 @@ func (self *PreferencesWindow) SetSearchEnabled(searchEnabled bool) {
 
 // SetVisiblePage makes page the visible page of self.
 //
+// Deprecated: Use preferencesdialog.
+//
 // The function takes the following parameters:
 //
 //   - page of self.
@@ -445,6 +469,8 @@ func (self *PreferencesWindow) SetVisiblePage(page *PreferencesPage) {
 // SetVisiblePageName makes the page with the given name visible.
 //
 // See preferenceswindow:visible-page.
+//
+// Deprecated: Use preferencesdialog.
 //
 // The function takes the following parameters:
 //

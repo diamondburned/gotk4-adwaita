@@ -98,8 +98,7 @@ func defaultAlertDialogOverrides(v *AlertDialog) AlertDialogOverrides {
 // # Async API
 //
 // AdwAlertDialog can also be used via the alertdialog.Choose method. This API
-// follows the GIO async pattern, and the result can be obtained by calling
-// alertdialog.ChooseFinish, for example:
+// follows the GIO async pattern, for example:
 //
 //	static void
 //	dialog_cb (AdwAlertDialog *dialog,
@@ -142,7 +141,7 @@ func defaultAlertDialogOverrides(v *AlertDialog) AlertDialogOverrides {
 //
 // AdwAlertDialog supports adding responses in UI definitions by via the
 // <responses> element that may contain multiple <response> elements, each
-// respresenting a response.
+// representing a response.
 //
 // Each of the <response> elements must have the id attribute specifying the
 // response ID. The contents of the element are used as the response label.
@@ -519,6 +518,29 @@ func (self *AlertDialog) HeadingUseMarkup() bool {
 	return _ok
 }
 
+// PreferWideLayout gets whether self prefers wide layout.
+//
+// The function returns the following values:
+//
+//   - ok: whether to prefer wide layout.
+func (self *AlertDialog) PreferWideLayout() bool {
+	var _arg0 *C.AdwAlertDialog // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AdwAlertDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_alert_dialog_get_prefer_wide_layout(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ResponseAppearance gets the appearance of response.
 //
 // See alertdialog.SetResponseAppearance.
@@ -812,6 +834,28 @@ func (self *AlertDialog) SetHeadingUseMarkup(useMarkup bool) {
 	C.adw_alert_dialog_set_heading_use_markup(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(useMarkup)
+}
+
+// SetPreferWideLayout sets whether self prefers wide layout.
+//
+// Prefer horizontal button layout when possible, and wider dialog width
+// otherwise.
+//
+// The function takes the following parameters:
+//
+//   - preferWideLayout: whether to prefer wide layout.
+func (self *AlertDialog) SetPreferWideLayout(preferWideLayout bool) {
+	var _arg0 *C.AdwAlertDialog // out
+	var _arg1 C.gboolean        // out
+
+	_arg0 = (*C.AdwAlertDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if preferWideLayout {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_alert_dialog_set_prefer_wide_layout(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(preferWideLayout)
 }
 
 // SetResponseAppearance sets the appearance for response.

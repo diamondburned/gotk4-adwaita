@@ -56,6 +56,17 @@ func defaultTabBarOverrides(v *TabBar) TabBarOverrides {
 // # CSS nodes
 //
 // AdwTabBar has a single CSS node with name tabbar.
+//
+// # Style classes
+//
+// By default AdwTabBar look like a part of an AdwHeaderBar and is intended
+// to be used directly attached to one or used as a toolbarview toolbar.
+// The .inline (style-classes.html#inline) style class removes its background,
+// so that it can be used in different contexts instead.
+//
+// <picture> <source srcset="tab-bar-inline-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="tab-bar-inline.png"
+// alt="tab-bar-inline"> </picture>.
 type TabBar struct {
 	_ [0]func() // equal guard
 	gtk.Widget

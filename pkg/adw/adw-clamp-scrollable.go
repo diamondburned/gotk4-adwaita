@@ -41,6 +41,8 @@ func defaultClampScrollableOverrides(v *ClampScrollable) ClampScrollableOverride
 // interface.
 //
 // The primary use case for AdwClampScrollable is clamping gtk.ListView.
+//
+// See also: clamplayout.
 type ClampScrollable struct {
 	_ [0]func() // equal guard
 	gtk.Widget

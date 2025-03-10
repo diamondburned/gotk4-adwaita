@@ -325,7 +325,7 @@ func (self *ToolbarView) BottomBarHeight() int {
 	return _gint
 }
 
-// BottomBarStyle gets appearance of the botom bars for self.
+// BottomBarStyle gets appearance of the bottom bars for self.
 //
 // The function returns the following values:
 //

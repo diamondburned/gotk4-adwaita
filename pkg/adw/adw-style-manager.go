@@ -83,11 +83,12 @@ func defaultStyleManagerOverrides(v *StyleManager) StyleManagerOverrides {
 // StyleManager class for managing application-wide styling.
 //
 // AdwStyleManager provides a way to query and influence the application styles,
-// such as whether to use dark or high contrast appearance.
+// such as whether to use dark style, the system accent color or high contrast
+// appearance.
 //
 // It allows to set the color scheme via the stylemanager:color-scheme property,
 // and to query the current appearance, as well as whether a system-wide color
-// scheme preference exists.
+// scheme and accent color preferences exists.
 type StyleManager struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -121,6 +122,61 @@ func wrapStyleManager(obj *coreglib.Object) *StyleManager {
 
 func marshalStyleManager(p uintptr) (interface{}, error) {
 	return wrapStyleManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// AccentColor gets the current system accent color.
+//
+// See also stylemanager:accent-color-rgba.
+//
+// The function returns the following values:
+//
+//   - accentColor: current system accent color.
+func (self *StyleManager) AccentColor() AccentColor {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret C.AdwAccentColor   // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_accent_color(_arg0)
+	runtime.KeepAlive(self)
+
+	var _accentColor AccentColor // out
+
+	_accentColor = AccentColor(_cret)
+
+	return _accentColor
+}
+
+// AccentColorRGBA gets the current system accent color as a GdkRGBA.
+//
+// Equivalent to calling accentcolor.ToRGBA() on the value of
+// stylemanager:accent-color.
+//
+// This is a background color. The matching foreground color is white.
+//
+// The function returns the following values:
+//
+//   - rgbA: current system accent color.
+func (self *StyleManager) AccentColorRGBA() *gdk.RGBA {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret *C.GdkRGBA         // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_accent_color_rgba(_arg0)
+	runtime.KeepAlive(self)
+
+	var _rgbA *gdk.RGBA // out
+
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_rgbA)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
+		},
+	)
+
+	return _rgbA
 }
 
 // ColorScheme gets the requested application color scheme.
@@ -215,6 +271,35 @@ func (self *StyleManager) HighContrast() bool {
 	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.adw_style_manager_get_high_contrast(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SystemSupportsAccentColors gets whether the system supports accent colors.
+//
+// This can be used to check if the current environment provides an accent color
+// preference. For example, applications might want to show a preference for
+// choosing accent color if it's set to FALSE.
+//
+// See stylemanager:accent-color.
+//
+// The function returns the following values:
+//
+//   - ok: whether the system supports accent colors.
+func (self *StyleManager) SystemSupportsAccentColors() bool {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_system_supports_accent_colors(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

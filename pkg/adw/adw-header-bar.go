@@ -76,7 +76,7 @@ func defaultHeaderBarOverrides(v *HeaderBar) HeaderBarOverrides {
 // # Dialog Integration
 //
 // When placed inside an dialog, AdwHeaderBar will display the dialog
-// title intead of window title. It will also adjust the decoration
+// title instead of window title. It will also adjust the decoration
 // layout to ensure it always has a close button and nothing else. Set
 // headerbar:show-start-title-buttons and headerbar:show-end-title-buttons to
 // FALSE to remove it if it's unwanted.
@@ -96,9 +96,15 @@ func defaultHeaderBarOverrides(v *HeaderBar) HeaderBarOverrides {
 //
 // # Split View Integration
 //
-// When placed inside AdwNavigationSplitView or AdwOverlaySplitView,
-// AdwHeaderBar will automatically hide the title buttons other than at the
-// edges of the window.
+// When placed inside navigationsplitview or overlaysplitview, AdwHeaderBar will
+// automatically hide the title buttons other than at the edges of the window.
+//
+// # Bottom Sheet Integration
+//
+// When played inside bottomsheet, AdwHeaderBar will not show the title
+// unless bottomsheet:show-drag-handle is set to FALSE, regardless of
+// headerbar:show-title. This only applies to the default title, titles set with
+// headerbar:title-widget will still be shown.
 //
 // # Centering Policy
 //
@@ -131,7 +137,7 @@ func defaultHeaderBarOverrides(v *HeaderBar) HeaderBarOverrides {
 //
 // AdwHeaderBar's CSS node is called headerbar. It contains a windowhandle
 // subnode, which contains a box subnode, which contains three widget subnodes
-// at the start, center and end of the header bar. The start and end subnotes
+// at the start, center and end of the header bar. The start and end subnodes
 // contain a box subnode with the .start and .end style classes respectively,
 // and the center node contains a node that represents the title.
 //

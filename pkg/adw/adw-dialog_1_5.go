@@ -119,6 +119,10 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 // Use dialog.ForceClose to close the dialog even when can-close is set to
 // FALSE.
 //
+// AdwDialog is transient and doesn't integrate with the window below it, for
+// example it's not possible to collapse it into a bottom bar. See bottomsheet
+// for persistent and more tightly integrated bottom sheets.
+//
 // # Header Bar Integration
 //
 // When placed inside an AdwDialog, headerbar will display the dialog

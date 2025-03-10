@@ -155,6 +155,29 @@ func (self *PreferencesPage) Description() string {
 	return _utf8
 }
 
+// DescriptionCentered gets whether the description is centered.
+//
+// The function returns the following values:
+//
+//   - ok: whether the description is centered.
+func (self *PreferencesPage) DescriptionCentered() bool {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_preferences_page_get_description_centered(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // IconName gets the icon name for self.
 //
 // The function returns the following values:
@@ -291,6 +314,25 @@ func (self *PreferencesPage) SetDescription(description string) {
 	C.adw_preferences_page_set_description(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(description)
+}
+
+// SetDescriptionCentered sets whether the description should be centered.
+//
+// The function takes the following parameters:
+//
+//   - centered: if the description should be centered.
+func (self *PreferencesPage) SetDescriptionCentered(centered bool) {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _arg1 C.gboolean            // out
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if centered {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_preferences_page_set_description_centered(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(centered)
 }
 
 // SetIconName sets the icon name for self.

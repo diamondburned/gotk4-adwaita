@@ -1671,7 +1671,7 @@ func (self *TabView) PrependPinned(child gtk.Widgetter) *TabPage {
 //
 // The function takes the following parameters:
 //
-//   - shortcuts to reomve.
+//   - shortcuts to remove.
 func (self *TabView) RemoveShortcuts(shortcuts TabViewShortcuts) {
 	var _arg0 *C.AdwTabView         // out
 	var _arg1 C.AdwTabViewShortcuts // out

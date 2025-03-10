@@ -50,8 +50,10 @@ func defaultClampOverrides(v *Clamp) ClampOverrides {
 // If the child requires more than the requested maximum size, it will be
 // allocated the minimum size it can fit in instead.
 //
-// AdwClamp can scale with the text scale factor, use the clamplayout:unit
-// property to enable that behavior.
+// AdwClamp can scale with the text scale factor, use the clamp:unit property to
+// enable that behavior.
+//
+// See also: clamplayout, clampscrollable.
 //
 // # CSS nodes
 //

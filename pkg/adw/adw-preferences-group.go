@@ -48,6 +48,10 @@ func defaultPreferencesGroupOverrides(v *PreferencesGroup) PreferencesGroupOverr
 // title and a description. The title will be used by preferencesdialog to let
 // the user look for a preference.
 //
+// The preferencesgroup:separate-rows property can be used to separate
+// the rows within the group, same as when using the .boxed-list-separate
+// (style-classes.html#boxed-lists-cards) style class instead of .boxed-list.
+//
 // # AdwPreferencesGroup as GtkBuildable
 //
 // The AdwPreferencesGroup implementation of the gtk.Buildable interface
@@ -207,6 +211,29 @@ func (self *PreferencesGroup) HeaderSuffix() gtk.Widgetter {
 	return _widget
 }
 
+// SeparateRows gets whether self's rows are separated.
+//
+// The function returns the following values:
+//
+//   - ok: whether rows are separated.
+func (self *PreferencesGroup) SeparateRows() bool {
+	var _arg0 *C.AdwPreferencesGroup // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_preferences_group_get_separate_rows(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Title gets the title of self.
 //
 // The function returns the following values:
@@ -286,6 +313,29 @@ func (self *PreferencesGroup) SetHeaderSuffix(suffix gtk.Widgetter) {
 	C.adw_preferences_group_set_header_suffix(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(suffix)
+}
+
+// SetSeparateRows sets whether self's rows are separated.
+//
+// Equivalent to using the .boxed-list-separate
+// (style-classes.html#boxed-lists-cards) style class on a gtk.ListBox instead
+// of .boxed-list.
+//
+// The function takes the following parameters:
+//
+//   - separateRows: whether to separate rows.
+func (self *PreferencesGroup) SetSeparateRows(separateRows bool) {
+	var _arg0 *C.AdwPreferencesGroup // out
+	var _arg1 C.gboolean             // out
+
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if separateRows {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_preferences_group_set_separate_rows(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(separateRows)
 }
 
 // SetTitle sets the title for self.

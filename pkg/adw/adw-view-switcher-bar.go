@@ -51,8 +51,6 @@ func defaultViewSwitcherBarOverrides(v *ViewSwitcherBar) ViewSwitcherBarOverride
 // while removing the view switcher from the header bar, as follows:
 //
 //	<object class="AdwWindow">
-//	  <property name="width-request">360</property>
-//	  <property name="height-request">200</property>
 //	  <child>
 //	    <object class="AdwBreakpoint">
 //	      <condition>max-width: 550sp</condition>

@@ -77,9 +77,18 @@ func defaultActionRowOverrides(v *ActionRow) ActionRowOverrides {
 // It contains subnodes label.title and label.subtitle representing respectively
 // the title label and subtitle label.
 //
+// # Style classes
+//
 // AdwActionRow can use the .property (style-classes.html#property-rows) style
 // class to emphasize the row subtitle instead of the row title, which is useful
 // for displaying read-only properties.
+//
+// <picture> <source srcset="property-row-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="property-row.png"
+// alt="property-row"> </picture>
+//
+// When used together with the .monospace style class, only the subtitle becomes
+// monospace, not the title or any extra widgets.
 type ActionRow struct {
 	_ [0]func() // equal guard
 	PreferencesRow

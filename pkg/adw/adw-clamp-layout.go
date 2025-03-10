@@ -52,6 +52,8 @@ func defaultClampLayoutOverrides(v *ClampLayout) ClampLayoutOverrides {
 //
 // AdwClampLayout can scale with the text scale factor, use the clamplayout:unit
 // property to enable that behavior.
+//
+// See also: clamp, clampscrollable.
 type ClampLayout struct {
 	_ [0]func() // equal guard
 	gtk.LayoutManager

@@ -48,9 +48,18 @@ func defaultStatusPageOverrides(v *StatusPage) StatusPageOverrides {
 //
 // AdwStatusPage has a main CSS node with name statuspage.
 //
+// When setting an spinnerpaintable as statuspage:paintable, the main nodes
+// gains the .spinner style class for a more compact appearance.
+//
+// # Style classes
+//
 // AdwStatusPage can use the .compact (style-classes.html#compact-status-page)
 // style class for when it needs to fit into a small space such a sidebar or a
-// popover.
+// popover, similar to when using a spinner as the paintable.
+//
+// <picture> <source srcset="status-page-compact-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="status-page-compact.png"
+// alt="status-page-compact"> </picture>.
 type StatusPage struct {
 	_ [0]func() // equal guard
 	gtk.Widget

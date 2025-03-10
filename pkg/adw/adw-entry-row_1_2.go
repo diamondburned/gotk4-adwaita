@@ -342,6 +342,27 @@ func (self *EntryRow) InputPurpose() gtk.InputPurpose {
 	return _inputPurpose
 }
 
+// MaxLength retrieves the maximum length of the entry.
+//
+// The function returns the following values:
+//
+//   - gint: maximum length of the entry.
+func (self *EntryRow) MaxLength() int {
+	var _arg0 *C.AdwEntryRow // out
+	var _cret C.int          // in
+
+	_arg0 = (*C.AdwEntryRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_entry_row_get_max_length(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // ShowApplyButton gets whether self can show the apply button.
 //
 // The function returns the following values:
@@ -531,6 +552,23 @@ func (self *EntryRow) SetInputPurpose(purpose gtk.InputPurpose) {
 	C.adw_entry_row_set_input_purpose(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(purpose)
+}
+
+// SetMaxLength sets the maximum length of the entry.
+//
+// The function takes the following parameters:
+//
+//   - maxLength: maximum length of the entry.
+func (self *EntryRow) SetMaxLength(maxLength int) {
+	var _arg0 *C.AdwEntryRow // out
+	var _arg1 C.int          // out
+
+	_arg0 = (*C.AdwEntryRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(maxLength)
+
+	C.adw_entry_row_set_max_length(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(maxLength)
 }
 
 // SetShowApplyButton sets whether self can show the apply button.
