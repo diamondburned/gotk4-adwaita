@@ -40,6 +40,8 @@
             libadwaita
           ];
 
+          nativeBuildInputs = [ pkgs.go ];
+
           packages = with pkgs; [ self.formatter.${system} ];
         };
 
