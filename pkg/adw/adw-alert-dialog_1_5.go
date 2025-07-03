@@ -173,7 +173,8 @@ type AlertDialog struct {
 }
 
 var (
-	_ gtk.Widgetter = (*AlertDialog)(nil)
+	_ gtk.Widgetter     = (*AlertDialog)(nil)
+	_ coreglib.Objector = (*AlertDialog)(nil)
 )
 
 func init() {
@@ -215,6 +216,10 @@ func wrapAlertDialog(obj *coreglib.Object) *AlertDialog {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+			},
+			Object: obj,
+			ShortcutManager: gtk.ShortcutManager{
+				Object: obj,
 			},
 		},
 	}

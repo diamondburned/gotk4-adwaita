@@ -109,6 +109,28 @@ const (
 	// with bounce on both ends, combining ADW_EASE_IN_BOUNCE and
 	// ADW_EASE_OUT_BOUNCE.
 	EaseInOutBounce
+	// Ease: cubic bezier tweening, with control points in (0.25, 0.1) and
+	// (0.25, 1.0).
+	//
+	// Increases in velocity towards the middle of the animation, slowing back
+	// down at the end.
+	Ease
+	// EaseIn: cubic bezier tweening, with control points in (0.42, 0.0) and
+	// (1.0, 1.0).
+	//
+	// Starts off slowly, with the speed of the animation increasing until
+	// complete.
+	EaseIn
+	// EaseOut: cubic bezier tweening, with control points in (0.0, 0.0) and
+	// (0.58, 1.0).
+	//
+	// Starts quickly, slowing down the animation until complete.
+	EaseOut
+	// EaseInOut: cubic bezier tweening, with control points in (0.42, 0.0) and
+	// (0.58, 1.0).
+	//
+	// Starts off slowly, speeds up in the middle, and then slows down again.
+	EaseInOut
 )
 
 func marshalEasing(p uintptr) (interface{}, error) {
@@ -180,6 +202,14 @@ func (e Easing) String() string {
 		return "EaseOutBounce"
 	case EaseInOutBounce:
 		return "EaseInOutBounce"
+	case Ease:
+		return "Ease"
+	case EaseIn:
+		return "EaseIn"
+	case EaseOut:
+		return "EaseOut"
+	case EaseInOut:
+		return "EaseInOut"
 	default:
 		return fmt.Sprintf("Easing(%d)", e)
 	}

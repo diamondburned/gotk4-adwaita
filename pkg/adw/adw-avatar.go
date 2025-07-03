@@ -56,6 +56,10 @@ func defaultAvatarOverrides(v *Avatar) AvatarOverrides {
 // # CSS nodes
 //
 // AdwAvatar has a single CSS node with name avatar.
+//
+// # Accessibility
+//
+// AdwAvatar uses the GTK_ACCESSIBLE_ROLE_IMG role.
 type Avatar struct {
 	_ [0]func() // equal guard
 	gtk.Widget

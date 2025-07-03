@@ -52,7 +52,9 @@ func defaultViewStackOverrides(v *ViewStack) ViewStackOverrides {
 // is which. Set them using the viewstackpage:title, viewstackpage:icon-name,
 // viewstackpage:needs-attention, and viewstackpage:badge-number properties.
 //
-// Unlike gtk.Stack, transitions between views are not animated.
+// Unlike gtk.Stack, transitions between views can only be animated via a
+// crossfade and size changes are always interpolated. Animations are disabled
+// by default. Use viewstack:enable-transitions to enable them.
 //
 // AdwViewStack maintains a viewstackpage object for each added child,
 // which holds additional per-child properties. You obtain the viewstackpage
@@ -352,6 +354,33 @@ func (self *ViewStack) ChildByName(name string) gtk.Widgetter {
 	return _widget
 }
 
+// EnableTransitions gets whether self uses a crossfade transition between
+// pages.
+//
+// Use viewstack:transition-duration to control the duration, and
+// viewstack:transition-running to know when the transition is running.
+//
+// The function returns the following values:
+//
+//   - ok: whether to enable page transitions.
+func (self *ViewStack) EnableTransitions() bool {
+	var _arg0 *C.AdwViewStack // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_view_stack_get_enable_transitions(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Hhomogeneous gets whether self is horizontally homogeneous.
 //
 // The function returns the following values:
@@ -432,6 +461,54 @@ func (self *ViewStack) Pages() *gtk.SelectionModel {
 	}
 
 	return _selectionModel
+}
+
+// TransitionDuration gets the transition animation duration for self.
+//
+// The function returns the following values:
+//
+//   - guint: transition duration, in milliseconds.
+func (self *ViewStack) TransitionDuration() uint {
+	var _arg0 *C.AdwViewStack // out
+	var _cret C.guint         // in
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_view_stack_get_transition_duration(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// TransitionRunning gets whether a transition is currently running for self.
+//
+// If a transition is impossible, the property value will be set to TRUE and
+// then immediately to FALSE, so it's possible to rely on its notifications to
+// know that a transition has happened.
+//
+// The function returns the following values:
+//
+//   - ok: whether a transition is currently running.
+func (self *ViewStack) TransitionRunning() bool {
+	var _arg0 *C.AdwViewStack // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_view_stack_get_transition_running(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Vhomogeneous gets whether self is vertically homogeneous.
@@ -533,6 +610,26 @@ func (self *ViewStack) Remove(child gtk.Widgetter) {
 	runtime.KeepAlive(child)
 }
 
+// SetEnableTransitions sets whether self uses a crossfade transition between
+// pages.
+//
+// The function takes the following parameters:
+//
+//   - enableTransitions: whether to enable page transitions.
+func (self *ViewStack) SetEnableTransitions(enableTransitions bool) {
+	var _arg0 *C.AdwViewStack // out
+	var _arg1 C.gboolean      // out
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if enableTransitions {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_view_stack_set_enable_transitions(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableTransitions)
+}
+
 // SetHhomogeneous sets self to be horizontally homogeneous or not.
 //
 // If the stack is horizontally homogeneous, it allocates the same width for all
@@ -556,6 +653,25 @@ func (self *ViewStack) SetHhomogeneous(hhomogeneous bool) {
 	C.adw_view_stack_set_hhomogeneous(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(hhomogeneous)
+}
+
+// SetTransitionDuration sets the transition animation duration for self.
+//
+// Only used when viewstack:enable-transitions is set to TRUE.
+//
+// The function takes the following parameters:
+//
+//   - duration: new duration, in milliseconds.
+func (self *ViewStack) SetTransitionDuration(duration uint) {
+	var _arg0 *C.AdwViewStack // out
+	var _arg1 C.guint         // out
+
+	_arg0 = (*C.AdwViewStack)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(duration)
+
+	C.adw_view_stack_set_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(duration)
 }
 
 // SetVhomogeneous sets self to be vertically homogeneous or not.

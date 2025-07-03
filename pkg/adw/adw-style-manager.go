@@ -257,6 +257,32 @@ func (self *StyleManager) Display() *gdk.Display {
 	return _display
 }
 
+// DocumentFontName gets the system document font.
+//
+// The font is in the same format as gtk.Settings:gtk-font-name, e.g. "Adwaita
+// Sans 11".
+//
+// Use pango.FontDescription().FromString to parse it.
+//
+// The function returns the following values:
+//
+//   - utf8: system document font.
+func (self *StyleManager) DocumentFontName() string {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret *C.char            // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_document_font_name(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // HighContrast gets whether the application is using high contrast appearance.
 //
 // This cannot be overridden by applications.
@@ -280,6 +306,32 @@ func (self *StyleManager) HighContrast() bool {
 	}
 
 	return _ok
+}
+
+// MonospaceFontName gets the system monospace font.
+//
+// The font is in the same format as gtk.Settings:gtk-font-name, e.g. "Adwaita
+// Mono 11".
+//
+// Use pango.FontDescription().FromString to parse it.
+//
+// The function returns the following values:
+//
+//   - utf8: system monospace font.
+func (self *StyleManager) MonospaceFontName() string {
+	var _arg0 *C.AdwStyleManager // out
+	var _cret *C.char            // in
+
+	_arg0 = (*C.AdwStyleManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_style_manager_get_monospace_font_name(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // SystemSupportsAccentColors gets whether the system supports accent colors.

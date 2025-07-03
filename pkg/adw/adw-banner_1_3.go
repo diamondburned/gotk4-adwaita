@@ -51,7 +51,12 @@ func defaultBannerOverrides(v *Banner) BannerOverrides {
 //
 // Banners can optionally have a button with text on it, set through
 // banner:button-label. The button can be used with a GAction, or with the
-// banner::button-clicked signal.
+// banner::button-clicked signal. The button can have different styles, a gray
+// style and a suggested style.
+//
+// <picture> <source srcset="banner-suggested-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="banner-suggested.png"
+// alt="banner with suggested button style"> </picture>
 //
 // # CSS nodes
 //
@@ -184,6 +189,27 @@ func (self *Banner) ButtonLabel() string {
 	return _utf8
 }
 
+// ButtonStyle gets the style class in use for the banner button.
+//
+// The function returns the following values:
+//
+//   - bannerButtonStyle: current button style.
+func (self *Banner) ButtonStyle() BannerButtonStyle {
+	var _arg0 *C.AdwBanner           // out
+	var _cret C.AdwBannerButtonStyle // in
+
+	_arg0 = (*C.AdwBanner)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_banner_get_button_style(_arg0)
+	runtime.KeepAlive(self)
+
+	var _bannerButtonStyle BannerButtonStyle // out
+
+	_bannerButtonStyle = BannerButtonStyle(_cret)
+
+	return _bannerButtonStyle
+}
+
 // Revealed gets if a banner is revealed.
 //
 // The function returns the following values:
@@ -274,6 +300,31 @@ func (self *Banner) SetButtonLabel(label string) {
 	C.adw_banner_set_button_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(label)
+}
+
+// SetButtonStyle sets the style class to use for the banner button.
+//
+// When set to ADW_BANNER_BUTTON_DEFAULT, the button stays grey. When set
+// to ADW_BANNER_BUTTON_SUGGESTED, the button follows the .suggested-action
+// (style-classes.html#suggested-action) style
+//
+// <picture> <source srcset="banner-suggested-dark.png"
+// media="(prefers-color-scheme: dark)"> <img src="banner-suggested.png"
+// alt="banner with suggested button style"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - style: button style.
+func (self *Banner) SetButtonStyle(style BannerButtonStyle) {
+	var _arg0 *C.AdwBanner           // out
+	var _arg1 C.AdwBannerButtonStyle // out
+
+	_arg0 = (*C.AdwBanner)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.AdwBannerButtonStyle(style)
+
+	C.adw_banner_set_button_style(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(style)
 }
 
 // SetRevealed sets whether a banner should be revealed.

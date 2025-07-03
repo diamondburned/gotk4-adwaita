@@ -51,6 +51,8 @@ func defaultBottomSheetOverrides(v *BottomSheet) BottomSheetOverrides {
 // bottomsheet:full-width is set to FALSE. In this case, bottomsheet:align
 // determines where along the bottom edge they are placed.
 //
+// Bottom bar can be hidden using the bottomsheet:reveal-bottom-bar property.
+//
 // AdwBottomSheet can be useful for applications such as music players, that
 // want to have a persistent bottom bar that expands into a bottom sheet when
 // clicked. It's meant for cases where a bottom sheet is tightly integrated into
@@ -424,6 +426,29 @@ func (self *BottomSheet) Open() bool {
 	return _ok
 }
 
+// RevealBottomBar gets whether the bottom bar is revealed.
+//
+// The function returns the following values:
+//
+//   - ok: whether the bottom bar is revealed.
+func (self *BottomSheet) RevealBottomBar() bool {
+	var _arg0 *C.AdwBottomSheet // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AdwBottomSheet)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_bottom_sheet_get_reveal_bottom_bar(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Sheet gets the bottom sheet widget for self.
 //
 // The function returns the following values:
@@ -532,6 +557,9 @@ func (self *BottomSheet) SetAlign(align float32) {
 //
 // Shown when bottomsheet:open is FALSE. When open, morphs into the
 // bottomsheet:sheet.
+//
+// Bottom bar can be temporarily hidden using the bottomsheet:reveal-bottom-bar
+// property.
 //
 // The function takes the following parameters:
 //
@@ -683,6 +711,29 @@ func (self *BottomSheet) SetOpen(open bool) {
 	C.adw_bottom_sheet_set_open(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(open)
+}
+
+// SetRevealBottomBar sets whether to reveal the bottom bar.
+//
+// The transition will be animated.
+//
+// See bottomsheet:bottom-bar and bottomsheet:bottom-bar-height.
+//
+// The function takes the following parameters:
+//
+//   - reveal: whether to reveal the bottom bar.
+func (self *BottomSheet) SetRevealBottomBar(reveal bool) {
+	var _arg0 *C.AdwBottomSheet // out
+	var _arg1 C.gboolean        // out
+
+	_arg0 = (*C.AdwBottomSheet)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if reveal {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_bottom_sheet_set_reveal_bottom_bar(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(reveal)
 }
 
 // SetSheet sets the bottom sheet widget for self.

@@ -45,6 +45,9 @@ func defaultToastOverlayOverrides(v *ToastOverlay) ToastOverlayOverrides {
 // child, on top of which it can display a toast, overlaid. Toasts can be shown
 // with toastoverlay.AddToast.
 //
+// Use toastoverlay.DismissAll to dismiss all toasts at once, or toast.Dismiss
+// to dismiss a single toast.
+//
 // See toast for details.
 //
 // CSS nodes
@@ -69,7 +72,7 @@ func defaultToastOverlayOverrides(v *ToastOverlay) ToastOverlayOverrides {
 //
 // # Accessibility
 //
-// AdwToastOverlay uses the GTK_ACCESSIBLE_ROLE_TAB_GROUP role.
+// AdwToastOverlay uses the gtk.AccessibleRole.GROUP role.
 type ToastOverlay struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -161,6 +164,18 @@ func (self *ToastOverlay) AddToast(toast *Toast) {
 	C.adw_toast_overlay_add_toast(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(toast)
+}
+
+// DismissAll dismisses all displayed toasts.
+//
+// Use toast.Dismiss to dismiss a single toast.
+func (self *ToastOverlay) DismissAll() {
+	var _arg0 *C.AdwToastOverlay // out
+
+	_arg0 = (*C.AdwToastOverlay)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C.adw_toast_overlay_dismiss_all(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Child gets the child widget of self.

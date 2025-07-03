@@ -44,6 +44,12 @@ func defaultPreferencesDialogOverrides(v *PreferencesDialog) PreferencesDialogOv
 // The AdwPreferencesDialog widget presents an application's preferences
 // gathered into pages and groups. The preferences are searchable by the user.
 //
+// # Actions
+//
+// AdwPrefencesDialog defines the navigation.pop action, it doesn't take any
+// parameters and pops the current subpage from the navigation stack, equivalent
+// to calling preferencesdialog.PopSubpage.
+//
 // # CSS nodes
 //
 // AdwPreferencesDialog has a main CSS node with the name dialog and the style
@@ -54,7 +60,8 @@ type PreferencesDialog struct {
 }
 
 var (
-	_ gtk.Widgetter = (*PreferencesDialog)(nil)
+	_ gtk.Widgetter     = (*PreferencesDialog)(nil)
+	_ coreglib.Objector = (*PreferencesDialog)(nil)
 )
 
 func init() {
@@ -90,6 +97,10 @@ func wrapPreferencesDialog(obj *coreglib.Object) *PreferencesDialog {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+			},
+			Object: obj,
+			ShortcutManager: gtk.ShortcutManager{
+				Object: obj,
 			},
 		},
 	}

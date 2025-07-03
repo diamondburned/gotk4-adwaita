@@ -6,6 +6,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/diamondburned/gotk4 v0.2.3-0.20240712132236-ab1a56e93c15 h1:pDV1BheawF2mBG+XiwGv51iPMCXsOEMW2LcaJW0vJKs=
 github.com/diamondburned/gotk4 v0.2.3-0.20240712132236-ab1a56e93c15/go.mod h1:zjEfxmFGTAr8nGFEn41VI62JFbq+LR0pet7EfGtpCnA=
+github.com/diamondburned/gotk4/pkg v0.3.2-0.20250703063411-16654385f59a h1:dN2jYYZ71hFhoKFSn24pQdKWLZb/XDydBt8pEIkFjJo=
+github.com/diamondburned/gotk4/pkg v0.3.2-0.20250703063411-16654385f59a/go.mod h1:O9K8+PGNFGJpAu8+u5D2Sn5Wae4hxWzHB+AeZNbV/2Q=
 github.com/fatih/color v1.10.0 h1:s36xzo75JdqLaaWoiEHk767eHiwo0598uUxyfiPkDsg=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
 github.com/hexops/gotextdiff v1.0.3 h1:gitA9+qJrrTCsiCl7+kh75nPqQt1cx4ZkudSTLoUqJM=

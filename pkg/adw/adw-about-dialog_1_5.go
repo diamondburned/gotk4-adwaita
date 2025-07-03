@@ -157,6 +157,11 @@ func defaultAboutDialogOverrides(v *AboutDialog) AboutDialogOverrides {
 // To add information about other modules, such as application dependencies or
 // data, use aboutdialog.AddLegalSection.
 //
+// # Other applications
+//
+// AdwAboutDialog can show links to your other apps at the end of the main page.
+// To add them, use aboutdialog.AddOtherApp.
+//
 // # Constructing
 //
 // To make constructing an AdwAboutDialog as convenient as possible, you can use
@@ -198,7 +203,8 @@ type AboutDialog struct {
 }
 
 var (
-	_ gtk.Widgetter = (*AboutDialog)(nil)
+	_ gtk.Widgetter     = (*AboutDialog)(nil)
+	_ coreglib.Objector = (*AboutDialog)(nil)
 )
 
 func init() {
@@ -234,6 +240,10 @@ func wrapAboutDialog(obj *coreglib.Object) *AboutDialog {
 				ConstraintTarget: gtk.ConstraintTarget{
 					Object: obj,
 				},
+			},
+			Object: obj,
+			ShortcutManager: gtk.ShortcutManager{
+				Object: obj,
 			},
 		},
 	}
@@ -515,6 +525,48 @@ func (self *AboutDialog) AddLink(title, url string) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(url)
+}
+
+// AddOtherApp adds another application to self.
+//
+// The application will be displayed at the bottom of the main page, in a
+// separate section. Each added application will be presented as a row with
+// title and summary, as well as an icon with the name appid. Clicking the row
+// will show appid in the software center app.
+//
+// This can be used to link to your other applications if you have multiple.
+//
+// Example:
+//
+//	adw_about_dialog_add_other_app (ADW_ABOUT_DIALOG (about),
+//	                                "org.gnome.Boxes",
+//	                                _("Boxes"),
+//	                                _("Virtualization made simple"));.
+//
+// The function takes the following parameters:
+//
+//   - appid: application ID.
+//   - name: application name.
+//   - summary: application summary.
+func (self *AboutDialog) AddOtherApp(appid, name, summary string) {
+	var _arg0 *C.AdwAboutDialog // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.char           // out
+	var _arg3 *C.char           // out
+
+	_arg0 = (*C.AdwAboutDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appid)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(summary)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	C.adw_about_dialog_add_other_app(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(appid)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(summary)
 }
 
 // ApplicationIcon gets the name of the application icon for self.
@@ -1499,7 +1551,8 @@ func (self *AboutDialog) SetSupportURL(supportUrl string) {
 // be marked as translatable.
 //
 // The string may contain email addresses and URLs, see the introduction for
-// more details.
+// more details. When there is more than one translator, they must be separated
+// by a newline in the same string.
 //
 // See also:
 //

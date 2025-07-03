@@ -191,6 +191,29 @@ func (self *ApplicationWindow) AddBreakpoint(breakpoint *Breakpoint) {
 	runtime.KeepAlive(breakpoint)
 }
 
+// AdaptivePreview gets whether adaptive preview for self is currently open.
+//
+// The function returns the following values:
+//
+//   - ok: whether adaptive preview is open.
+func (self *ApplicationWindow) AdaptivePreview() bool {
+	var _arg0 *C.AdwApplicationWindow // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_application_window_get_adaptive_preview(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Content gets the content widget of self.
 //
 // This method should always be used instead of gtk.Window.GetChild().
@@ -301,6 +324,33 @@ func (self *ApplicationWindow) VisibleDialog() *Dialog {
 	}
 
 	return _dialog
+}
+
+// SetAdaptivePreview sets whether adaptive preview for self is currently open.
+//
+// Adaptive preview is a debugging tool used for testing the window contents at
+// specific screen sizes, simulating mobile environment.
+//
+// Adaptive preview can always be accessed from inspector. This function allows
+// applications to open it manually.
+//
+// Most applications should not use this function.
+//
+// The function takes the following parameters:
+//
+//   - adaptivePreview: whether to open adaptive preview.
+func (self *ApplicationWindow) SetAdaptivePreview(adaptivePreview bool) {
+	var _arg0 *C.AdwApplicationWindow // out
+	var _arg1 C.gboolean              // out
+
+	_arg0 = (*C.AdwApplicationWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if adaptivePreview {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_application_window_set_adaptive_preview(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(adaptivePreview)
 }
 
 // SetContent sets the content widget of self.

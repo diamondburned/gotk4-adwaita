@@ -134,6 +134,29 @@ func (self *PreferencesPage) Add(group *PreferencesGroup) {
 	runtime.KeepAlive(group)
 }
 
+// Banner gets the banner displayed at the top of the page.
+//
+// The function returns the following values:
+//
+//   - banner (optional) for self.
+func (self *PreferencesPage) Banner() *Banner {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _cret *C.AdwBanner          // in
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_preferences_page_get_banner(_arg0)
+	runtime.KeepAlive(self)
+
+	var _banner *Banner // out
+
+	if _cret != nil {
+		_banner = wrapBanner(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _banner
+}
+
 // Description gets the description of self.
 //
 // The function returns the following values:
@@ -294,6 +317,25 @@ func (self *PreferencesPage) ScrollToTop() {
 
 	C.adw_preferences_page_scroll_to_top(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// SetBanner sets the banner displayed at the top of the page.
+//
+// The function takes the following parameters:
+//
+//   - banner (optional) to display at the top of the page.
+func (self *PreferencesPage) SetBanner(banner *Banner) {
+	var _arg0 *C.AdwPreferencesPage // out
+	var _arg1 *C.AdwBanner          // out
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if banner != nil {
+		_arg1 = (*C.AdwBanner)(unsafe.Pointer(coreglib.InternObject(banner).Native()))
+	}
+
+	C.adw_preferences_page_set_banner(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(banner)
 }
 
 // SetDescription sets the description of self.

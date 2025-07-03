@@ -899,6 +899,29 @@ func (self *NavigationView) AnimateTransitions() bool {
 	return _ok
 }
 
+// Hhomogeneous gets whether self is horizontally homogeneous.
+//
+// The function returns the following values:
+//
+//   - ok: whether self is horizontally homogeneous.
+func (self *NavigationView) Hhomogeneous() bool {
+	var _arg0 *C.AdwNavigationView // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.AdwNavigationView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_navigation_view_get_hhomogeneous(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // NavigationStack returns a gio.ListModel that contains the pages in navigation
 // stack.
 //
@@ -988,6 +1011,29 @@ func (self *NavigationView) PreviousPage(page *NavigationPage) *NavigationPage {
 	return _navigationPage
 }
 
+// Vhomogeneous gets whether self is vertically homogeneous.
+//
+// The function returns the following values:
+//
+//   - ok: whether self is vertically homogeneous.
+func (self *NavigationView) Vhomogeneous() bool {
+	var _arg0 *C.AdwNavigationView // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.AdwNavigationView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_navigation_view_get_vhomogeneous(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // VisiblePage gets the currently visible page in self.
 //
 // The function returns the following values:
@@ -1009,6 +1055,29 @@ func (self *NavigationView) VisiblePage() *NavigationPage {
 	}
 
 	return _navigationPage
+}
+
+// VisiblePageTag gets the tag of the currently visible page in self.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): tag of the currently visible page.
+func (self *NavigationView) VisiblePageTag() string {
+	var _arg0 *C.AdwNavigationView // out
+	var _cret *C.char              // in
+
+	_arg0 = (*C.AdwNavigationView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_navigation_view_get_visible_page_tag(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // Pop pops the visible page from the navigation stack.
@@ -1296,6 +1365,30 @@ func (self *NavigationView) SetAnimateTransitions(animateTransitions bool) {
 	runtime.KeepAlive(animateTransitions)
 }
 
+// SetHhomogeneous sets self to be horizontally homogeneous or not.
+//
+// If the view is horizontally homogeneous, it allocates the same width for all
+// pages.
+//
+// If it's not, the view may change width when a different page becomes visible.
+//
+// The function takes the following parameters:
+//
+//   - hhomogeneous: whether to make self horizontally homogeneous.
+func (self *NavigationView) SetHhomogeneous(hhomogeneous bool) {
+	var _arg0 *C.AdwNavigationView // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.AdwNavigationView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if hhomogeneous {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_navigation_view_set_hhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hhomogeneous)
+}
+
 // SetPopOnEscape sets whether pressing Escape pops the current page on self.
 //
 // Applications using AdwNavigationView to implement a browser may want to
@@ -1316,4 +1409,29 @@ func (self *NavigationView) SetPopOnEscape(popOnEscape bool) {
 	C.adw_navigation_view_set_pop_on_escape(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(popOnEscape)
+}
+
+// SetVhomogeneous sets self to be vertically homogeneous or not.
+//
+// If the view is vertically homogeneous, it allocates the same height for all
+// pages.
+//
+// If it's not, the view may change height when a different page becomes
+// visible.
+//
+// The function takes the following parameters:
+//
+//   - vhomogeneous: whether to make self vertically homogeneous.
+func (self *NavigationView) SetVhomogeneous(vhomogeneous bool) {
+	var _arg0 *C.AdwNavigationView // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.AdwNavigationView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if vhomogeneous {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_navigation_view_set_vhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(vhomogeneous)
 }

@@ -142,10 +142,14 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 type Dialog struct {
 	_ [0]func() // equal guard
 	gtk.Widget
+
+	*coreglib.Object
+	gtk.ShortcutManager
 }
 
 var (
-	_ gtk.Widgetter = (*Dialog)(nil)
+	_ gtk.Widgetter     = (*Dialog)(nil)
+	_ coreglib.Objector = (*Dialog)(nil)
 )
 
 func init() {
@@ -190,6 +194,10 @@ func wrapDialog(obj *coreglib.Object) *Dialog {
 			ConstraintTarget: gtk.ConstraintTarget{
 				Object: obj,
 			},
+		},
+		Object: obj,
+		ShortcutManager: gtk.ShortcutManager{
+			Object: obj,
 		},
 	}
 }

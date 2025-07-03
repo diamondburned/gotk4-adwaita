@@ -102,6 +102,12 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 // UI state. AdwWindow defaults to the minimum size of 360×200 px. If that's
 // too small, set the gtk.Widget:width-request and gtk.Widget:height-request
 // properties manually.
+//
+// # Adaptive Preview
+//
+// AdwWindow has a debug tool called adaptive preview. It can be opened from
+// GTK Inspector or by pressing <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>,
+// and controlled via the window:adaptive-preview property.
 type Window struct {
 	_ [0]func() // equal guard
 	gtk.Window
@@ -210,6 +216,29 @@ func (self *Window) AddBreakpoint(breakpoint *Breakpoint) {
 	C.adw_window_add_breakpoint(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(breakpoint)
+}
+
+// AdaptivePreview gets whether adaptive preview for self is currently open.
+//
+// The function returns the following values:
+//
+//   - ok: whether adaptive preview is open.
+func (self *Window) AdaptivePreview() bool {
+	var _arg0 *C.AdwWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_window_get_adaptive_preview(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Content gets the content widget of self.
@@ -322,6 +351,33 @@ func (self *Window) VisibleDialog() *Dialog {
 	}
 
 	return _dialog
+}
+
+// SetAdaptivePreview sets whether adaptive preview for self is currently open.
+//
+// Adaptive preview is a debugging tool used for testing the window contents at
+// specific screen sizes, simulating mobile environment.
+//
+// Adaptive preview can always be accessed from inspector. This function allows
+// applications to open it manually.
+//
+// Most applications should not use this function.
+//
+// The function takes the following parameters:
+//
+//   - adaptivePreview: whether to open adaptive preview.
+func (self *Window) SetAdaptivePreview(adaptivePreview bool) {
+	var _arg0 *C.AdwWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.AdwWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if adaptivePreview {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_window_set_adaptive_preview(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(adaptivePreview)
 }
 
 // SetContent sets the content widget of self.

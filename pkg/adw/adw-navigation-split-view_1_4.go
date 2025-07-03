@@ -362,6 +362,27 @@ func (self *NavigationSplitView) Sidebar() *NavigationPage {
 	return _navigationPage
 }
 
+// SidebarPosition gets the sidebar position for self.
+//
+// The function returns the following values:
+//
+//   - packType: sidebar position for self.
+func (self *NavigationSplitView) SidebarPosition() gtk.PackType {
+	var _arg0 *C.AdwNavigationSplitView // out
+	var _cret C.GtkPackType             // in
+
+	_arg0 = (*C.AdwNavigationSplitView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_navigation_split_view_get_sidebar_position(_arg0)
+	runtime.KeepAlive(self)
+
+	var _packType gtk.PackType // out
+
+	_packType = gtk.PackType(_cret)
+
+	return _packType
+}
+
 // SidebarWidthFraction gets the preferred sidebar width fraction for self.
 //
 // The function returns the following values:
@@ -534,6 +555,29 @@ func (self *NavigationSplitView) SetSidebar(sidebar *NavigationPage) {
 	C.adw_navigation_split_view_set_sidebar(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sidebar)
+}
+
+// SetSidebarPosition sets the sidebar position for self.
+//
+// If set to GTK_PACK_START, the sidebar is displayed before the content,
+// and the sidebar will be the root page when collapsed.
+//
+// If set to GTK_PACK_END, the sidebar is displayed after the content, and the
+// content will be the root page.
+//
+// The function takes the following parameters:
+//
+//   - position: new position.
+func (self *NavigationSplitView) SetSidebarPosition(position gtk.PackType) {
+	var _arg0 *C.AdwNavigationSplitView // out
+	var _arg1 C.GtkPackType             // out
+
+	_arg0 = (*C.AdwNavigationSplitView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkPackType(position)
+
+	C.adw_navigation_split_view_set_sidebar_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }
 
 // SetSidebarWidthFraction sets the preferred sidebar width as a fraction of the
