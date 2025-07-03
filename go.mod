@@ -4,11 +4,10 @@ go 1.24.0
 
 toolchain go1.24.3
 
-require github.com/diamondburned/gotk4 v0.2.3-0.20240712132236-ab1a56e93c15
+require github.com/diamondburned/gotk4 v0.3.2-0.20250703071127-d44ab4b5b24e
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/diamondburned/gotk4/pkg v0.3.2-0.20250703063411-16654385f59a // indirect
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect

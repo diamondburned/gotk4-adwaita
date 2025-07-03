@@ -3,9 +3,12 @@
 package adw
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -15,8 +18,10 @@ import (
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_adw1_MessageDialog_ConnectResponse(gpointer, gchar*, guintptr);
 // extern void _gotk4_adw1_MessageDialogClass_response(AdwMessageDialog*, char*);
+// extern void _gotk4_adw1_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // void _gotk4_adw1_MessageDialog_virtual_response(void* fnptr, AdwMessageDialog* arg0, char* arg1) {
 //   ((void (*)(AdwMessageDialog*, char*))(fnptr))(arg0, arg1);
 // };
@@ -361,6 +366,37 @@ func (self *MessageDialog) AddResponse(id, label string) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(label)
+}
+
+// Choose: this function shows self to the user.
+//
+// Deprecated: Use alertdialog.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): GCancellable to cancel the operation.
+//   - callback (optional) to call when the operation is complete.
+func (self *MessageDialog) Choose(ctx context.Context, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.AdwMessageDialog   // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.AdwMessageDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.adw_message_dialog_choose(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ChooseFinish finishes the messagedialog.Choose call and returns the response
