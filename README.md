@@ -4,6 +4,14 @@
 
 Go generated bindings for [Libadwaita][adw].
 
+## Versions
+
+| Adwaita version | Branch        |
+| ---             | ---           |
+| 1.5             | adw-1.5 / adw |
+| 1.6             | adw-1.6       |
+| 1.7             | adw-1.7       |
+
 ## Update Bindings
 
 Currently, these bindings are built against the version `1.2.0` of Libadwaita.
