@@ -53,6 +53,24 @@ func defaultTabBarOverrides(v *TabBar) TabBarOverrides {
 // them. Pinned tabs always stay visible and aren't a part of the scrollable
 // area.
 //
+// # Drag-and-Drop
+//
+// AdwTabBar tabs can have an additional drop target for arbitrary content.
+//
+// Use tabbar.SetupExtraDropTarget to set it up, specifying the supported
+// content types and drag actions, then connect to tabbar::extra-drag-drop to
+// handle a drop.
+//
+// In some cases, it may be necessary to determine the used action based on the
+// content. In that case, set tabbar:extra-drag-preload to TRUE and connect to
+// tabbar::extra-drag-value signal, then return the action from its handler.
+// To access this action from the tabbar::extra-drag-drop handler, use the
+// tabbar:extra-drag-preferred-action property.
+//
+// tabbar::extra-drag-value is also always emitted when starting to hover an
+// item, with a NULL value. This happens even when tabbar:extra-drag-preload is
+// FALSE.
+//
 // # CSS nodes
 //
 // AdwTabBar has a single CSS node with name tabbar.
@@ -116,8 +134,7 @@ func marshalTabBar(p uintptr) (interface{}, error) {
 	return wrapTabBar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectExtraDragDrop: this signal is emitted when content is dropped onto a
-// tab.
+// ConnectExtraDragDrop is emitted when content is dropped onto a tab.
 //
 // The content must be of one of the types set up via
 // tabbar.SetupExtraDropTarget.
@@ -127,8 +144,7 @@ func (self *TabBar) ConnectExtraDragDrop(f func(page *TabPage, value *coreglib.V
 	return coreglib.ConnectGeneratedClosure(self, "extra-drag-drop", false, unsafe.Pointer(C._gotk4_adw1_TabBar_ConnectExtraDragDrop), f)
 }
 
-// ConnectExtraDragValue: this signal is emitted when the dropped content is
-// preloaded.
+// ConnectExtraDragValue is emitted when the dropped content is preloaded.
 //
 // In order for data to be preloaded, tabbar:extra-drag-preload must be set to
 // TRUE.
@@ -240,8 +256,13 @@ func (self *TabBar) ExpandTabs() bool {
 	return _ok
 }
 
-// ExtraDragPreferredAction gets the current action during a drop on the
-// extra_drop_target.
+// ExtraDragPreferredAction gets the current drag action during a drop.
+//
+// This method should only be used from inside a tabbar::extra-drag-drop
+// handler.
+//
+// The action will be a subset of what was originally passed to
+// tabbar.SetupExtraDropTarget.
 //
 // The function returns the following values:
 //
@@ -563,9 +584,7 @@ func (self *TabBar) SetView(view *TabView) {
 	runtime.KeepAlive(view)
 }
 
-// SetupExtraDropTarget sets the supported types for this drop target.
-//
-// Sets up an extra drop target on tabs.
+// SetupExtraDropTarget sets up an extra drop target on tabs.
 //
 // This allows to drag arbitrary content onto tabs, for example URLs in a web
 // browser.

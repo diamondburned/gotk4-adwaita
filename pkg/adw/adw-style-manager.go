@@ -36,7 +36,7 @@ type ColorScheme C.gint
 const (
 	// ColorSchemeDefault: inherit the parent color-scheme. When set on the
 	// AdwStyleManager returned by stylemanager.GetDefault(), it's equivalent to
-	// ADW_COLOR_SCHEME_PREFER_LIGHT.
+	// adw.ColorScheme.Prefer-light.
 	ColorSchemeDefault ColorScheme = iota
 	// ColorSchemeForceLight always use light appearance.
 	ColorSchemeForceLight
@@ -260,7 +260,7 @@ func (self *StyleManager) Display() *gdk.Display {
 // DocumentFontName gets the system document font.
 //
 // The font is in the same format as gtk.Settings:gtk-font-name, e.g. "Adwaita
-// Sans 11".
+// Sans 12".
 //
 // Use pango.FontDescription().FromString to parse it.
 //
@@ -396,26 +396,24 @@ func (self *StyleManager) SystemSupportsColorSchemes() bool {
 // scheme and the system preferred color scheme. The stylemanager:dark property
 // can be used to query the current effective appearance.
 //
-// The ADW_COLOR_SCHEME_PREFER_LIGHT color scheme results in the application
+// The adw.ColorScheme.Prefer-light color scheme results in the application
 // using light appearance unless the system prefers dark colors. This is the
 // default value.
 //
-// The ADW_COLOR_SCHEME_PREFER_DARK color scheme results in the application
-// using dark appearance, but can still switch to the light appearance if the
-// system can prefers it, for example, when the high contrast preference is
-// enabled.
+// The adw.ColorScheme.Prefer-dark color scheme results in the application using
+// dark appearance, but can still switch to the light appearance if the system
+// can prefers it, for example, when the high contrast preference is enabled.
 //
-// The ADW_COLOR_SCHEME_FORCE_LIGHT and ADW_COLOR_SCHEME_FORCE_DARK values
-// ignore the system preference entirely. They are useful if the application
-// wants to match its UI to its content or to provide a separate color scheme
-// switcher.
+// The adw.ColorScheme.Force-light and adw.ColorScheme.Force-dark values ignore
+// the system preference entirely. They are useful if the application wants to
+// match its UI to its content or to provide a separate color scheme switcher.
 //
 // If a per-gdk.Display style manager has its color scheme set to
-// ADW_COLOR_SCHEME_DEFAULT, it will inherit the color scheme from the default
+// adw.ColorScheme.Default, it will inherit the color scheme from the default
 // style manager.
 //
-// For the default style manager, ADW_COLOR_SCHEME_DEFAULT is equivalent to
-// ADW_COLOR_SCHEME_PREFER_LIGHT.
+// For the default style manager, adw.ColorScheme.Default is equivalent to
+// adw.ColorScheme.Prefer-light.
 //
 // The stylemanager:system-supports-color-schemes property can be used to check
 // if the current environment provides a color scheme preference.

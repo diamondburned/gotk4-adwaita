@@ -594,9 +594,9 @@ func (self *Toast) SetDetailedActionName(detailedActionName string) {
 // Priority controls how the toast behaves when another toast is already being
 // displayed.
 //
-// If priority is ADW_TOAST_PRIORITY_NORMAL, the toast will be queued.
+// If priority is adw.ToastPriority.Normal, the toast will be queued.
 //
-// If priority is ADW_TOAST_PRIORITY_HIGH, the toast will be displayed
+// If priority is adw.ToastPriority.High, the toast will be displayed
 // immediately, pushing the previous toast into the queue instead.
 //
 // The function takes the following parameters:

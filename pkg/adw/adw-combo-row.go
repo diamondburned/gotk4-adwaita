@@ -77,7 +77,7 @@ func defaultComboRowOverrides(v *ComboRow) ComboRowOverrides {
 //
 // # Accessibility
 //
-// AdwComboRow uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
+// AdwComboRow uses the gtk.AccessibleRole.Combo-box role.
 type ComboRow struct {
 	_ [0]func() // equal guard
 	ActionRow

@@ -114,8 +114,8 @@ func defaultViewSwitcherOverrides(v *ViewSwitcher) ViewSwitcherOverrides {
 //	  </property>
 //	</object>
 //
-// It's recommended to set viewswitcher:policy to ADW_VIEW_SWITCHER_POLICY_WIDE
-// in this case.
+// It's recommended to set viewswitcher:policy to adw.ViewSwitcherPolicy.Wide in
+// this case.
 //
 // You may have to adjust the breakpoint condition for your specific pages.
 //
@@ -126,8 +126,10 @@ func defaultViewSwitcherOverrides(v *ViewSwitcher) ViewSwitcherOverrides {
 //
 // # Accessibility
 //
-// AdwViewSwitcher uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
-// GTK_ACCESSIBLE_ROLE_TAB for its buttons.
+// AdwViewSwitcher uses the gtk.AccessibleRole.Tab-list role and the
+// gtk.AccessibleRole.Tab role for its buttons.
+//
+// See also: viewswitcherbar, inlineviewswitcher, viewswitchersidebar.
 type ViewSwitcher struct {
 	_ [0]func() // equal guard
 	gtk.Widget

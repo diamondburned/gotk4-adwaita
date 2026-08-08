@@ -49,7 +49,7 @@ func defaultViewSwitcherTitleOverrides(v *ViewSwitcherTitle) ViewSwitcherTitleOv
 // switcher e.g. on mobile phones, or if there are less than two views.
 //
 // In order to center the title in narrow windows, the header bar should have
-// headerbar:centering-policy set to ADW_CENTERING_POLICY_STRICT.
+// headerbar:centering-policy set to adw.CenteringPolicy.Strict.
 //
 // AdwViewSwitcherTitle is intended to be used together with viewswitcherbar.
 //

@@ -150,7 +150,7 @@ func defaultHeaderBarOverrides(v *HeaderBar) HeaderBarOverrides {
 //
 // # Accessibility
 //
-// AdwHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwHeaderBar uses the gtk.AccessibleRole.Group role.
 type HeaderBar struct {
 	_ [0]func() // equal guard
 	gtk.Widget

@@ -293,7 +293,7 @@ func NewAboutDialog() *AboutDialog {
 // aboutdialog:issue-url is set from the <url type="bugtracker"> *
 // aboutdialog:license-type is set from the <project_license>. If the license
 // type retrieved from AppStream is not listed in gtk.License, it will be set to
-// GTK_LICENCE_CUSTOM.
+// gtk.License.Custom.
 //
 // If release_notes_version is not NULL, aboutdialog:release-notes-version is
 // set to match it, while aboutdialog:release-notes is set from the AppStream
@@ -567,6 +567,29 @@ func (self *AboutDialog) AddOtherApp(appid, name, summary string) {
 	runtime.KeepAlive(appid)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(summary)
+}
+
+// AppdataResourcePath gets the AppStream metadata resource path for self.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): resource path.
+func (self *AboutDialog) AppdataResourcePath() string {
+	var _arg0 *C.AdwAboutDialog // out
+	var _cret *C.char           // in
+
+	_arg0 = (*C.AdwAboutDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_about_dialog_get_appdata_resource_path(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // ApplicationIcon gets the name of the application icon for self.
@@ -1396,7 +1419,7 @@ func (self *AboutDialog) SetIssueURL(issueUrl string) {
 // This can be used to set a custom text for the license if it can't be set via
 // aboutdialog:license-type.
 //
-// When set, aboutdialog:license-type will be set to GTK_LICENSE_CUSTOM.
+// When set, aboutdialog:license-type will be set to gtk.License.Custom.
 //
 // The license text will be displayed on the Legal page, below the copyright
 // information.
@@ -1426,11 +1449,11 @@ func (self *AboutDialog) SetLicense(license string) {
 //
 // If the application's license is not in the list, aboutdialog:license
 // can be used instead. The license type will be automatically set to
-// GTK_LICENSE_CUSTOM in that case.
+// gtk.License.Custom in that case.
 //
-// If license_type is GTK_LICENSE_UNKNOWN, no information will be displayed.
+// If license_type is gtk.License.Unknown, no information will be displayed.
 //
-// If license_type is different from GTK_LICENSE_CUSTOM. aboutdialog:license
+// If license_type is different from gtk.License.Custom. aboutdialog:license
 // will be cleared out.
 //
 // The license description will be displayed on the Legal page, below the

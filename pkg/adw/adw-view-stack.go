@@ -44,13 +44,17 @@ func defaultViewStackOverrides(v *ViewStack) ViewStackOverrides {
 // typically used to hold an application's main views.
 //
 // It doesn't provide a way to transition between pages. Instead, a separate
-// widget such as viewswitcher can be used with AdwViewStack to provide this
-// functionality.
+// widget such as viewswitcher, inlineviewswitcher or viewswitchersidebar can be
+// used with AdwViewStack to provide this functionality.
 //
 // AdwViewStack pages can have a title, an icon, an attention request, and a
 // numbered badge that viewswitcher will use to let users identify which page
 // is which. Set them using the viewstackpage:title, viewstackpage:icon-name,
 // viewstackpage:needs-attention, and viewstackpage:badge-number properties.
+//
+// AdwViewStack pages can also be grouped into sections, using the
+// viewstackpage:starts-section and viewstackpage:section-title properties.
+// Currently, only viewswitchersidebar displays groups.
 //
 // Unlike gtk.Stack, transitions between views can only be animated via a
 // crossfade and size changes are always interpolated. Animations are disabled
@@ -86,7 +90,7 @@ func defaultViewStackOverrides(v *ViewStack) ViewStackOverrides {
 //
 // # Accessibility
 //
-// AdwViewStack uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages which
+// AdwViewStack uses the gtk.AccessibleRole.Tab-panel for the stack pages which
 // are the accessible parent objects of the child widgets.
 type ViewStack struct {
 	_ [0]func() // equal guard
@@ -434,8 +438,13 @@ func (self *ViewStack) Page(child gtk.Widgetter) *ViewStackPage {
 
 // Pages returns a gio.ListModel that contains the pages of the stack.
 //
-// This can be used to keep an up-to-date view. The model also implements
-// gtk.SelectionModel and can be used to track and change the visible page.
+// This can be used to keep an up-to-date view.
+//
+// The model implements gtk.SectionModel and creates sections based on
+// viewstackpage:starts-section values.
+//
+// The model also implements gtk.SelectionModel and can be used to track and
+// change the visible page.
 //
 // The function returns the following values:
 //
@@ -912,6 +921,52 @@ func (self *ViewStackPage) NeedsAttention() bool {
 	return _ok
 }
 
+// SectionTitle gets the section title for self.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): section title.
+func (self *ViewStackPage) SectionTitle() string {
+	var _arg0 *C.AdwViewStackPage // out
+	var _cret *C.char             // in
+
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_view_stack_page_get_section_title(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// StartsSection gets whether self starts a section.
+//
+// The function returns the following values:
+//
+//   - ok: whether self starts a section.
+func (self *ViewStackPage) StartsSection() bool {
+	var _arg0 *C.AdwViewStackPage // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_view_stack_page_get_starts_section(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Title gets the page title.
 //
 // The function returns the following values:
@@ -1066,6 +1121,52 @@ func (self *ViewStackPage) SetNeedsAttention(needsAttention bool) {
 	runtime.KeepAlive(needsAttention)
 }
 
+// SetSectionTitle sets the section title for self.
+//
+// Does nothing unless viewstackpage:starts-section is set.
+//
+// The function takes the following parameters:
+//
+//   - sectionTitle (optional): section title.
+func (self *ViewStackPage) SetSectionTitle(sectionTitle string) {
+	var _arg0 *C.AdwViewStackPage // out
+	var _arg1 *C.char             // out
+
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if sectionTitle != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(sectionTitle)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.adw_view_stack_page_set_section_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sectionTitle)
+}
+
+// SetStartsSection sets whether self starts a section.
+//
+// If set to TRUE, viewstack:pages will have a section starting from this page.
+//
+// If viewstackpage:section-title is set, it should be used as a title for the
+// section.
+//
+// The function takes the following parameters:
+//
+//   - startsSection: whether self starts a section.
+func (self *ViewStackPage) SetStartsSection(startsSection bool) {
+	var _arg0 *C.AdwViewStackPage // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.AdwViewStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if startsSection {
+		_arg1 = C.TRUE
+	}
+
+	C.adw_view_stack_page_set_starts_section(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(startsSection)
+}
+
 // SetTitle sets the page title.
 //
 // The function takes the following parameters:
@@ -1105,7 +1206,7 @@ func (self *ViewStackPage) SetUseUnderline(useUnderline bool) {
 	runtime.KeepAlive(useUnderline)
 }
 
-// SetVisible sets whether page is visible in its AdwViewStack.
+// SetVisible sets whether self is visible in its AdwViewStack.
 //
 // This is independent from the gtk.Widget:visible property of
 // viewstackpage:child.

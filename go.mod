@@ -4,7 +4,7 @@ go 1.24.0
 
 toolchain go1.24.3
 
-require github.com/diamondburned/gotk4 v0.3.2-0.20250703071127-d44ab4b5b24e
+require github.com/diamondburned/gotk4 v0.4.0
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

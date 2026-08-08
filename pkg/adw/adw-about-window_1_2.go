@@ -313,7 +313,7 @@ func NewAboutWindow() *AboutWindow {
 // aboutwindow:issue-url is set from the <url type="bugtracker"> *
 // aboutwindow:license-type is set from the <project_license>. If the license
 // type retrieved from AppStream is not listed in gtk.License, it will be set to
-// GTK_LICENCE_CUSTOM.
+// gtk.License.Custom.
 //
 // If release_notes_version is not NULL, aboutwindow:release-notes-version is
 // set to match it, while aboutwindow:release-notes is set from the AppStream
@@ -1448,7 +1448,7 @@ func (self *AboutWindow) SetIssueURL(issueUrl string) {
 // This can be used to set a custom text for the license if it can't be set via
 // aboutwindow:license-type.
 //
-// When set, aboutwindow:license-type will be set to GTK_LICENSE_CUSTOM.
+// When set, aboutwindow:license-type will be set to gtk.License.Custom.
 //
 // The license text will be displayed on the Legal page, below the copyright
 // information.
@@ -1480,11 +1480,11 @@ func (self *AboutWindow) SetLicense(license string) {
 //
 // If the application's license is not in the list, aboutwindow:license
 // can be used instead. The license type will be automatically set to
-// GTK_LICENSE_CUSTOM in that case.
+// gtk.License.Custom in that case.
 //
-// If license_type is GTK_LICENSE_UNKNOWN, no information will be displayed.
+// If license_type is gtk.License.Unknown, no information will be displayed.
 //
-// If license_type is different from GTK_LICENSE_CUSTOM. aboutwindow:license
+// If license_type is different from gtk.License.Custom. aboutwindow:license
 // will be cleared out.
 //
 // The license description will be displayed on the Legal page, below the

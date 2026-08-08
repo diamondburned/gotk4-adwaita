@@ -130,6 +130,27 @@ func (self *Toggle) Child() gtk.Widgetter {
 	return _widget
 }
 
+// Description gets the description of self.
+//
+// The function returns the following values:
+//
+//   - utf8: toggle description.
+func (self *Toggle) Description() string {
+	var _arg0 *C.AdwToggle // out
+	var _cret *C.char      // in
+
+	_arg0 = (*C.AdwToggle)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.adw_toggle_get_description(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Enabled gets whether self is enabled.
 //
 // The function returns the following values:
@@ -180,7 +201,7 @@ func (self *Toggle) IconName() string {
 //
 // The function returns the following values:
 //
-//   - guint: index, or GTK_INVALID_LIST_POSITION if it's not in a group.
+//   - guint: index, or gtk.INVALIDLISTPOSITION if it's not in a group.
 func (self *Toggle) Index() uint {
 	var _arg0 *C.AdwToggle // out
 	var _cret C.guint      // in
@@ -309,6 +330,29 @@ func (self *Toggle) SetChild(child gtk.Widgetter) {
 	runtime.KeepAlive(child)
 }
 
+// SetDescription sets the description of self to description.
+//
+// The description will be read out when using screen reader. If not set,
+// toggle:tooltip will be used instead.
+//
+// See gtk.AccessibleProperty.Description.
+//
+// The function takes the following parameters:
+//
+//   - description: description.
+func (self *Toggle) SetDescription(description string) {
+	var _arg0 *C.AdwToggle // out
+	var _arg1 *C.char      // out
+
+	_arg0 = (*C.AdwToggle)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.adw_toggle_set_description(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(description)
+}
+
 // SetEnabled sets whether self is enabled.
 //
 // The function takes the following parameters:
@@ -401,6 +445,9 @@ func (self *Toggle) SetName(name string) {
 // SetTooltip sets the tooltip of self to tooltip.
 //
 // tooltip can be marked up with the Pango text markup language.
+//
+// Tooltip text will also be used as accessible description. Use
+// toggle:description to set it separately.
 //
 // The function takes the following parameters:
 //
@@ -536,8 +583,8 @@ func defaultToggleGroupOverrides(v *ToggleGroup) ToggleGroupOverrides {
 //
 // # Accessibility
 //
-// AdwToggleGroup uses the GTK_ACCESSIBLE_ROLE_RADIO_GROUP role. Its toggles use
-// the GTK_ACCESSIBLE_ROLE_RADIO role.
+// AdwToggleGroup uses the gtk.AccessibleRole.Radio-group role. Its toggles use
+// the gtk.AccessibleRole.Radio role.
 type ToggleGroup struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -632,7 +679,7 @@ func (self *ToggleGroup) Add(toggle *Toggle) {
 
 // Active gets the index of the active toggle in self.
 //
-// Returns GTK_INVALID_LIST_POSITION if no toggle is active.
+// Returns gtk.INVALIDLISTPOSITION if no toggle is active.
 //
 // The function returns the following values:
 //

@@ -61,7 +61,9 @@ func _gotk4_adw1_TabBar_ConnectExtraDragValue(arg0 C.gpointer, arg1 *C.AdwTabPag
 	var _value *coreglib.Value // out
 
 	_page = wrapTabPage(coreglib.Take(unsafe.Pointer(arg1)))
-	_value = coreglib.ValueFromNative(unsafe.Pointer(arg2))
+	if arg2 != nil {
+		_value = coreglib.ValueFromNative(unsafe.Pointer(arg2))
+	}
 
 	dragAction := f(_page, _value)
 

@@ -49,7 +49,7 @@ func defaultAvatarOverrides(v *Avatar) AvatarOverrides {
 // The color is picked based on the hash of the avatar:text.
 //
 // If avatar:show-initials is set to FALSE, avatar:icon-name or
-// avatar-default-symbolic is shown instead of the initials.
+// adw-avatar-default-symbolic is shown instead of the initials.
 //
 // Use avatar:custom-image to set a custom image.
 //
@@ -59,7 +59,7 @@ func defaultAvatarOverrides(v *Avatar) AvatarOverrides {
 //
 // # Accessibility
 //
-// AdwAvatar uses the GTK_ACCESSIBLE_ROLE_IMG role.
+// AdwAvatar uses the gtk.AccessibleRole.Img role.
 type Avatar struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -335,7 +335,7 @@ func (self *Avatar) SetCustomImage(customImage gdk.Paintabler) {
 
 // SetIconName sets the name of an icon to use as a fallback.
 //
-// If no name is set, avatar-default-symbolic will be used.
+// If no name is set, adw-avatar-default-symbolic will be used.
 //
 // The function takes the following parameters:
 //

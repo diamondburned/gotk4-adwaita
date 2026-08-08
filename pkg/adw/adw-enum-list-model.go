@@ -214,7 +214,7 @@ func NewEnumListModel(enumType coreglib.Type) *EnumListModel {
 
 // FindPosition finds the position of a given enum value in self.
 //
-// If the value is not found, GTK_INVALID_LIST_POSITION is returned.
+// If the value is not found, gtk.INVALIDLISTPOSITION is returned.
 //
 // The function takes the following parameters:
 //

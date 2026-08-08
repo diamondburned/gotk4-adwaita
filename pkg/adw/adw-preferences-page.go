@@ -50,7 +50,7 @@ func defaultPreferencesPageOverrides(v *PreferencesPage) PreferencesPageOverride
 //
 // # Accessibility
 //
-// AdwPreferencesPage uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwPreferencesPage uses the gtk.AccessibleRole.Group role.
 type PreferencesPage struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -201,6 +201,38 @@ func (self *PreferencesPage) DescriptionCentered() bool {
 	return _ok
 }
 
+// Group gets the group at index.
+//
+// Can return NULL if index is larger than the number of groups in the page.
+//
+// The function takes the following parameters:
+//
+//   - index: group index.
+//
+// The function returns the following values:
+//
+//   - preferencesGroup (optional): group at index.
+func (self *PreferencesPage) Group(index uint) *PreferencesGroup {
+	var _arg0 *C.AdwPreferencesPage  // out
+	var _arg1 C.guint                // out
+	var _cret *C.AdwPreferencesGroup // in
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(index)
+
+	_cret = C.adw_preferences_page_get_group(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(index)
+
+	var _preferencesGroup *PreferencesGroup // out
+
+	if _cret != nil {
+		_preferencesGroup = wrapPreferencesGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _preferencesGroup
+}
+
 // IconName gets the icon name for self.
 //
 // The function returns the following values:
@@ -290,6 +322,30 @@ func (self *PreferencesPage) UseUnderline() bool {
 	}
 
 	return _ok
+}
+
+// Insert inserts a preferences group to self at index.
+//
+// If index is negative or larger than the number of groups, appends the group,
+// same as preferencespage.Add.
+//
+// The function takes the following parameters:
+//
+//   - group to add.
+//   - index to insert group a.
+func (self *PreferencesPage) Insert(group *PreferencesGroup, index int) {
+	var _arg0 *C.AdwPreferencesPage  // out
+	var _arg1 *C.AdwPreferencesGroup // out
+	var _arg2 C.int                  // out
+
+	_arg0 = (*C.AdwPreferencesPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.AdwPreferencesGroup)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg2 = C.int(index)
+
+	C.adw_preferences_page_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(index)
 }
 
 // Remove removes a group from self.

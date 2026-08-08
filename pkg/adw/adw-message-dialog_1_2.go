@@ -180,7 +180,7 @@ func defaultMessageDialogOverrides(v *MessageDialog) MessageDialogOverrides {
 //
 // # Accessibility
 //
-// AdwMessageDialog uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
+// AdwMessageDialog uses the gtk.AccessibleRole.Dialog role.
 //
 // Deprecated: Use alertdialog.
 type MessageDialog struct {
@@ -863,10 +863,13 @@ func (self *MessageDialog) SetCloseResponse(response string) {
 
 // SetDefaultResponse sets the ID of the default response of self.
 //
-// If set, pressing <kbd>Enter</kbd> will activate the corresponding button.
+// The button corresponding to this response will be set as the default widget
+// of self.
 //
-// If set to NULL or to a non-existent response ID, pressing <kbd>Enter</kbd>
-// will do nothing.
+// If not set, the default widget will not be set, and the last added response
+// will be focused by default.
+//
+// See gtk.Window:default-widget.
 //
 // Deprecated: Use alertdialog.
 //
@@ -963,14 +966,14 @@ func (self *MessageDialog) SetHeadingUseMarkup(useMarkup bool) {
 // src="message-dialog-appearance.png" alt="message-dialog-appearance">
 // </picture>
 //
-// Use ADW_RESPONSE_SUGGESTED to mark important responses such as the
+// Use adw.ResponseAppearance.Suggested to mark important responses such as the
 // affirmative action, like the Save button in the example.
 //
-// Use ADW_RESPONSE_DESTRUCTIVE to draw attention to the potentially damaging
-// consequences of using response. This appearance acts as a warning to the
-// user. The Discard button in the example is using this appearance.
+// Use adw.ResponseAppearance.Destructive to draw attention to the potentially
+// damaging consequences of using response. This appearance acts as a warning to
+// the user. The Discard button in the example is using this appearance.
 //
-// The default appearance is ADW_RESPONSE_DEFAULT.
+// The default appearance is adw.ResponseAppearance.Default.
 //
 // Negative responses like Cancel or Close should use the default appearance.
 //

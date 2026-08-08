@@ -75,7 +75,7 @@ func defaultButtonContentOverrides(v *ButtonContent) ButtonContentOverrides {
 //
 // # Accessibility
 //
-// AdwButtonContent uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwButtonContent uses the gtk.AccessibleRole.Group role.
 type ButtonContent struct {
 	_ [0]func() // equal guard
 	gtk.Widget

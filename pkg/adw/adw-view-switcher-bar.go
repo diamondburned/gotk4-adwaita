@@ -82,14 +82,16 @@ func defaultViewSwitcherBarOverrides(v *ViewSwitcherBar) ViewSwitcherBarOverride
 //	  </property>
 //	</object>
 //
-// It's recommended to set viewswitcher:policy to ADW_VIEW_SWITCHER_POLICY_WIDE
-// in this case.
+// It's recommended to set viewswitcher:policy to adw.ViewSwitcherPolicy.Wide in
+// this case.
 //
 // You may have to adjust the breakpoint condition for your specific pages.
 //
 // # CSS nodes
 //
 // AdwViewSwitcherBar has a single CSS node with name viewswitcherbar.
+//
+// See also: viewswitcher, inlineviewswitcher, viewswitchersidebar.
 type ViewSwitcherBar struct {
 	_ [0]func() // equal guard
 	gtk.Widget

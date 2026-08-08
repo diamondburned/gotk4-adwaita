@@ -60,7 +60,7 @@ func defaultTabButtonOverrides(v *TabButton) TabButtonOverrides {
 //
 // # Accessibility
 //
-// AdwTabButton uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
+// AdwTabButton uses the gtk.AccessibleRole.Button role.
 type TabButton struct {
 	_ [0]func() // equal guard
 	gtk.Widget

@@ -33,7 +33,7 @@ func init() {
 // ToolbarStyle describes the possible top or bottom bar styles in an
 // toolbarview widget.
 //
-// ADW_TOOLBAR_FLAT is suitable for simple content, such as statuspage or
+// adw.ToolbarStyle.Flat is suitable for simple content, such as statuspage or
 // preferencespage, where the background at the top and bottom parts of the page
 // is uniform. Additionally, windows with sidebars should always use this style.
 //
@@ -44,15 +44,15 @@ func init() {
 // srcset="toolbar-view-flat-2-dark.png" media="(prefers-color-scheme: dark)">
 // <img src="toolbar-view-flat-2.png" alt="toolbar-view-flat-2"> </picture>
 //
-// ADW_TOOLBAR_RAISED style is suitable for content such as utility panes
+// adw.ToolbarStyle.Raised style is suitable for content such as utility panes
 // (https://developer.gnome.org/hig/patterns/containers/utility-panes.html),
 // where some elements are directly adjacent to the top/bottom bars, or tabview,
 // where each page can have a different background.
 //
-// ADW_TOOLBAR_RAISED_BORDER style is similar to ADW_TOOLBAR_RAISED, but with
-// the shadow replaced with a more subtle border. It's intended to be used in
-// applications like image viewers, where a shadow over the content might be
-// undesired.
+// adw.ToolbarStyle.Raised-border style is similar to adw.ToolbarStyle.Raised,
+// but with the shadow replaced with a more subtle border. It's intended to be
+// used in applications like image viewers, where a shadow over the content
+// might be undesired.
 //
 // <picture style="min-width: 33%; display: inline-block;"> <source
 // srcset="toolbar-view-raised-dark.png" media="(prefers-color-scheme:
@@ -198,7 +198,7 @@ func defaultToolbarViewOverrides(v *ToolbarView) ToolbarViewOverrides {
 //
 // # Accessibility
 //
-// AdwToolbarView uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwToolbarView uses the gtk.AccessibleRole.Group role.
 type ToolbarView struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -542,26 +542,26 @@ func (self *ToolbarView) Remove(widget gtk.Widgetter) {
 
 // SetBottomBarStyle sets appearance of the bottom bars for self.
 //
-// If set to ADW_TOOLBAR_FLAT, bottom bars are flat and scrolling content has a
-// subtle undershoot shadow when touching them, same as the .undershoot-bottom
-// (style-classes.html#undershoot-indicators) style class. This works well for
-// simple content, e.g. statuspage or preferencespage, where the background at
-// the bottom of the page is uniform. Additionally, windows with sidebars should
-// always use this style.
+// If set to adw.ToolbarStyle.Flat, bottom bars are flat and scrolling
+// content has a subtle undershoot shadow when touching them, same as the
+// .undershoot-bottom (style-classes.html#undershoot-indicators) style class.
+// This works well for simple content, e.g. statuspage or preferencespage,
+// where the background at the bottom of the page is uniform. Additionally,
+// windows with sidebars should always use this style.
 //
 // Undershoot shadow is only present if a bottom bar is
 // actually present and visible. It is also never present if
 // toolbarview:extend-content-to-bottom-edge is set to TRUE.
 //
-// If set to ADW_TOOLBAR_RAISED, bottom bars have an opaque background and
-// a persistent shadow, this is suitable for content such as utility panes
+// If set to adw.ToolbarStyle.Raised, bottom bars have an opaque background
+// and a persistent shadow, this is suitable for content such as utility panes
 // (https://developer.gnome.org/hig/patterns/containers/utility-panes.html),
 // where some elements are directly adjacent to the bottom bars, or tabview,
 // where each page can have a different background.
 //
-// ADW_TOOLBAR_RAISED_BORDER is similar to ADW_TOOLBAR_RAISED, but the shadow is
-// replaced with a more subtle border. This can be useful for applications like
-// image viewers.
+// adw.ToolbarStyle.Raised-border is similar to adw.ToolbarStyle.Raised,
+// but the shadow is replaced with a more subtle border. This can be useful for
+// applications like image viewers.
 //
 // See also toolbarview.SetTopBarStyle.
 //
@@ -704,8 +704,8 @@ func (self *ToolbarView) SetRevealTopBars(reveal bool) {
 
 // SetTopBarStyle sets appearance of the top bars for self.
 //
-// If set to ADW_TOOLBAR_FLAT, top bars are flat and scrolling content has a
-// subtle undershoot shadow when touching them, same as the .undershoot-top
+// If set to adw.ToolbarStyle.Flat, top bars are flat and scrolling content has
+// a subtle undershoot shadow when touching them, same as the .undershoot-top
 // (style-classes.html#undershoot-indicators) style class. This works well for
 // simple content, e.g. statuspage or preferencespage, where the background at
 // the top of the page is uniform. Additionally, windows with sidebars should
@@ -715,15 +715,15 @@ func (self *ToolbarView) SetRevealTopBars(reveal bool) {
 // visible. It is also never present if toolbarview:extend-content-to-top-edge
 // is set to TRUE.
 //
-// If set to ADW_TOOLBAR_RAISED, top bars have an opaque background and a
-// persistent shadow, this is suitable for content such as utility panes
+// If set to adw.ToolbarStyle.Raised, top bars have an opaque background and
+// a persistent shadow, this is suitable for content such as utility panes
 // (https://developer.gnome.org/hig/patterns/containers/utility-panes.html),
 // where some elements are directly adjacent to the top bars, or tabview,
 // where each page can have a different background.
 //
-// ADW_TOOLBAR_RAISED_BORDER is similar to ADW_TOOLBAR_RAISED, but the shadow is
-// replaced with a more subtle border. This can be useful for applications like
-// image viewers.
+// adw.ToolbarStyle.Raised-border is similar to adw.ToolbarStyle.Raised,
+// but the shadow is replaced with a more subtle border. This can be useful for
+// applications like image viewers.
 //
 // See also toolbarview.SetBottomBarStyle.
 //

@@ -16,11 +16,11 @@ const MICRO_VERSION = 2
 
 // MINOR_VERSION: adwaita minor version component (e.g. 2 if the version is
 // 1.2.3).
-const MINOR_VERSION = 7
+const MINOR_VERSION = 9
 
 // VERSION_S: adwaita version, encoded as a string, useful for printing and
 // concatenation.
-const VERSION_S = "1.7.2"
+const VERSION_S = "1.9.2"
 
 // GetMajorVersion returns the major version number of the Adwaita library.
 //

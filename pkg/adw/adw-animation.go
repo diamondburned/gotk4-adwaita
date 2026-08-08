@@ -311,9 +311,9 @@ func (self *Animation) Widget() gtk.Widgetter {
 
 // Pause pauses a playing animation for self.
 //
-// Does nothing if the current state of self isn't ADW_ANIMATION_PLAYING.
+// Does nothing if the current state of self isn't adw.AnimationState.Playing.
 //
-// Sets animation:state to ADW_ANIMATION_PAUSED.
+// Sets animation:state to adw.AnimationState.Paused.
 func (self *Animation) Pause() {
 	var _arg0 *C.AdwAnimation // out
 
@@ -329,7 +329,7 @@ func (self *Animation) Pause() {
 // the beginning. This allows to easily play an animation regardless of whether
 // it's already playing or not.
 //
-// Sets animation:state to ADW_ANIMATION_PLAYING.
+// Sets animation:state to adw.AnimationState.Playing.
 //
 // The animation will be automatically skipped if animation:widget is unmapped,
 // or if gtk.Settings:gtk-enable-animations is FALSE.
@@ -349,7 +349,7 @@ func (self *Animation) Play() {
 
 // Reset resets the animation for self.
 //
-// Sets animation:state to ADW_ANIMATION_IDLE.
+// Sets animation:state to adw.AnimationState.Idle.
 func (self *Animation) Reset() {
 	var _arg0 *C.AdwAnimation // out
 
@@ -364,7 +364,7 @@ func (self *Animation) Reset() {
 // This function must only be used if the animation has been paused with
 // animation.Pause.
 //
-// Sets animation:state to ADW_ANIMATION_PLAYING.
+// Sets animation:state to adw.AnimationState.Playing.
 func (self *Animation) Resume() {
 	var _arg0 *C.AdwAnimation // out
 
@@ -424,7 +424,7 @@ func (self *Animation) SetTarget(target AnimationTargetter) {
 // If the animation hasn't been started yet, is playing, or is paused, instantly
 // skips the animation to the end and causes animation::done to be emitted.
 //
-// Sets animation:state to ADW_ANIMATION_FINISHED.
+// Sets animation:state to adw.AnimationState.Finished.
 func (self *Animation) Skip() {
 	var _arg0 *C.AdwAnimation // out
 

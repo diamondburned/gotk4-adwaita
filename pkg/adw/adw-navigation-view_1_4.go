@@ -103,7 +103,7 @@ func defaultNavigationPageOverrides(v *NavigationPage) NavigationPageOverrides {
 //
 // # Accessibility
 //
-// AdwNavigationPage uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwNavigationPage uses the gtk.AccessibleRole.Group role.
 type NavigationPage struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -688,7 +688,7 @@ func defaultNavigationViewOverrides(v *NavigationView) NavigationViewOverrides {
 //
 // # Accessibility
 //
-// AdwNavigationView uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwNavigationView uses the gtk.AccessibleRole.Group role.
 type NavigationView struct {
 	_ [0]func() // equal guard
 	gtk.Widget

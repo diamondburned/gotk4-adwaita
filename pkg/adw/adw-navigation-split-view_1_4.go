@@ -59,8 +59,6 @@ func defaultNavigationSplitViewOverrides(v *NavigationSplitView) NavigationSplit
 // the collapsed property to TRUE on small widths, as follows:
 //
 //	<object class="AdwWindow">
-//	  <property name="width-request">280</property>
-//	  <property name="height-request">200</property>
 //	  <property name="default-width">800</property>
 //	  <property name="default-height">800</property>
 //	  <child>
@@ -161,7 +159,7 @@ func defaultNavigationSplitViewOverrides(v *NavigationSplitView) NavigationSplit
 //
 // # Accessibility
 //
-// AdwNavigationSplitView uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwNavigationSplitView uses the gtk.AccessibleRole.Group role.
 type NavigationSplitView struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -559,11 +557,11 @@ func (self *NavigationSplitView) SetSidebar(sidebar *NavigationPage) {
 
 // SetSidebarPosition sets the sidebar position for self.
 //
-// If set to GTK_PACK_START, the sidebar is displayed before the content,
+// If set to gtk.PackType.Start, the sidebar is displayed before the content,
 // and the sidebar will be the root page when collapsed.
 //
-// If set to GTK_PACK_END, the sidebar is displayed after the content, and the
-// content will be the root page.
+// If set to gtk.PackType.End, the sidebar is displayed after the content,
+// and the content will be the root page.
 //
 // The function takes the following parameters:
 //

@@ -566,7 +566,7 @@ func (self *AlertDialog) HeadingUseMarkup() bool {
 	return _ok
 }
 
-// PreferWideLayout gets whether self prefers wide layout.
+// PreferWideLayout gets whether self prefers horizontal button layout.
 //
 // The function returns the following values:
 //
@@ -799,10 +799,13 @@ func (self *AlertDialog) SetCloseResponse(response string) {
 
 // SetDefaultResponse sets the ID of the default response of self.
 //
-// If set, pressing <kbd>Enter</kbd> will activate the corresponding button.
+// The button corresponding to this response will be set as the default widget
+// of self.
 //
-// If set to NULL or to a non-existent response ID, pressing <kbd>Enter</kbd>
-// will do nothing.
+// If not set, the default widget will not be set, and the last added response
+// will be focused by default.
+//
+// See dialog:default-widget.
 //
 // The function takes the following parameters:
 //
@@ -884,10 +887,20 @@ func (self *AlertDialog) SetHeadingUseMarkup(useMarkup bool) {
 	runtime.KeepAlive(useMarkup)
 }
 
-// SetPreferWideLayout sets whether self prefers wide layout.
+// SetPreferWideLayout: whether to prefer horizontal button layout.
 //
-// Prefer horizontal button layout when possible, and wider dialog width
-// otherwise.
+// AdwAlertDialog can present buttons horizontally or vertically depending on
+// available space, how many buttons there are and how wide they are.
+//
+// By default it will prefer to stack buttons vertically at medium sizes.
+//
+// Set to TRUE to prefer horizontal layout in these cases instead. This will
+// make the dialog slightly wider as well.
+//
+// Vertical layout may still be used if the dialog would get too wide otherwise.
+//
+// Does nothing with just one button, or when the buttons are already
+// horizontal.
 //
 // The function takes the following parameters:
 //
@@ -912,14 +925,14 @@ func (self *AlertDialog) SetPreferWideLayout(preferWideLayout bool) {
 // media="(prefers-color-scheme: dark)"> <img src="alert-dialog-appearance.png"
 // alt="alert-dialog-appearance"> </picture>
 //
-// Use ADW_RESPONSE_SUGGESTED to mark important responses such as the
+// Use adw.ResponseAppearance.Suggested to mark important responses such as the
 // affirmative action, like the Save button in the example.
 //
-// Use ADW_RESPONSE_DESTRUCTIVE to draw attention to the potentially damaging
-// consequences of using response. This appearance acts as a warning to the
-// user. The Discard button in the example is using this appearance.
+// Use adw.ResponseAppearance.Destructive to draw attention to the potentially
+// damaging consequences of using response. This appearance acts as a warning to
+// the user. The Discard button in the example is using this appearance.
 //
-// The default appearance is ADW_RESPONSE_DEFAULT.
+// The default appearance is adw.ResponseAppearance.Default.
 //
 // Negative responses like Cancel or Close should use the default appearance.
 //

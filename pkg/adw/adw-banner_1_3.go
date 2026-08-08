@@ -304,9 +304,9 @@ func (self *Banner) SetButtonLabel(label string) {
 
 // SetButtonStyle sets the style class to use for the banner button.
 //
-// When set to ADW_BANNER_BUTTON_DEFAULT, the button stays grey. When set
-// to ADW_BANNER_BUTTON_SUGGESTED, the button follows the .suggested-action
-// (style-classes.html#suggested-action) style
+// When set to adw.BannerButtonStyle.Default, the button is grey. When set
+// to adw.BannerButtonStyle.Suggested, the button uses the .suggested-action
+// (style-classes.html#suggested-action) appearance.
 //
 // <picture> <source srcset="banner-suggested-dark.png"
 // media="(prefers-color-scheme: dark)"> <img src="banner-suggested.png"

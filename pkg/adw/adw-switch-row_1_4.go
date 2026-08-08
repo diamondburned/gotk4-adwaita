@@ -61,7 +61,7 @@ func defaultSwitchRowOverrides(v *SwitchRow) SwitchRowOverrides {
 //
 // # Accessibility
 //
-// AdwSwitchRow uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
+// AdwSwitchRow uses the gtk.AccessibleRole.Switch role.
 type SwitchRow struct {
 	_ [0]func() // equal guard
 	ActionRow

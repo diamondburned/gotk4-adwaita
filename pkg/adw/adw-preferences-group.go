@@ -6,14 +6,19 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 // #include <stdlib.h>
 // #include <adwaita.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
+// extern GtkWidget* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// extern GtkWidget* _gotk4_adw1_ListBoxCreateWidgetFunc(gpointer, gpointer);
 import "C"
 
 // GType values.
@@ -68,7 +73,7 @@ func defaultPreferencesGroupOverrides(v *PreferencesGroup) PreferencesGroupOverr
 //
 // # Accessibility
 //
-// AdwPreferencesGroup uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwPreferencesGroup uses the gtk.AccessibleRole.Group role.
 type PreferencesGroup struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -152,6 +157,38 @@ func (self *PreferencesGroup) Add(child gtk.Widgetter) {
 	runtime.KeepAlive(child)
 }
 
+// BindModel binds model to self.
+//
+// See gtk.ListBox.BindModel().
+//
+// The function takes the following parameters:
+//
+//   - model (optional): list model to bind.
+//   - createRowFunc (optional): a function creating a row for each item,
+//     or NULL in case model is NULL.
+func (self *PreferencesGroup) BindModel(model gio.ListModeller, createRowFunc gtk.ListBoxCreateWidgetFunc) {
+	var _arg0 *C.AdwPreferencesGroup       // out
+	var _arg1 *C.GListModel                // out
+	var _arg2 C.GtkListBoxCreateWidgetFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	}
+	if createRowFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk4_ListBoxCreateWidgetFunc)
+		_arg3 = C.gpointer(gbox.Assign(createRowFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.adw_preferences_group_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(createRowFunc)
+}
+
 // Description gets the description of self.
 //
 // The function returns the following values:
@@ -188,6 +225,51 @@ func (self *PreferencesGroup) HeaderSuffix() gtk.Widgetter {
 
 	_cret = C.adw_preferences_group_get_header_suffix(_arg0)
 	runtime.KeepAlive(self)
+
+	var _widget gtk.Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gtk.Widgetter)
+				return ok
+			})
+			rv, ok := casted.(gtk.Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// Row gets the row at index.
+//
+// Can return NULL if index is larger than the number of rows in the group.
+//
+// The function takes the following parameters:
+//
+//   - index: row index.
+//
+// The function returns the following values:
+//
+//   - widget (optional): row at index.
+func (self *PreferencesGroup) Row(index uint) gtk.Widgetter {
+	var _arg0 *C.AdwPreferencesGroup // out
+	var _arg1 C.guint                // out
+	var _cret *C.GtkWidget           // in
+
+	_arg0 = (*C.AdwPreferencesGroup)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(index)
+
+	_cret = C.adw_preferences_group_get_row(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(index)
 
 	var _widget gtk.Widgetter // out
 

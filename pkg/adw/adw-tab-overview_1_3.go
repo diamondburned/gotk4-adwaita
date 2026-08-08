@@ -83,6 +83,25 @@ func defaultTabOverviewOverrides(v *TabOverview) TabOverviewOverrides {
 // If search and window buttons are disabled, and secondary menu is not set,
 // the header bar will be hidden.
 //
+// # Drag-and-Drop
+//
+// AdwTabOverview thumbnails can have an additional drop target for arbitrary
+// content.
+//
+// Use taboverview.SetupExtraDropTarget to set it up, specifying the supported
+// content types and drag actions, then connect to taboverview::extra-drag-drop
+// to handle a drop.
+//
+// In some cases, it may be necessary to determine the used action based on the
+// content. In that case, set taboverview:extra-drag-preload to TRUE and connect
+// to taboverview::extra-drag-value signal, then return the action from its
+// handler. To access this action from the taboverview::extra-drag-drop handler,
+// use the taboverview:extra-drag-preferred-action property.
+//
+// taboverview::extra-drag-value is also always emitted when starting
+// to hover an item, with a NULL value. This happens even when
+// taboverview:extra-drag-preload is FALSE.
+//
 // # Actions
 //
 // AdwTabOverview defines the overview.open and overview.close actions for
@@ -152,8 +171,7 @@ func (self *TabOverview) ConnectCreateTab(f func() (tabPage *TabPage)) coreglib.
 	return coreglib.ConnectGeneratedClosure(self, "create-tab", false, unsafe.Pointer(C._gotk4_adw1_TabOverview_ConnectCreateTab), f)
 }
 
-// ConnectExtraDragDrop: this signal is emitted when content is dropped onto a
-// tab.
+// ConnectExtraDragDrop is emitted when content is dropped onto a tab.
 //
 // The content must be of one of the types set up via
 // taboverview.SetupExtraDropTarget.
@@ -163,8 +181,7 @@ func (self *TabOverview) ConnectExtraDragDrop(f func(page *TabPage, value *coreg
 	return coreglib.ConnectGeneratedClosure(self, "extra-drag-drop", false, unsafe.Pointer(C._gotk4_adw1_TabOverview_ConnectExtraDragDrop), f)
 }
 
-// ConnectExtraDragValue: this signal is emitted when the dropped content is
-// preloaded.
+// ConnectExtraDragValue is emitted when the dropped content is preloaded.
 //
 // In order for data to be preloaded, taboverview:extra-drag-preload must be set
 // to TRUE.
@@ -298,11 +315,17 @@ func (self *TabOverview) ExtraDragPreferredAction() gdk.DragAction {
 	return _dragAction
 }
 
-// ExtraDragPreload gets whether drop data should be preloaded on hover.
+// ExtraDragPreload gets the current drag action during a drop.
+//
+// This method should only be used from inside a taboverview::extra-drag-drop
+// handler.
+//
+// The action will be a subset of what was originally passed to
+// taboverview.SetupExtraDropTarget.
 //
 // The function returns the following values:
 //
-//   - ok: whether drop data should be preloaded on hover.
+//   - ok: drag action of the current drop.
 func (self *TabOverview) ExtraDragPreload() bool {
 	var _arg0 *C.AdwTabOverview // out
 	var _cret C.gboolean        // in
@@ -713,9 +736,7 @@ func (self *TabOverview) SetView(view *TabView) {
 	runtime.KeepAlive(view)
 }
 
-// SetupExtraDropTarget sets the supported types for this drop target.
-//
-// Sets up an extra drop target on tabs.
+// SetupExtraDropTarget sets up an extra drop target on tabs.
 //
 // This allows to drag arbitrary content onto tabs, for example URLs in a web
 // browser.

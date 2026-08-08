@@ -43,6 +43,8 @@ type ViewStackPages struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
 
+	gio.ListModel
+	gtk.SectionModel
 	gtk.SelectionModel
 }
 
@@ -69,6 +71,14 @@ func initViewStackPagesClass(gclass unsafe.Pointer, overrides ViewStackPagesOver
 func wrapViewStackPages(obj *coreglib.Object) *ViewStackPages {
 	return &ViewStackPages{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
+		SectionModel: gtk.SectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
+		},
 		SelectionModel: gtk.SelectionModel{
 			ListModel: gio.ListModel{
 				Object: obj,

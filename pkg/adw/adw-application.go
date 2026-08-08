@@ -45,21 +45,40 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 //
 // # Automatic Resources
 //
-// AdwApplication will automatically load stylesheets located in the
+// AdwApplication will automatically load certain resources located in the
 // application's resource base path (see gio.Application.SetResourceBasePath(),
 // if they're present.
 //
-// They can be used to add custom styles to the application, as follows:
+// # Shortcuts Dialog
 //
-// - style.css contains styles that are always present.
+// If there's a resource located at shortcuts-dialog.ui which defines an
+// shortcutsdialog with the ID shortcuts_dialog, AdwApplication will set up
+// an app.shortcuts action that creates and presents this dialog, as well as a
+// <kbd>Ctrl</kbd><kbd>?</kbd> accelerator for it.
 //
-// - style-dark.css contains styles only used when stylemanager:dark is TRUE.
+// # Stylesheet
 //
-// - style-hc.css contains styles used when the system high contrast preference
-// is enabled.
+// If there's a resource located at style.css, AdwApplication will load styles
+// from it. This can be used to add custom styles to the application.
 //
-// - style-hc-dark.css contains styles used when the system high contrast
-// preference is enabled and stylemanager:dark is TRUE.
+// Additional styles (deprecated)
+//
+// AdwApplication will also load the following stylesheets conditionally:
+//
+// - style-dark.css when stylemanager:dark is TRUE.
+//
+// - style-hc.css when the system high contrast preference is enabled.
+//
+// - style-hc-dark.css when the system high contrast preference is enabled and
+// stylemanager:dark is TRUE.
+//
+// :::warning These resources are deprecated since 1.9.
+//
+//	Use style.css with the following media queries instead:
+//
+//	- prefers-color-scheme: dark for styles used only for dark appearance.
+//	- prefers-contrast: more for styles used only when the system high
+//	  contrast preference is enabled.
 type Application struct {
 	_ [0]func() // equal guard
 	gtk.Application

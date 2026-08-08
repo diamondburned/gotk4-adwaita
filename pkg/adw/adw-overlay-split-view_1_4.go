@@ -157,7 +157,7 @@ func defaultOverlaySplitViewOverrides(v *OverlaySplitView) OverlaySplitViewOverr
 //
 // # Accessibility
 //
-// AdwOverlaySplitView uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwOverlaySplitView uses the gtk.AccessibleRole.Group role.
 type OverlaySplitView struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -729,8 +729,8 @@ func (self *OverlaySplitView) SetSidebar(sidebar gtk.Widgetter) {
 
 // SetSidebarPosition sets the sidebar position for self.
 //
-// If it's set to GTK_PACK_START, the sidebar is displayed before the content,
-// if GTK_PACK_END, it's displayed after the content.
+// If it's set to gtk.PackType.Start, the sidebar is displayed before the
+// content; if gtk.PackType.End, it's displayed after the content.
 //
 // The function takes the following parameters:
 //

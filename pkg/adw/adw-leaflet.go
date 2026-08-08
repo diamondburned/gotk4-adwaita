@@ -1027,8 +1027,8 @@ func (self *Leaflet) SetChildTransitionParams(params *SpringParams) {
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
 //
-// If set to ADW_FOLD_THRESHOLD_POLICY_MINIMUM, it will only fold when the
-// children cannot fit anymore. With ADW_FOLD_THRESHOLD_POLICY_NATURAL, it will
+// If set to adw.FoldThresholdPolicy.Minimum, it will only fold when the
+// children cannot fit anymore. With adw.FoldThresholdPolicy.Natural, it will
 // fold as soon as children don't get their natural size.
 //
 // This can be useful if you have a long ellipsizing label and want to let it

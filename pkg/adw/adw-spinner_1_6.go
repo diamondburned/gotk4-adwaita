@@ -62,6 +62,10 @@ func defaultSpinnerOverrides(v *Spinner) SpinnerOverrides {
 //
 // AdwSpinner has a single node with the name image and the style class
 // .spinner.
+//
+// # Accessibility
+//
+// AdwSpinner uses the gtk.AccessibleRole.Progress-bar role.
 type Spinner struct {
 	_ [0]func() // equal guard
 	gtk.Widget

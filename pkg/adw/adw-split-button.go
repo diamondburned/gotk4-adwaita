@@ -84,7 +84,7 @@ func defaultSplitButtonOverrides(v *SplitButton) SplitButtonOverrides {
 //
 // # Accessibility
 //
-// AdwSplitButton uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// AdwSplitButton uses the gtk.AccessibleRole.Group role.
 type SplitButton struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -530,7 +530,7 @@ func (self *SplitButton) SetChild(child gtk.Widgetter) {
 // If the does not fit in the available space in the given direction, GTK will
 // try its best to keep it inside the screen and fully visible.
 //
-// If you pass GTK_ARROW_NONE, it's equivalent to GTK_ARROW_DOWN.
+// gtk.ArrowType.None behaves same as gtk.ArrowType.Down.
 //
 // The function takes the following parameters:
 //

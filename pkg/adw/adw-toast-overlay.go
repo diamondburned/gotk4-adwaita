@@ -72,7 +72,7 @@ func defaultToastOverlayOverrides(v *ToastOverlay) ToastOverlayOverrides {
 //
 // # Accessibility
 //
-// AdwToastOverlay uses the gtk.AccessibleRole.GROUP role.
+// AdwToastOverlay uses the gtk.AccessibleRole.Group role.
 type ToastOverlay struct {
 	_ [0]func() // equal guard
 	gtk.Widget

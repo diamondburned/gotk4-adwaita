@@ -67,7 +67,7 @@ func defaultSpinRowOverrides(v *SpinRow) SpinRowOverrides {
 // # Accessibility
 //
 // AdwSpinRow uses an internal GtkSpinButton with the
-// GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
+// gtk.AccessibleRole.Spin-button role.
 type SpinRow struct {
 	_ [0]func() // equal guard
 	ActionRow

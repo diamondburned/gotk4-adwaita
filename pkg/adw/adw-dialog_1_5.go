@@ -48,8 +48,8 @@ func init() {
 type DialogPresentationMode C.gint
 
 const (
-	// DialogAuto: switch between ADW_DIALOG_FLOATING and
-	// ADW_DIALOG_BOTTOM_SHEET depending on available size.
+	// DialogAuto: switch between adw.DialogPresentationMode.Floating and
+	// adw.DialogPresentationMode.Bottom-sheet depending on available size.
 	DialogAuto DialogPresentationMode = iota
 	// DialogFloating: present dialog as a centered floating window.
 	DialogFloating
@@ -735,13 +735,13 @@ func (self *Dialog) SetFollowsContentSize(followsContentSize bool) {
 
 // SetPresentationMode sets presentation mode for self.
 //
-// When set to ADW_DIALOG_AUTO, the dialog appears as a bottom sheet when the
-// following condition is met: max-width: 450px or max-height: 360px, and as a
-// floating window otherwise.
+// When set to adw.DialogPresentationMode.Auto, the dialog appears as a bottom
+// sheet when the following condition is met: max-width: 450px or max-height:
+// 360px, and as a floating window otherwise.
 //
-// Set it to ADW_DIALOG_FLOATING or ADW_DIALOG_BOTTOM_SHEET to always present
-// it a floating window or a bottom sheet respectively, regardless of available
-// size.
+// Set it to adw.DialogPresentationMode.Floating or
+// adw.DialogPresentationMode.Bottom-sheet to always present it a floating
+// window or a bottom sheet respectively, regardless of available size.
 //
 // Presentation mode does nothing for dialogs presented as a window.
 //

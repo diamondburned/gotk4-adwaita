@@ -108,8 +108,10 @@ func defaultInlineViewSwitcherOverrides(v *InlineViewSwitcher) InlineViewSwitche
 //
 // # Accessibility
 //
-// The internal toggle group uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role.
-// Its toggles use the GTK_ACCESSIBLE_ROLE_TAB role.
+// The internal toggle group uses the gtk.AccessibleRole.Tab-list role.
+// Its toggles use the gtk.AccessibleRole.Tab role.
+//
+// See also: viewswitcher, viewswitcherbar, viewswitchersidebar.
 type InlineViewSwitcher struct {
 	_ [0]func() // equal guard
 	gtk.Widget

@@ -764,8 +764,8 @@ func (self *Flap) SetFlap(flap gtk.Widgetter) {
 
 // SetFlapPosition sets the flap position for self.
 //
-// If it's set to GTK_PACK_START, the flap is displayed before the content,
-// if GTK_PACK_END, it's displayed after the content.
+// If it's set to gtk.PackType.Start, the flap is displayed before the content,
+// if gtk.PackType.End, it's displayed after the content.
 //
 // Deprecated: See the migration guide
 // (migrating-to-breakpoints.html#replace-adwflap).
@@ -828,8 +828,8 @@ func (self *Flap) SetFoldPolicy(policy FlapFoldPolicy) {
 
 // SetFoldThresholdPolicy sets the fold threshold policy for self.
 //
-// If set to ADW_FOLD_THRESHOLD_POLICY_MINIMUM, flap will only fold when the
-// children cannot fit anymore. With ADW_FOLD_THRESHOLD_POLICY_NATURAL, it will
+// If set to adw.FoldThresholdPolicy.Minimum, flap will only fold when the
+// children cannot fit anymore. With adw.FoldThresholdPolicy.Natural, it will
 // fold as soon as children don't get their natural size.
 //
 // This can be useful if you have a long ellipsizing label and want to let it
@@ -1027,10 +1027,9 @@ func (self *Flap) SetSwipeToOpen(swipeToOpen bool) {
 // SetTransitionType sets the type of animation used for reveal and fold
 // transitions in self.
 //
-// flap:flap is transparent by default, which means the content will be
-// seen through it with ADW_FLAP_TRANSITION_TYPE_OVER transitions; add the
-// .background (style-classes.html#background) style class to it if this is
-// unwanted.
+// flap:flap is transparent by default, which means the content will be seen
+// through it with adw.FlapTransitionType.Over transitions; add the .background
+// (style-classes.html#background) style class to it if this is unwanted.
 //
 // Deprecated: See the migration guide
 // (migrating-to-breakpoints.html#replace-adwflap).

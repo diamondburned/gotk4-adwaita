@@ -36,78 +36,78 @@ const (
 	Linear Easing = iota
 	// EaseInQuad: quadratic tweening.
 	EaseInQuad
-	// EaseOutQuad: quadratic tweening, inverse of ADW_EASE_IN_QUAD.
+	// EaseOutQuad: quadratic tweening, inverse of adw.Easing.Ease-in-quad.
 	EaseOutQuad
-	// EaseInOutQuad: quadratic tweening, combining ADW_EASE_IN_QUAD and
-	// ADW_EASE_OUT_QUAD.
+	// EaseInOutQuad: quadratic tweening, combining adw.Easing.Ease-in-quad and
+	// adw.Easing.Ease-out-quad.
 	EaseInOutQuad
 	// EaseInCubic: cubic tweening.
 	EaseInCubic
-	// EaseOutCubic: cubic tweening, inverse of ADW_EASE_IN_CUBIC.
+	// EaseOutCubic: cubic tweening, inverse of adw.Easing.Ease-in-cubic.
 	EaseOutCubic
-	// EaseInOutCubic: cubic tweening, combining ADW_EASE_IN_CUBIC and
-	// ADW_EASE_OUT_CUBIC.
+	// EaseInOutCubic: cubic tweening, combining adw.Easing.Ease-in-cubic and
+	// adw.Easing.Ease-out-cubic.
 	EaseInOutCubic
 	// EaseInQuart: quartic tweening.
 	EaseInQuart
-	// EaseOutQuart: quartic tweening, inverse of ADW_EASE_IN_QUART.
+	// EaseOutQuart: quartic tweening, inverse of adw.Easing.Ease-in-quart.
 	EaseOutQuart
-	// EaseInOutQuart: quartic tweening, combining ADW_EASE_IN_QUART and
-	// ADW_EASE_OUT_QUART.
+	// EaseInOutQuart: quartic tweening, combining adw.Easing.Ease-in-quart and
+	// adw.Easing.Ease-out-quart.
 	EaseInOutQuart
 	// EaseInQuint: quintic tweening.
 	EaseInQuint
-	// EaseOutQuint: quintic tweening, inverse of ADW_EASE_IN_QUINT.
+	// EaseOutQuint: quintic tweening, inverse of adw.Easing.Ease-in-quint.
 	EaseOutQuint
-	// EaseInOutQuint: quintic tweening, combining ADW_EASE_IN_QUINT and
-	// ADW_EASE_OUT_QUINT.
+	// EaseInOutQuint: quintic tweening, combining adw.Easing.Ease-in-quint and
+	// adw.Easing.Ease-out-quint.
 	EaseInOutQuint
 	// EaseInSine: sine wave tweening.
 	EaseInSine
-	// EaseOutSine: sine wave tweening, inverse of ADW_EASE_IN_SINE.
+	// EaseOutSine: sine wave tweening, inverse of adw.Easing.Ease-in-sine.
 	EaseOutSine
-	// EaseInOutSine: sine wave tweening, combining ADW_EASE_IN_SINE and
-	// ADW_EASE_OUT_SINE.
+	// EaseInOutSine: sine wave tweening, combining adw.Easing.Ease-in-sine and
+	// adw.Easing.Ease-out-sine.
 	EaseInOutSine
 	// EaseInExpo: exponential tweening.
 	EaseInExpo
-	// EaseOutExpo: exponential tweening, inverse of ADW_EASE_IN_EXPO.
+	// EaseOutExpo: exponential tweening, inverse of adw.Easing.Ease-in-expo.
 	EaseOutExpo
-	// EaseInOutExpo: exponential tweening, combining ADW_EASE_IN_EXPO and
-	// ADW_EASE_OUT_EXPO.
+	// EaseInOutExpo: exponential tweening, combining adw.Easing.Ease-in-expo
+	// and adw.Easing.Ease-out-expo.
 	EaseInOutExpo
 	// EaseInCirc: circular tweening.
 	EaseInCirc
-	// EaseOutCirc: circular tweening, inverse of ADW_EASE_IN_CIRC.
+	// EaseOutCirc: circular tweening, inverse of adw.Easing.Ease-in-circ.
 	EaseOutCirc
-	// EaseInOutCirc: circular tweening, combining ADW_EASE_IN_CIRC and
-	// ADW_EASE_OUT_CIRC.
+	// EaseInOutCirc: circular tweening, combining adw.Easing.Ease-in-circ and
+	// adw.Easing.Ease-out-circ.
 	EaseInOutCirc
 	// EaseInElastic: elastic tweening, with offshoot on start.
 	EaseInElastic
 	// EaseOutElastic: elastic tweening, with offshoot on end, inverse of
-	// ADW_EASE_IN_ELASTIC.
+	// adw.Easing.Ease-in-elastic.
 	EaseOutElastic
 	// EaseInOutElastic: elastic tweening, with offshoot on both ends, combining
-	// ADW_EASE_IN_ELASTIC and ADW_EASE_OUT_ELASTIC.
+	// adw.Easing.Ease-in-elastic and adw.Easing.Ease-out-elastic.
 	EaseInOutElastic
 	// EaseInBack: overshooting cubic tweening, with backtracking on start.
 	EaseInBack
 	// EaseOutBack: overshooting cubic tweening, with backtracking on end,
-	// inverse of ADW_EASE_IN_BACK.
+	// inverse of adw.Easing.Ease-in-back.
 	EaseOutBack
 	// EaseInOutBack: overshooting cubic tweening, with backtracking on both
-	// ends, combining ADW_EASE_IN_BACK and ADW_EASE_OUT_BACK.
+	// ends, combining adw.Easing.Ease-in-back and adw.Easing.Ease-out-back.
 	EaseInOutBack
 	// EaseInBounce: exponentially decaying parabolic (bounce) tweening,
 	// on start.
 	EaseInBounce
 	// EaseOutBounce: exponentially decaying parabolic (bounce) tweening,
-	// with bounce on end, inverse of ADW_EASE_IN_BOUNCE.
+	// with bounce on end, inverse of adw.Easing.Ease-in-bounce.
 	EaseOutBounce
 	// EaseInOutBounce: exponentially decaying parabolic (bounce) tweening,
-	// with bounce on both ends, combining ADW_EASE_IN_BOUNCE and
-	// ADW_EASE_OUT_BOUNCE.
+	// with bounce on both ends, combining adw.Easing.Ease-in-bounce and
+	// adw.Easing.Ease-out-bounce.
 	EaseInOutBounce
 	// Ease: cubic bezier tweening, with control points in (0.25, 0.1) and
 	// (0.25, 1.0).

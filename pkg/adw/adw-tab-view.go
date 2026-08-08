@@ -844,8 +844,8 @@ func defaultTabViewOverrides(v *TabView) TabViewOverrides {
 //
 // # Accessibility
 //
-// AdwTabView uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the tab pages which are
-// the accessible parent objects of the child widgets.
+// AdwTabView uses the gtk.AccessibleRole.Tab-panel role for the tab pages which
+// are the accessible parent objects of the child widgets.
 type TabView struct {
 	_ [0]func() // equal guard
 	gtk.Widget
@@ -919,8 +919,8 @@ func marshalTabView(p uintptr) (interface{}, error) {
 // A typical reason to connect to this signal is to show a confirmation dialog
 // for closing a tab.
 //
-// The signal handler should return GDK_EVENT_STOP to stop propagation or
-// GDK_EVENT_CONTINUE to invoke the default handler.
+// The signal handler should return gdk.EVENTSTOP to stop propagation or
+// gdk.EVENTPROPAGATE to invoke the default handler.
 func (self *TabView) ConnectClosePage(f func(page *TabPage) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "close-page", false, unsafe.Pointer(C._gotk4_adw1_TabView_ConnectClosePage), f)
 }
@@ -1453,8 +1453,13 @@ func (self *TabView) PagePosition(page *TabPage) int {
 
 // Pages returns a gio.ListModel that contains the pages of self.
 //
-// This can be used to keep an up-to-date view. The model also implements
-// gtk.SelectionModel and can be used to track and change the selected page.
+// This can be used to keep an up-to-date view.
+//
+// The model implements gtk.SectionModel, with one section for pinned pages and
+// one for the rest of the pages.
+//
+// It also implements gtk.SelectionModel and can be used to track and change the
+// selected page.
 //
 // The function returns the following values:
 //

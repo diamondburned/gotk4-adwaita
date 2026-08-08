@@ -171,7 +171,7 @@ func defaultWrapLayoutOverrides(v *WrapLayout) WrapLayoutOverrides {
 //
 // By default, AdwWrapLayout wraps as soon as the previous line cannot fit
 // any more children without shrinking them past their natural size. Set
-// wraplayout:wrap-policy to adw.WrapPolicy.MINIMUM to only wrap once all the
+// wraplayout:wrap-policy to adw.WrapPolicy.Minimum to only wrap once all the
 // children in the previous line have been shrunk to their minimum size.
 //
 // To make each line take the same amount of space, set
@@ -531,8 +531,9 @@ func (self *WrapLayout) WrapReverse() bool {
 // placed at the end of the line. 0.5 means they are placed in the middle of the
 // line.
 //
-// Alignment is only used when wraplayout:justify is set to ADW_JUSTIFY_NONE,
-// or on the last line when the wraplayout:justify-last-line is FALSE.
+// Alignment is only used when wraplayout:justify is set
+// to adw.JustifyMode.None, or on the last line when the
+// wraplayout:justify-last-line is FALSE.
 //
 // The function takes the following parameters:
 //
@@ -592,16 +593,17 @@ func (self *WrapLayout) SetChildSpacingUnit(unit LengthUnit) {
 // SetJustify sets whether and how each complete line should be stretched to
 // fill the entire widget.
 //
-// If set to ADW_JUSTIFY_FILL, each widget in the line will be stretched,
+// If set to adw.JustifyMode.Fill, each widget in the line will be stretched,
 // keeping consistent spacing, so that the line fills the entire widget.
 //
-// If set to ADW_JUSTIFY_SPREAD, the spacing between widgets will be increased,
-// keeping widget sizes intact. The first and last widget will be aligned with
-// the beginning and end of the line. If the line only contains a single widget,
-// it will be stretched regardless.
+// If set to adw.JustifyMode.Spread, the spacing between widgets will be
+// increased, keeping widget sizes intact. The first and last widget will be
+// aligned with the beginning and end of the line. If the line only contains a
+// single widget, it will be stretched regardless.
 //
-// If set to ADW_JUSTIFY_NONE, the line will not be stretched and the children
-// will be placed together within the line, according to wraplayout:align.
+// If set to adw.JustifyMode.None, the line will not be stretched and
+// the children will be placed together within the line, according to
+// wraplayout:align.
 //
 // By default this doesn't affect the last line, as it will be incomplete.
 // Use wraplayout:justify-last-line to justify it as well.
@@ -765,12 +767,12 @@ func (self *WrapLayout) SetPackDirection(packDirection PackDirection) {
 
 // SetWrapPolicy sets the policy for line wrapping.
 //
-// If set to ADW_WRAP_NATURAL, the box will wrap to the next line as soon as the
-// previous line cannot fit any more children without shrinking them past their
-// natural size.
+// If set to adw.WrapPolicy.Natural, the box will wrap to the next line as soon
+// as the previous line cannot fit any more children without shrinking them past
+// their natural size.
 //
-// If set to ADW_WRAP_MINIMUM, the box will try to fit as many children into
-// each line as possible, shrinking them down to their minimum size before
+// If set to adw.WrapPolicy.Minimum, the box will try to fit as many children
+// into each line as possible, shrinking them down to their minimum size before
 // wrapping to the next line.
 //
 // The function takes the following parameters:

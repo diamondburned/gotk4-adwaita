@@ -37,7 +37,7 @@ func defaultCarouselIndicatorLinesOverrides(v *CarouselIndicatorLines) CarouselI
 
 // CarouselIndicatorLines lines indicator for carousel.
 //
-// <picture> <source srcset="carousel-indicator-dots-lines.png"
+// <picture> <source srcset="carousel-indicator-lines-dark.png"
 // media="(prefers-color-scheme: dark)"> <img src="carousel-indicator-lines.png"
 // alt="carousel-indicator-lines"> </picture>
 //
